@@ -109,7 +109,6 @@ public class SpringResource implements Serializable {
 		this.angularUrl = angularUrl;
 	}
 
-	@Size(max = 45, min = 0)
 	@Description(title = "上级")
 	@Column(name = "parent_id")
 	private String parentId;

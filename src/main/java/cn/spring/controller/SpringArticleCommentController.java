@@ -30,7 +30,7 @@ import cn.spring.util.IpKit;
 import cn.spring.util.R;
 
 @RestController
-@RequestMapping(value = "/BaseComment")
+@RequestMapping(value = "/SpringArticleComment")
 public class SpringArticleCommentController extends BaseController {
 
 	private static final Logger logger = LoggerFactory.getLogger(SpringArticleCommentController.class);

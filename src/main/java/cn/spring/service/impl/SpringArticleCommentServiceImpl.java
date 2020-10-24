@@ -104,22 +104,22 @@ public class SpringArticleCommentServiceImpl implements ISpringArticleCommentSer
 			public Predicate toPredicate(Root<SpringComment> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				List<Predicate> predicates = new ArrayList<>();
 				if (!StringUtils.isEmpty(record.getCreatedUserId())) {
-					Predicate receiverId = cb.equal(root.get("createdUserId").as(String.class),
+					Predicate createdUserId = cb.equal(root.get("createdUserId").as(String.class),
 							record.getCreatedUserId());
-					predicates.add(receiverId);
+					predicates.add(createdUserId);
 				}
 				if (!StringUtils.isEmpty(record.getContent())) {
-					Predicate title = cb.like(root.get("content").as(String.class),
+					Predicate content = cb.like(root.get("content").as(String.class),
 							record.getContent() + "%");
-					predicates.add(title);
+					predicates.add(content);
 				}
 				if (record.getAuditFlag()) {
-					Predicate receiverId = cb.equal(root.get("auditFlag").as(Boolean.class),
+					Predicate auditFlag = cb.equal(root.get("auditFlag").as(Boolean.class),
 							record.getAuditFlag());
-					predicates.add(receiverId);
+					predicates.add(auditFlag);
 				}
-				Predicate deletionStateCode = cb.equal(root.get("deletedFlag").as(Boolean.class), false);
-				predicates.add(deletionStateCode);
+				Predicate deletedFlag = cb.equal(root.get("deletedFlag").as(Boolean.class), false);
+				predicates.add(deletedFlag);
 				Predicate[] pre = new Predicate[predicates.size()];
 				query.where(predicates.toArray(pre));
 				query.orderBy(cb.desc(root.get("createdOn").as(Date.class)));

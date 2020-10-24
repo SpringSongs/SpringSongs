@@ -28,7 +28,7 @@ import cn.spring.util.IpKit;
 import cn.spring.util.R;
 
 @RestController
-@RequestMapping(value = "/BaseBusinessCard")
+@RequestMapping(value = "/SpringBusinessCard")
 public class SpringContactController extends BaseController {
 
 	private static final Logger logger = LoggerFactory.getLogger(SpringContactController.class);
@@ -36,7 +36,7 @@ public class SpringContactController extends BaseController {
 	@Autowired
 	private ISpringContactService baseBusinessCardService;
 
-	@PostMapping(value = "ListByPage")
+	@PostMapping(value = "/ListByPage")
 	public R listByPage(@RequestBody SpringContact viewEntity, @PageableDefault(page = 0, size = 20) Pageable pageable) {
 		R r = new R();
 		try {

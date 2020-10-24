@@ -19,7 +19,7 @@ import cn.spring.util.Constant;
 import cn.spring.util.R;
 
 @RestController
-@RequestMapping(value = "/BaseLoginLog")
+@RequestMapping(value = "/SpringLoginLog")
 public class SpringLoginLogController extends BaseController {
 
 	private static final Logger logger = LoggerFactory.getLogger(SpringLoginLogController.class);

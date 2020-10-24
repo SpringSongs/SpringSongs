@@ -109,8 +109,18 @@ public class SpringParameterServiceImpl implements ISpringParameterService {
 							record.getCreatedUserId());
 					predicates.add(createdUserId);
 				}
-				Predicate deletionStateCode = cb.equal(root.get("deletedFlag").as(Boolean.class), false);
-				predicates.add(deletionStateCode);
+				if (!StringUtils.isEmpty(record.getCode())) {
+					Predicate code = cb.equal(root.get("code").as(String.class),
+							record.getCode());
+					predicates.add(code);
+				}
+				if (!StringUtils.isEmpty(record.getK())) {
+					Predicate k = cb.equal(root.get("k").as(String.class),
+							record.getK());
+					predicates.add(k);
+				}
+				Predicate deletedFlag = cb.equal(root.get("deletedFlag").as(Boolean.class), false);
+				predicates.add(deletedFlag);
 				Predicate[] pre = new Predicate[predicates.size()];
 				query.where(predicates.toArray(pre));
 				query.orderBy(cb.desc(root.get("createdOn").as(Date.class)));

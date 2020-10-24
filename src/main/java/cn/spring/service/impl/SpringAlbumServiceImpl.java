@@ -108,16 +108,16 @@ public class SpringAlbumServiceImpl implements ISpringAlbumService {
 					predicates.add(title);
 				}
 				if (!StringUtils.isEmpty(record.getDescription())) {
-					Predicate title = cb.like(root.get("description").as(String.class), record.getDescription() + "%");
-					predicates.add(title);
+					Predicate description = cb.like(root.get("description").as(String.class), record.getDescription() + "%");
+					predicates.add(description);
 				}
 				if (!StringUtils.isEmpty(record.getCreatedUserId())) {
-					Predicate receiverId = cb.equal(root.get("createdUserId").as(String.class),
+					Predicate createdUserId = cb.equal(root.get("createdUserId").as(String.class),
 							record.getCreatedUserId());
-					predicates.add(receiverId);
+					predicates.add(createdUserId);
 				}
-				Predicate deletionStateCode = cb.equal(root.get("deletedFlag").as(Boolean.class), false);
-				predicates.add(deletionStateCode);
+				Predicate deletedFlag = cb.equal(root.get("deletedFlag").as(Boolean.class), false);
+				predicates.add(deletedFlag);
 				Predicate[] pre = new Predicate[predicates.size()];
 				query.where(predicates.toArray(pre));
 				query.orderBy(cb.desc(root.get("createdOn").as(Date.class)));

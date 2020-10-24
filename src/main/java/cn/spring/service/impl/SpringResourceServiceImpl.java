@@ -37,7 +37,7 @@ import cn.spring.vo.MenuVo;
 @Transactional
 public class SpringResourceServiceImpl implements ISpringResourceService {
 	@Autowired
-	private SpringResourceDao baseModuleDao;
+	private SpringResourceDao springResourceDao;
 
 	@Autowired
 	private SpringResourceRoleDao baseModuleRoleDao;
@@ -53,7 +53,7 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 	 */
 	@Override
 	public void deleteByPrimaryKey(String id) {
-		baseModuleDao.deleteById(id);
+		springResourceDao.deleteById(id);
 
 	}
 
@@ -68,7 +68,7 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 	 */
 	@Override
 	public void insert(SpringResource record) {
-		baseModuleDao.save(record);
+		springResourceDao.save(record);
 
 	}
 
@@ -83,7 +83,7 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 	 */
 	@Override
 	public SpringResource selectByPrimaryKey(String id) {
-		return baseModuleDao.getOne(id);
+		return springResourceDao.getOne(id);
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 	 */
 	@Override
 	public void updateByPrimaryKey(SpringResource record) {
-		baseModuleDao.save(record);
+		springResourceDao.save(record);
 	}
 
 	/**
@@ -112,16 +112,19 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 	@Override
 	public Page<SpringResource> getAllRecordByPage(SpringResource record, Pageable pageable) {
 		Specification<SpringResource> specification = new Specification<SpringResource>() {
-
 			@Override
 			public Predicate toPredicate(Root<SpringResource> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				List<Predicate> predicates = new ArrayList<>();
 				if (!StringUtils.isEmpty(record.getParentId())) {
-					Predicate receiverId = cb.equal(root.get("parentId").as(String.class), record.getParentId());
-					predicates.add(receiverId);
+					Predicate parentId = cb.equal(root.get("parentId").as(String.class), record.getParentId());
+					predicates.add(parentId);
 				}
-				Predicate deletionStateCode = cb.equal(root.get("deletedFlag").as(Boolean.class), false);
-				predicates.add(deletionStateCode);
+				if (!StringUtils.isEmpty(record.getSystemId())) {
+					Predicate systemId = cb.equal(root.get("systemId").as(String.class), record.getSystemId());
+					predicates.add(systemId);
+				}
+				Predicate deletedFlag = cb.equal(root.get("deletedFlag").as(Boolean.class), false);
+				predicates.add(deletedFlag);
 				Predicate[] pre = new Predicate[predicates.size()];
 				query.where(predicates.toArray(pre));
 				query.orderBy(cb.desc(root.get("createdOn").as(Date.class)));
@@ -129,7 +132,7 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 			}
 		};
 		// Pageable pageable = PageRequest.of(currPage - 1, size);
-		return baseModuleDao.findAll(specification, pageable);
+		return springResourceDao.findAll(specification, pageable);
 	}
 
 	/**
@@ -143,7 +146,7 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 	 */
 	@Override
 	public void setDeleted(List<String> ids) {
-		baseModuleDao.setDelete(ids);
+		springResourceDao.setDelete(ids);
 	}
 
 	/**
@@ -162,7 +165,7 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 
 	@Override
 	public List<MenuVo> ListModuleByUserId(String userId) {
-		List<SpringResource> modules = baseModuleDao.listModuleByUserId(userId);
+		List<SpringResource> modules = springResourceDao.listModuleByUserId(userId);
 		return getSoredModules(modules);
 	}
 
@@ -207,24 +210,24 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 
 	@Override
 	public void delete(List<String> ids) {
-		baseModuleDao.deleteAll();
+		springResourceDao.deleteAll();
 	}
 
 	@Override
 	public List<SpringResource> listByIds(List<String> ids) {
-		return baseModuleDao.findAllById(ids);
+		return springResourceDao.findAllById(ids);
 	}
 
 	@Override
 	public List<ElementUiTreeVo> getModulesByParentId(String parentId, String systemId) {
-		List<SpringResource> baseModulesEntityList = baseModuleDao.getByParentId(parentId, systemId);
+		List<SpringResource> baseModulesEntityList = springResourceDao.getByParentId(parentId, systemId);
 		List<ElementUiTreeVo> elementUiTreeDtoList = new ArrayList<ElementUiTreeVo>();
 		List<String> ids = new ArrayList<String>();
 		for (SpringResource entity : baseModulesEntityList) {
 			ids.add(entity.getId());
 		}
 		if (ids.size() > 0) {
-			List<SpringResource> baseModulesEntityList1 = baseModuleDao.getInParentId(ids);
+			List<SpringResource> baseModulesEntityList1 = springResourceDao.getInParentId(ids);
 			for (SpringResource entity : baseModulesEntityList) {
 				ElementUiTreeVo elementUiTreeDto = new ElementUiTreeVo();
 				elementUiTreeDto.setId(entity.getId());
@@ -266,6 +269,6 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 
 	@Override
 	public List<ModuleRoleDto> listAllRoleModules() {
-		return baseModuleDao.listAllRoleModules();
+		return springResourceDao.listAllRoleModules();
 	}
 }

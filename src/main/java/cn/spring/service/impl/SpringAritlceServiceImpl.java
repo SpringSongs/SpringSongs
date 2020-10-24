@@ -105,9 +105,9 @@ public class SpringAritlceServiceImpl implements ISpringAritlceService {
 			public Predicate toPredicate(Root<SpringAritlce> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				List<Predicate> predicates = new ArrayList<>();
 				if (!StringUtils.isEmpty(record.getCreatedUserId())) {
-					Predicate receiverId = cb.equal(root.get("createdUserId").as(String.class),
+					Predicate createdUserId = cb.equal(root.get("createdUserId").as(String.class),
 							record.getCreatedUserId());
-					predicates.add(receiverId);
+					predicates.add(createdUserId);
 				}
 				if (!StringUtils.isEmpty(record.getTitle())) {
 					Predicate title = cb.like(root.get("title").as(String.class),
@@ -115,9 +115,9 @@ public class SpringAritlceServiceImpl implements ISpringAritlceService {
 					predicates.add(title);
 				}
 				if (record.getStatus()) {
-					Predicate receiverId = cb.equal(root.get("auditFlag").as(Boolean.class),
+					Predicate auditFlag = cb.equal(root.get("auditFlag").as(Boolean.class),
 							record.getStatus());
-					predicates.add(receiverId);
+					predicates.add(auditFlag);
 				}
 				Predicate deletionStateCode = cb.equal(root.get("deletedStatus").as(Boolean.class), false);
 				predicates.add(deletionStateCode);

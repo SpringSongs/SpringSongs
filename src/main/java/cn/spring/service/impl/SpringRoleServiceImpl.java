@@ -111,11 +111,11 @@ public class SpringRoleServiceImpl implements ISpringRoleService {
 				List<Predicate> predicates = new ArrayList<>();
 
 				if (!StringUtils.isEmpty(record.getTitle())) {
-					Predicate receiverId = cb.equal(root.get("title").as(String.class), record.getTitle());
-					predicates.add(receiverId);
+					Predicate title = cb.equal(root.get("title").as(String.class), record.getTitle());
+					predicates.add(title);
 				}
-				Predicate deletionStateCode = cb.equal(root.get("deletedFlag").as(Boolean.class), false);
-				predicates.add(deletionStateCode);
+				Predicate deletedFlag = cb.equal(root.get("deletedFlag").as(Boolean.class), false);
+				predicates.add(deletedFlag);
 				Predicate[] pre = new Predicate[predicates.size()];
 				query.where(predicates.toArray(pre));
 				query.orderBy(cb.desc(root.get("createdOn").as(Date.class)));

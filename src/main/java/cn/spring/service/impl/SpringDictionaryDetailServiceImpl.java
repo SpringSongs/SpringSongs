@@ -106,27 +106,27 @@ public class SpringDictionaryDetailServiceImpl implements ISpringDictionaryDetai
 					CriteriaBuilder cb) {
 				List<Predicate> predicates = new ArrayList<>();
 				if (!StringUtils.isEmpty(record.getCreatedUserId())) {
-					Predicate receiverId = cb.equal(root.get("createdUserId").as(String.class),
+					Predicate createdUserId = cb.equal(root.get("createdUserId").as(String.class),
 							record.getCreatedUserId());
-					predicates.add(receiverId);
+					predicates.add(createdUserId);
 				}
 				if (!StringUtils.isEmpty(record.getDictionaryCode())) {
-					Predicate receiverId = cb.equal(root.get("dictionaryCode").as(String.class),
+					Predicate dictionaryCode = cb.equal(root.get("dictionaryCode").as(String.class),
 							record.getDictionaryCode());
-					predicates.add(receiverId);
+					predicates.add(dictionaryCode);
 				}
 				if (!StringUtils.isEmpty(record.getDetailCode())) {
-					Predicate receiverId = cb.equal(root.get("detailCode").as(String.class),
+					Predicate detailCode = cb.equal(root.get("detailCode").as(String.class),
 							record.getDetailCode());
-					predicates.add(receiverId);
+					predicates.add(detailCode);
 				}
 				if (!StringUtils.isEmpty(record.getDetailName())) {
-					Predicate receiverId = cb.equal(root.get("detailName").as(String.class),
+					Predicate detailName = cb.equal(root.get("detailName").as(String.class),
 							record.getDetailName());
-					predicates.add(receiverId);
+					predicates.add(detailName);
 				}
-				Predicate deletionStateCode = cb.equal(root.get("deletedFlag").as(Boolean.class), false);
-				predicates.add(deletionStateCode);
+				Predicate deletedFlag = cb.equal(root.get("deletedFlag").as(Boolean.class), false);
+				predicates.add(deletedFlag);
 				Predicate[] pre = new Predicate[predicates.size()];
 				query.where(predicates.toArray(pre));
 				query.orderBy(cb.desc(root.get("createdOn").as(Date.class)));

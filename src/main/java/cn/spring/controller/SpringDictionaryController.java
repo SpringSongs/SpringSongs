@@ -28,7 +28,7 @@ import cn.spring.util.IpKit;
 import cn.spring.util.R;
 
 @RestController
-@RequestMapping(value = "/BaseDictionary")
+@RequestMapping(value = "/SpringDictionary")
 public class SpringDictionaryController extends BaseController {
 
 	private static final Logger logger = LoggerFactory.getLogger(SpringDictionaryController.class);

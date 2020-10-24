@@ -32,7 +32,7 @@ import cn.spring.vo.ElementUiTreeVo;
 import cn.spring.vo.MenuVo;
 
 @RestController
-@RequestMapping(value = "/BaseModule")
+@RequestMapping(value = "/SpringResource")
 public class SpringResourceController extends BaseController {
 
 	private static final Logger logger = LoggerFactory.getLogger(SpringResourceController.class);

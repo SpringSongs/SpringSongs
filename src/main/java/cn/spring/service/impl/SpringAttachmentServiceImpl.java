@@ -105,22 +105,22 @@ public class SpringAttachmentServiceImpl implements ISpringAttachmentService {
 			public Predicate toPredicate(Root<SpringAttachment> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				List<Predicate> predicates = new ArrayList<>();
 				if (!StringUtils.isEmpty(record.getFolderId())) {
-					Predicate receiverId = cb.equal(root.get("folderId").as(String.class),
+					Predicate folderId = cb.equal(root.get("folderId").as(String.class),
 							record.getFolderId());
-					predicates.add(receiverId);
+					predicates.add(folderId);
 				}
 				if (!StringUtils.isEmpty(record.getDescription())) {
-					Predicate receiverId = cb.equal(root.get("description").as(String.class),
+					Predicate description = cb.equal(root.get("description").as(String.class),
 							record.getDescription());
-					predicates.add(receiverId);
+					predicates.add(description);
 				}
 				if (!StringUtils.isEmpty(record.getCreatedUserId())) {
-					Predicate receiverId = cb.equal(root.get("createdUserId").as(String.class),
+					Predicate createdUserId = cb.equal(root.get("createdUserId").as(String.class),
 							record.getCreatedUserId());
-					predicates.add(receiverId);
+					predicates.add(createdUserId);
 				}
-				Predicate deletionStateCode = cb.equal(root.get("deletedFlag").as(Boolean.class), false);
-				predicates.add(deletionStateCode);
+				Predicate deletedFlag = cb.equal(root.get("deletedFlag").as(Boolean.class), false);
+				predicates.add(deletedFlag);
 				Predicate[] pre = new Predicate[predicates.size()];
 				query.where(predicates.toArray(pre));
 				query.orderBy(cb.desc(root.get("createdOn").as(Date.class)));

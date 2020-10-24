@@ -60,7 +60,7 @@ public class SpringUserController extends BaseController {
 		return r;
 	}
 
-	@PostMapping(value = "ListByPage")
+	@PostMapping(value = "/ListByPage")
 	public R listByPage(@RequestBody SpringUser viewEntity, @PageableDefault(page = 1, size = 20) Pageable pageable) {
 		R r = new R();
 		try {
@@ -77,7 +77,7 @@ public class SpringUserController extends BaseController {
 		return r;
 	}
 
-	@PostMapping(value = "ListByRoleId/{roleId}")
+	@PostMapping(value = "/ListByRoleId/{roleId}")
 	public R listByRoleId(@PathVariable(value = "roleId", required = true) String roleId,
 			@PageableDefault(page = 1, size = 20) Pageable pageable) {
 		R r = new R();

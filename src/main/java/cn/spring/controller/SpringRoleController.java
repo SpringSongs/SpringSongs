@@ -34,7 +34,7 @@ import cn.spring.util.IpKit;
 import cn.spring.util.R;
 
 @RestController
-@RequestMapping(value = "/BaseRole")
+@RequestMapping(value = "/SpringRole")
 public class SpringRoleController extends BaseController {
 
 	private static final Logger logger = LoggerFactory.getLogger(SpringRoleController.class);

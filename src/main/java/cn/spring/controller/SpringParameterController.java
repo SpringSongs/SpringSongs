@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import cn.spring.domain.SpringAritlce;
 import cn.spring.domain.SpringParameter;
 import cn.spring.service.ISpringParameterService;
 import cn.spring.util.Constant;
@@ -30,7 +29,7 @@ import cn.spring.util.IpKit;
 import cn.spring.util.R;
 
 @RestController
-@RequestMapping(value = "/BaseParameter")
+@RequestMapping(value = "/SpringParameter")
 public class SpringParameterController extends BaseController {
 
 	private static final Logger logger = LoggerFactory.getLogger(SpringParameterController.class);
@@ -129,7 +128,7 @@ public class SpringParameterController extends BaseController {
 
 	@PostMapping(value = "/SetDeleted")
 	public R setDeleted(@RequestParam(value = "ids", required = true) List<String> ids) {
-		R r = R.ok("ok");
+		R r = R.ok("OK");
 		if (CollectionUtils.isEmpty(ids)) {
 			r.put("msg", Constant.PARAMETER_NOT_NULL_ERROR);
 			r.put("code", HttpServletResponse.SC_BAD_REQUEST);
@@ -143,7 +142,7 @@ public class SpringParameterController extends BaseController {
 						break;
 					}
 				}
-				if (r.get("code").toString().equals("HttpServletResponse.SC_OK")) {
+				if (Integer.parseInt(r.get("code").toString())==HttpServletResponse.SC_OK) {
 					baseParameterService.setDeleted(ids);
 					r.put("msg", Constant.DELETE_SUCCESSED);
 					r.put("code", HttpServletResponse.SC_OK);

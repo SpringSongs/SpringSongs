@@ -108,20 +108,20 @@ public class SpringDictionaryServiceImpl implements ISpringDictionaryService {
 			public Predicate toPredicate(Root<SpringDictionary> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				List<Predicate> predicates = new ArrayList<>();
 				if (!StringUtils.isEmpty(record.getCode())) {
-					Predicate receiverId = cb.equal(root.get("code").as(String.class), record.getCode());
-					predicates.add(receiverId);
+					Predicate code = cb.equal(root.get("code").as(String.class), record.getCode());
+					predicates.add(code);
 				}
 				if (!StringUtils.isEmpty(record.getTitle())) {
-					Predicate receiverId = cb.equal(root.get("title").as(String.class), record.getTitle());
-					predicates.add(receiverId);
+					Predicate title = cb.equal(root.get("title").as(String.class), record.getTitle());
+					predicates.add(title);
 				}
 				if (!StringUtils.isEmpty(record.getCreatedUserId())) {
-					Predicate receiverId = cb.equal(root.get("createdUserId").as(String.class),
+					Predicate createdUserId = cb.equal(root.get("createdUserId").as(String.class),
 							record.getCreatedUserId());
-					predicates.add(receiverId);
+					predicates.add(createdUserId);
 				}
-				Predicate deletionStateCode = cb.equal(root.get("deletedFlag").as(Boolean.class), false);
-				predicates.add(deletionStateCode);
+				Predicate deletedFlag = cb.equal(root.get("deletedFlag").as(Boolean.class), false);
+				predicates.add(deletedFlag);
 				Predicate[] pre = new Predicate[predicates.size()];
 				query.where(predicates.toArray(pre));
 				query.orderBy(cb.desc(root.get("createdOn").as(Date.class)));

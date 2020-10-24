@@ -105,12 +105,12 @@ public class SpringArticleCategoryServiceImpl implements ISpringArticleCategoryS
 			public Predicate toPredicate(Root<SpringArticleCategory> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				List<Predicate> predicates = new ArrayList<>();
 				if (!StringUtils.isEmpty(record.getCreatedUserId())) {
-					Predicate receiverId = cb.equal(root.get("createdUserId").as(String.class),
+					Predicate createdUserId = cb.equal(root.get("createdUserId").as(String.class),
 							record.getCreatedUserId());
-					predicates.add(receiverId);
+					predicates.add(createdUserId);
 				}
-				Predicate deletionStateCode = cb.equal(root.get("deletedStatus").as(Boolean.class), false);
-				predicates.add(deletionStateCode);
+				Predicate deletedStatus = cb.equal(root.get("deletedStatus").as(Boolean.class), false);
+				predicates.add(deletedStatus);
 				Predicate[] pre = new Predicate[predicates.size()];
 				query.where(predicates.toArray(pre));
 				query.orderBy(cb.desc(root.get("createdOn").as(Date.class)));

@@ -33,7 +33,7 @@ import cn.spring.util.IpKit;
 import cn.spring.util.R;
 
 @RestController
-@RequestMapping(value = "/BaseFile")
+@RequestMapping(value = "/SpringAttachment")
 public class SpringAttachmentController extends BaseController {
 
 	private static final Logger logger = LoggerFactory.getLogger(SpringAttachmentController.class);

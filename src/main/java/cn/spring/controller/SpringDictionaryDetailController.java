@@ -29,7 +29,7 @@ import cn.spring.util.IpKit;
 import cn.spring.util.R;
 
 @RestController
-@RequestMapping(value = "/BaseDictionaryDetail")
+@RequestMapping(value = "/SpringDictionaryDetail")
 public class SpringDictionaryDetailController extends BaseController {
 
 	private static final Logger logger = LoggerFactory.getLogger(SpringDictionaryDetailController.class);

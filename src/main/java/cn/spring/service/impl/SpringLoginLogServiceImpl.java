@@ -104,9 +104,9 @@ public class SpringLoginLogServiceImpl implements ISpringLoginLogService {
 			public Predicate toPredicate(Root<SpringLoginLog> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				List<Predicate> predicates = new ArrayList<>();
 				if (!StringUtils.isEmpty(record.getCreatedBy())) {
-					Predicate receiverId = cb.equal(root.get("createdBy").as(String.class),
+					Predicate createdBy = cb.equal(root.get("createdBy").as(String.class),
 							record.getCreatedBy());
-					predicates.add(receiverId);
+					predicates.add(createdBy);
 				}
 				Predicate[] pre = new Predicate[predicates.size()];
 				query.where(predicates.toArray(pre));

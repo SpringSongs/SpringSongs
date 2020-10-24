@@ -28,7 +28,7 @@ import cn.spring.util.R;
 import cn.spring.vo.ElementUiTreeVo;
 
 @RestController
-@RequestMapping(value = "/BaseSpringArticleCategory")
+@RequestMapping(value = "/SpringArticleCategory")
 public class SpringArticleCategoryController extends BaseController {
 
 	private static final Logger logger = LoggerFactory.getLogger(SpringArticleCategoryController.class);

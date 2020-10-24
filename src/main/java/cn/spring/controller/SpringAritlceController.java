@@ -30,7 +30,7 @@ import cn.spring.util.IpKit;
 import cn.spring.util.R;
 
 @RestController
-@RequestMapping(value = "/BaseAritlce")
+@RequestMapping(value = "/SpringAritlce")
 public class SpringAritlceController extends BaseController {
 
 	private static final Logger logger = LoggerFactory.getLogger(SpringAritlceController.class);
