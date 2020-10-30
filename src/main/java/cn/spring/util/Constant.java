@@ -13,6 +13,7 @@ public class Constant {
 	public static final String SAVE_SUCCESSED = "保存成功！";
 	public static final String UPDATE_SUCCESSED = "更新成功！";
 	public static final String DELETE_SUCCESSED = "删除成功！";
+	public static final String HASED_CHILD_IDS = "存在子节点，不允许删除！";
 
 	public static final String SYSTEM_ERROR = "系统错误！";
 	

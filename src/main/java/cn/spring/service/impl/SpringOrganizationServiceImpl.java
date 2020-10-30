@@ -17,17 +17,17 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import cn.spring.dao.SpringSystemDao;
-import cn.spring.domain.SpringSystem;
-import cn.spring.service.ISpringSystemService;
+import cn.spring.dao.SpringOrganizationDao;
+import cn.spring.domain.SpringOrganization;
+import cn.spring.service.ISpringOrganizationService;
 import cn.spring.util.R;
 
 @Service
 @Transactional
-public class SpringSystemServiceImpl implements ISpringSystemService {
+public class SpringOrganizationServiceImpl implements ISpringOrganizationService {
 
 	@Autowired
-	private SpringSystemDao baseSpringSystemDao;
+	private SpringOrganizationDao baseSpringOrganizationDao;
 
 	/**
 	 *
@@ -40,7 +40,7 @@ public class SpringSystemServiceImpl implements ISpringSystemService {
 	 */
 	@Override
 	public void deleteByPrimaryKey(String id) {
-		baseSpringSystemDao.deleteById(id);
+		baseSpringOrganizationDao.deleteById(id);
 
 	}
 
@@ -54,8 +54,8 @@ public class SpringSystemServiceImpl implements ISpringSystemService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public void insert(SpringSystem record) {
-		baseSpringSystemDao.save(record);
+	public void insert(SpringOrganization record) {
+		baseSpringOrganizationDao.save(record);
 
 	}
 
@@ -69,8 +69,8 @@ public class SpringSystemServiceImpl implements ISpringSystemService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public SpringSystem selectByPrimaryKey(String id) {
-		return baseSpringSystemDao.getOne(id);
+	public SpringOrganization selectByPrimaryKey(String id) {
+		return baseSpringOrganizationDao.getOne(id);
 	}
 
 	/**
@@ -83,8 +83,8 @@ public class SpringSystemServiceImpl implements ISpringSystemService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public void updateByPrimaryKey(SpringSystem record) {
-		baseSpringSystemDao.save(record);
+	public void updateByPrimaryKey(SpringOrganization record) {
+		baseSpringOrganizationDao.save(record);
 	}
 
 	/**
@@ -92,22 +92,25 @@ public class SpringSystemServiceImpl implements ISpringSystemService {
 	 * 分页查询
 	 * 
 	 * @param record
-	 * @return Page<SpringSystem>
+	 * @return Page<BaseSpringOrganizationEntity>
 	 * @see [相关类/方法]（可选）
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public Page<SpringSystem> getAllRecordByPage(SpringSystem record, Pageable pageable) {
-		Specification<SpringSystem> specification = new Specification<SpringSystem>() {
+	public Page<SpringOrganization> getAllRecordByPage(SpringOrganization record, Pageable pageable) {
+		Specification<SpringOrganization> specification = new Specification<SpringOrganization>() {
 
 			@Override
-			public Predicate toPredicate(Root<SpringSystem> root, CriteriaQuery<?> query,
-					CriteriaBuilder cb) {
+			public Predicate toPredicate(Root<SpringOrganization> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				List<Predicate> predicates = new ArrayList<>();
 				if (!StringUtils.isEmpty(record.getCreatedUserId())) {
-					Predicate createdUserId = cb.equal(root.get("createdUserId").as(String.class),
+					Predicate receiverId = cb.equal(root.get("createdUserId").as(String.class),
 							record.getCreatedUserId());
-					predicates.add(createdUserId);
+					predicates.add(receiverId);
+				}
+				if (!StringUtils.isEmpty(record.getParentId())) {
+					Predicate parentId = cb.equal(root.get("parentId").as(String.class), record.getParentId());
+					predicates.add(parentId);
 				}
 				Predicate deletedStatus = cb.equal(root.get("deletedStatus").as(Boolean.class), false);
 				predicates.add(deletedStatus);
@@ -117,8 +120,8 @@ public class SpringSystemServiceImpl implements ISpringSystemService {
 				return query.getRestriction();
 			}
 		};
-		//Pageable pageable = new PageRequest(currPage - 1, size);
-		return baseSpringSystemDao.findAll(specification, pageable);
+		// Pageable pageable = new PageRequest(currPage - 1, size);
+		return baseSpringOrganizationDao.findAll(specification, pageable);
 	}
 
 	/**
@@ -132,7 +135,7 @@ public class SpringSystemServiceImpl implements ISpringSystemService {
 	 */
 	@Override
 	public void setDeleted(List<String> ids) {
-		baseSpringSystemDao.setDelete(ids);
+		baseSpringOrganizationDao.setDelete(ids);
 	}
 
 	/**
@@ -149,26 +152,17 @@ public class SpringSystemServiceImpl implements ISpringSystemService {
 		return new R();
 	}
 
+	/**
+	 * 根据上级主键查询组织机构
+	 * 
+	 * @param parentId
+	 * @return
+	 * @see [相关类/方法]（可选）
+	 * @since [产品/模块版本] （可选）
+	 */
 	@Override
-	public SpringSystem findByCode(String itemCode) {
-		return baseSpringSystemDao.findByCode(itemCode);
+	public List<SpringOrganization> listOrganizationsByParent(String parentId) {
+		return baseSpringOrganizationDao.listOrganizationByParentId(parentId);
 	}
-
-	@Override
-	public List<SpringSystem> findInIds(List<String> ids) {
-		return baseSpringSystemDao.findInIds(ids);
-	}
-
-	@Override
-	public int batchSaveLog(List<SpringSystem> logList) {
-		return 0;
-	}
-
-	@Override
-	public List<SpringSystem> ListAll() {
-		return baseSpringSystemDao.listAllRecord();
-	}
-
-	
 
 }

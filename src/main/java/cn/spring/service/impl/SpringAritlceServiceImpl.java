@@ -1,5 +1,7 @@
 package cn.spring.service.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,7 +14,6 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -109,6 +110,23 @@ public class SpringAritlceServiceImpl implements ISpringAritlceService {
 							record.getCreatedUserId());
 					predicates.add(createdUserId);
 				}
+				if (!StringUtils.isEmpty(record.getCategoryId())) {
+					Predicate categoryId = cb.equal(root.get("categoryId").as(String.class),
+							record.getCategoryId());
+					predicates.add(categoryId);
+				}
+				
+				if (!StringUtils.isEmpty(record.getMap().getCreateTimeStart())&&!StringUtils.isEmpty(record.getMap().getCreateTimeEnd())) {
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					try {
+						Predicate createdOn;
+						createdOn = cb.between(root.get("createdOn"), sdf.parse(record.getMap().getCreateTimeStart()), sdf.parse(record.getMap().getCreateTimeEnd()));
+						predicates.add(createdOn);
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+				}
+					
 				if (!StringUtils.isEmpty(record.getTitle())) {
 					Predicate title = cb.like(root.get("title").as(String.class),
 							record.getTitle() + "%");
@@ -162,6 +180,6 @@ public class SpringAritlceServiceImpl implements ISpringAritlceService {
 	@Override
 	public void delete(List<String> ids) {
 		baseAritlceDao.delete(ids);
-		
+
 	}
 }

@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -18,6 +19,7 @@ import org.hibernate.annotations.GenericGenerator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import cn.spring.annotation.Description;
+import cn.spring.dto.SearchDateDto;
 
 @Entity
 @DynamicInsert(true)
@@ -403,4 +405,13 @@ public class SpringAritlce implements Serializable {
     public void setVersion(int version){
         this.version=version;
     }
+    
+    @Transient
+    SearchDateDto  map;
+	public SearchDateDto getMap() {
+		return map;
+	}
+	public void setMap(SearchDateDto map) {
+		this.map = map;
+	}
 }

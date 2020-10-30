@@ -115,10 +115,10 @@ public class SpringArticleCategoryController extends BaseController {
 					entity.setKeywords(viewEntity.getKeywords());
 					entity.setDescription(viewEntity.getDescription());
 					entity.setSortOrder(viewEntity.getSortOrder());
-					entity.setUpdatedUserId(viewEntity.getUpdatedUserId());
-					entity.setUpdatedBy(viewEntity.getUpdatedBy());
-					entity.setUpdatedOn(viewEntity.getUpdatedOn());
-					entity.setUpdatedIp(viewEntity.getUpdatedIp());
+					entity.setUpdatedOn(new Date());
+					entity.setUpdatedUserId(this.getUser().getId());
+					entity.setUpdatedBy(this.getUser().getUserName());
+					entity.setUpdatedIp(IpKit.getRealIp(request));
 					entity.setVersion(viewEntity.getVersion());
 					baseSpringArticleCategoryService.updateByPrimaryKey(entity);
 					r.put("msg", "保存成功!");
@@ -134,16 +134,26 @@ public class SpringArticleCategoryController extends BaseController {
 	}
 
 	@PostMapping(value = "/SetDeleted")
-	public R setDeleted(List<String> ids) {
-		R r = new R();
+	public R setDeleted(@RequestParam(value = "ids", required = true)List<String> ids) {
+		R r = R.ok("OK");
 		if (CollectionUtils.isEmpty(ids)) {
-			r.put("msg", "参数不允许为空!");
-			r.put("code", 500);
+			r.put("msg", Constant.PARAMETER_NOT_NULL_ERROR);
+			r.put("code", HttpServletResponse.SC_BAD_REQUEST);
 		} else {
 			try {
-				baseSpringArticleCategoryService.setDeleted(ids);
-				r.put("msg", "删除成功!");
-				r.put("code", 200);
+				for(String id : ids ) {
+					List<SpringArticleCategory> entitys=baseSpringArticleCategoryService.getByParentId(id);
+					if (entitys.size()>0) {
+						r.put("msg", Constant.HASED_CHILD_IDS);
+						r.put("code", HttpServletResponse.SC_BAD_REQUEST);
+						break;
+					}
+				}
+				if (r.get("code").toString().equals(String.valueOf(HttpServletResponse.SC_OK))) {
+					baseSpringArticleCategoryService.setDeleted(ids);
+					r.put("msg", Constant.DELETE_SUCCESSED);
+					r.put("code", HttpServletResponse.SC_OK);
+				}
 			} catch (Exception e) {
 				logger.error(e.getMessage());
 				r.put("msg", "系统错误!");
@@ -171,6 +181,23 @@ public class SpringArticleCategoryController extends BaseController {
 				r.put("msg", Constant.SYSTEM_ERROR);
 				logger.error(e.getMessage());
 			}
+		}
+		return r;
+	}
+	
+	@PostMapping(value = "/listAllRecord")
+	public R listAllRecord() {
+		R r = new R();
+		try {
+			List<SpringArticleCategory> entitys = baseSpringArticleCategoryService.listAll();
+			r.put("code", HttpServletResponse.SC_OK);
+			r.put("data", entitys);
+			r.put("msg", Constant.SELECT_SUCCESSED);
+		} catch (Exception e) {
+
+			r.put("code", HttpServletResponse.SC_BAD_REQUEST);
+			r.put("msg", Constant.SYSTEM_ERROR);
+			logger.error(e.getMessage());
 		}
 		return r;
 	}

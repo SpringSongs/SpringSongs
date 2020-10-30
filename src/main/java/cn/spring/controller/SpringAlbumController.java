@@ -28,7 +28,7 @@ import cn.spring.util.IpKit;
 import cn.spring.util.R;
 
 @RestController
-@RequestMapping(value = "/BaseFolder")
+@RequestMapping(value = "/SpringAlbum")
 public class SpringAlbumController extends BaseController {
 
 	private static final Logger logger = LoggerFactory.getLogger(SpringAlbumController.class);

@@ -25,4 +25,8 @@ public interface ISpringArticleCategoryService {
 	R batchSaveExcel(List<String[]> list);
 	
 	List<ElementUiTreeVo> getCategoryByParentId(String parentId);
+   
+	List<SpringArticleCategory> getByParentId(String parentId);
+	
+	List<SpringArticleCategory> listAll();
 }

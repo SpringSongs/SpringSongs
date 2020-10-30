@@ -74,5 +74,14 @@ public interface SpringSystemDao extends JpaRepository<SpringSystem, String> {
 	@Query(value = "update SpringSystem set deletedStatus=1 where id in (:ids)")
 	public void setDelete(@Param(value = "ids") List<String> ids);
 	
-	
+	/**
+	 *
+	 * 查询全部
+	 * 
+	 * @return
+	 * @see [相关类/方法]（可选）
+	 * @since [产品/模块版本] （可选）
+	 */
+	@Query(value = "from SpringSystem where deletedStatus=1")
+	public List<SpringSystem> listAllRecord();
 }

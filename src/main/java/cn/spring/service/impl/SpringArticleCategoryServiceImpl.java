@@ -104,6 +104,13 @@ public class SpringArticleCategoryServiceImpl implements ISpringArticleCategoryS
 			@Override
 			public Predicate toPredicate(Root<SpringArticleCategory> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				List<Predicate> predicates = new ArrayList<>();
+				if (!StringUtils.isEmpty(record.getParentId())) {
+					Predicate parentId = cb.equal(root.get("parentId").as(String.class),
+							record.getParentId());
+					predicates.add(parentId);
+				}
+				
+				
 				if (!StringUtils.isEmpty(record.getCreatedUserId())) {
 					Predicate createdUserId = cb.equal(root.get("createdUserId").as(String.class),
 							record.getCreatedUserId());
@@ -174,6 +181,22 @@ public class SpringArticleCategoryServiceImpl implements ISpringArticleCategoryS
 			}
 		}
 		return elementUiTreeDtoList;
+	}
+
+	/**
+	 * 根据上级查找下级
+	 */
+	@Override
+	public List<SpringArticleCategory> getByParentId(String parentId) {
+		return baseSpringArticleCategoryDao.getByParentId(parentId);
+	}
+
+	/**
+	 * 查询全部
+	 */
+	@Override
+	public List<SpringArticleCategory> listAll() {
+		return baseSpringArticleCategoryDao.listAllRecord();
 	}
 
 }
