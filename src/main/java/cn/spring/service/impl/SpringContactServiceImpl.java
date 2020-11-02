@@ -27,7 +27,7 @@ import cn.spring.util.R;
 public class SpringContactServiceImpl implements ISpringContactService {
 
 	@Autowired
-	private SpringContactDao baseBusinessCardDao;
+	private SpringContactDao springContactDao;
 
 	/**
 	 *
@@ -40,7 +40,7 @@ public class SpringContactServiceImpl implements ISpringContactService {
 	 */
 	@Override
 	public void deleteByPrimaryKey(String id) {
-		baseBusinessCardDao.deleteById(id);
+		springContactDao.deleteById(id);
 
 	}
 
@@ -55,7 +55,7 @@ public class SpringContactServiceImpl implements ISpringContactService {
 	 */
 	@Override
 	public void insert(SpringContact record) {
-		baseBusinessCardDao.save(record);
+		springContactDao.save(record);
 
 	}
 
@@ -70,7 +70,7 @@ public class SpringContactServiceImpl implements ISpringContactService {
 	 */
 	@Override
 	public SpringContact selectByPrimaryKey(String id) {
-		return baseBusinessCardDao.getOne(id);
+		return springContactDao.getOne(id);
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class SpringContactServiceImpl implements ISpringContactService {
 	 */
 	@Override
 	public void updateByPrimaryKey(SpringContact record) {
-		baseBusinessCardDao.save(record);
+		springContactDao.save(record);
 	}
 
 	/**
@@ -138,7 +138,7 @@ public class SpringContactServiceImpl implements ISpringContactService {
 			}
 		};
 		//Pageable pageable = PageRequest.of(currPage - 1, size);
-		return baseBusinessCardDao.findAll(specification, pageable);
+		return springContactDao.findAll(specification, pageable);
 	}
 
 	/**
@@ -152,7 +152,7 @@ public class SpringContactServiceImpl implements ISpringContactService {
 	 */
 	@Override
 	public void setDeleted(List<String> ids) {
-		baseBusinessCardDao.setDelete(ids);
+		springContactDao.setDelete(ids);
 	}
 
 	/**
@@ -171,7 +171,7 @@ public class SpringContactServiceImpl implements ISpringContactService {
 
 	@Override
 	public void delete(List<String> ids) {
-		baseBusinessCardDao.delete(ids);
+		springContactDao.delete(ids);
 		
 	}
 }

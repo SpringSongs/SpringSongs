@@ -37,13 +37,13 @@ import cn.spring.util.R;
 public class SpringUserServiceImpl implements ISpringUserService {
 
 	@Autowired
-	private SpringUserDao baseBuserDao;
+	private SpringUserDao springUserDao;
 
 	@Autowired
-	private SpringLogOnDao baseBuserLogOnDao;
+	private SpringLogOnDao springLogOnDao;
 	
 	@Autowired
-	private SpringUserRoleDao baseBuserRoleDao;
+	private SpringUserRoleDao springUserRoleDao;
 
 	/**
 	 *
@@ -56,7 +56,7 @@ public class SpringUserServiceImpl implements ISpringUserService {
 	 */
 	@Override
 	public void deleteByPrimaryKey(String id) {
-		baseBuserDao.deleteById(id);
+		springUserDao.deleteById(id);
 
 	}
 
@@ -71,7 +71,7 @@ public class SpringUserServiceImpl implements ISpringUserService {
 	 */
 	@Override
 	public void insert(SpringUser record) {
-		baseBuserDao.save(record);
+		springUserDao.save(record);
 
 	}
 
@@ -86,7 +86,7 @@ public class SpringUserServiceImpl implements ISpringUserService {
 	 */
 	@Override
 	public SpringUser selectByPrimaryKey(String id) {
-		return baseBuserDao.getOne(id);
+		return springUserDao.getOne(id);
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class SpringUserServiceImpl implements ISpringUserService {
 	 */
 	@Override
 	public void updateByPrimaryKey(SpringUser record) {
-		baseBuserDao.save(record);
+		springUserDao.save(record);
 	}
 
 	/**
@@ -137,7 +137,7 @@ public class SpringUserServiceImpl implements ISpringUserService {
 			}
 		};
 		//Pageable pageable = PageRequest.of(currPage - 1, size);
-		return baseBuserDao.findAll(specification, pageable);
+		return springUserDao.findAll(specification, pageable);
 	}
 
 	/**
@@ -151,7 +151,7 @@ public class SpringUserServiceImpl implements ISpringUserService {
 	 */
 	@Override
 	public void setDeleted(List<String> ids) {
-		baseBuserDao.setDelete(ids);
+		springUserDao.setDelete(ids);
 	}
 
 	/**
@@ -170,24 +170,24 @@ public class SpringUserServiceImpl implements ISpringUserService {
 
 	@Override
 	public List<SpringUser> listUserByIds(List<String> ids) {
-		return baseBuserDao.listUserByIds(ids);
+		return springUserDao.listUserByIds(ids);
 	}
 
 	@Override
 	public SpringUser getByUserName(String username) {
-		return baseBuserDao.getByUserName(username);
+		return springUserDao.getByUserName(username);
 	}
 
 	@Override
 	public R setPwd(SpringUserSecurity viewEntity) {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		R r = new R();
-		SpringUser entity = baseBuserDao.getOne(viewEntity.getUserId());
+		SpringUser entity = springUserDao.getOne(viewEntity.getUserId());
 		if (null == entity) {
 			r.put("code", 500);
 			r.put("msg", "找不到用户!");
 		} else {
-			SpringUserSecurity baseUserLogOnEntity = baseBuserLogOnDao.findByUserId(viewEntity.getUserId());
+			SpringUserSecurity baseUserLogOnEntity = springLogOnDao.findByUserId(viewEntity.getUserId());
 			if (null != baseUserLogOnEntity) {
 				viewEntity.setId(baseUserLogOnEntity.getId());
 				viewEntity.setCreatedBy(baseUserLogOnEntity.getCreatedBy());
@@ -196,7 +196,7 @@ public class SpringUserServiceImpl implements ISpringUserService {
 				viewEntity.setCreatedOn(baseUserLogOnEntity.getCreatedOn());
 			}
 			viewEntity.setPwd(passwordEncoder.encode(viewEntity.getPwd().trim()));
-			baseBuserLogOnDao.saveAndFlush(viewEntity);
+			springLogOnDao.saveAndFlush(viewEntity);
 			r.put("code", 200);
 			r.put("msg", "设置密码成功！");
 		}
@@ -205,14 +205,14 @@ public class SpringUserServiceImpl implements ISpringUserService {
 
 	@Override
 	public void delete(List<String> ids) {
-		baseBuserDao.delete(ids);
+		springUserDao.delete(ids);
 
 	}
 
 	@Override
 	public Page<SpringUser> ListUsersByRoleId(String roleId,Pageable pageable) {
 		//Pageable pageable = PageRequest.of(currPage - 1, size);
-		return baseBuserDao.ListUsersByRoleId(roleId, pageable);
+		return springUserDao.ListUsersByRoleId(roleId, pageable);
 	}
 
 	@Override
@@ -222,13 +222,13 @@ public class SpringUserServiceImpl implements ISpringUserService {
 			Entry<String, String> entry = it.next();
 			String roleId = entry.getKey();
 			String userId = entry.getValue();
-			baseBuserRoleDao.delete(userId, roleId);
+			springUserRoleDao.delete(userId, roleId);
 		}
 	}
 
 	@Override
 	public void saveUserToRole(List<SpringUserRole> baseUserRoleEntityList,String userId) {
-		baseBuserRoleDao.deleteByUserId(userId);
-		baseBuserRoleDao.saveAll(baseUserRoleEntityList);
+		springUserRoleDao.deleteByUserId(userId);
+		springUserRoleDao.saveAll(baseUserRoleEntityList);
 	}
 }

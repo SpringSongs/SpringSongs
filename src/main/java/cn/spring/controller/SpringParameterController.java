@@ -35,13 +35,13 @@ public class SpringParameterController extends BaseController {
 	private static final Logger logger = LoggerFactory.getLogger(SpringParameterController.class);
 
 	@Autowired
-	private ISpringParameterService baseParameterService;
+	private ISpringParameterService springParameterService;
 
 	@PostMapping(value = "ListByPage")
 	public R listByPage(@RequestBody SpringParameter viewEntity, @PageableDefault(page = 1, size = 20) Pageable pageable) {
 		R r = new R();
 		try {
-			Page<SpringParameter> lists = baseParameterService.getAllRecordByPage(viewEntity, pageable);
+			Page<SpringParameter> lists = springParameterService.getAllRecordByPage(viewEntity, pageable);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("data", lists.getContent());
@@ -58,7 +58,7 @@ public class SpringParameterController extends BaseController {
 	public R get(@NotEmpty(message = "id不能为空") String id) {
 		R r = new R();
 		try {
-			SpringParameter entity = baseParameterService.selectByPrimaryKey(id);
+			SpringParameter entity = springParameterService.selectByPrimaryKey(id);
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("data", entity);
@@ -79,7 +79,7 @@ public class SpringParameterController extends BaseController {
 			viewEntity.setCreatedUserId(this.getUser().getId());
 			viewEntity.setCreatedIp(IpKit.getRealIp(request));
 			viewEntity.setCreatedOn(new Date());
-			baseParameterService.insert(viewEntity);
+			springParameterService.insert(viewEntity);
 			r.put("msg", Constant.SAVE_SUCCESSED);
 			r.put("code", HttpServletResponse.SC_OK);
 		} catch (Exception e) {
@@ -95,7 +95,7 @@ public class SpringParameterController extends BaseController {
 		R r = new R();
 
 		try {
-			SpringParameter entity = baseParameterService.selectByPrimaryKey(viewEntity.getId());
+			SpringParameter entity = springParameterService.selectByPrimaryKey(viewEntity.getId());
 			if (null == entity) {
 				r.put("msg", Constant.INFO_NOT_FOUND);
 				r.put("code", HttpServletResponse.SC_BAD_REQUEST);
@@ -113,7 +113,7 @@ public class SpringParameterController extends BaseController {
 				entity.setUpdatedUserId(this.getUser().getId());
 				entity.setUpdatedBy(this.getUser().getUserName());
 				entity.setUpdatedIp(IpKit.getRealIp(request));
-				baseParameterService.updateByPrimaryKey(entity);
+				springParameterService.updateByPrimaryKey(entity);
 				r.put("msg", Constant.SAVE_SUCCESSED);
 				r.put("code", HttpServletResponse.SC_OK);
 			}
@@ -134,7 +134,7 @@ public class SpringParameterController extends BaseController {
 			r.put("code", HttpServletResponse.SC_BAD_REQUEST);
 		} else {
 			try {
-				List<SpringParameter> entityList = baseParameterService.listByIds(ids);
+				List<SpringParameter> entityList = springParameterService.listByIds(ids);
 				for (SpringParameter entity : entityList) {
 					if (entity.getEnableDelete() == false) {
 						r.put("msg", MessageFormat.format(Constant.INFO_CAN_NOT_DELETE, entity.getK()));
@@ -143,7 +143,7 @@ public class SpringParameterController extends BaseController {
 					}
 				}
 				if (Integer.parseInt(r.get("code").toString())==HttpServletResponse.SC_OK) {
-					baseParameterService.setDeleted(ids);
+					springParameterService.setDeleted(ids);
 					r.put("msg", Constant.DELETE_SUCCESSED);
 					r.put("code", HttpServletResponse.SC_OK);
 				}
@@ -164,7 +164,7 @@ public class SpringParameterController extends BaseController {
 			r.put("code", HttpServletResponse.SC_BAD_REQUEST);
 		} else {
 			try {
-				List<SpringParameter> entityList = baseParameterService.listByIds(ids);
+				List<SpringParameter> entityList = springParameterService.listByIds(ids);
 				for (SpringParameter entity : entityList) {
 					if (entity.getEnableDelete() == false) {
 						r.put("msg", MessageFormat.format(Constant.INFO_CAN_NOT_DELETE, entity.getK()));
@@ -173,7 +173,7 @@ public class SpringParameterController extends BaseController {
 					}
 				}
 				if (r.get("code").toString().equals(String.valueOf(HttpServletResponse.SC_OK))) {
-					baseParameterService.delete(ids);
+					springParameterService.delete(ids);
 					r.put("msg", Constant.DELETE_SUCCESSED);
 					r.put("code", HttpServletResponse.SC_OK);
 				}

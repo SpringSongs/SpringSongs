@@ -27,7 +27,7 @@ import cn.spring.util.R;
 public class SpringOrganizationServiceImpl implements ISpringOrganizationService {
 
 	@Autowired
-	private SpringOrganizationDao baseSpringOrganizationDao;
+	private SpringOrganizationDao springOrganizationDao;
 
 	/**
 	 *
@@ -40,7 +40,7 @@ public class SpringOrganizationServiceImpl implements ISpringOrganizationService
 	 */
 	@Override
 	public void deleteByPrimaryKey(String id) {
-		baseSpringOrganizationDao.deleteById(id);
+		springOrganizationDao.deleteById(id);
 
 	}
 
@@ -55,7 +55,7 @@ public class SpringOrganizationServiceImpl implements ISpringOrganizationService
 	 */
 	@Override
 	public void insert(SpringOrganization record) {
-		baseSpringOrganizationDao.save(record);
+		springOrganizationDao.save(record);
 
 	}
 
@@ -70,7 +70,7 @@ public class SpringOrganizationServiceImpl implements ISpringOrganizationService
 	 */
 	@Override
 	public SpringOrganization selectByPrimaryKey(String id) {
-		return baseSpringOrganizationDao.getOne(id);
+		return springOrganizationDao.getOne(id);
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class SpringOrganizationServiceImpl implements ISpringOrganizationService
 	 */
 	@Override
 	public void updateByPrimaryKey(SpringOrganization record) {
-		baseSpringOrganizationDao.save(record);
+		springOrganizationDao.save(record);
 	}
 
 	/**
@@ -121,7 +121,7 @@ public class SpringOrganizationServiceImpl implements ISpringOrganizationService
 			}
 		};
 		// Pageable pageable = new PageRequest(currPage - 1, size);
-		return baseSpringOrganizationDao.findAll(specification, pageable);
+		return springOrganizationDao.findAll(specification, pageable);
 	}
 
 	/**
@@ -135,7 +135,7 @@ public class SpringOrganizationServiceImpl implements ISpringOrganizationService
 	 */
 	@Override
 	public void setDeleted(List<String> ids) {
-		baseSpringOrganizationDao.setDelete(ids);
+		springOrganizationDao.setDelete(ids);
 	}
 
 	/**
@@ -162,7 +162,7 @@ public class SpringOrganizationServiceImpl implements ISpringOrganizationService
 	 */
 	@Override
 	public List<SpringOrganization> listOrganizationsByParent(String parentId) {
-		return baseSpringOrganizationDao.listOrganizationByParentId(parentId);
+		return springOrganizationDao.listOrganizationByParentId(parentId);
 	}
 
 }

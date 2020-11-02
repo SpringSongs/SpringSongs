@@ -27,7 +27,7 @@ import cn.spring.util.R;
 public class SpringArticleCommentServiceImpl implements ISpringArticleCommentService {
 
 	@Autowired
-	private SpringCommentDao baseCommentDao;
+	private SpringCommentDao springCommentDao;
 
 	/**
 	 *
@@ -40,7 +40,7 @@ public class SpringArticleCommentServiceImpl implements ISpringArticleCommentSer
 	 */
 	@Override
 	public void deleteByPrimaryKey(String id) {
-		baseCommentDao.deleteById(id);
+		springCommentDao.deleteById(id);
 
 	}
 
@@ -55,7 +55,7 @@ public class SpringArticleCommentServiceImpl implements ISpringArticleCommentSer
 	 */
 	@Override
 	public void insert(SpringComment record) {
-		baseCommentDao.save(record);
+		springCommentDao.save(record);
 
 	}
 
@@ -70,7 +70,7 @@ public class SpringArticleCommentServiceImpl implements ISpringArticleCommentSer
 	 */
 	@Override
 	public SpringComment selectByPrimaryKey(String id) {
-		return baseCommentDao.getOne(id);
+		return springCommentDao.getOne(id);
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class SpringArticleCommentServiceImpl implements ISpringArticleCommentSer
 	 */
 	@Override
 	public void updateByPrimaryKey(SpringComment record) {
-		baseCommentDao.save(record);
+		springCommentDao.save(record);
 	}
 
 	/**
@@ -127,7 +127,7 @@ public class SpringArticleCommentServiceImpl implements ISpringArticleCommentSer
 			}
 		};
 		//Pageable pageable = PageRequest.of(currPage - 1, size);
-		return baseCommentDao.findAll(specification, pageable);
+		return springCommentDao.findAll(specification, pageable);
 	}
 
 	/**
@@ -141,7 +141,7 @@ public class SpringArticleCommentServiceImpl implements ISpringArticleCommentSer
 	 */
 	@Override
 	public void setDeleted(List<String> ids) {
-		baseCommentDao.setDelete(ids);
+		springCommentDao.setDelete(ids);
 	}
 
 	/**
@@ -160,7 +160,7 @@ public class SpringArticleCommentServiceImpl implements ISpringArticleCommentSer
 
 	@Override
 	public void delete(List<String> ids) {
-		baseCommentDao.delete(ids);
+		springCommentDao.delete(ids);
 		
 	}
 }

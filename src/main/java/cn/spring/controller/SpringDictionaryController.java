@@ -33,13 +33,13 @@ public class SpringDictionaryController extends BaseController {
 
 	private static final Logger logger = LoggerFactory.getLogger(SpringDictionaryController.class);
 	@Autowired
-	private ISpringDictionaryService baseDictionaryService;
+	private ISpringDictionaryService springDictionaryService;
 
 	@PostMapping(value = "ListByPage")
 	public R listByPage(@RequestBody SpringDictionary viewEntity, @PageableDefault(page = 1, size = 20) Pageable pageable) {
 		R r = new R();
 		try {
-			Page<SpringDictionary> lists = baseDictionaryService.getAllRecordByPage(viewEntity, pageable);
+			Page<SpringDictionary> lists = springDictionaryService.getAllRecordByPage(viewEntity, pageable);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("data", lists.getContent());
@@ -57,7 +57,7 @@ public class SpringDictionaryController extends BaseController {
 	public R get(@NotEmpty(message = "id不能为空") String id) {
 		R r = new R();
 		try {
-			SpringDictionary entity = baseDictionaryService.selectByPrimaryKey(id);
+			SpringDictionary entity = springDictionaryService.selectByPrimaryKey(id);
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("data", entity);
@@ -77,7 +77,7 @@ public class SpringDictionaryController extends BaseController {
 			viewEntity.setCreatedUserId(this.getUser().getId());
 			viewEntity.setCreatedIp(IpKit.getRealIp(request));
 			viewEntity.setCreatedOn(new Date());
-			baseDictionaryService.insert(viewEntity);
+			springDictionaryService.insert(viewEntity);
 			r.put("msg", Constant.SAVE_SUCCESSED);
 			r.put("code", HttpServletResponse.SC_OK);
 		} catch (Exception e) {
@@ -93,7 +93,7 @@ public class SpringDictionaryController extends BaseController {
 		R r = new R();
 
 		try {
-			SpringDictionary entity = baseDictionaryService.selectByPrimaryKey(viewEntity.getId());
+			SpringDictionary entity = springDictionaryService.selectByPrimaryKey(viewEntity.getId());
 			if (null == entity) {
 				r.put("msg", Constant.INFO_NOT_FOUND);
 				r.put("code", HttpServletResponse.SC_BAD_REQUEST);
@@ -110,7 +110,7 @@ public class SpringDictionaryController extends BaseController {
 				entity.setUpdatedUserId(this.getUser().getId());
 				entity.setUpdatedBy(this.getUser().getUserName());
 				entity.setUpdatedIp(IpKit.getRealIp(request));
-				baseDictionaryService.updateByPrimaryKey(entity);
+				springDictionaryService.updateByPrimaryKey(entity);
 				r.put("msg", Constant.SAVE_SUCCESSED);
 				r.put("code", HttpServletResponse.SC_OK);
 			}
@@ -130,7 +130,7 @@ public class SpringDictionaryController extends BaseController {
 			r.put("code", HttpServletResponse.SC_BAD_REQUEST);
 		} else {
 			try {
-				r = baseDictionaryService.setDeleted(ids);
+				r = springDictionaryService.setDeleted(ids);
 			} catch (Exception e) {
 				r.put("msg", Constant.SYSTEM_ERROR);
 				r.put("code", HttpServletResponse.SC_BAD_REQUEST);
@@ -148,7 +148,7 @@ public class SpringDictionaryController extends BaseController {
 			r.put("code", HttpServletResponse.SC_BAD_REQUEST);
 		} else {
 			try {
-				r = baseDictionaryService.setDeleted(ids);
+				r = springDictionaryService.setDeleted(ids);
 			} catch (Exception e) {
 				r.put("msg", Constant.SYSTEM_ERROR);
 				r.put("code", HttpServletResponse.SC_BAD_REQUEST);

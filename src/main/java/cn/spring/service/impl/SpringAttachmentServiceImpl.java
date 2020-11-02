@@ -28,7 +28,7 @@ import cn.spring.util.R;
 public class SpringAttachmentServiceImpl implements ISpringAttachmentService {
 
 	@Autowired
-	private SpringAttachmentDao baseFileDao;
+	private SpringAttachmentDao springAttachmentDao;
 
 	/**
 	 *
@@ -41,7 +41,7 @@ public class SpringAttachmentServiceImpl implements ISpringAttachmentService {
 	 */
 	@Override
 	public void deleteByPrimaryKey(String id) {
-		baseFileDao.deleteById(id);
+		springAttachmentDao.deleteById(id);
 
 	}
 
@@ -56,7 +56,7 @@ public class SpringAttachmentServiceImpl implements ISpringAttachmentService {
 	 */
 	@Override
 	public void insert(SpringAttachment record) {
-		baseFileDao.save(record);
+		springAttachmentDao.save(record);
 
 	}
 
@@ -71,7 +71,7 @@ public class SpringAttachmentServiceImpl implements ISpringAttachmentService {
 	 */
 	@Override
 	public SpringAttachment selectByPrimaryKey(String id) {
-		return baseFileDao.getOne(id);
+		return springAttachmentDao.getOne(id);
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class SpringAttachmentServiceImpl implements ISpringAttachmentService {
 	 */
 	@Override
 	public void updateByPrimaryKey(SpringAttachment record) {
-		baseFileDao.save(record);
+		springAttachmentDao.save(record);
 	}
 
 	/**
@@ -128,7 +128,7 @@ public class SpringAttachmentServiceImpl implements ISpringAttachmentService {
 			}
 		};
 		//Pageable pageable = PageRequest.of(currPage - 1, size);
-		return baseFileDao.findAll(specification, pageable);
+		return springAttachmentDao.findAll(specification, pageable);
 	}
 
 	/**
@@ -142,7 +142,7 @@ public class SpringAttachmentServiceImpl implements ISpringAttachmentService {
 	 */
 	@Override
 	public void setDeleted(List<String> ids) {
-		baseFileDao.setDelete(ids);
+		springAttachmentDao.setDelete(ids);
 	}
 
 	/**
@@ -161,7 +161,7 @@ public class SpringAttachmentServiceImpl implements ISpringAttachmentService {
 
 	@Override
 	public void delete(List<String> ids) {
-		baseFileDao.delete(ids);
+		springAttachmentDao.delete(ids);
 		
 	}
 }

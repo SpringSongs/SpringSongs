@@ -17,7 +17,6 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -34,13 +33,13 @@ import cn.spring.vo.ElementUiTreeVo;
 import cn.spring.vo.MenuVo;
 
 @Service
-@Transactional
+
 public class SpringResourceServiceImpl implements ISpringResourceService {
 	@Autowired
 	private SpringResourceDao springResourceDao;
 
 	@Autowired
-	private SpringResourceRoleDao baseModuleRoleDao;
+	private SpringResourceRoleDao springResourceRoleDao;
 
 	/**
 	 *
@@ -252,19 +251,20 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 			Entry<String, String> entry = it.next();
 			String roleId = entry.getKey();
 			String moduleId = entry.getValue();
-			baseModuleRoleDao.delete(roleId, moduleId);
+			springResourceRoleDao.delete(roleId, moduleId);
 		}
 	}
 
 	@Override
+	@Transactional
 	public void saveModuleToRole(List<SpringResourceRole> baseModuleRoleEntityList, String roleId) {
-		baseModuleRoleDao.delete(roleId);
-		baseModuleRoleDao.saveAll(baseModuleRoleEntityList);
+		springResourceRoleDao.delete(roleId);
+		springResourceRoleDao.saveAll(baseModuleRoleEntityList);
 	}
 
 	@Override
 	public List<SpringResourceRole> listModulesByRoleId(String roleId) {
-		return baseModuleRoleDao.listModulesByRoleId(roleId);
+		return springResourceRoleDao.listModulesByRoleId(roleId);
 	}
 
 	@Override

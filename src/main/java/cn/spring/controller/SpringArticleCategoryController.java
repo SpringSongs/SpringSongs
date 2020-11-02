@@ -34,7 +34,7 @@ public class SpringArticleCategoryController extends BaseController {
 	private static final Logger logger = LoggerFactory.getLogger(SpringArticleCategoryController.class);
 
 	@Autowired
-	private ISpringArticleCategoryService baseSpringArticleCategoryService;
+	private ISpringArticleCategoryService springArticleCategoryService;
 
 
 	@PostMapping(value = "/ListByPage")
@@ -43,7 +43,7 @@ public class SpringArticleCategoryController extends BaseController {
 		long startTime = System.currentTimeMillis();
 		R r = new R();
 		try {
-			Page<SpringArticleCategory> lists = baseSpringArticleCategoryService.getAllRecordByPage(viewEntity,
+			Page<SpringArticleCategory> lists = springArticleCategoryService.getAllRecordByPage(viewEntity,
 					pageable);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("msg", Constant.SELECT_SUCCESSED);
@@ -66,7 +66,7 @@ public class SpringArticleCategoryController extends BaseController {
 			r.put("code", 500);
 		} else {
 			try {
-				SpringArticleCategory entity = baseSpringArticleCategoryService.selectByPrimaryKey(id);
+				SpringArticleCategory entity = springArticleCategoryService.selectByPrimaryKey(id);
 				r.put("msg", "返回数据!");
 				r.put("code", 200);
 				r.put("data", entity);
@@ -87,7 +87,7 @@ public class SpringArticleCategoryController extends BaseController {
 			viewEntity.setCreatedUserId(this.getUser().getId());
 			viewEntity.setCreatedIp(IpKit.getRealIp(request));
 			viewEntity.setCreatedOn(new Date());
-			baseSpringArticleCategoryService.insert(viewEntity);
+			springArticleCategoryService.insert(viewEntity);
 			r.put("msg", "保存成功!");
 			r.put("code", 200);
 		} catch (Exception e) {
@@ -104,7 +104,7 @@ public class SpringArticleCategoryController extends BaseController {
 		R r = new R();
 		{
 			try {
-				SpringArticleCategory entity = baseSpringArticleCategoryService.selectByPrimaryKey(viewEntity.getId());
+				SpringArticleCategory entity = springArticleCategoryService.selectByPrimaryKey(viewEntity.getId());
 				if (null == entity) {
 					r.put("msg", "信息不存在或者已经被删除!");
 					r.put("code", 500);
@@ -120,7 +120,7 @@ public class SpringArticleCategoryController extends BaseController {
 					entity.setUpdatedBy(this.getUser().getUserName());
 					entity.setUpdatedIp(IpKit.getRealIp(request));
 					entity.setVersion(viewEntity.getVersion());
-					baseSpringArticleCategoryService.updateByPrimaryKey(entity);
+					springArticleCategoryService.updateByPrimaryKey(entity);
 					r.put("msg", "保存成功!");
 					r.put("code", 200);
 				}
@@ -142,7 +142,7 @@ public class SpringArticleCategoryController extends BaseController {
 		} else {
 			try {
 				for(String id : ids ) {
-					List<SpringArticleCategory> entitys=baseSpringArticleCategoryService.getByParentId(id);
+					List<SpringArticleCategory> entitys=springArticleCategoryService.getByParentId(id);
 					if (entitys.size()>0) {
 						r.put("msg", Constant.HASED_CHILD_IDS);
 						r.put("code", HttpServletResponse.SC_BAD_REQUEST);
@@ -150,7 +150,7 @@ public class SpringArticleCategoryController extends BaseController {
 					}
 				}
 				if (r.get("code").toString().equals(String.valueOf(HttpServletResponse.SC_OK))) {
-					baseSpringArticleCategoryService.setDeleted(ids);
+					springArticleCategoryService.setDeleted(ids);
 					r.put("msg", Constant.DELETE_SUCCESSED);
 					r.put("code", HttpServletResponse.SC_OK);
 				}
@@ -171,7 +171,7 @@ public class SpringArticleCategoryController extends BaseController {
 			r.put("msg", Constant.PARAMETER_NOT_NULL_ERROR);
 		} else {
 			try {
-				List<ElementUiTreeVo> elementUiTreeDtoList = baseSpringArticleCategoryService.getCategoryByParentId(parentId);
+				List<ElementUiTreeVo> elementUiTreeDtoList = springArticleCategoryService.getCategoryByParentId(parentId);
 				r.put("code", HttpServletResponse.SC_OK);
 				r.put("data", elementUiTreeDtoList);
 				r.put("msg", Constant.SELECT_SUCCESSED);
@@ -189,7 +189,7 @@ public class SpringArticleCategoryController extends BaseController {
 	public R listAllRecord() {
 		R r = new R();
 		try {
-			List<SpringArticleCategory> entitys = baseSpringArticleCategoryService.listAll();
+			List<SpringArticleCategory> entitys = springArticleCategoryService.listAll();
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("data", entitys);
 			r.put("msg", Constant.SELECT_SUCCESSED);

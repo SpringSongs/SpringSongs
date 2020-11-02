@@ -38,13 +38,13 @@ public class SpringResourceController extends BaseController {
 	private static final Logger logger = LoggerFactory.getLogger(SpringResourceController.class);
 
 	@Autowired
-	private ISpringResourceService baseModuleService;
+	private ISpringResourceService springResourceService;
 
 	@PostMapping(value = "ListByPage")
 	public R listByPage(@RequestBody SpringResource viewEntity, @PageableDefault(page = 1, size = 20) Pageable pageable) {
 		R r = new R();
 		try {
-			Page<SpringResource> lists = baseModuleService.getAllRecordByPage(viewEntity, pageable);
+			Page<SpringResource> lists = springResourceService.getAllRecordByPage(viewEntity, pageable);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("data", lists.getContent());
@@ -61,7 +61,7 @@ public class SpringResourceController extends BaseController {
 	public R get(@NotEmpty(message = "id不能为空") String id) {
 		R r = new R();
 		try {
-			SpringResource entity = baseModuleService.selectByPrimaryKey(id);
+			SpringResource entity = springResourceService.selectByPrimaryKey(id);
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("data", entity);
@@ -81,7 +81,7 @@ public class SpringResourceController extends BaseController {
 			viewEntity.setCreatedUserId(this.getUser().getId());
 			viewEntity.setCreatedIp(IpKit.getRealIp(request));
 			viewEntity.setCreatedOn(new Date());
-			baseModuleService.insert(viewEntity);
+			springResourceService.insert(viewEntity);
 			r.put("msg", "保存成功!");
 			r.put("code", HttpServletResponse.SC_OK);
 		} catch (Exception e) {
@@ -96,7 +96,7 @@ public class SpringResourceController extends BaseController {
 	public R update(@RequestBody @Valid SpringResource viewEntity, HttpServletRequest request) {
 		R r = new R();
 		try {
-			SpringResource entity = baseModuleService.selectByPrimaryKey(viewEntity.getId());
+			SpringResource entity = springResourceService.selectByPrimaryKey(viewEntity.getId());
 			if (null == entity) {
 				r.put("msg", "信息不存在或者已经被删除!");
 				r.put("code", HttpServletResponse.SC_BAD_REQUEST);
@@ -118,7 +118,7 @@ public class SpringResourceController extends BaseController {
 				entity.setUpdatedUserId(this.getUser().getId());
 				entity.setUpdatedBy(this.getUser().getUserName());
 				entity.setUpdatedIp(IpKit.getRealIp(request));
-				baseModuleService.updateByPrimaryKey(entity);
+				springResourceService.updateByPrimaryKey(entity);
 				r.put("msg", Constant.SAVE_SUCCESSED);
 				r.put("code", HttpServletResponse.SC_OK);
 			}
@@ -138,7 +138,7 @@ public class SpringResourceController extends BaseController {
 			r.put("code", HttpServletResponse.SC_BAD_REQUEST);
 		} else {
 			try {
-				List<SpringResource> entityList = baseModuleService.listByIds(ids);
+				List<SpringResource> entityList = springResourceService.listByIds(ids);
 				for (SpringResource entity : entityList) {
 					if (entity.getEnableDelete() == false) {
 						r.put("msg", MessageFormat.format(Constant.INFO_CAN_NOT_DELETE, entity.getTitle()));
@@ -147,7 +147,7 @@ public class SpringResourceController extends BaseController {
 					}
 				}
 				if (r.get("code").toString().equals(String.valueOf(HttpServletResponse.SC_OK))) {
-					baseModuleService.setDeleted(ids);
+					springResourceService.setDeleted(ids);
 					r.put("msg", Constant.DELETE_SUCCESSED);
 					r.put("code", HttpServletResponse.SC_OK);
 				}
@@ -164,7 +164,7 @@ public class SpringResourceController extends BaseController {
 	public R getMenus() {
 		R r = new R();
 		try {
-			List<MenuVo> menuList = baseModuleService.ListModuleByUserId(this.getUser().getId());
+			List<MenuVo> menuList = springResourceService.ListModuleByUserId(this.getUser().getId());
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("data", menuList);
 			r.put("code", HttpServletResponse.SC_OK);
@@ -185,7 +185,7 @@ public class SpringResourceController extends BaseController {
 			r.put("msg", Constant.PARAMETER_NOT_NULL_ERROR);
 		} else {
 			try {
-				List<ElementUiTreeVo> elementUiTreeDtoList = baseModuleService.getModulesByParentId(parentId, systemId);
+				List<ElementUiTreeVo> elementUiTreeDtoList = springResourceService.getModulesByParentId(parentId, systemId);
 				r.put("code", HttpServletResponse.SC_OK);
 				r.put("data", elementUiTreeDtoList);
 				r.put("msg", Constant.SELECT_SUCCESSED);

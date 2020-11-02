@@ -34,14 +34,14 @@ public class SpringOrganizationController extends BaseController {
 	private static final Logger logger = LoggerFactory.getLogger(SpringOrganizationController.class);
 
 	@Autowired
-	private ISpringOrganizationService baseSpringOrganizationService;
+	private ISpringOrganizationService springOrganizationService;
 
 	@PostMapping(value = "ListByPage")
 	public R getPage(@RequestBody SpringOrganization viewEntity,
 			@PageableDefault(page = 1, size = 20) Pageable pageable) {
 		R r = new R();
 		try {
-			Page<SpringOrganization> lists = baseSpringOrganizationService.getAllRecordByPage(viewEntity, pageable);
+			Page<SpringOrganization> lists = springOrganizationService.getAllRecordByPage(viewEntity, pageable);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("data", lists.getContent());
@@ -59,7 +59,7 @@ public class SpringOrganizationController extends BaseController {
 		R r = new R();
 
 		try {
-			SpringOrganization entity = baseSpringOrganizationService.selectByPrimaryKey(id);
+			SpringOrganization entity = springOrganizationService.selectByPrimaryKey(id);
 			r.put("msg", "返回数据!");
 			r.put("code", 200);
 			r.put("data", entity);
@@ -79,7 +79,7 @@ public class SpringOrganizationController extends BaseController {
 			viewEntity.setCreatedBy(this.getUser().getUserName());
 			viewEntity.setCreatedUserId(this.getUser().getId());
 			viewEntity.setCreatedIp(IpKit.getRealIp(request));
-			baseSpringOrganizationService.insert(viewEntity);
+			springOrganizationService.insert(viewEntity);
 			r.put("msg", "保存成功!");
 			r.put("code", 200);
 		} catch (Exception e) {
@@ -95,7 +95,7 @@ public class SpringOrganizationController extends BaseController {
 		R r = new R();
 
 		try {
-			SpringOrganization entity = baseSpringOrganizationService.selectByPrimaryKey(viewEntity.getId());
+			SpringOrganization entity = springOrganizationService.selectByPrimaryKey(viewEntity.getId());
 			if (null == entity) {
 				r.put("msg", "信息不存在或者已经被删除!");
 				r.put("code", 500);
@@ -113,7 +113,7 @@ public class SpringOrganizationController extends BaseController {
 				entity.setUpdatedBy(viewEntity.getUpdatedBy());
 				entity.setUpdatedOn(viewEntity.getUpdatedOn());
 				entity.setUpdatedIp(viewEntity.getUpdatedIp());
-				baseSpringOrganizationService.updateByPrimaryKey(entity);
+				springOrganizationService.updateByPrimaryKey(entity);
 				r.put("msg", "保存成功!");
 				r.put("code", 200);
 			}
@@ -134,7 +134,7 @@ public class SpringOrganizationController extends BaseController {
 		} else {
 			try {
 				for (String id : ids) {
-					List<SpringOrganization> entitis = baseSpringOrganizationService.listOrganizationsByParent(id);
+					List<SpringOrganization> entitis = springOrganizationService.listOrganizationsByParent(id);
 					if (entitis.size() > 0) {
 						r.put("msg", Constant.HASED_CHILD_IDS);
 						r.put("code", 500);
@@ -142,7 +142,7 @@ public class SpringOrganizationController extends BaseController {
 					}
 				}
 				if (r.get("code").toString().equals(String.valueOf(HttpServletResponse.SC_OK))) {
-					baseSpringOrganizationService.setDeleted(ids);
+					springOrganizationService.setDeleted(ids);
 					r.put("msg", "删除成功!");
 					r.put("code", 200);
 				}
@@ -164,7 +164,7 @@ public class SpringOrganizationController extends BaseController {
 			r.put("msg", Constant.PARAMETER_NOT_NULL_ERROR);
 		} else {
 			try {
-				List<SpringOrganization> elementUiTreeDtoList = baseSpringOrganizationService
+				List<SpringOrganization> elementUiTreeDtoList = springOrganizationService
 						.listOrganizationsByParent(parentId);
 				r.put("code", HttpServletResponse.SC_OK);
 				r.put("data", elementUiTreeDtoList);

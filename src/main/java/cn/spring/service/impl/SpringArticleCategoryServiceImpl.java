@@ -29,7 +29,7 @@ import cn.spring.vo.ElementUiTreeVo;
 public class SpringArticleCategoryServiceImpl implements ISpringArticleCategoryService {
 
 	@Autowired
-	private SpringArticleCategoryDao baseSpringArticleCategoryDao;
+	private SpringArticleCategoryDao springArticleCategoryDao;
 
 	/**
 	 *
@@ -42,7 +42,7 @@ public class SpringArticleCategoryServiceImpl implements ISpringArticleCategoryS
 	 */
 	@Override
 	public void deleteByPrimaryKey(String id) {
-		baseSpringArticleCategoryDao.deleteById(id);
+		springArticleCategoryDao.deleteById(id);
 
 	}
 
@@ -57,7 +57,7 @@ public class SpringArticleCategoryServiceImpl implements ISpringArticleCategoryS
 	 */
 	@Override
 	public void insert(SpringArticleCategory record) {
-		baseSpringArticleCategoryDao.save(record);
+		springArticleCategoryDao.save(record);
 
 	}
 
@@ -72,7 +72,7 @@ public class SpringArticleCategoryServiceImpl implements ISpringArticleCategoryS
 	 */
 	@Override
 	public SpringArticleCategory selectByPrimaryKey(String id) {
-		return baseSpringArticleCategoryDao.getOne(id);
+		return springArticleCategoryDao.getOne(id);
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class SpringArticleCategoryServiceImpl implements ISpringArticleCategoryS
 	 */
 	@Override
 	public void updateByPrimaryKey(SpringArticleCategory record) {
-		baseSpringArticleCategoryDao.save(record);
+		springArticleCategoryDao.save(record);
 	}
 
 	/**
@@ -125,7 +125,7 @@ public class SpringArticleCategoryServiceImpl implements ISpringArticleCategoryS
 			}
 		};
 		// Pageable pageable = PageRequest.of(currPage - 1, size);
-		return baseSpringArticleCategoryDao.findAll(specification, pageable);
+		return springArticleCategoryDao.findAll(specification, pageable);
 	}
 
 	/**
@@ -139,7 +139,7 @@ public class SpringArticleCategoryServiceImpl implements ISpringArticleCategoryS
 	 */
 	@Override
 	public void setDeleted(List<String> ids) {
-		baseSpringArticleCategoryDao.setDelete(ids);
+		springArticleCategoryDao.setDelete(ids);
 	}
 
 	/**
@@ -158,14 +158,14 @@ public class SpringArticleCategoryServiceImpl implements ISpringArticleCategoryS
 
 	@Override
 	public List<ElementUiTreeVo> getCategoryByParentId(String parentId) {
-		List<SpringArticleCategory> baseCategoryEntityList = baseSpringArticleCategoryDao.getByParentId(parentId);
+		List<SpringArticleCategory> baseCategoryEntityList = springArticleCategoryDao.getByParentId(parentId);
 		List<ElementUiTreeVo> elementUiTreeDtoList = new ArrayList<ElementUiTreeVo>();
 		List<String> ids = new ArrayList<String>();
 		for (SpringArticleCategory entity : baseCategoryEntityList) {
 			ids.add(entity.getId());
 		}
 		if (ids.size() > 0) {
-			List<SpringArticleCategory> baseCategoryEntityList1 = baseSpringArticleCategoryDao.getInParentId(ids);
+			List<SpringArticleCategory> baseCategoryEntityList1 = springArticleCategoryDao.getInParentId(ids);
 			for (SpringArticleCategory entity : baseCategoryEntityList) {
 				ElementUiTreeVo elementUiTreeDto = new ElementUiTreeVo();
 				elementUiTreeDto.setId(entity.getId());
@@ -188,7 +188,7 @@ public class SpringArticleCategoryServiceImpl implements ISpringArticleCategoryS
 	 */
 	@Override
 	public List<SpringArticleCategory> getByParentId(String parentId) {
-		return baseSpringArticleCategoryDao.getByParentId(parentId);
+		return springArticleCategoryDao.getByParentId(parentId);
 	}
 
 	/**
@@ -196,7 +196,7 @@ public class SpringArticleCategoryServiceImpl implements ISpringArticleCategoryS
 	 */
 	@Override
 	public List<SpringArticleCategory> listAll() {
-		return baseSpringArticleCategoryDao.listAllRecord();
+		return springArticleCategoryDao.listAllRecord();
 	}
 
 }

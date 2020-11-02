@@ -36,13 +36,13 @@ public class SpringArticleCommentController extends BaseController {
 	private static final Logger logger = LoggerFactory.getLogger(SpringArticleCommentController.class);
 
 	@Autowired
-	private ISpringArticleCommentService baseCommentService;
+	private ISpringArticleCommentService springArticleCommentService;
 
 	@PostMapping(value = "ListByPage")
 	public R listByPage(@RequestBody SpringComment viewEntity, @PageableDefault(page = 1, size = 20) Pageable pageable) {
 		R r = new R();
 		try {
-			Page<SpringComment> lists = baseCommentService.getAllRecordByPage(viewEntity, pageable);
+			Page<SpringComment> lists = springArticleCommentService.getAllRecordByPage(viewEntity, pageable);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("data", lists.getContent());
@@ -63,7 +63,7 @@ public class SpringArticleCommentController extends BaseController {
 			r.put("code", HttpServletResponse.SC_BAD_REQUEST);
 		} else {
 			try {
-				SpringComment entity = baseCommentService.selectByPrimaryKey(id);
+				SpringComment entity = springArticleCommentService.selectByPrimaryKey(id);
 				r.put("msg", Constant.SELECT_SUCCESSED);
 				r.put("code", HttpServletResponse.SC_OK);
 				r.put("data", entity);
@@ -84,7 +84,7 @@ public class SpringArticleCommentController extends BaseController {
 			viewEntity.setCreatedUserId(this.getUser().getId());
 			viewEntity.setCreatedIp(IpKit.getRealIp(request));
 			viewEntity.setCreatedOn(new Date());
-			baseCommentService.insert(viewEntity);
+			springArticleCommentService.insert(viewEntity);
 			r.put("msg", Constant.SAVE_SUCCESSED);
 			r.put("code", HttpServletResponse.SC_OK);
 		} catch (Exception e) {
@@ -99,7 +99,7 @@ public class SpringArticleCommentController extends BaseController {
 	public R update(@RequestBody @Valid SpringComment viewEntity, HttpServletRequest request) {
 		R r = new R();
 		try {
-			SpringComment entity = baseCommentService.selectByPrimaryKey(viewEntity.getId());
+			SpringComment entity = springArticleCommentService.selectByPrimaryKey(viewEntity.getId());
 			if (null == entity) {
 				r.put("msg", Constant.INFO_NOT_FOUND);
 				r.put("code", HttpServletResponse.SC_BAD_REQUEST);
@@ -114,7 +114,7 @@ public class SpringArticleCommentController extends BaseController {
 				entity.setUpdatedUserId(this.getUser().getId());
 				entity.setUpdatedBy(this.getUser().getUserName());
 				entity.setUpdatedIp(IpKit.getRealIp(request));
-				baseCommentService.updateByPrimaryKey(entity);
+				springArticleCommentService.updateByPrimaryKey(entity);
 				r.put("msg", Constant.SAVE_SUCCESSED);
 				r.put("code", HttpServletResponse.SC_OK);
 			}
@@ -134,7 +134,7 @@ public class SpringArticleCommentController extends BaseController {
 			r.put("code", HttpServletResponse.SC_BAD_REQUEST);
 		} else {
 			try {
-				baseCommentService.setDeleted(ids);
+				springArticleCommentService.setDeleted(ids);
 				r.put("msg", Constant.DELETE_SUCCESSED);
 				r.put("code", HttpServletResponse.SC_OK);
 			} catch (Exception e) {
@@ -154,7 +154,7 @@ public class SpringArticleCommentController extends BaseController {
 			r.put("code", HttpServletResponse.SC_BAD_REQUEST);
 		} else {
 			try {
-				baseCommentService.delete(ids);
+				springArticleCommentService.delete(ids);
 				r.put("msg", Constant.DELETE_SUCCESSED);
 				r.put("code", HttpServletResponse.SC_OK);
 			} catch (Exception e) {
@@ -174,7 +174,7 @@ public class SpringArticleCommentController extends BaseController {
 			r.put("code", HttpServletResponse.SC_BAD_REQUEST);
 		} else {
 			try {
-				SpringComment entity = baseCommentService.selectByPrimaryKey(id);
+				SpringComment entity = springArticleCommentService.selectByPrimaryKey(id);
 				if (null == entity) {
 					r.put("msg", Constant.INFO_NOT_FOUND);
 					r.put("code", HttpServletResponse.SC_BAD_REQUEST);
@@ -184,7 +184,7 @@ public class SpringArticleCommentController extends BaseController {
 					} else {
 						entity.setAuditFlag(true);
 					}
-					baseCommentService.updateByPrimaryKey(entity);
+					springArticleCommentService.updateByPrimaryKey(entity);
 					r.put("msg", Constant.SAVE_SUCCESSED);
 					r.put("code", HttpServletResponse.SC_OK);
 				}

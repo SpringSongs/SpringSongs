@@ -28,7 +28,7 @@ import cn.spring.util.R;
 public class SpringParameterServiceImpl implements ISpringParameterService {
 
 	@Autowired
-	private SpringParameterDao baseParameterDao;
+	private SpringParameterDao springParameterDao;
 
 	/**
 	 *
@@ -41,7 +41,7 @@ public class SpringParameterServiceImpl implements ISpringParameterService {
 	 */
 	@Override
 	public void deleteByPrimaryKey(String id) {
-		baseParameterDao.deleteById(id);
+		springParameterDao.deleteById(id);
 
 	}
 
@@ -56,7 +56,7 @@ public class SpringParameterServiceImpl implements ISpringParameterService {
 	 */
 	@Override
 	public void insert(SpringParameter record) {
-		baseParameterDao.save(record);
+		springParameterDao.save(record);
 
 	}
 
@@ -71,7 +71,7 @@ public class SpringParameterServiceImpl implements ISpringParameterService {
 	 */
 	@Override
 	public SpringParameter selectByPrimaryKey(String id) {
-		return baseParameterDao.getOne(id);
+		return springParameterDao.getOne(id);
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class SpringParameterServiceImpl implements ISpringParameterService {
 	 */
 	@Override
 	public void updateByPrimaryKey(SpringParameter record) {
-		baseParameterDao.save(record);
+		springParameterDao.save(record);
 	}
 
 	/**
@@ -128,7 +128,7 @@ public class SpringParameterServiceImpl implements ISpringParameterService {
 			}
 		};
 		//Pageable pageable = PageRequest.of(currPage - 1, size);
-		return baseParameterDao.findAll(specification, pageable);
+		return springParameterDao.findAll(specification, pageable);
 	}
 
 	/**
@@ -142,7 +142,7 @@ public class SpringParameterServiceImpl implements ISpringParameterService {
 	 */
 	@Override
 	public void setDeleted(List<String> ids) {
-		baseParameterDao.setDelete(ids);
+		springParameterDao.setDelete(ids);
 	}
 
 	/**
@@ -161,12 +161,12 @@ public class SpringParameterServiceImpl implements ISpringParameterService {
 
 	@Override
 	public void delete(List<String> ids) {
-		baseParameterDao.delete(ids);
+		springParameterDao.delete(ids);
 		
 	}
 
 	@Override
 	public List<SpringParameter> listByIds(List<String> ids) {
-		return baseParameterDao.listByIds(ids);
+		return springParameterDao.listByIds(ids);
 	}
 }

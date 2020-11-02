@@ -29,7 +29,7 @@ import cn.spring.util.R;
 public class SpringAritlceServiceImpl implements ISpringAritlceService {
 
 	@Autowired
-	private SpringAritlceDao baseAritlceDao;
+	private SpringAritlceDao springAritlceDao;
 
 	/**
 	 *
@@ -42,7 +42,7 @@ public class SpringAritlceServiceImpl implements ISpringAritlceService {
 	 */
 	@Override
 	public void deleteByPrimaryKey(String id) {
-		baseAritlceDao.deleteById(id);
+		springAritlceDao.deleteById(id);
 
 	}
 
@@ -57,7 +57,7 @@ public class SpringAritlceServiceImpl implements ISpringAritlceService {
 	 */
 	@Override
 	public void insert(SpringAritlce record) {
-		baseAritlceDao.save(record);
+		springAritlceDao.save(record);
 
 	}
 
@@ -72,7 +72,7 @@ public class SpringAritlceServiceImpl implements ISpringAritlceService {
 	 */
 	@Override
 	public SpringAritlce selectByPrimaryKey(String id) {
-		return baseAritlceDao.getOne(id);
+		return springAritlceDao.getOne(id);
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class SpringAritlceServiceImpl implements ISpringAritlceService {
 	 */
 	@Override
 	public void updateByPrimaryKey(SpringAritlce record) {
-		baseAritlceDao.save(record);
+		springAritlceDao.save(record);
 	}
 
 	/**
@@ -146,7 +146,7 @@ public class SpringAritlceServiceImpl implements ISpringAritlceService {
 			}
 		};
 		//Pageable pageable = PageRequest.of(currPage - 1, size);
-		return baseAritlceDao.findAll(specification, pageable);
+		return springAritlceDao.findAll(specification, pageable);
 	}
 
 	/**
@@ -160,7 +160,7 @@ public class SpringAritlceServiceImpl implements ISpringAritlceService {
 	 */
 	@Override
 	public void setDeleted(List<String> ids) {
-		baseAritlceDao.setDelete(ids);
+		springAritlceDao.setDelete(ids);
 	}
 
 	/**
@@ -179,7 +179,7 @@ public class SpringAritlceServiceImpl implements ISpringAritlceService {
 
 	@Override
 	public void delete(List<String> ids) {
-		baseAritlceDao.delete(ids);
+		springAritlceDao.delete(ids);
 
 	}
 }

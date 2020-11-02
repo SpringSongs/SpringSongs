@@ -34,13 +34,13 @@ public class SpringContactController extends BaseController {
 	private static final Logger logger = LoggerFactory.getLogger(SpringContactController.class);
 
 	@Autowired
-	private ISpringContactService baseBusinessCardService;
+	private ISpringContactService springContactService;
 
 	@PostMapping(value = "/ListByPage")
 	public R listByPage(@RequestBody SpringContact viewEntity, @PageableDefault(page = 0, size = 20) Pageable pageable) {
 		R r = new R();
 		try {
-			Page<SpringContact> lists = baseBusinessCardService.getAllRecordByPage(viewEntity, pageable);
+			Page<SpringContact> lists = springContactService.getAllRecordByPage(viewEntity, pageable);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("data", lists.getContent());
@@ -57,7 +57,7 @@ public class SpringContactController extends BaseController {
 	public R get(@NotEmpty(message = "id不能为空") String id) {
 		R r = new R();
 		try {
-			SpringContact entity = baseBusinessCardService.selectByPrimaryKey(id);
+			SpringContact entity = springContactService.selectByPrimaryKey(id);
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("data", entity);
@@ -77,7 +77,7 @@ public class SpringContactController extends BaseController {
 			viewEntity.setCreatedUserId(this.getUser().getId());
 			viewEntity.setCreatedIp(IpKit.getRealIp(request));
 			viewEntity.setCreatedOn(new Date());
-			baseBusinessCardService.insert(viewEntity);
+			springContactService.insert(viewEntity);
 			r.put("msg", Constant.SAVE_SUCCESSED);
 			r.put("code", HttpServletResponse.SC_OK);
 		} catch (Exception e) {
@@ -92,7 +92,7 @@ public class SpringContactController extends BaseController {
 	public R update(@RequestBody @Valid SpringContact viewEntity, HttpServletRequest request) {
 		R r = new R();
 		try {
-			SpringContact entity = baseBusinessCardService.selectByPrimaryKey(viewEntity.getId());
+			SpringContact entity = springContactService.selectByPrimaryKey(viewEntity.getId());
 			if (null == entity) {
 				r.put("msg", Constant.INFO_NOT_FOUND);
 				r.put("code", HttpServletResponse.SC_BAD_REQUEST);
@@ -112,7 +112,7 @@ public class SpringContactController extends BaseController {
 				entity.setUpdatedUserId(this.getUser().getId());
 				entity.setUpdatedBy(this.getUser().getUserName());
 				entity.setUpdatedIp(IpKit.getRealIp(request));
-				baseBusinessCardService.updateByPrimaryKey(entity);
+				springContactService.updateByPrimaryKey(entity);
 				r.put("msg", Constant.SAVE_SUCCESSED);
 				r.put("code", HttpServletResponse.SC_OK);
 			}
@@ -132,7 +132,7 @@ public class SpringContactController extends BaseController {
 			r.put("code", HttpServletResponse.SC_BAD_REQUEST);
 		} else {
 			try {
-				baseBusinessCardService.setDeleted(ids);
+				springContactService.setDeleted(ids);
 				r.put("msg", Constant.DELETE_SUCCESSED);
 				r.put("code", HttpServletResponse.SC_OK);
 			} catch (Exception e) {
@@ -152,7 +152,7 @@ public class SpringContactController extends BaseController {
 			r.put("code", HttpServletResponse.SC_BAD_REQUEST);
 		} else {
 			try {
-				baseBusinessCardService.delete(ids);
+				springContactService.delete(ids);
 				r.put("msg", Constant.DELETE_SUCCESSED);
 				r.put("code", HttpServletResponse.SC_OK);
 			} catch (Exception e) {

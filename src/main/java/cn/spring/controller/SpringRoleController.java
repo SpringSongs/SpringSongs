@@ -40,16 +40,16 @@ public class SpringRoleController extends BaseController {
 	private static final Logger logger = LoggerFactory.getLogger(SpringRoleController.class);
 
 	@Autowired
-	private ISpringRoleService baseRoleService;
+	private ISpringRoleService springRoleService;
 
 	@Autowired
-	private ISpringResourceService baseModuleService;
+	private ISpringResourceService springResourceService;
 
 	@PostMapping(value = "ListByPage")
 	public R listByPage(@RequestBody SpringRole viewEntity, @PageableDefault(page = 1, size = 20) Pageable pageable) {
 		R r = new R();
 		try {
-			Page<SpringRole> lists = baseRoleService.getAllRecordByPage(viewEntity, pageable);
+			Page<SpringRole> lists = springRoleService.getAllRecordByPage(viewEntity, pageable);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("data", lists.getContent());
@@ -67,7 +67,7 @@ public class SpringRoleController extends BaseController {
 			@PageableDefault(page = 1, size = 20) Pageable pageable) {
 		R r = new R();
 		try {
-			Page<SpringRole> lists = baseRoleService.ListRoleByUserId(userId, pageable);
+			Page<SpringRole> lists = springRoleService.ListRoleByUserId(userId, pageable);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("data", lists.getContent());
@@ -85,7 +85,7 @@ public class SpringRoleController extends BaseController {
 	public R get(@NotEmpty(message = "id不能为空") String id) {
 		R r = new R();
 		try {
-			SpringRole entity = baseRoleService.selectByPrimaryKey(id);
+			SpringRole entity = springRoleService.selectByPrimaryKey(id);
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("data", entity);
@@ -106,7 +106,7 @@ public class SpringRoleController extends BaseController {
 			viewEntity.setCreatedUserId(this.getUser().getId());
 			viewEntity.setCreatedIp(IpKit.getRealIp(request));
 			viewEntity.setCreatedOn(new Date());
-			baseRoleService.insert(viewEntity);
+			springRoleService.insert(viewEntity);
 			r.put("msg", Constant.SAVE_SUCCESSED);
 			r.put("code", HttpServletResponse.SC_OK);
 		} catch (Exception e) {
@@ -122,7 +122,7 @@ public class SpringRoleController extends BaseController {
 		R r = new R();
 
 		try {
-			SpringRole entity = baseRoleService.selectByPrimaryKey(viewEntity.getId());
+			SpringRole entity = springRoleService.selectByPrimaryKey(viewEntity.getId());
 			if (null == entity) {
 				r.put("msg", Constant.INFO_NOT_FOUND);
 				r.put("code", HttpServletResponse.SC_BAD_REQUEST);
@@ -137,7 +137,7 @@ public class SpringRoleController extends BaseController {
 				entity.setUpdatedUserId(this.getUser().getId());
 				entity.setUpdatedBy(this.getUser().getUserName());
 				entity.setUpdatedIp(IpKit.getRealIp(request));
-				baseRoleService.updateByPrimaryKey(entity);
+				springRoleService.updateByPrimaryKey(entity);
 				r.put("msg", Constant.SAVE_SUCCESSED);
 				r.put("code", HttpServletResponse.SC_OK);
 			}
@@ -157,7 +157,7 @@ public class SpringRoleController extends BaseController {
 			r.put("code", HttpServletResponse.SC_BAD_REQUEST);
 		} else {
 			try {
-				List<SpringRole> entityList = baseRoleService.listByIds(ids);
+				List<SpringRole> entityList = springRoleService.listByIds(ids);
 				for (SpringRole entity : entityList) {
 					if (entity.getEnableDelete() == false) {
 						r.put("msg", MessageFormat.format(Constant.INFO_CAN_NOT_DELETE, entity.getTitle()));
@@ -166,7 +166,7 @@ public class SpringRoleController extends BaseController {
 					}
 				}
 				if (r.get("code").toString().equals("HttpServletResponse.SC_OK")) {
-					baseRoleService.setDeleted(ids);
+					springRoleService.setDeleted(ids);
 					r.put("msg", Constant.DELETE_SUCCESSED);
 					r.put("code", HttpServletResponse.SC_OK);
 				}
@@ -187,7 +187,7 @@ public class SpringRoleController extends BaseController {
 			r.put("code", HttpServletResponse.SC_BAD_REQUEST);
 		} else {
 			try {
-				List<SpringRole> entityList = baseRoleService.listByIds(ids);
+				List<SpringRole> entityList = springRoleService.listByIds(ids);
 				for (SpringRole entity : entityList) {
 					if (entity.getEnableDelete() == false) {
 						r.put("msg", MessageFormat.format(Constant.INFO_CAN_NOT_DELETE, entity.getTitle()));
@@ -196,7 +196,7 @@ public class SpringRoleController extends BaseController {
 					}
 				}
 				if (r.get("code").toString().equals(String.valueOf(HttpServletResponse.SC_OK))) {
-					baseRoleService.delete(ids);
+					springRoleService.delete(ids);
 					r.put("msg", Constant.DELETE_SUCCESSED);
 					r.put("code", HttpServletResponse.SC_OK);
 				}
@@ -225,7 +225,7 @@ public class SpringRoleController extends BaseController {
 				entity.setCreatedOn(new Date());
 				baseUserRoleEntityList.add(entity);
 			}
-			baseRoleService.saveUserToRole(baseUserRoleEntityList, roleId);
+			springRoleService.saveUserToRole(baseUserRoleEntityList, roleId);
 			r.put("msg", Constant.USER_TO_ROLE_SETTING_SUCCESSED);
 			r.put("code", HttpServletResponse.SC_OK);
 		} catch (Exception e) {
@@ -252,7 +252,7 @@ public class SpringRoleController extends BaseController {
 				entity.setCreatedOn(new Date());
 				baseModuleRoleEntityList.add(entity);
 			}
-			baseModuleService.saveModuleToRole(baseModuleRoleEntityList, roleId);
+			springResourceService.saveModuleToRole(baseModuleRoleEntityList, roleId);
 			r.put("msg", Constant.AUTHORITY_SUCCESSED);
 			r.put("code", HttpServletResponse.SC_OK);
 		} catch (Exception e) {
@@ -267,7 +267,7 @@ public class SpringRoleController extends BaseController {
 	public R listAuthority(@PathVariable(value = "roleId", required = true) String roleId) {
 		R r = new R();
 		try {
-			List<SpringResourceRole> baseModuleRoleEntityList = baseModuleService.listModulesByRoleId(roleId);
+			List<SpringResourceRole> baseModuleRoleEntityList = springResourceService.listModulesByRoleId(roleId);
 			List<String> moduleIds = new ArrayList<String>();
 			baseModuleRoleEntityList.stream().forEach(item -> {
 				moduleIds.add(item.getModuleId());

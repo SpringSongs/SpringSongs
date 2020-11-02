@@ -27,7 +27,7 @@ import cn.spring.util.R;
 @Transactional
 public class SpringLoginLogServiceImpl implements ISpringLoginLogService {
 	@Autowired
-	private SpringLoginLogDao baseLoginLogDao;
+	private SpringLoginLogDao springLoginLogDao;
 
 	/**
 	 *
@@ -40,7 +40,7 @@ public class SpringLoginLogServiceImpl implements ISpringLoginLogService {
 	 */
 	@Override
 	public void deleteByPrimaryKey(String id) {
-		baseLoginLogDao.deleteById(id);
+		springLoginLogDao.deleteById(id);
 
 	}
 
@@ -55,7 +55,7 @@ public class SpringLoginLogServiceImpl implements ISpringLoginLogService {
 	 */
 	@Override
 	public void insert(SpringLoginLog record) {
-		baseLoginLogDao.save(record);
+		springLoginLogDao.save(record);
 
 	}
 
@@ -70,7 +70,7 @@ public class SpringLoginLogServiceImpl implements ISpringLoginLogService {
 	 */
 	@Override
 	public SpringLoginLog selectByPrimaryKey(String id) {
-		return baseLoginLogDao.getOne(id);
+		return springLoginLogDao.getOne(id);
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class SpringLoginLogServiceImpl implements ISpringLoginLogService {
 	 */
 	@Override
 	public void updateByPrimaryKey(SpringLoginLog record) {
-		baseLoginLogDao.save(record);
+		springLoginLogDao.save(record);
 	}
 
 	/**
@@ -115,7 +115,7 @@ public class SpringLoginLogServiceImpl implements ISpringLoginLogService {
 			}
 		};
 		//Pageable pageable = PageRequest.of(currPage - 1, size);
-		return baseLoginLogDao.findAll(specification, pageable);
+		return springLoginLogDao.findAll(specification, pageable);
 	}
 
 	
@@ -136,7 +136,7 @@ public class SpringLoginLogServiceImpl implements ISpringLoginLogService {
 
 	@Override
 	public void delete(List<String> ids) {
-		baseLoginLogDao.delete(ids);
+		springLoginLogDao.delete(ids);
 		
 	}
 }

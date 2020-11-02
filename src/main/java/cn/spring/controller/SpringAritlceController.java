@@ -36,13 +36,13 @@ public class SpringAritlceController extends BaseController {
 	private static final Logger logger = LoggerFactory.getLogger(SpringAritlceController.class);
 	
 	@Autowired
-	private ISpringAritlceService baseAritlceService;
+	private ISpringAritlceService springAritlceService;
 
 	@PostMapping(value = "/ListByPage")
 	public R listByPage(@RequestBody SpringAritlce viewEntity, @PageableDefault(page = 1, size = 20) Pageable pageable) {
 		R r = new R();
 		try {
-			Page<SpringAritlce> lists = baseAritlceService.getAllRecordByPage(viewEntity, pageable);
+			Page<SpringAritlce> lists = springAritlceService.getAllRecordByPage(viewEntity, pageable);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("data", lists.getContent());
@@ -59,7 +59,7 @@ public class SpringAritlceController extends BaseController {
 	public R get(@NotEmpty(message = "id不能为空") String id) {
 		R r = new R();
 		try {
-			SpringAritlce entity = baseAritlceService.selectByPrimaryKey(id);
+			SpringAritlce entity = springAritlceService.selectByPrimaryKey(id);
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("data", entity);
@@ -79,7 +79,7 @@ public class SpringAritlceController extends BaseController {
 			viewEntity.setCreatedUserId(this.getUser().getId());
 			viewEntity.setCreatedIp(IpKit.getRealIp(request));
 			viewEntity.setCreatedOn(new Date());
-			baseAritlceService.insert(viewEntity);
+			springAritlceService.insert(viewEntity);
 			r.put("msg", Constant.SAVE_SUCCESSED);
 			r.put("code", 200);
 		} catch (Exception e) {
@@ -94,7 +94,7 @@ public class SpringAritlceController extends BaseController {
 	public R update(@RequestBody @Valid SpringAritlce viewEntity, HttpServletRequest request) {
 		R r = new R();
 		try {
-			SpringAritlce entity = baseAritlceService.selectByPrimaryKey(viewEntity.getId());
+			SpringAritlce entity = springAritlceService.selectByPrimaryKey(viewEntity.getId());
 			if (null == entity) {
 				r.put("msg", Constant.INFO_NOT_FOUND);
 				r.put("code", HttpServletResponse.SC_BAD_REQUEST);
@@ -127,7 +127,7 @@ public class SpringAritlceController extends BaseController {
 				entity.setUpdatedUserId(this.getUser().getId());
 				entity.setUpdatedBy(this.getUser().getUserName());
 				entity.setUpdatedIp(IpKit.getRealIp(request));
-				baseAritlceService.updateByPrimaryKey(entity);
+				springAritlceService.updateByPrimaryKey(entity);
 				r.put("msg", Constant.SAVE_SUCCESSED);
 				r.put("code", HttpServletResponse.SC_OK);
 			}
@@ -147,7 +147,7 @@ public class SpringAritlceController extends BaseController {
 			r.put("code", HttpServletResponse.SC_BAD_REQUEST);
 		} else {
 			try {
-				baseAritlceService.setDeleted(ids);
+				springAritlceService.setDeleted(ids);
 				r.put("msg", Constant.DELETE_SUCCESSED);
 				r.put("code", HttpServletResponse.SC_OK);
 			} catch (Exception e) {
@@ -167,7 +167,7 @@ public class SpringAritlceController extends BaseController {
 			r.put("code", 500);
 		} else {
 			try {
-				baseAritlceService.delete(ids);
+				springAritlceService.delete(ids);
 				r.put("msg", Constant.DELETE_SUCCESSED);
 				r.put("code", 200);
 			} catch (Exception e) {
@@ -187,7 +187,7 @@ public class SpringAritlceController extends BaseController {
 			r.put("code", 500);
 		} else {
 			try {
-				SpringAritlce entity = baseAritlceService.selectByPrimaryKey(id);
+				SpringAritlce entity = springAritlceService.selectByPrimaryKey(id);
 				if (null == entity) {
 					r.put("msg", Constant.INFO_CAN_NOT_DELETE);
 					r.put("code", 500);
@@ -197,7 +197,7 @@ public class SpringAritlceController extends BaseController {
 					} else {
 						entity.setStatus(true);
 					}
-					baseAritlceService.updateByPrimaryKey(entity);
+					springAritlceService.updateByPrimaryKey(entity);
 					r.put("msg", Constant.SAVE_SUCCESSED);
 					r.put("code", 200);
 				}
@@ -219,7 +219,7 @@ public class SpringAritlceController extends BaseController {
 			r.put("code", 500);
 		} else {
 			try {
-				SpringAritlce entity = baseAritlceService.selectByPrimaryKey(id);
+				SpringAritlce entity = springAritlceService.selectByPrimaryKey(id);
 				if (null == entity) {
 					r.put("msg", Constant.INFO_CAN_NOT_DELETE);
 					r.put("code", 500);
@@ -229,7 +229,7 @@ public class SpringAritlceController extends BaseController {
 					} else {
 						entity.setHotStatus(true);
 					}
-					baseAritlceService.updateByPrimaryKey(entity);
+					springAritlceService.updateByPrimaryKey(entity);
 					r.put("msg", Constant.SAVE_SUCCESSED);
 					r.put("code", 200);
 				}
@@ -251,7 +251,7 @@ public class SpringAritlceController extends BaseController {
 			r.put("code", 500);
 		} else {
 			try {
-				SpringAritlce entity = baseAritlceService.selectByPrimaryKey(id);
+				SpringAritlce entity = springAritlceService.selectByPrimaryKey(id);
 				if (null == entity) {
 					r.put("msg", Constant.INFO_CAN_NOT_DELETE);
 					r.put("code", 500);
@@ -261,7 +261,7 @@ public class SpringAritlceController extends BaseController {
 					} else {
 						entity.setTopStatus(true);
 					}
-					baseAritlceService.updateByPrimaryKey(entity);
+					springAritlceService.updateByPrimaryKey(entity);
 					r.put("msg", Constant.SAVE_SUCCESSED);
 					r.put("code", 200);
 				}
@@ -283,7 +283,7 @@ public class SpringAritlceController extends BaseController {
 			r.put("code", 500);
 		} else {
 			try {
-				SpringAritlce entity = baseAritlceService.selectByPrimaryKey(id);
+				SpringAritlce entity = springAritlceService.selectByPrimaryKey(id);
 				if (null == entity) {
 					r.put("msg", Constant.INFO_CAN_NOT_DELETE);
 					r.put("code", 500);
@@ -293,7 +293,7 @@ public class SpringAritlceController extends BaseController {
 					} else {
 						entity.setFeatured(true);
 					}
-					baseAritlceService.updateByPrimaryKey(entity);
+					springAritlceService.updateByPrimaryKey(entity);
 					r.put("msg", Constant.SAVE_SUCCESSED);
 					r.put("code", 200);
 				}

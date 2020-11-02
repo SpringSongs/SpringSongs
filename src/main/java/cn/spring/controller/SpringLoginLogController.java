@@ -25,13 +25,13 @@ public class SpringLoginLogController extends BaseController {
 	private static final Logger logger = LoggerFactory.getLogger(SpringLoginLogController.class);
 
 	@Autowired
-	private ISpringLoginLogService baseLoginLogService;
+	private ISpringLoginLogService springLoginLogService;
 
 	@PostMapping(value = "ListByPage")
 	public R listByPage(@RequestBody SpringLoginLog viewEntity, @PageableDefault(page = 1, size = 20) Pageable pageable) {
 		R r = new R();
 		try {
-			Page<SpringLoginLog> lists = baseLoginLogService.getAllRecordByPage(viewEntity, pageable);
+			Page<SpringLoginLog> lists = springLoginLogService.getAllRecordByPage(viewEntity, pageable);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("data", lists.getContent());

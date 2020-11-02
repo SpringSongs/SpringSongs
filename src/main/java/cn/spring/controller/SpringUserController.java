@@ -42,7 +42,7 @@ public class SpringUserController extends BaseController {
 	private static final Logger logger = LoggerFactory.getLogger(SpringUserController.class);
 
 	@Autowired
-	private ISpringUserService baseBuserService;
+	private ISpringUserService springUserService;
 
 	@PostMapping(value = "Invalidate")
 	public R invalidateSession(HttpServletRequest reqeust, HttpServletResponse response) {
@@ -64,7 +64,7 @@ public class SpringUserController extends BaseController {
 	public R listByPage(@RequestBody SpringUser viewEntity, @PageableDefault(page = 1, size = 20) Pageable pageable) {
 		R r = new R();
 		try {
-			Page<SpringUser> lists = baseBuserService.getAllRecordByPage(viewEntity, pageable);
+			Page<SpringUser> lists = springUserService.getAllRecordByPage(viewEntity, pageable);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("data", lists.getContent());
@@ -82,7 +82,7 @@ public class SpringUserController extends BaseController {
 			@PageableDefault(page = 1, size = 20) Pageable pageable) {
 		R r = new R();
 		try {
-			Page<SpringUser> lists = baseBuserService.ListUsersByRoleId(roleId, pageable);
+			Page<SpringUser> lists = springUserService.ListUsersByRoleId(roleId, pageable);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("data", lists.getContent());
@@ -100,7 +100,7 @@ public class SpringUserController extends BaseController {
 	public R get(@NotEmpty(message = "id不能为空") String id) {
 		R r = new R();
 		try {
-			SpringUser entity = baseBuserService.selectByPrimaryKey(id);
+			SpringUser entity = springUserService.selectByPrimaryKey(id);
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("data", entity);
@@ -116,7 +116,7 @@ public class SpringUserController extends BaseController {
 		R r = new R();
 
 		try {
-			SpringUser entity = baseBuserService.getByUserName(viewEntity.getUserName().trim());
+			SpringUser entity = springUserService.getByUserName(viewEntity.getUserName().trim());
 			if (null != entity) {
 				r.put("msg", Constant.ACCOUNT_HAS_REGISTER);
 				r.put("code", HttpServletResponse.SC_OK);
@@ -125,7 +125,7 @@ public class SpringUserController extends BaseController {
 				viewEntity.setCreatedUserId(this.getUser().getId());
 				viewEntity.setCreatedIp(IpKit.getRealIp(request));
 				viewEntity.setCreatedOn(new Date());
-				baseBuserService.insert(viewEntity);
+				springUserService.insert(viewEntity);
 				r.put("msg", Constant.SAVE_SUCCESSED);
 				r.put("code", HttpServletResponse.SC_OK);
 			}
@@ -142,7 +142,7 @@ public class SpringUserController extends BaseController {
 		R r = new R();
 
 		try {
-			SpringUser entity = baseBuserService.selectByPrimaryKey(viewEntity.getId());
+			SpringUser entity = springUserService.selectByPrimaryKey(viewEntity.getId());
 			if (null == entity) {
 				r.put("msg", Constant.INFO_NOT_FOUND);
 				r.put("code", HttpServletResponse.SC_BAD_REQUEST);
@@ -157,7 +157,7 @@ public class SpringUserController extends BaseController {
 				entity.setUpdatedUserId(this.getUser().getId());
 				entity.setUpdatedBy(this.getUser().getUserName());
 				entity.setUpdatedIp(IpKit.getRealIp(request));
-				baseBuserService.updateByPrimaryKey(entity);
+				springUserService.updateByPrimaryKey(entity);
 				r.put("msg", Constant.SAVE_SUCCESSED);
 				r.put("code", HttpServletResponse.SC_OK);
 			}
@@ -177,7 +177,7 @@ public class SpringUserController extends BaseController {
 			r.put("code", HttpServletResponse.SC_BAD_REQUEST);
 		} else {
 			try {
-				List<SpringUser> entityList = baseBuserService.listUserByIds(ids);
+				List<SpringUser> entityList = springUserService.listUserByIds(ids);
 				for (SpringUser entity : entityList) {
 					if (entity.getEnableDelete() == false) {
 						r.put("msg", MessageFormat.format(Constant.INFO_CAN_NOT_DELETE, entity.getUserName()));
@@ -186,7 +186,7 @@ public class SpringUserController extends BaseController {
 					}
 				}
 				if (r.get("code").toString().equals(String.valueOf(HttpServletResponse.SC_OK))) {
-					baseBuserService.setDeleted(ids);
+					springUserService.setDeleted(ids);
 					r.put("msg", Constant.DELETE_SUCCESSED);
 					r.put("code", HttpServletResponse.SC_OK);
 				}
@@ -207,7 +207,7 @@ public class SpringUserController extends BaseController {
 			r.put("code", HttpServletResponse.SC_BAD_REQUEST);
 		} else {
 			try {
-				List<SpringUser> entityList = baseBuserService.listUserByIds(ids);
+				List<SpringUser> entityList = springUserService.listUserByIds(ids);
 				for (SpringUser entity : entityList) {
 					if (entity.getEnableDelete() == false) {
 						r.put("msg", MessageFormat.format(Constant.INFO_CAN_NOT_DELETE, entity.getUserName()));
@@ -216,7 +216,7 @@ public class SpringUserController extends BaseController {
 					}
 				}
 				if (r.get("code").toString().equals(String.valueOf(HttpServletResponse.SC_OK))) {
-					baseBuserService.delete(ids);
+					springUserService.delete(ids);
 					r.put("msg", Constant.DELETE_SUCCESSED);
 					r.put("code", HttpServletResponse.SC_OK);
 				}
@@ -248,7 +248,7 @@ public class SpringUserController extends BaseController {
 				viewEntity.setUpdatedUserId(this.getUser().getId());
 				viewEntity.setUpdatedBy(this.getUser().getUserName());
 				viewEntity.setUpdatedIp(IpKit.getRealIp(request));
-				r = baseBuserService.setPwd(viewEntity);
+				r = springUserService.setPwd(viewEntity);
 			} catch (Exception e) {
 				r.put("msg", Constant.SYSTEM_ERROR);
 				r.put("code", HttpServletResponse.SC_BAD_REQUEST);
@@ -274,7 +274,7 @@ public class SpringUserController extends BaseController {
 				entity.setCreatedOn(new Date());
 				baseUserRoleEntityList.add(entity);
 			}
-			baseBuserService.saveUserToRole(baseUserRoleEntityList, userId);
+			springUserService.saveUserToRole(baseUserRoleEntityList, userId);
 			r.put("msg", Constant.ROLE_TO_USER_SETTING_SUCCESSED);
 			r.put("code", HttpServletResponse.SC_OK);
 		} catch (Exception e) {

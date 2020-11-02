@@ -39,7 +39,7 @@ public class SpringAttachmentController extends BaseController {
 	private static final Logger logger = LoggerFactory.getLogger(SpringAttachmentController.class);
 
 	@Autowired
-	private ISpringAttachmentService baseFileService;
+	private ISpringAttachmentService springAttachmentService;
 
 	@Value("${web.upload.path}")
 	private String uploadPath;
@@ -48,7 +48,7 @@ public class SpringAttachmentController extends BaseController {
 	public R listByPage(@RequestBody SpringAttachment viewEntity, @PageableDefault(page = 1, size = 20) Pageable pageable) {
 		R r = new R();
 		try {
-			Page<SpringAttachment> lists = baseFileService.getAllRecordByPage(viewEntity, pageable);
+			Page<SpringAttachment> lists = springAttachmentService.getAllRecordByPage(viewEntity, pageable);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("data", lists.getContent());
@@ -66,7 +66,7 @@ public class SpringAttachmentController extends BaseController {
 	public R get(@NotEmpty(message = "id不能为空") String id) {
 		R r = new R();
 		try {
-			SpringAttachment entity = baseFileService.selectByPrimaryKey(id);
+			SpringAttachment entity = springAttachmentService.selectByPrimaryKey(id);
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("data", entity);
@@ -86,7 +86,7 @@ public class SpringAttachmentController extends BaseController {
 			viewEntity.setCreatedUserId(this.getUser().getId());
 			viewEntity.setCreatedIp(IpKit.getRealIp(request));
 			viewEntity.setCreatedOn(new Date());
-			baseFileService.insert(viewEntity);
+			springAttachmentService.insert(viewEntity);
 			r.put("msg", Constant.SAVE_SUCCESSED);
 			r.put("code", HttpServletResponse.SC_OK);
 		} catch (Exception e) {
@@ -101,7 +101,7 @@ public class SpringAttachmentController extends BaseController {
 	public R update(@RequestBody @Valid SpringAttachment viewEntity, HttpServletRequest request) {
 		R r = new R();
 		try {
-			SpringAttachment entity = baseFileService.selectByPrimaryKey(viewEntity.getId());
+			SpringAttachment entity = springAttachmentService.selectByPrimaryKey(viewEntity.getId());
 			if (null == entity) {
 				r.put("msg", Constant.INFO_NOT_FOUND);
 				r.put("code", HttpServletResponse.SC_BAD_REQUEST);
@@ -111,7 +111,7 @@ public class SpringAttachmentController extends BaseController {
 				entity.setUpdatedUserId(this.getUser().getId());
 				entity.setUpdatedBy(this.getUser().getUserName());
 				entity.setUpdatedIp(IpKit.getRealIp(request));
-				baseFileService.updateByPrimaryKey(entity);
+				springAttachmentService.updateByPrimaryKey(entity);
 				r.put("msg", Constant.SAVE_SUCCESSED);
 				r.put("code", HttpServletResponse.SC_OK);
 			}
@@ -131,7 +131,7 @@ public class SpringAttachmentController extends BaseController {
 			r.put("code", 500);
 		} else {
 			try {
-				baseFileService.setDeleted(ids);
+				springAttachmentService.setDeleted(ids);
 				r.put("msg", Constant.DELETE_SUCCESSED);
 				r.put("code", HttpServletResponse.SC_OK);
 			} catch (Exception e) {
@@ -151,7 +151,7 @@ public class SpringAttachmentController extends BaseController {
 			r.put("code", 500);
 		} else {
 			try {
-				baseFileService.delete(ids);
+				springAttachmentService.delete(ids);
 				r.put("msg", Constant.DELETE_SUCCESSED);
 				r.put("code", HttpServletResponse.SC_OK);
 			} catch (Exception e) {

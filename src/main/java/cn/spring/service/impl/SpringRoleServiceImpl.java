@@ -15,27 +15,25 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import cn.spring.dao.SpringUserRoleDao;
 import cn.spring.dao.SpringRoleDao;
+import cn.spring.dao.SpringUserRoleDao;
 import cn.spring.domain.SpringRole;
 import cn.spring.domain.SpringUserRole;
 import cn.spring.service.ISpringRoleService;
 import cn.spring.util.R;
 
 @Service
-@Transactional
 public class SpringRoleServiceImpl implements ISpringRoleService {
 	@Autowired
-	private SpringRoleDao baseRoleDao;
+	private SpringRoleDao springRoleDao;
 
 	@Autowired
-	private SpringUserRoleDao baseBuserRoleDao;
+	private SpringUserRoleDao springUserRoleDao;
 
 	/**
 	 *
@@ -48,7 +46,7 @@ public class SpringRoleServiceImpl implements ISpringRoleService {
 	 */
 	@Override
 	public void deleteByPrimaryKey(String id) {
-		baseRoleDao.deleteById(id);
+		springRoleDao.deleteById(id);
 
 	}
 
@@ -63,7 +61,7 @@ public class SpringRoleServiceImpl implements ISpringRoleService {
 	 */
 	@Override
 	public void insert(SpringRole record) {
-		baseRoleDao.save(record);
+		springRoleDao.save(record);
 	}
 
 	/**
@@ -77,7 +75,7 @@ public class SpringRoleServiceImpl implements ISpringRoleService {
 	 */
 	@Override
 	public SpringRole selectByPrimaryKey(String id) {
-		return baseRoleDao.getOne(id);
+		return springRoleDao.getOne(id);
 	}
 
 	/**
@@ -91,7 +89,7 @@ public class SpringRoleServiceImpl implements ISpringRoleService {
 	 */
 	@Override
 	public void updateByPrimaryKey(SpringRole record) {
-		baseRoleDao.save(record);
+		springRoleDao.save(record);
 	}
 
 	/**
@@ -123,7 +121,7 @@ public class SpringRoleServiceImpl implements ISpringRoleService {
 			}
 		};
 		//Pageable pageable = PageRequest.of(currPage - 1, size);
-		return baseRoleDao.findAll(specification, pageable);
+		return springRoleDao.findAll(specification, pageable);
 	}
 
 	/**
@@ -137,7 +135,7 @@ public class SpringRoleServiceImpl implements ISpringRoleService {
 	 */
 	@Override
 	public void setDeleted(List<String> ids) {
-		baseRoleDao.setDelete(ids);
+		springRoleDao.setDelete(ids);
 	}
 
 	/**
@@ -156,13 +154,13 @@ public class SpringRoleServiceImpl implements ISpringRoleService {
 
 	@Override
 	public void delete(List<String> ids) {
-		baseRoleDao.deleteAll();
+		springRoleDao.deleteAll();
 
 	}
 
 	@Override
 	public List<SpringRole> listByIds(List<String> ids) {
-		return baseRoleDao.findAllById(ids);
+		return springRoleDao.findAllById(ids);
 	}
 
 	@Override
@@ -172,19 +170,20 @@ public class SpringRoleServiceImpl implements ISpringRoleService {
 			Entry<String, String> entry = it.next();
 			String userId = entry.getKey();
 			String roleId = entry.getValue();
-			baseBuserRoleDao.delete(userId, roleId);
+			springUserRoleDao.delete(userId, roleId);
 		}
 	}
 
 	@Override
+	@Transactional
 	public void saveUserToRole(List<SpringUserRole> baseUserRoleEntityList,String roleId) {
-		baseBuserRoleDao.deleteByRoleId(roleId);
-		baseBuserRoleDao.saveAll(baseUserRoleEntityList);
+		springUserRoleDao.deleteByRoleId(roleId);
+		springUserRoleDao.saveAll(baseUserRoleEntityList);
 	}
 
 	@Override
 	public Page<SpringRole> ListRoleByUserId(String userId,Pageable pageable) {
 		//Pageable pageable = PageRequest.of(page - 1, limit);
-		return baseRoleDao.ListRoleByUserId(userId, pageable);
+		return springRoleDao.ListRoleByUserId(userId, pageable);
 	}
 }

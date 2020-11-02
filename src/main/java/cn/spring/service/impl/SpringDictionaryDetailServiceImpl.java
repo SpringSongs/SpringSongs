@@ -28,7 +28,7 @@ import cn.spring.util.R;
 public class SpringDictionaryDetailServiceImpl implements ISpringDictionaryDetailService {
 
 	@Autowired
-	private SpringDictionaryDetailDao baseDictionaryDetailDao;
+	private SpringDictionaryDetailDao springDictionaryDetailDao;
 
 	/**
 	 *
@@ -41,7 +41,7 @@ public class SpringDictionaryDetailServiceImpl implements ISpringDictionaryDetai
 	 */
 	@Override
 	public void deleteByPrimaryKey(String id) {
-		baseDictionaryDetailDao.deleteById(id);
+		springDictionaryDetailDao.deleteById(id);
 
 	}
 
@@ -56,7 +56,7 @@ public class SpringDictionaryDetailServiceImpl implements ISpringDictionaryDetai
 	 */
 	@Override
 	public void insert(SpringDictionaryDetail record) {
-		baseDictionaryDetailDao.save(record);
+		springDictionaryDetailDao.save(record);
 
 	}
 
@@ -71,7 +71,7 @@ public class SpringDictionaryDetailServiceImpl implements ISpringDictionaryDetai
 	 */
 	@Override
 	public SpringDictionaryDetail selectByPrimaryKey(String id) {
-		return baseDictionaryDetailDao.getOne(id);
+		return springDictionaryDetailDao.getOne(id);
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class SpringDictionaryDetailServiceImpl implements ISpringDictionaryDetai
 	 */
 	@Override
 	public void updateByPrimaryKey(SpringDictionaryDetail record) {
-		baseDictionaryDetailDao.save(record);
+		springDictionaryDetailDao.save(record);
 	}
 
 	/**
@@ -134,7 +134,7 @@ public class SpringDictionaryDetailServiceImpl implements ISpringDictionaryDetai
 			}
 		};
 		//Pageable pageable = PageRequest.of(currPage - 1, size);
-		return baseDictionaryDetailDao.findAll(specification, pageable);
+		return springDictionaryDetailDao.findAll(specification, pageable);
 	}
 
 	/**
@@ -148,7 +148,7 @@ public class SpringDictionaryDetailServiceImpl implements ISpringDictionaryDetai
 	 */
 	@Override
 	public void setDeleted(List<String> ids) {
-		baseDictionaryDetailDao.setDelete(ids);
+		springDictionaryDetailDao.setDelete(ids);
 	}
 
 	/**
@@ -167,12 +167,12 @@ public class SpringDictionaryDetailServiceImpl implements ISpringDictionaryDetai
 
 	@Override
 	public void delete(List<String> ids) {
-		baseDictionaryDetailDao.delete(ids);
+		springDictionaryDetailDao.delete(ids);
 		
 	}
 
 	@Override
 	public void setDeleteByCode(String code) {
-		baseDictionaryDetailDao.setDeleteByCode(code);
+		springDictionaryDetailDao.setDeleteByCode(code);
 	}
 }

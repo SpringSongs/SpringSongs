@@ -28,10 +28,10 @@ import cn.spring.util.R;
 @Transactional
 public class SpringDictionaryServiceImpl implements ISpringDictionaryService {
 	@Autowired
-	private SpringDictionaryDao baseDictionaryDao;
+	private SpringDictionaryDao springDictionaryDao;
 	
 	@Autowired
-	private SpringDictionaryDetailDao baseDictionaryDetailDao;
+	private SpringDictionaryDetailDao springDictionaryDetailDao;
 
 	/**
 	 *
@@ -44,7 +44,7 @@ public class SpringDictionaryServiceImpl implements ISpringDictionaryService {
 	 */
 	@Override
 	public void deleteByPrimaryKey(String id) {
-		baseDictionaryDao.deleteById(id);
+		springDictionaryDao.deleteById(id);
 
 	}
 
@@ -59,7 +59,7 @@ public class SpringDictionaryServiceImpl implements ISpringDictionaryService {
 	 */
 	@Override
 	public void insert(SpringDictionary record) {
-		baseDictionaryDao.save(record);
+		springDictionaryDao.save(record);
 
 	}
 
@@ -74,7 +74,7 @@ public class SpringDictionaryServiceImpl implements ISpringDictionaryService {
 	 */
 	@Override
 	public SpringDictionary selectByPrimaryKey(String id) {
-		return baseDictionaryDao.getOne(id);
+		return springDictionaryDao.getOne(id);
 	}
 
 	/**
@@ -88,7 +88,7 @@ public class SpringDictionaryServiceImpl implements ISpringDictionaryService {
 	 */
 	@Override
 	public void updateByPrimaryKey(SpringDictionary record) {
-		baseDictionaryDao.save(record);
+		springDictionaryDao.save(record);
 	}
 
 	/**
@@ -129,7 +129,7 @@ public class SpringDictionaryServiceImpl implements ISpringDictionaryService {
 			}
 		};
 		//Pageable pageable = PageRequest.of(currPage - 1, size);
-		return baseDictionaryDao.findAll(specification, pageable);
+		return springDictionaryDao.findAll(specification, pageable);
 	}
 
 	/**
@@ -146,7 +146,7 @@ public class SpringDictionaryServiceImpl implements ISpringDictionaryService {
 		R r = R.ok("Ok");
 		try {
 			List<String> codes=new ArrayList<String>();
-			List<SpringDictionary> entityList = baseDictionaryDao.listByIds(ids);
+			List<SpringDictionary> entityList = springDictionaryDao.listByIds(ids);
 			for (SpringDictionary entity : entityList) {
 				if (entity.getEnableDelete() == false) {
 					r.put("msg", entity.getTitle() + "不允许删除!");
@@ -158,8 +158,8 @@ public class SpringDictionaryServiceImpl implements ISpringDictionaryService {
 				entityList.stream().forEach(t -> {
 					codes.add(t.getCode());
 				});
-				baseDictionaryDetailDao.setDeleteByDictionCode(codes);
-				baseDictionaryDao.setDelete(ids);
+				springDictionaryDetailDao.setDeleteByDictionCode(codes);
+				springDictionaryDao.setDelete(ids);
 				r.put("msg", "删除成功!");
 				r.put("code", 200);
 			}
@@ -186,12 +186,12 @@ public class SpringDictionaryServiceImpl implements ISpringDictionaryService {
 
 	@Override
 	public void delete(List<String> ids) {
-		baseDictionaryDao.delete(ids);
+		springDictionaryDao.delete(ids);
 
 	}
 
 	@Override
 	public List<SpringDictionary> listByIds(List<String> ids) {
-		return baseDictionaryDao.findInIds(ids);
+		return springDictionaryDao.findInIds(ids);
 	}
 }

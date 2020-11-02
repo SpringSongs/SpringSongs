@@ -27,7 +27,7 @@ import cn.spring.util.R;
 public class SpringAlbumServiceImpl implements ISpringAlbumService {
 
 	@Autowired
-	private SpringAlbumDao baseFolderDao;
+	private SpringAlbumDao springAlbumDao;
 
 	/**
 	 *
@@ -40,7 +40,7 @@ public class SpringAlbumServiceImpl implements ISpringAlbumService {
 	 */
 	@Override
 	public void deleteByPrimaryKey(String id) {
-		baseFolderDao.deleteById(id);
+		springAlbumDao.deleteById(id);
 
 	}
 
@@ -55,7 +55,7 @@ public class SpringAlbumServiceImpl implements ISpringAlbumService {
 	 */
 	@Override
 	public void insert(SpringAlbum record) {
-		baseFolderDao.save(record);
+		springAlbumDao.save(record);
 
 	}
 
@@ -70,7 +70,7 @@ public class SpringAlbumServiceImpl implements ISpringAlbumService {
 	 */
 	@Override
 	public SpringAlbum selectByPrimaryKey(String id) {
-		return baseFolderDao.getOne(id);
+		return springAlbumDao.getOne(id);
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class SpringAlbumServiceImpl implements ISpringAlbumService {
 	 */
 	@Override
 	public void updateByPrimaryKey(SpringAlbum record) {
-		baseFolderDao.save(record);
+		springAlbumDao.save(record);
 	}
 
 	/**
@@ -125,7 +125,7 @@ public class SpringAlbumServiceImpl implements ISpringAlbumService {
 			}
 		};
 		// Pageable pageable = PageRequest.of(currPage - 1, size);
-		return baseFolderDao.findAll(specification, pageable);
+		return springAlbumDao.findAll(specification, pageable);
 	}
 
 	/**
@@ -139,7 +139,7 @@ public class SpringAlbumServiceImpl implements ISpringAlbumService {
 	 */
 	@Override
 	public void setDeleted(List<String> ids) {
-		baseFolderDao.setDelete(ids);
+		springAlbumDao.setDelete(ids);
 	}
 
 	/**
@@ -158,7 +158,7 @@ public class SpringAlbumServiceImpl implements ISpringAlbumService {
 
 	@Override
 	public void delete(List<String> ids) {
-		baseFolderDao.delete(ids);
+		springAlbumDao.delete(ids);
 
 	}
 }

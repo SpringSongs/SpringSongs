@@ -27,7 +27,7 @@ import cn.spring.util.R;
 public class SpringSystemServiceImpl implements ISpringSystemService {
 
 	@Autowired
-	private SpringSystemDao baseSpringSystemDao;
+	private SpringSystemDao springSystemDao;
 
 	/**
 	 *
@@ -40,7 +40,7 @@ public class SpringSystemServiceImpl implements ISpringSystemService {
 	 */
 	@Override
 	public void deleteByPrimaryKey(String id) {
-		baseSpringSystemDao.deleteById(id);
+		springSystemDao.deleteById(id);
 
 	}
 
@@ -55,7 +55,7 @@ public class SpringSystemServiceImpl implements ISpringSystemService {
 	 */
 	@Override
 	public void insert(SpringSystem record) {
-		baseSpringSystemDao.save(record);
+		springSystemDao.save(record);
 
 	}
 
@@ -70,7 +70,7 @@ public class SpringSystemServiceImpl implements ISpringSystemService {
 	 */
 	@Override
 	public SpringSystem selectByPrimaryKey(String id) {
-		return baseSpringSystemDao.getOne(id);
+		return springSystemDao.getOne(id);
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class SpringSystemServiceImpl implements ISpringSystemService {
 	 */
 	@Override
 	public void updateByPrimaryKey(SpringSystem record) {
-		baseSpringSystemDao.save(record);
+		springSystemDao.save(record);
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class SpringSystemServiceImpl implements ISpringSystemService {
 			}
 		};
 		//Pageable pageable = new PageRequest(currPage - 1, size);
-		return baseSpringSystemDao.findAll(specification, pageable);
+		return springSystemDao.findAll(specification, pageable);
 	}
 
 	/**
@@ -132,7 +132,7 @@ public class SpringSystemServiceImpl implements ISpringSystemService {
 	 */
 	@Override
 	public void setDeleted(List<String> ids) {
-		baseSpringSystemDao.setDelete(ids);
+		springSystemDao.setDelete(ids);
 	}
 
 	/**
@@ -151,12 +151,12 @@ public class SpringSystemServiceImpl implements ISpringSystemService {
 
 	@Override
 	public SpringSystem findByCode(String itemCode) {
-		return baseSpringSystemDao.findByCode(itemCode);
+		return springSystemDao.findByCode(itemCode);
 	}
 
 	@Override
 	public List<SpringSystem> findInIds(List<String> ids) {
-		return baseSpringSystemDao.findInIds(ids);
+		return springSystemDao.findInIds(ids);
 	}
 
 	@Override
@@ -166,7 +166,7 @@ public class SpringSystemServiceImpl implements ISpringSystemService {
 
 	@Override
 	public List<SpringSystem> ListAll() {
-		return baseSpringSystemDao.listAllRecord();
+		return springSystemDao.listAllRecord();
 	}
 
 	

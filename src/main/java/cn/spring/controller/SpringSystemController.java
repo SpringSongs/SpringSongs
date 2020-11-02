@@ -33,13 +33,13 @@ public class SpringSystemController extends BaseController {
 	private static final Logger logger = LoggerFactory.getLogger(SpringSystemController.class);
 
 	@Autowired
-	private ISpringSystemService baseSpringSystemService;
+	private ISpringSystemService springSystemService;
 
 	@PostMapping(value = "/ListByPage")
 	public R getPage(@RequestBody SpringSystem viewEntity, @PageableDefault(page = 1, size = 20) Pageable pageable) {
 		R r = new R();
 		try {
-			Page<SpringSystem> lists = baseSpringSystemService.getAllRecordByPage(viewEntity, pageable);
+			Page<SpringSystem> lists = springSystemService.getAllRecordByPage(viewEntity, pageable);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("data", lists.getContent());
@@ -60,7 +60,7 @@ public class SpringSystemController extends BaseController {
 			r.put("code", 500);
 		} else {
 			try {
-				SpringSystem entity = baseSpringSystemService.selectByPrimaryKey(id);
+				SpringSystem entity = springSystemService.selectByPrimaryKey(id);
 				r.put("msg", "返回数据!");
 				r.put("code", 200);
 				r.put("data", entity);
@@ -81,7 +81,7 @@ public class SpringSystemController extends BaseController {
 			viewEntity.setCreatedUserId(this.getUser().getId());
 			viewEntity.setCreatedIp(IpKit.getRealIp(request));
 			viewEntity.setCreatedOn(new Date());
-			baseSpringSystemService.insert(viewEntity);
+			springSystemService.insert(viewEntity);
 			r.put("msg", "保存成功!");
 			r.put("code", 200);
 		} catch (Exception e) {
@@ -97,7 +97,7 @@ public class SpringSystemController extends BaseController {
 		R r = new R();
 
 		try {
-			SpringSystem entity = baseSpringSystemService.selectByPrimaryKey(viewEntity.getId());
+			SpringSystem entity = springSystemService.selectByPrimaryKey(viewEntity.getId());
 			if (null == entity) {
 				r.put("msg", "信息不存在或者已经被删除!");
 				r.put("code", 500);
@@ -111,7 +111,7 @@ public class SpringSystemController extends BaseController {
 				entity.setUpdatedBy(viewEntity.getUpdatedBy());
 				entity.setUpdatedOn(viewEntity.getUpdatedOn());
 				entity.setUpdatedIp(viewEntity.getUpdatedIp());
-				baseSpringSystemService.updateByPrimaryKey(entity);
+				springSystemService.updateByPrimaryKey(entity);
 				r.put("msg", "保存成功!");
 				r.put("code", 200);
 			}
@@ -131,7 +131,7 @@ public class SpringSystemController extends BaseController {
 			r.put("code", 500);
 		} else {
 			try {
-				List<SpringSystem> springSystemList = baseSpringSystemService.findInIds(ids);
+				List<SpringSystem> springSystemList = springSystemService.findInIds(ids);
 				for (SpringSystem entity : springSystemList) {
 					if (entity.getEnableDelete() == false) {
 						r.put("msg", entity.getTitle() + "不允许删除!");
@@ -140,7 +140,7 @@ public class SpringSystemController extends BaseController {
 					}
 				}
 				if (r.get("code").toString().equals("200")) {
-					baseSpringSystemService.setDeleted(ids);
+					springSystemService.setDeleted(ids);
 					r.put("msg", "删除成功!");
 					r.put("code", 200);
 				}
@@ -158,7 +158,7 @@ public class SpringSystemController extends BaseController {
 		R r = new R();
 		List<SpringSystem> springSystemList = null;
 		try {
-			springSystemList = baseSpringSystemService.ListAll();
+			springSystemList = springSystemService.ListAll();
 			r.put("msg", "删除成功!");
 			r.put("data", springSystemList);
 			r.put("code", 200);
