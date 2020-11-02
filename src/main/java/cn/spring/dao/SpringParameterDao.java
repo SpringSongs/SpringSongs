@@ -42,7 +42,7 @@ public interface SpringParameterDao extends JpaRepository <SpringParameter, Stri
     * @since [产品/模块版本] （可选）
     */
     @Modifying
-    @Query(value = "update SpringParameter set deletedFlag=1 where id=:id")
+    @Query(value = "update SpringParameter set deletedStatus=1 where id=:id")
     public void setDelete(@Param(value = "id") String id);
     /**
     *
@@ -53,7 +53,7 @@ public interface SpringParameterDao extends JpaRepository <SpringParameter, Stri
     * @since [产品/模块版本] （可选）
     */
     @Modifying
-    @Query(value = "update SpringParameter set deletedFlag=1 where id in (:ids)")
+    @Query(value = "update SpringParameter set deletedStatus=1 where id in (:ids)")
     public void setDelete(@Param(value = "ids") List<String> ids);
     
     /**

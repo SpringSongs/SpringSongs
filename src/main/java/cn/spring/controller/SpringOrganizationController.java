@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import cn.spring.domain.SpringArticleCategory;
 import cn.spring.domain.SpringOrganization;
 import cn.spring.service.ISpringOrganizationService;
 import cn.spring.util.Constant;
@@ -127,7 +128,7 @@ public class SpringOrganizationController extends BaseController {
 
 	@PostMapping(value = "/SetDeleted")
 	public R setDeleted(@RequestParam(value = "ids", required = true) List<String> ids) {
-		R r = new R();
+		R r = R.succeed();
 		if (CollectionUtils.isEmpty(ids)) {
 			r.put("msg", "参数不允许为空!");
 			r.put("code", 500);
@@ -175,6 +176,23 @@ public class SpringOrganizationController extends BaseController {
 				r.put("msg", Constant.SYSTEM_ERROR);
 				logger.error(e.getMessage());
 			}
+		}
+		return r;
+	}
+	
+	@PostMapping(value = "/listAllRecord")
+	public R listAllRecord() {
+		R r = new R();
+		try {
+			List<SpringOrganization> entitys = springOrganizationService.listAll();
+			r.put("code", HttpServletResponse.SC_OK);
+			r.put("data", entitys);
+			r.put("msg", Constant.SELECT_SUCCESSED);
+		} catch (Exception e) {
+
+			r.put("code", HttpServletResponse.SC_BAD_REQUEST);
+			r.put("msg", Constant.SYSTEM_ERROR);
+			logger.error(e.getMessage());
 		}
 		return r;
 	}

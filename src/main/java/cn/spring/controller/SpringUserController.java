@@ -151,6 +151,10 @@ public class SpringUserController extends BaseController {
 				r.put("code", HttpServletResponse.SC_BAD_REQUEST);
 			} else {
 				entity.setTrueName(viewEntity.getTrueName());
+				entity.setEmail(viewEntity.getEmail());
+				entity.setMobile(viewEntity.getMobile());
+				entity.setOrganizationId(viewEntity.getOrganizationId());
+				entity.setOrganizationName(viewEntity.getOrganizationName());
 				entity.setEnableEdit(viewEntity.getEnableEdit());
 				entity.setEnableDelete(viewEntity.getEnableDelete());
 				entity.setUpdatedOn(new Date());

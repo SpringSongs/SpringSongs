@@ -104,12 +104,12 @@ public class SpringArticleCommentController extends BaseController {
 				r.put("msg", Constant.INFO_NOT_FOUND);
 				r.put("code", HttpServletResponse.SC_BAD_REQUEST);
 			} else {
-				entity.setId(viewEntity.getId());
+				
 				entity.setContent(viewEntity.getContent());
 				entity.setArticleId(viewEntity.getArticleId());
 				entity.setAuditFlag(viewEntity.getAuditFlag());
 				entity.setSortCode(viewEntity.getSortCode());
-				entity.setDeletedFlag(viewEntity.getDeletedFlag());
+				entity.setDeletedStatus(viewEntity.getDeletedStatus());
 				entity.setUpdatedOn(new Date());
 				entity.setUpdatedUserId(this.getUser().getId());
 				entity.setUpdatedBy(this.getUser().getUserName());

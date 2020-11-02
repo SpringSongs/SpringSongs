@@ -116,7 +116,7 @@ public class SpringDictionaryDetailController extends BaseController {
 				entity.setSortCode(viewEntity.getSortCode());
 				entity.setEnableEdit(viewEntity.getEnableEdit());
 				entity.setEnableDelete(viewEntity.getEnableDelete());
-				entity.setDeletedFlag(viewEntity.getDeletedFlag());
+				entity.setDeletedStatus(viewEntity.getDeletedStatus());
 				entity.setUpdatedOn(new Date());
 				entity.setUpdatedUserId(this.getUser().getId());
 				entity.setUpdatedBy(this.getUser().getUserName());

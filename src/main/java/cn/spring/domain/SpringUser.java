@@ -93,6 +93,7 @@ public class SpringUser implements Serializable {
 
     @Size(max=45, min=0)
     @Description(title ="真实姓名")
+    @NotBlank(message="请填写真实姓名")
     @Column(name="true_name")
     private String trueName;
     public String getTrueName(){
@@ -111,6 +112,50 @@ public class SpringUser implements Serializable {
     }
     public void setResume(String resume){
         this.resume=resume;
+    }
+
+    
+    @Description(title ="组织机构主键")
+    @Column(name="organization_id")
+    private String organizationId;
+    public String getOrganizationId(){
+        return  this.organizationId;
+    }
+    public void setOrganizationId(String organizationId){
+        this.organizationId=organizationId;
+    }
+
+   
+    @Description(title ="组织机构名称")
+    @Column(name="organization_name")
+    private String organizationName;
+    public String getOrganizationName(){
+        return  this.organizationName;
+    }
+    public void setOrganizationName(String organizationName){
+        this.organizationName=organizationName;
+    }
+
+    
+    @Description(title ="职称主键")
+    @Column(name="title_id")
+    private String titleId;
+    public String getTitleId(){
+        return  this.titleId;
+    }
+    public void setTitleId(String titleId){
+        this.titleId=titleId;
+    }
+
+   
+    @Description(title ="职称名称")
+    @Column(name="title_name")
+    private String titleName;
+    public String getTitleName(){
+        return  this.titleName;
+    }
+    public void setTitleName(String titleName){
+        this.titleName=titleName;
     }
 
     @Description(title ="登录次数")
@@ -204,15 +249,17 @@ public class SpringUser implements Serializable {
         this.enableDelete=enableDelete;
     }
 
-    @Description(title ="0未删1已删")
-    @Column(name="deleted_flag")
-    private boolean deletedFlag;
-    public boolean getDeletedFlag(){
-        return  this.deletedFlag;
-    }
-    public void setDeletedFlag(boolean deletedFlag){
-        this.deletedFlag=deletedFlag;
-    }
+    @Description(title = "0未删1已删")
+   	@Column(name = "deleted_status")
+   	private boolean deletedStatus;
+
+   	public boolean getDeletedStatus() {
+   		return this.deletedStatus;
+   	}
+
+   	public void setDeletedStatus(boolean deletedStatus) {
+   		this.deletedStatus = deletedStatus;
+   	}
 
     @Size(max=36, min=0)
     @Description(title ="创建人主键")

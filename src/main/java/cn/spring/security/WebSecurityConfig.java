@@ -135,7 +135,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						map.put("code", "200");
 						map.put("msg", "注销成功");
 
-						out.append(JSON.toJSONString(new R().ok(map)));
+						out.append(JSON.toJSONString(new R().succeed(map)));
 					} catch (IOException e) {
 						logger.error(e.getMessage());
 					} finally {
@@ -189,7 +189,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						map.put("code", "200");
 						map.put("msg", "登录成功");
 						map.put("data", userLogonDto);
-						out.append(JSON.toJSONString(new R().ok(map)));
+						out.append(JSON.toJSONString(new R().succeed(map)));
 					} catch (IOException e) {
 						logger.error(e.getMessage());
 					} finally {

@@ -21,7 +21,7 @@ import cn.spring.annotation.Description;
 @Entity
 @DynamicInsert(true)
 @DynamicUpdate(true)
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 @Table(name = "spring_resource", schema = "base_system")
 public class SpringResource implements Serializable {
 	/**
@@ -171,15 +171,15 @@ public class SpringResource implements Serializable {
 	}
 
 	@Description(title = "0未删1已删")
-	@Column(name = "deleted_flag")
-	private boolean deletedFlag;
+	@Column(name = "deleted_status")
+	private boolean deletedStatus;
 
-	public boolean getDeletedFlag() {
-		return this.deletedFlag;
+	public boolean getDeletedStatus() {
+		return this.deletedStatus;
 	}
 
-	public void setDeletedFlag(boolean deletedFlag) {
-		this.deletedFlag = deletedFlag;
+	public void setDeletedStatus(boolean deletedStatus) {
+		this.deletedStatus = deletedStatus;
 	}
 
 	@NotBlank(message = "请填写系统主键")

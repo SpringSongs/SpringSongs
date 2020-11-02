@@ -128,7 +128,7 @@ public class SpringParameterController extends BaseController {
 
 	@PostMapping(value = "/SetDeleted")
 	public R setDeleted(@RequestParam(value = "ids", required = true) List<String> ids) {
-		R r = R.ok("OK");
+		R r = R.succeed("OK");
 		if (CollectionUtils.isEmpty(ids)) {
 			r.put("msg", Constant.PARAMETER_NOT_NULL_ERROR);
 			r.put("code", HttpServletResponse.SC_BAD_REQUEST);

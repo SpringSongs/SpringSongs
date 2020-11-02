@@ -48,7 +48,7 @@ public interface SpringRoleDao extends JpaRepository<SpringRole, String> {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Modifying
-	@Query(value = "update SpringRole set deletedFlags=1 where id=:id")
+	@Query(value = "update SpringRole set deletedStatus=1 where id=:id")
 	public void setDelete(@Param(value = "id") String id);
 
 	/**
@@ -61,7 +61,7 @@ public interface SpringRoleDao extends JpaRepository<SpringRole, String> {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Modifying
-	@Query(value = "update SpringRole set deletedFlag=1 where id in (:ids)")
+	@Query(value = "update SpringRole set deletedStatus=1 where id in (:ids)")
 	public void setDelete(@Param(value = "ids") List<String> ids);
 
 	@Query(value = "select new cn.spring.dto.RoleCodeDto(bre.id,bre.title) from SpringRole bre left join SpringUserRole bure on bre.id=bure.roleId left join SpringUser bue on bue.id=bure.userId where bure.userId=:userId")

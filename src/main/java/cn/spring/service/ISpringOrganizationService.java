@@ -24,4 +24,6 @@ public interface ISpringOrganizationService {
 	R batchSaveExcel(List<String[]> list);
 
 	List<SpringOrganization> listOrganizationsByParent(String parentId);
+
+	List<SpringOrganization> listAll();
 }

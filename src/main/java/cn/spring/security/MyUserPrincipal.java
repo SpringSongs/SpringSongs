@@ -38,7 +38,7 @@ public class MyUserPrincipal implements UserDetails {
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		List<SimpleGrantedAuthority> auths = new ArrayList<>();
 		List<RoleCodeDto> roles = baseEntityUser.getRoleList();
-		roles.parallelStream().forEach(role -> {
+		roles.stream().forEach(role -> {
 			auths.add(new SimpleGrantedAuthority("ROLE_" + role.getCode()));
 		});
 		return auths;

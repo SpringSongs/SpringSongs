@@ -48,7 +48,7 @@ public interface SpringDictionaryDetailDao extends JpaRepository<SpringDictionar
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Modifying
-	@Query(value = "update SpringDictionaryDetail set deletedFlag=1 where id=:id")
+	@Query(value = "update SpringDictionaryDetail set deletedStatus=1 where id=:id")
 	public void setDelete(@Param(value = "id") String id);
 
 	/**
@@ -61,7 +61,7 @@ public interface SpringDictionaryDetailDao extends JpaRepository<SpringDictionar
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Modifying
-	@Query(value = "update SpringDictionaryDetail set deletedFlag=1 where id in (:ids)")
+	@Query(value = "update SpringDictionaryDetail set deletedStatus=1 where id in (:ids)")
 	public void setDelete(@Param(value = "ids") List<String> ids);
 
 	/**
@@ -69,7 +69,7 @@ public interface SpringDictionaryDetailDao extends JpaRepository<SpringDictionar
 	 * @param code
 	 */
 	@Modifying
-	@Query(value = "update SpringDictionaryDetail set deletedFlag=1 where dictionaryCode=:code")
+	@Query(value = "update SpringDictionaryDetail set deletedStatus=1 where dictionaryCode=:code")
 	public void setDeleteByCode(@Param(value = "code") String code);
 
 	/**
@@ -95,6 +95,6 @@ public interface SpringDictionaryDetailDao extends JpaRepository<SpringDictionar
 	 * @param code
 	 */
 	@Modifying
-	@Query(value = "update SpringDictionaryDetail set deletedFlag=1  where dictionaryCode in (:codes)")
+	@Query(value = "update SpringDictionaryDetail set deletedStatus=1  where dictionaryCode in (:codes)")
 	public void setDeleteByDictionCode(@Param(value = "codes") List<String> codes);
 }

@@ -129,8 +129,8 @@ public class SpringContactServiceImpl implements ISpringContactService {
 							record.getCreatedUserId());
 					predicates.add(createdUserId);
 				}
-				Predicate deletedFlag = cb.equal(root.get("deletedFlag").as(Boolean.class), false);
-				predicates.add(deletedFlag);
+				Predicate deletedStatus = cb.equal(root.get("deletedStatus").as(Boolean.class), false);
+				predicates.add(deletedStatus);
 				Predicate[] pre = new Predicate[predicates.size()];
 				query.where(predicates.toArray(pre));
 				query.orderBy(cb.desc(root.get("createdOn").as(Date.class)));

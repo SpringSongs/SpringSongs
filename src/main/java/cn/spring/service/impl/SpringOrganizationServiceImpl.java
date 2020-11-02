@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import cn.spring.dao.SpringOrganizationDao;
+import cn.spring.domain.SpringArticleCategory;
 import cn.spring.domain.SpringOrganization;
 import cn.spring.service.ISpringOrganizationService;
 import cn.spring.util.R;
@@ -163,6 +164,11 @@ public class SpringOrganizationServiceImpl implements ISpringOrganizationService
 	@Override
 	public List<SpringOrganization> listOrganizationsByParent(String parentId) {
 		return springOrganizationDao.listOrganizationByParentId(parentId);
+	}
+	
+	@Override
+	public List<SpringOrganization> listAll() {
+		return springOrganizationDao.listAllRecord();
 	}
 
 }

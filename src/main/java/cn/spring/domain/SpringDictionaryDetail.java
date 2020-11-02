@@ -155,15 +155,17 @@ public class SpringDictionaryDetail implements Serializable {
         this.enableDelete=enableDelete;
     }
 
-    @Description(title ="0未删1已删")
-    @Column(name="deleted_flag")
-    private boolean deletedFlag;
-    public boolean getDeletedFlag(){
-        return  this.deletedFlag;
-    }
-    public void setDeletedFlag(boolean deletedFlag){
-        this.deletedFlag=deletedFlag;
-    }
+    @Description(title = "0未删1已删")
+	@Column(name = "deleted_status")
+	private boolean deletedStatus;
+
+	public boolean getDeletedStatus() {
+		return this.deletedStatus;
+	}
+
+	public void setDeletedStatus(boolean deletedStatus) {
+		this.deletedStatus = deletedStatus;
+	}
 
     @Size(max=36, min=0)
     @Description(title ="创建人主键")

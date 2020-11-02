@@ -47,7 +47,7 @@ public interface SpringResourceDao extends JpaRepository<SpringResource, String>
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Modifying
-	@Query(value = "update SpringResource set deletedFlag=1 where id=:id")
+	@Query(value = "update SpringResource set deletedStatus=1 where id=:id")
 	public void setDelete(@Param(value = "id") String id);
 
 	/**
@@ -60,7 +60,7 @@ public interface SpringResourceDao extends JpaRepository<SpringResource, String>
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Modifying
-	@Query(value = "update SpringResource set deletedFlag=1 where id in (:ids)")
+	@Query(value = "update SpringResource set deletedStatus=1 where id in (:ids)")
 	public void setDelete(@Param(value = "ids") List<String> ids);
 
 	/**
@@ -72,7 +72,7 @@ public interface SpringResourceDao extends JpaRepository<SpringResource, String>
 	 * @see [相关类/方法]（可选）
 	 * @since [产品/模块版本] （可选）
 	 */
-	@Query(value = "from SpringResource where parentId=:parentId and deletedFlag=0 and systemId=:systemId")
+	@Query(value = "from SpringResource where parentId=:parentId and deletedStatus=0 and systemId=:systemId")
 	public List<SpringResource> getByParentId(@Param(value = "parentId") String parentId,@Param(value = "systemId") String systemId);
 
 	/**
@@ -84,7 +84,7 @@ public interface SpringResourceDao extends JpaRepository<SpringResource, String>
 	 * @see [相关类/方法]（可选）
 	 * @since [产品/模块版本] （可选）
 	 */
-	@Query(value = "from SpringResource where parentId in (:parentId) and deletedFlag=0")
+	@Query(value = "from SpringResource where parentId in (:parentId) and deletedStatus=0")
 	public List<SpringResource> getInParentId(@Param(value = "parentId") List<String> parentId);
 	
 	/**
@@ -97,7 +97,7 @@ public interface SpringResourceDao extends JpaRepository<SpringResource, String>
 			+ "    LEFT JOIN spring_role br ON bur.role_id = br.id" 
 			+ "    LEFT JOIN spring_resource_role bp ON bp.role_id = br.id" 
 			+ "    LEFT JOIN spring_resource bue ON bue.id = bp.module_id " 
-			+ "    WHERE bue.deleted_flag=0 and bue.menu_flag=1 and bur.user_id = ?")
+			+ "    WHERE bue.deleted_status=0 and bue.menu_flag=1 and bur.user_id = ?")
 	public List<SpringResource> listModuleByUserId(String userId);
 	
 	@Query(value = "SELECT DISTINCT new cn.spring.dto.ModuleRoleDto(bm.vueUrl,br.title) FROM  SpringRole br" 

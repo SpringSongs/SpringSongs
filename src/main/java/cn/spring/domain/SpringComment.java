@@ -88,13 +88,13 @@ public class SpringComment implements Serializable {
     }
 
     @Description(title ="0未删1已删")
-    @Column(name="deleted_flag")
-    private boolean deletedFlag;
-    public boolean getDeletedFlag(){
-        return  this.deletedFlag;
+    @Column(name="deleted_status")
+    private boolean deletedStatus;
+    public boolean getDeletedStatus(){
+        return  this.deletedStatus;
     }
-    public void setDeletedFlag(boolean deletedFlag){
-        this.deletedFlag=deletedFlag;
+    public void setDeletedStatus(boolean deletedStatus){
+        this.deletedStatus=deletedStatus;
     }
 
     @Size(max=36, min=0)

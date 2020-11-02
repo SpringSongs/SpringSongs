@@ -46,7 +46,7 @@ public interface SpringDictionaryDao extends JpaRepository<SpringDictionary, Str
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Modifying
-	@Query(value = "update SpringDictionary set deletedFlag=1 where id=:id")
+	@Query(value = "update SpringDictionary set deletedStatus=1 where id=:id")
 	public void setDelete(@Param(value = "id") String id);
 
 	/**
@@ -59,7 +59,7 @@ public interface SpringDictionaryDao extends JpaRepository<SpringDictionary, Str
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Modifying
-	@Query(value = "update SpringDictionary set deletedFlag=1 where id in (:ids)")
+	@Query(value = "update SpringDictionary set deletedStatus=1 where id in (:ids)")
 	public void setDelete(@Param(value = "ids") List<String> ids);
 
 	/**

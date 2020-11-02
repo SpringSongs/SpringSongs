@@ -64,4 +64,11 @@ public interface SpringOrganizationDao extends JpaRepository <SpringOrganization
      */
     @Query(value = "from SpringOrganization where deletedStatus=0 and parentId=:parentId")
     public List<SpringOrganization> listOrganizationByParentId(@Param(value = "parentId") String parentId);
+
+    /**
+     * 查询所有组织机构
+     * @return
+     */
+    @Query(value = "from SpringOrganization where deletedStatus=0")
+	public List<SpringOrganization> listAllRecord();
 }

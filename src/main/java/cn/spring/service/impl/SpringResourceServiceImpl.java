@@ -122,8 +122,8 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 					Predicate systemId = cb.equal(root.get("systemId").as(String.class), record.getSystemId());
 					predicates.add(systemId);
 				}
-				Predicate deletedFlag = cb.equal(root.get("deletedFlag").as(Boolean.class), false);
-				predicates.add(deletedFlag);
+				Predicate deletedStatus = cb.equal(root.get("deletedStatus").as(Boolean.class), false);
+				predicates.add(deletedStatus);
 				Predicate[] pre = new Predicate[predicates.size()];
 				query.where(predicates.toArray(pre));
 				query.orderBy(cb.desc(root.get("createdOn").as(Date.class)));
@@ -170,9 +170,9 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 
 	public List<MenuVo> getSoredModules(List<SpringResource> modules) {
 		List<SpringResource> parentModules = modules.stream().filter((SpringResource m) -> m.getParentId().equals("0")
-				&& m.getMenuFlag() == true && m.getDeletedFlag() == false).collect(toList());
+				&& m.getMenuFlag() == true && m.getDeletedStatus() == false).collect(toList());
 		List<SpringResource> secondModules = modules.stream().filter((SpringResource m) -> !m.getParentId().equals("0")
-				&& m.getMenuFlag() == true && m.getDeletedFlag() == false).collect(toList());
+				&& m.getMenuFlag() == true && m.getDeletedStatus() == false).collect(toList());
 		List<MenuVo> menuDtoList = this.getSecondModules(parentModules, secondModules);
 		return menuDtoList;
 	}
