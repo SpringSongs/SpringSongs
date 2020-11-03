@@ -20,6 +20,7 @@ import org.springframework.util.StringUtils;
 
 import cn.spring.dao.SpringParameterDao;
 import cn.spring.domain.SpringParameter;
+import cn.spring.domain.query.SpringParameterQuery;
 import cn.spring.service.ISpringParameterService;
 import cn.spring.util.R;
 
@@ -98,25 +99,21 @@ public class SpringParameterServiceImpl implements ISpringParameterService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public Page<SpringParameter> getAllRecordByPage(SpringParameter record,Pageable pageable) {
+	public Page<SpringParameter> getAllRecordByPage(SpringParameterQuery springParameterQuery,Pageable pageable) {
 		Specification<SpringParameter> specification = new Specification<SpringParameter>() {
 
 			@Override
 			public Predicate toPredicate(Root<SpringParameter> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				List<Predicate> predicates = new ArrayList<>();
-				if (!StringUtils.isEmpty(record.getCreatedUserId())) {
-					Predicate createdUserId = cb.equal(root.get("createdUserId").as(String.class),
-							record.getCreatedUserId());
-					predicates.add(createdUserId);
-				}
-				if (!StringUtils.isEmpty(record.getCode())) {
-					Predicate code = cb.equal(root.get("code").as(String.class),
-							record.getCode());
+				
+				if (!StringUtils.isEmpty(springParameterQuery.getCode())) {
+					Predicate code = cb.like(root.get("code").as(String.class),
+							"%"+springParameterQuery.getCode());
 					predicates.add(code);
 				}
-				if (!StringUtils.isEmpty(record.getK())) {
-					Predicate k = cb.equal(root.get("k").as(String.class),
-							record.getK());
+				if (!StringUtils.isEmpty(springParameterQuery.getK())) {
+					Predicate k = cb.like(root.get("k").as(String.class),
+							"%"+springParameterQuery.getK());
 					predicates.add(k);
 				}
 				Predicate deletedStatus = cb.equal(root.get("deletedStatus").as(Boolean.class), false);

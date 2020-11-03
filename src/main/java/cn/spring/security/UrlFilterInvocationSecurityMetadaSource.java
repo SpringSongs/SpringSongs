@@ -15,7 +15,7 @@ import org.springframework.util.StringUtils;
 
 import com.vip.vjtools.vjkit.collection.CollectionUtil;
 
-import cn.spring.dto.ModuleRoleDto;
+import cn.spring.domain.dto.ModuleRoleDto;
 import cn.spring.service.ISpringResourceService;
 
 @Component

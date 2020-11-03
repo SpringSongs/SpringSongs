@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import cn.spring.domain.SpringRole;
 import cn.spring.domain.SpringUser;
-import cn.spring.dto.RoleCodeDto;
+import cn.spring.domain.dto.RoleCodeDto;
 
 @Repository
 public interface SpringRoleDao extends JpaRepository<SpringRole, String> {
@@ -64,7 +64,7 @@ public interface SpringRoleDao extends JpaRepository<SpringRole, String> {
 	@Query(value = "update SpringRole set deletedStatus=1 where id in (:ids)")
 	public void setDelete(@Param(value = "ids") List<String> ids);
 
-	@Query(value = "select new cn.spring.dto.RoleCodeDto(bre.id,bre.title) from SpringRole bre left join SpringUserRole bure on bre.id=bure.roleId left join SpringUser bue on bue.id=bure.userId where bure.userId=:userId")
+	@Query(value = "select new cn.spring.domain.dto.RoleCodeDto(bre.id,bre.title) from SpringRole bre left join SpringUserRole bure on bre.id=bure.roleId left join SpringUser bue on bue.id=bure.userId where bure.userId=:userId")
 	public List<RoleCodeDto> getRolesByUserId(@Param(value = "userId") String userId);
 
 	/**

@@ -26,11 +26,12 @@ import cn.spring.dao.SpringResourceDao;
 import cn.spring.dao.SpringResourceRoleDao;
 import cn.spring.domain.SpringResource;
 import cn.spring.domain.SpringResourceRole;
-import cn.spring.dto.ModuleRoleDto;
+import cn.spring.domain.dto.ModuleRoleDto;
+import cn.spring.domain.query.SpringResourceQuery;
+import cn.spring.domain.vo.ElementUiTreeVo;
+import cn.spring.domain.vo.MenuVo;
 import cn.spring.service.ISpringResourceService;
 import cn.spring.util.R;
-import cn.spring.vo.ElementUiTreeVo;
-import cn.spring.vo.MenuVo;
 
 @Service
 
@@ -109,17 +110,19 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public Page<SpringResource> getAllRecordByPage(SpringResource record, Pageable pageable) {
+	public Page<SpringResource> getAllRecordByPage(SpringResourceQuery springResourceQuery, Pageable pageable) {
 		Specification<SpringResource> specification = new Specification<SpringResource>() {
 			@Override
 			public Predicate toPredicate(Root<SpringResource> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				List<Predicate> predicates = new ArrayList<>();
-				if (!StringUtils.isEmpty(record.getParentId())) {
-					Predicate parentId = cb.equal(root.get("parentId").as(String.class), record.getParentId());
+				if (!StringUtils.isEmpty(springResourceQuery.getParentId())) {
+					Predicate parentId = cb.equal(root.get("parentId").as(String.class),
+							springResourceQuery.getParentId());
 					predicates.add(parentId);
 				}
-				if (!StringUtils.isEmpty(record.getSystemId())) {
-					Predicate systemId = cb.equal(root.get("systemId").as(String.class), record.getSystemId());
+				if (!StringUtils.isEmpty(springResourceQuery.getSystemId())) {
+					Predicate systemId = cb.equal(root.get("systemId").as(String.class),
+							springResourceQuery.getSystemId());
 					predicates.add(systemId);
 				}
 				Predicate deletedStatus = cb.equal(root.get("deletedStatus").as(Boolean.class), false);

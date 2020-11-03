@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.spring.domain.SpringContact;
+import cn.spring.domain.query.SpringContactQuery;
 import cn.spring.service.ISpringContactService;
 import cn.spring.util.Constant;
 import cn.spring.util.IpKit;
@@ -37,10 +38,11 @@ public class SpringContactController extends BaseController {
 	private ISpringContactService springContactService;
 
 	@PostMapping(value = "/ListByPage")
-	public R listByPage(@RequestBody SpringContact viewEntity, @PageableDefault(page = 0, size = 20) Pageable pageable) {
+	public R listByPage(@RequestBody SpringContactQuery springContactQuery,
+			@PageableDefault(page = 0, size = 20) Pageable pageable) {
 		R r = new R();
 		try {
-			Page<SpringContact> lists = springContactService.getAllRecordByPage(viewEntity, pageable);
+			Page<SpringContact> lists = springContactService.getAllRecordByPage(springContactQuery, pageable);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("data", lists.getContent());

@@ -19,7 +19,7 @@ import org.hibernate.annotations.GenericGenerator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import cn.spring.annotation.Description;
-import cn.spring.dto.RoleCodeDto;
+import cn.spring.domain.dto.RoleCodeDto;
 
 @Entity
 @DynamicInsert(true)

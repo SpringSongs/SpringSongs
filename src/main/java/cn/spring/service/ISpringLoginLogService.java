@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import cn.spring.domain.SpringLoginLog;
+import cn.spring.domain.query.SpringLoginLogQuery;
 import cn.spring.util.R;
 
 public interface ISpringLoginLogService {
@@ -18,7 +19,7 @@ public interface ISpringLoginLogService {
 
 	void updateByPrimaryKey(SpringLoginLog record);
 
-	Page<SpringLoginLog> getAllRecordByPage(SpringLoginLog record,Pageable pageable);
+	Page<SpringLoginLog> getAllRecordByPage(SpringLoginLogQuery springLoginLogQuery,Pageable pageable);
 
 	
 	R batchSaveExcel(List<String[]> list);

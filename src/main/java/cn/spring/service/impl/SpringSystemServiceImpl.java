@@ -19,6 +19,7 @@ import org.springframework.util.StringUtils;
 
 import cn.spring.dao.SpringSystemDao;
 import cn.spring.domain.SpringSystem;
+import cn.spring.domain.query.SpringSystemQuery;
 import cn.spring.service.ISpringSystemService;
 import cn.spring.util.R;
 
@@ -97,17 +98,22 @@ public class SpringSystemServiceImpl implements ISpringSystemService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public Page<SpringSystem> getAllRecordByPage(SpringSystem record, Pageable pageable) {
+	public Page<SpringSystem> getAllRecordByPage(SpringSystemQuery springSystemQuery, Pageable pageable) {
 		Specification<SpringSystem> specification = new Specification<SpringSystem>() {
 
 			@Override
 			public Predicate toPredicate(Root<SpringSystem> root, CriteriaQuery<?> query,
 					CriteriaBuilder cb) {
 				List<Predicate> predicates = new ArrayList<>();
-				if (!StringUtils.isEmpty(record.getCreatedUserId())) {
-					Predicate createdUserId = cb.equal(root.get("createdUserId").as(String.class),
-							record.getCreatedUserId());
-					predicates.add(createdUserId);
+				if (!StringUtils.isEmpty(springSystemQuery.getCode())) {
+					Predicate code = cb.like(root.get("code").as(String.class),
+							"%"+springSystemQuery.getCode());
+					predicates.add(code);
+				}
+				if (!StringUtils.isEmpty(springSystemQuery.getTitle())) {
+					Predicate title = cb.like(root.get("title").as(String.class),
+							"%"+springSystemQuery.getTitle());
+					predicates.add(title);
 				}
 				Predicate deletedStatus = cb.equal(root.get("deletedStatus").as(Boolean.class), false);
 				predicates.add(deletedStatus);

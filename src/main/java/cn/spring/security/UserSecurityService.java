@@ -14,7 +14,7 @@ import cn.spring.dao.SpringUserDao;
 import cn.spring.dao.SpringRoleDao;
 import cn.spring.domain.SpringUser;
 import cn.spring.domain.SpringUserSecurity;
-import cn.spring.dto.RoleCodeDto;
+import cn.spring.domain.dto.RoleCodeDto;
 
 @Service
 public class UserSecurityService implements UserDetailsService {

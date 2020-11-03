@@ -21,11 +21,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.spring.domain.SpringArticleCategory;
+import cn.spring.domain.vo.ElementUiTreeVo;
 import cn.spring.service.ISpringArticleCategoryService;
 import cn.spring.util.Constant;
 import cn.spring.util.IpKit;
 import cn.spring.util.R;
-import cn.spring.vo.ElementUiTreeVo;
 
 @RestController
 @RequestMapping(value = "/SpringArticleCategory")

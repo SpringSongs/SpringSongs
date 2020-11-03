@@ -23,8 +23,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.alibaba.fastjson.JSON;
 
-import cn.spring.dao.SpringAlbumDao;
-import cn.spring.domain.SpringAlbum;
+import cn.spring.dao.SpringAttachmentCategoryDao;
+import cn.spring.domain.SpringAttachmentCategory;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -35,7 +35,7 @@ class BaseFolderControllerTest {
 	private WebApplicationContext context;
 
 	@Autowired
-	private SpringAlbumDao dao;
+	private SpringAttachmentCategoryDao dao;
 
 	// @Autowired
 	private MockMvc mvc;
@@ -47,7 +47,7 @@ class BaseFolderControllerTest {
 
 	@Test
 	void testGetPage() throws Exception {
-		SpringAlbum entity = new SpringAlbum();
+		SpringAttachmentCategory entity = new SpringAttachmentCategory();
 		entity.setTitle("LlCmcIstsMnnzBHIBlsDxYbmdGhQPcWcATKz");
 		entity.setDescription("EdwKhNtxmbgMPAGwqAazdFUOoRBXSMWRvHPU");
 		entity.setDictionaryCode("mPQtqOoYPdACvqAHVqCcvOnGEumKQosvAkBw");
@@ -75,7 +75,7 @@ class BaseFolderControllerTest {
 
 	@Test
 	void testGet() throws Exception {
-		SpringAlbum entity = new SpringAlbum();
+		SpringAttachmentCategory entity = new SpringAttachmentCategory();
 		entity.setTitle("KGQYneclkuOPFYGbJzMvdKibDRooTgOXVrjB");
 		entity.setDescription("UMsPmMzoYVdtvcqzGGkEXLSJcGLMaYWVAMwR");
 		entity.setDictionaryCode("LfBftIufUrfQBVggRNKMAWtFIKDCYAgfCkyo");
@@ -104,7 +104,7 @@ class BaseFolderControllerTest {
 	@Test
 	void testSave() throws Exception {
 		int databaseSizeBeforeCreate = dao.findAll().size();
-		SpringAlbum entity = new SpringAlbum();
+		SpringAttachmentCategory entity = new SpringAttachmentCategory();
 		entity.setTitle("sCRtYTkrgYSILttVqUCprjljXByBihJtDbBm");
 		entity.setDescription("TWJjGxxFhUyNEKiPWmDYbMzmVYpKvuqgRSXe");
 		entity.setDictionaryCode("qzsYrSDLthrgAfdKygWqrMgSqAvWNoiVPCqS");
@@ -117,9 +117,9 @@ class BaseFolderControllerTest {
 		entity.setUpdatedIp("WRlUgOBxXnimyCqfBbNDqWRbwIUrSkbiVpjl");
 		this.mvc.perform(post("/BaseFolder/Create").contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON).content(JSON.toJSONString(entity))).andExpect(status().isOk());
-		List<SpringAlbum> baseFolderEntityList = dao.findAll();
+		List<SpringAttachmentCategory> baseFolderEntityList = dao.findAll();
 		assertThat(baseFolderEntityList).hasSize(databaseSizeBeforeCreate + 1);
-		SpringAlbum testBaseFolderEntity = baseFolderEntityList.get(baseFolderEntityList.size() - 1);
+		SpringAttachmentCategory testBaseFolderEntity = baseFolderEntityList.get(baseFolderEntityList.size() - 1);
 		assertThat(testBaseFolderEntity.getCreatedBy()).isEqualTo("BKZNyHAzhFXTZCmRLpRMerydMrJZavXBRPqz");
 		assertThat(testBaseFolderEntity.getCreatedIp()).isEqualTo("ADksZaeEBcYXKTBZiyjSfLdWAtuCzGzkLfro");
 		assertThat(testBaseFolderEntity.getCreatedUserId()).isEqualTo("DUMrntyZwOwSuscCusStlwrnXdafZtKilRJn");
@@ -135,7 +135,7 @@ class BaseFolderControllerTest {
 
 	@Test
 	void testUpdate() throws Exception {
-		SpringAlbum entity = new SpringAlbum();
+		SpringAttachmentCategory entity = new SpringAttachmentCategory();
 		entity.setTitle("zxEDcTEHdaaeePCNEIfYxTgntBwwypohjDKZ");
 		entity.setDescription("MjZVStaSEpYswSzNsDVPnkLtdqoRseDdrKJj");
 		entity.setDictionaryCode("daafsPBbmsqzxltcVlKRlCKCaRZSktDHmjwx");
@@ -148,7 +148,7 @@ class BaseFolderControllerTest {
 		entity.setUpdatedIp("JUVWmFNJeQMzMthYVnAIishiYliWOnXMJxHg");
 		dao.saveAndFlush(entity);
 		int databaseSizeBeforeUpdate = dao.findAll().size();
-		SpringAlbum updatedEntity = dao.findById(entity.getId()).get();
+		SpringAttachmentCategory updatedEntity = dao.findById(entity.getId()).get();
 		updatedEntity.setTitle("ggGDNHIrdHETRKUqUmkSZAjQwfDBlgaSvBej");
 		updatedEntity.setDescription("aYAiqRdjriCBcMZBXrkMswpcuGjnTaYYXuMV");
 		updatedEntity.setDictionaryCode("fcgmGLmmasGZdmNLofxScPToWbsGyPtKQHqe");
@@ -162,9 +162,9 @@ class BaseFolderControllerTest {
 		this.mvc.perform(post("/BaseFolder/Edit").contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON).content(JSON.toJSONString(updatedEntity)))
 				.andExpect(status().isOk());
-		List<SpringAlbum> baseFolderEntityList = dao.findAll();
+		List<SpringAttachmentCategory> baseFolderEntityList = dao.findAll();
 		assertThat(baseFolderEntityList).hasSize(databaseSizeBeforeUpdate);
-		SpringAlbum testBaseFolderEntity = baseFolderEntityList.get(baseFolderEntityList.size() - 1);
+		SpringAttachmentCategory testBaseFolderEntity = baseFolderEntityList.get(baseFolderEntityList.size() - 1);
 		assertThat(testBaseFolderEntity.getCreatedBy()).isEqualTo("eVRhCiGfpiYBdPojPowfJURFGrzBulpBzdCs");
 		assertThat(testBaseFolderEntity.getCreatedIp()).isEqualTo("fIGvDEBgRDeBNsMtpQcqvcoTAUMHiPQKfcqw");
 		assertThat(testBaseFolderEntity.getCreatedUserId()).isEqualTo("DkGsQBdqMIPaiZOqGtsJyJceoGEZcbXQfxpL");
@@ -180,7 +180,7 @@ class BaseFolderControllerTest {
 
 	@Test
 	void testSetDeleted() throws Exception {
-		SpringAlbum entity = new SpringAlbum();
+		SpringAttachmentCategory entity = new SpringAttachmentCategory();
 		entity.setTitle("UOmVcQRHheOElCKeRpuRXuuZKkDwMYRlTkcA");
 		entity.setDescription("XIqRiLpZHqbUMrrGwxEbSTcSOKcHxmiTqGSQ");
 		entity.setDictionaryCode("iqKJAroFeSltIJqadDGGXJbzIvOfrLRSTcyi");

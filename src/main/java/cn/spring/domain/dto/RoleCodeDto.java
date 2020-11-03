@@ -1,4 +1,4 @@
-package cn.spring.dto;
+package cn.spring.domain.dto;
 
 public class RoleCodeDto {
 	private String id;

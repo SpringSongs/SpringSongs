@@ -24,6 +24,7 @@ import cn.spring.dao.SpringRoleDao;
 import cn.spring.dao.SpringUserRoleDao;
 import cn.spring.domain.SpringRole;
 import cn.spring.domain.SpringUserRole;
+import cn.spring.domain.query.SpringRoleQuery;
 import cn.spring.service.ISpringRoleService;
 import cn.spring.util.R;
 
@@ -102,14 +103,14 @@ public class SpringRoleServiceImpl implements ISpringRoleService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public Page<SpringRole> getAllRecordByPage(SpringRole record, Pageable pageable) {
+	public Page<SpringRole> getAllRecordByPage(SpringRoleQuery springRoleQuery, Pageable pageable) {
 		Specification<SpringRole> specification = new Specification<SpringRole>() {
 			@Override
 			public Predicate toPredicate(Root<SpringRole> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				List<Predicate> predicates = new ArrayList<>();
 
-				if (!StringUtils.isEmpty(record.getTitle())) {
-					Predicate title = cb.equal(root.get("title").as(String.class), record.getTitle());
+				if (!StringUtils.isEmpty(springRoleQuery.getTitle())) {
+					Predicate title = cb.like(root.get("title").as(String.class), "%"+springRoleQuery.getTitle());
 					predicates.add(title);
 				}
 				Predicate deletedStatus = cb.equal(root.get("deletedStatus").as(Boolean.class), false);

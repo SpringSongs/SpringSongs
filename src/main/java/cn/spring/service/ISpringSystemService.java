@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import cn.spring.domain.SpringSystem;
+import cn.spring.domain.query.SpringSystemQuery;
 import cn.spring.util.R;
 
 public interface ISpringSystemService {
@@ -17,7 +18,7 @@ public interface ISpringSystemService {
 
 	void updateByPrimaryKey(SpringSystem record);
 
-	Page<SpringSystem> getAllRecordByPage(SpringSystem record, Pageable pageable);
+	Page<SpringSystem> getAllRecordByPage(SpringSystemQuery springSystemQuery, Pageable pageable);
 
 	void setDeleted(List<String> ids);
 

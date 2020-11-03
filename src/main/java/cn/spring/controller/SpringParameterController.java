@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.spring.domain.SpringParameter;
+import cn.spring.domain.query.SpringParameterQuery;
 import cn.spring.service.ISpringParameterService;
 import cn.spring.util.Constant;
 import cn.spring.util.IpKit;
@@ -38,10 +39,11 @@ public class SpringParameterController extends BaseController {
 	private ISpringParameterService springParameterService;
 
 	@PostMapping(value = "ListByPage")
-	public R listByPage(@RequestBody SpringParameter viewEntity, @PageableDefault(page = 1, size = 20) Pageable pageable) {
+	public R listByPage(@RequestBody SpringParameterQuery springParameterQuery,
+			@PageableDefault(page = 1, size = 20) Pageable pageable) {
 		R r = new R();
 		try {
-			Page<SpringParameter> lists = springParameterService.getAllRecordByPage(viewEntity, pageable);
+			Page<SpringParameter> lists = springParameterService.getAllRecordByPage(springParameterQuery, pageable);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("data", lists.getContent());
@@ -142,7 +144,7 @@ public class SpringParameterController extends BaseController {
 						break;
 					}
 				}
-				if (Integer.parseInt(r.get("code").toString())==HttpServletResponse.SC_OK) {
+				if (Integer.parseInt(r.get("code").toString()) == HttpServletResponse.SC_OK) {
 					springParameterService.setDeleted(ids);
 					r.put("msg", Constant.DELETE_SUCCESSED);
 					r.put("code", HttpServletResponse.SC_OK);

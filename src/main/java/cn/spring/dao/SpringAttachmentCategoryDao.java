@@ -11,27 +11,29 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import cn.spring.domain.SpringComment;
+import cn.spring.domain.SpringAttachmentCategory;
 
 @Repository
-public interface SpringCommentDao extends JpaRepository <SpringComment, String> { 
+public interface SpringAttachmentCategoryDao extends JpaRepository <SpringAttachmentCategory, String> { 
+	
 	/**
 	 * 分页查询
 	 * @param spec
 	 * @param pageable
 	 * @return
 	 */
-	Page<SpringComment> findAll(Specification<SpringComment> spec, Pageable pageable);
+	Page<SpringAttachmentCategory> findAll(Specification<SpringAttachmentCategory> spec, Pageable pageable);
+	
     /**
     *
     * IN查询
     * @param ids
-    * @return List<BaseCommentEntity>
+    * @return List<BaseFolderEntity>
     * @see [相关类/方法]（可选）
     * @since [产品/模块版本] （可选）
     */
-    @Query(value = "from SpringComment where id in (:ids)")
-    public List<SpringComment> findInIds(@Param(value = "ids") List<String> ids);
+    @Query(value = "from SpringAttachmentCategory where id in (:ids)")
+    public List<SpringAttachmentCategory> findInIds(@Param(value = "ids") List<String> ids);
     /**
     *
     * 逻辑删除
@@ -41,7 +43,7 @@ public interface SpringCommentDao extends JpaRepository <SpringComment, String> 
     * @since [产品/模块版本] （可选）
     */
     @Modifying
-    @Query(value = "update SpringComment set deletedStatus=1 where id=:id")
+    @Query(value = "update SpringAttachmentCategory set deletedStatus=1 where id=:id")
     public void setDelete(@Param(value = "id") String id);
     /**
     *
@@ -52,7 +54,7 @@ public interface SpringCommentDao extends JpaRepository <SpringComment, String> 
     * @since [产品/模块版本] （可选）
     */
     @Modifying
-    @Query(value = "update SpringComment set deletedStatus=1 where id in (:ids)")
+    @Query(value = "update SpringAttachmentCategory set deletedStatus=1 where id in (:ids)")
     public void setDelete(@Param(value = "ids") List<String> ids);
     
     /**
@@ -60,6 +62,6 @@ public interface SpringCommentDao extends JpaRepository <SpringComment, String> 
 	 * @param ids
 	 */
 	@Modifying
-	@Query(value = "delete from SpringComment where id in (:ids)")
+	@Query(value = "delete from SpringAttachmentCategory where id in (:ids)")
 	public void delete(@Param(value = "ids") List<String> ids);
 }

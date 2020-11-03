@@ -20,8 +20,10 @@ import org.springframework.util.StringUtils;
 
 import cn.spring.dao.SpringContactDao;
 import cn.spring.domain.SpringContact;
+import cn.spring.domain.query.SpringContactQuery;
 import cn.spring.service.ISpringContactService;
 import cn.spring.util.R;
+
 @Service
 @Transactional
 public class SpringContactServiceImpl implements ISpringContactService {
@@ -97,36 +99,54 @@ public class SpringContactServiceImpl implements ISpringContactService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public Page<SpringContact> getAllRecordByPage(SpringContact record,Pageable pageable) {
+	public Page<SpringContact> getAllRecordByPage(SpringContactQuery springContactQuery, Pageable pageable) {
 		Specification<SpringContact> specification = new Specification<SpringContact>() {
 
 			@Override
-			public Predicate toPredicate(Root<SpringContact> root, CriteriaQuery<?> query,
-					CriteriaBuilder cb) {
+			public Predicate toPredicate(Root<SpringContact> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				List<Predicate> predicates = new ArrayList<>();
-				if (!StringUtils.isEmpty(record.getCompany())) {
+				if (!StringUtils.isEmpty(springContactQuery.getCompany())) {
 					Predicate company = cb.like(root.get("company").as(String.class),
-							record.getCompany() + "%");
+							springContactQuery.getCompany() + "%");
 					predicates.add(company);
 				}
-				if (!StringUtils.isEmpty(record.getUsername())) {
+				if (!StringUtils.isEmpty(springContactQuery.getUsername())) {
 					Predicate username = cb.like(root.get("username").as(String.class),
-							record.getUsername() + "%");
+							springContactQuery.getUsername() + "%");
 					predicates.add(username);
 				}
-				if (!StringUtils.isEmpty(record.getMobile())) {
+				if (!StringUtils.isEmpty(springContactQuery.getMobile())) {
 					Predicate mobile = cb.like(root.get("mobile").as(String.class),
-							record.getMobile() + "%");
+							springContactQuery.getMobile() + "%");
 					predicates.add(mobile);
 				}
-				if (!StringUtils.isEmpty(record.getTitle())) {
-					Predicate title = cb.like(root.get("title").as(String.class),
-							record.getTitle() + "%");
+				if (!StringUtils.isEmpty(springContactQuery.getQq())) {
+					Predicate qq = cb.like(root.get("qq").as(String.class),
+							springContactQuery.getQq() + "%");
+					predicates.add(qq);
+				}
+				if (!StringUtils.isEmpty(springContactQuery.getWebchat())) {
+					Predicate webchat = cb.like(root.get("webchat").as(String.class),
+							springContactQuery.getWebchat() + "%");
+					predicates.add(webchat);
+				}
+				if (!StringUtils.isEmpty(springContactQuery.getFax())) {
+					Predicate fax = cb.like(root.get("fax").as(String.class),
+							springContactQuery.getFax() + "%");
+					predicates.add(fax);
+				}
+				if (!StringUtils.isEmpty(springContactQuery.getTel())) {
+					Predicate tel = cb.like(root.get("tel").as(String.class),
+							springContactQuery.getTel() + "%");
+					predicates.add(tel);
+				}
+				if (!StringUtils.isEmpty(springContactQuery.getTitle())) {
+					Predicate title = cb.like(root.get("title").as(String.class), springContactQuery.getTitle() + "%");
 					predicates.add(title);
 				}
-				if (!StringUtils.isEmpty(record.getCreatedUserId())) {
+				if (!StringUtils.isEmpty(springContactQuery.getCreatedUserId())) {
 					Predicate createdUserId = cb.equal(root.get("createdUserId").as(String.class),
-							record.getCreatedUserId());
+							springContactQuery.getCreatedUserId());
 					predicates.add(createdUserId);
 				}
 				Predicate deletedStatus = cb.equal(root.get("deletedStatus").as(Boolean.class), false);
@@ -137,7 +157,7 @@ public class SpringContactServiceImpl implements ISpringContactService {
 				return query.getRestriction();
 			}
 		};
-		//Pageable pageable = PageRequest.of(currPage - 1, size);
+		// Pageable pageable = PageRequest.of(currPage - 1, size);
 		return springContactDao.findAll(specification, pageable);
 	}
 
@@ -172,6 +192,6 @@ public class SpringContactServiceImpl implements ISpringContactService {
 	@Override
 	public void delete(List<String> ids) {
 		springContactDao.delete(ids);
-		
+
 	}
 }

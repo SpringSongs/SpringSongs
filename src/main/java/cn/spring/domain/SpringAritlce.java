@@ -19,7 +19,7 @@ import org.hibernate.annotations.GenericGenerator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import cn.spring.annotation.Description;
-import cn.spring.dto.SearchDateDto;
+import cn.spring.domain.query.SearchDate;
 
 @Entity
 @DynamicInsert(true)
@@ -407,11 +407,11 @@ public class SpringAritlce implements Serializable {
     }
     
     @Transient
-    SearchDateDto  map;
-	public SearchDateDto getMap() {
+    SearchDate  map;
+	public SearchDate getMap() {
 		return map;
 	}
-	public void setMap(SearchDateDto map) {
+	public void setMap(SearchDate map) {
 		this.map = map;
 	}
 }

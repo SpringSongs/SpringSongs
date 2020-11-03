@@ -1,6 +1,6 @@
-package cn.spring.dto;
+package cn.spring.domain.query;
 
-public class SearchDateDto {
+public class SearchDate {
 	private String createTimeStart;
 	private String createTimeEnd;
 

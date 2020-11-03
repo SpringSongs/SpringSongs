@@ -23,8 +23,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.alibaba.fastjson.JSON;
 
-import cn.spring.dao.SpringCommentDao;
-import cn.spring.domain.SpringComment;
+import cn.spring.dao.SpringArticleCommentDao;
+import cn.spring.domain.SpringArticleComment;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -35,7 +35,7 @@ class BaseCommentControllerTest {
 	private WebApplicationContext context;
 
 	@Autowired
-	private SpringCommentDao dao;
+	private SpringArticleCommentDao dao;
 
 	// @Autowired
 	private MockMvc mvc;
@@ -47,7 +47,7 @@ class BaseCommentControllerTest {
 
 	@Test
 	void testGetPage() throws Exception {
-		SpringComment entity = new SpringComment();
+		SpringArticleComment entity = new SpringArticleComment();
 		entity.setContent("DTmyuXaWowENMcwWSiXRSTlMZlaqjdkOoaun");
 		entity.setArticleId("KQfdLTgAjRblTuSuLERZdWTbLjfeqCGoJito");
 		entity.setCreatedUserId("wULYfnzYZrcvcZyCxkfJmCzJuBFcTxpysnvm");
@@ -71,7 +71,7 @@ class BaseCommentControllerTest {
 
 	@Test
 	void testGet() throws Exception {
-		SpringComment entity = new SpringComment();
+		SpringArticleComment entity = new SpringArticleComment();
 		entity.setContent("PgqBNHROELCJVGwKAUxiBHscEvkzfJVbeGRb");
 		entity.setArticleId("SUwOwAObmaEpaDtuKrdXiLhyfdWjYSkzICka");
 		entity.setCreatedUserId("KEkrbEEorbkAbfjdaniElratfehHzWCkaLjE");
@@ -96,7 +96,7 @@ class BaseCommentControllerTest {
 	@Test
 	void testSave() throws Exception {
 		int databaseSizeBeforeCreate = dao.findAll().size();
-		SpringComment entity = new SpringComment();
+		SpringArticleComment entity = new SpringArticleComment();
 		entity.setContent("HYvUIfQWRjiivpIOvzWEQqLpkIhyRQjPewKY");
 		entity.setArticleId("CwjUetoENVbLBiJDqxylSxOKdkKXNxvToYQf");
 		entity.setCreatedUserId("CIBxsVepbxqHyEmOFWYrepvUwJaBWAeRtqYV");
@@ -107,9 +107,9 @@ class BaseCommentControllerTest {
 		entity.setUpdatedIp("vDcBYAnJRNsTAYDusWVgiZVvOpZZZwncmUrn");
 		this.mvc.perform(post("/BaseComment/Create").contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON).content(JSON.toJSONString(entity))).andExpect(status().isOk());
-		List<SpringComment> baseCommentEntityList = dao.findAll();
+		List<SpringArticleComment> baseCommentEntityList = dao.findAll();
 		assertThat(baseCommentEntityList).hasSize(databaseSizeBeforeCreate + 1);
-		SpringComment testBaseCommentEntity = baseCommentEntityList.get(baseCommentEntityList.size() - 1);
+		SpringArticleComment testBaseCommentEntity = baseCommentEntityList.get(baseCommentEntityList.size() - 1);
 		assertThat(testBaseCommentEntity.getContent()).isEqualTo("HYvUIfQWRjiivpIOvzWEQqLpkIhyRQjPewKY");
 		assertThat(testBaseCommentEntity.getCreatedBy()).isEqualTo("IxAZlqHBKgoiLFZDHSqDAzzFOQNqFpTvwJOw");
 		assertThat(testBaseCommentEntity.getCreatedIp()).isEqualTo("SMYdGFEaAAPyiZkHkRXkxBetPVvAczlcaIDp");
@@ -123,7 +123,7 @@ class BaseCommentControllerTest {
 
 	@Test
 	void testUpdate() throws Exception {
-		SpringComment entity = new SpringComment();
+		SpringArticleComment entity = new SpringArticleComment();
 		entity.setContent("XjEXsdWqAUQTyoxnkuaPrOuZBGRKWTaWPRot");
 		entity.setArticleId("KiVIiApnxFTmWMKebYIomMFOfPgIzJEjkQOC");
 		entity.setCreatedUserId("XodnIzoioUsckskNXAFdeNoacGjstGZZgfdR");
@@ -134,7 +134,7 @@ class BaseCommentControllerTest {
 		entity.setUpdatedIp("yyYPiFdxmPSiCFVZguoGQYyMKVMpSODheYSd");
 		dao.saveAndFlush(entity);
 		int databaseSizeBeforeUpdate = dao.findAll().size();
-		SpringComment updatedEntity = dao.findById(entity.getId()).get();
+		SpringArticleComment updatedEntity = dao.findById(entity.getId()).get();
 		updatedEntity.setContent("koPPyCVlfzFedESoNowDLtkqwevlwyiZExvm");
 		updatedEntity.setArticleId("WiJvIWROCkJFEapTWirdwixMNQoXhdkRVjAd");
 		updatedEntity.setCreatedUserId("iRvIsVQuKPEoRFtCAeTZJItHVZzyXojdeFEs");
@@ -146,9 +146,9 @@ class BaseCommentControllerTest {
 		this.mvc.perform(post("/BaseComment/Edit").contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON).content(JSON.toJSONString(updatedEntity)))
 				.andExpect(status().isOk());
-		List<SpringComment> baseCommentEntityList = dao.findAll();
+		List<SpringArticleComment> baseCommentEntityList = dao.findAll();
 		assertThat(baseCommentEntityList).hasSize(databaseSizeBeforeUpdate);
-		SpringComment testBaseCommentEntity = baseCommentEntityList.get(baseCommentEntityList.size() - 1);
+		SpringArticleComment testBaseCommentEntity = baseCommentEntityList.get(baseCommentEntityList.size() - 1);
 		assertThat(testBaseCommentEntity.getContent()).isEqualTo("koPPyCVlfzFedESoNowDLtkqwevlwyiZExvm");
 		assertThat(testBaseCommentEntity.getCreatedBy()).isEqualTo("kQxEMAzNiaOAOsjYYEjBUwUOpkTqRKndcTMB");
 		assertThat(testBaseCommentEntity.getCreatedIp()).isEqualTo("YLwqCaMLpQhXWjhUczNaOJFjZULgtrqCWbPI");
@@ -162,7 +162,7 @@ class BaseCommentControllerTest {
 
 	@Test
 	void testSetDeleted() throws Exception {
-		SpringComment entity = new SpringComment();
+		SpringArticleComment entity = new SpringArticleComment();
 		entity.setContent("ZmpAKSSBRYrXwhxotbpyNjEgkDpHnZsQcgPH");
 		entity.setArticleId("vZGJUFbMgYdhkAhCjXUqrqUMNTBPIEiEjjBw");
 		entity.setCreatedUserId("EpSNSxYFVxufqRMYEvOUMyaaPpABVWBTlZUJ");

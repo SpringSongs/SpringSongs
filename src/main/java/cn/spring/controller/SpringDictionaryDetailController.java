@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.spring.domain.SpringDictionaryDetail;
+import cn.spring.domain.query.SpringDictionaryDetailQuery;
 import cn.spring.service.ISpringDictionaryDetailService;
 import cn.spring.util.Constant;
 import cn.spring.util.IpKit;
@@ -38,11 +39,12 @@ public class SpringDictionaryDetailController extends BaseController {
 	private ISpringDictionaryDetailService springDictionaryDetailService;
 
 	@PostMapping(value = "ListByPage")
-	public R listByPage(@RequestBody SpringDictionaryDetail viewEntity,
+	public R listByPage(@RequestBody SpringDictionaryDetailQuery springDictionaryDetailQuery,
 			@PageableDefault(page = 1, size = 20) Pageable pageable) {
 		R r = new R();
 		try {
-			Page<SpringDictionaryDetail> lists = springDictionaryDetailService.getAllRecordByPage(viewEntity, pageable);
+			Page<SpringDictionaryDetail> lists = springDictionaryDetailService
+					.getAllRecordByPage(springDictionaryDetailQuery, pageable);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("data", lists.getContent());

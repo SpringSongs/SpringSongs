@@ -8,10 +8,11 @@ import org.springframework.data.domain.Pageable;
 
 import cn.spring.domain.SpringResource;
 import cn.spring.domain.SpringResourceRole;
-import cn.spring.dto.ModuleRoleDto;
+import cn.spring.domain.dto.ModuleRoleDto;
+import cn.spring.domain.query.SpringResourceQuery;
+import cn.spring.domain.vo.ElementUiTreeVo;
+import cn.spring.domain.vo.MenuVo;
 import cn.spring.util.R;
-import cn.spring.vo.ElementUiTreeVo;
-import cn.spring.vo.MenuVo;
 
 public interface ISpringResourceService {
 	void deleteByPrimaryKey(String id);
@@ -22,7 +23,7 @@ public interface ISpringResourceService {
 
 	void updateByPrimaryKey(SpringResource record);
 
-	Page<SpringResource> getAllRecordByPage(SpringResource record, Pageable pageable);
+	Page<SpringResource> getAllRecordByPage(SpringResourceQuery springResourceQuery, Pageable pageable);
 
 	void setDeleted(List<String> ids);
 

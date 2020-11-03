@@ -6,8 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import cn.spring.domain.SpringArticleCategory;
+import cn.spring.domain.vo.ElementUiTreeVo;
 import cn.spring.util.R;
-import cn.spring.vo.ElementUiTreeVo;
 
 public interface ISpringArticleCategoryService {
 	void deleteByPrimaryKey(String id);

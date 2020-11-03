@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.spring.domain.SpringLoginLog;
+import cn.spring.domain.query.SpringLoginLogQuery;
 import cn.spring.service.ISpringLoginLogService;
 import cn.spring.util.Constant;
 import cn.spring.util.R;
@@ -28,10 +29,10 @@ public class SpringLoginLogController extends BaseController {
 	private ISpringLoginLogService springLoginLogService;
 
 	@PostMapping(value = "ListByPage")
-	public R listByPage(@RequestBody SpringLoginLog viewEntity, @PageableDefault(page = 1, size = 20) Pageable pageable) {
+	public R listByPage(@RequestBody SpringLoginLogQuery springLoginLogQuery, @PageableDefault(page = 1, size = 20) Pageable pageable) {
 		R r = new R();
 		try {
-			Page<SpringLoginLog> lists = springLoginLogService.getAllRecordByPage(viewEntity, pageable);
+			Page<SpringLoginLog> lists = springLoginLogService.getAllRecordByPage(springLoginLogQuery, pageable);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("data", lists.getContent());

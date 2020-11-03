@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import cn.spring.domain.SpringAlbum;
-import cn.spring.service.ISpringAlbumService;
+import cn.spring.domain.SpringAttachmentCategory;
+import cn.spring.service.ISpringAttachmentCategoryService;
 import cn.spring.util.Constant;
 import cn.spring.util.IpKit;
 import cn.spring.util.R;
@@ -34,13 +34,13 @@ public class SpringAlbumController extends BaseController {
 	private static final Logger logger = LoggerFactory.getLogger(SpringAlbumController.class);
 
 	@Autowired
-	private ISpringAlbumService springAlbumService;
+	private ISpringAttachmentCategoryService springAlbumService;
 
 	@PostMapping(value = "ListByPage")
-	public R listByPage(@RequestBody SpringAlbum viewEntity, @PageableDefault(page = 1, size = 20) Pageable pageable) {
+	public R listByPage(@RequestBody SpringAttachmentCategory viewEntity, @PageableDefault(page = 1, size = 20) Pageable pageable) {
 		R r = new R();
 		try {
-			Page<SpringAlbum> lists = springAlbumService.getAllRecordByPage(viewEntity, pageable);
+			Page<SpringAttachmentCategory> lists = springAlbumService.getAllRecordByPage(viewEntity, pageable);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("data", lists.getContent());
@@ -57,7 +57,7 @@ public class SpringAlbumController extends BaseController {
 	public R get(@NotEmpty(message = "id不能为空") String id) {
 		R r = new R();
 		try {
-			SpringAlbum entity = springAlbumService.selectByPrimaryKey(id);
+			SpringAttachmentCategory entity = springAlbumService.selectByPrimaryKey(id);
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("data", entity);
@@ -70,7 +70,7 @@ public class SpringAlbumController extends BaseController {
 	}
 
 	@PostMapping(value = "/Create")
-	public R save(@RequestBody @Valid SpringAlbum viewEntity, HttpServletRequest request) {
+	public R save(@RequestBody @Valid SpringAttachmentCategory viewEntity, HttpServletRequest request) {
 		R r = new R();
 
 		try {
@@ -90,10 +90,10 @@ public class SpringAlbumController extends BaseController {
 	}
 
 	@PostMapping(value = "/Edit")
-	public R update(@RequestBody @Valid SpringAlbum viewEntity, HttpServletRequest request) {
+	public R update(@RequestBody @Valid SpringAttachmentCategory viewEntity, HttpServletRequest request) {
 		R r = new R();
 		try {
-			SpringAlbum entity = springAlbumService.selectByPrimaryKey(viewEntity.getId());
+			SpringAttachmentCategory entity = springAlbumService.selectByPrimaryKey(viewEntity.getId());
 			if (null == entity) {
 				r.put("msg", Constant.INFO_NOT_FOUND);
 				r.put("code", HttpServletResponse.SC_BAD_REQUEST);

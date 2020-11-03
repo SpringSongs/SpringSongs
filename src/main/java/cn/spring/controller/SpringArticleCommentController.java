@@ -23,7 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import cn.spring.domain.SpringComment;
+import cn.spring.domain.SpringArticleComment;
+import cn.spring.domain.query.SpringArticleCommentQuery;
 import cn.spring.service.ISpringArticleCommentService;
 import cn.spring.util.Constant;
 import cn.spring.util.IpKit;
@@ -39,10 +40,12 @@ public class SpringArticleCommentController extends BaseController {
 	private ISpringArticleCommentService springArticleCommentService;
 
 	@PostMapping(value = "ListByPage")
-	public R listByPage(@RequestBody SpringComment viewEntity, @PageableDefault(page = 1, size = 20) Pageable pageable) {
+	public R listByPage(@RequestBody SpringArticleCommentQuery springArticleCommentQuery,
+			@PageableDefault(page = 1, size = 20) Pageable pageable) {
 		R r = new R();
 		try {
-			Page<SpringComment> lists = springArticleCommentService.getAllRecordByPage(viewEntity, pageable);
+			Page<SpringArticleComment> lists = springArticleCommentService.getAllRecordByPage(springArticleCommentQuery,
+					pageable);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("data", lists.getContent());
@@ -63,7 +66,7 @@ public class SpringArticleCommentController extends BaseController {
 			r.put("code", HttpServletResponse.SC_BAD_REQUEST);
 		} else {
 			try {
-				SpringComment entity = springArticleCommentService.selectByPrimaryKey(id);
+				SpringArticleComment entity = springArticleCommentService.selectByPrimaryKey(id);
 				r.put("msg", Constant.SELECT_SUCCESSED);
 				r.put("code", HttpServletResponse.SC_OK);
 				r.put("data", entity);
@@ -77,7 +80,7 @@ public class SpringArticleCommentController extends BaseController {
 	}
 
 	@PostMapping(value = "/Create")
-	public R save(@RequestBody @Valid SpringComment viewEntity, HttpServletRequest request) {
+	public R save(@RequestBody @Valid SpringArticleComment viewEntity, HttpServletRequest request) {
 		R r = new R();
 		try {
 			viewEntity.setCreatedBy(this.getUser().getUserName());
@@ -96,15 +99,15 @@ public class SpringArticleCommentController extends BaseController {
 	}
 
 	@PostMapping(value = "/Edit")
-	public R update(@RequestBody @Valid SpringComment viewEntity, HttpServletRequest request) {
+	public R update(@RequestBody @Valid SpringArticleComment viewEntity, HttpServletRequest request) {
 		R r = new R();
 		try {
-			SpringComment entity = springArticleCommentService.selectByPrimaryKey(viewEntity.getId());
+			SpringArticleComment entity = springArticleCommentService.selectByPrimaryKey(viewEntity.getId());
 			if (null == entity) {
 				r.put("msg", Constant.INFO_NOT_FOUND);
 				r.put("code", HttpServletResponse.SC_BAD_REQUEST);
 			} else {
-				
+
 				entity.setContent(viewEntity.getContent());
 				entity.setArticleId(viewEntity.getArticleId());
 				entity.setAuditFlag(viewEntity.getAuditFlag());
@@ -174,7 +177,7 @@ public class SpringArticleCommentController extends BaseController {
 			r.put("code", HttpServletResponse.SC_BAD_REQUEST);
 		} else {
 			try {
-				SpringComment entity = springArticleCommentService.selectByPrimaryKey(id);
+				SpringArticleComment entity = springArticleCommentService.selectByPrimaryKey(id);
 				if (null == entity) {
 					r.put("msg", Constant.INFO_NOT_FOUND);
 					r.put("code", HttpServletResponse.SC_BAD_REQUEST);

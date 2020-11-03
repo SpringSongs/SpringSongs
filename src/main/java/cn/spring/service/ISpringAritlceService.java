@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import cn.spring.domain.SpringAritlce;
+import cn.spring.domain.query.SpringAritlceQuery;
 import cn.spring.util.R;
 
 
@@ -19,7 +20,7 @@ public interface ISpringAritlceService {
 
 	void updateByPrimaryKey(SpringAritlce record);
 
-	Page<SpringAritlce> getAllRecordByPage(SpringAritlce record, Pageable pageable);
+	Page<SpringAritlce> getAllRecordByPage(SpringAritlceQuery springAritlceQuery, Pageable pageable);
 
 	void setDeleted(List<String> ids);
 

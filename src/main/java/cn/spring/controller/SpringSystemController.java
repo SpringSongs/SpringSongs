@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.spring.domain.SpringSystem;
+import cn.spring.domain.query.SpringSystemQuery;
 import cn.spring.service.ISpringSystemService;
 import cn.spring.util.Constant;
 import cn.spring.util.IpKit;
@@ -36,10 +37,11 @@ public class SpringSystemController extends BaseController {
 	private ISpringSystemService springSystemService;
 
 	@PostMapping(value = "/ListByPage")
-	public R getPage(@RequestBody SpringSystem viewEntity, @PageableDefault(page = 1, size = 20) Pageable pageable) {
+	public R getPage(@RequestBody SpringSystemQuery springSystemQuery,
+			@PageableDefault(page = 1, size = 20) Pageable pageable) {
 		R r = new R();
 		try {
-			Page<SpringSystem> lists = springSystemService.getAllRecordByPage(viewEntity, pageable);
+			Page<SpringSystem> lists = springSystemService.getAllRecordByPage(springSystemQuery, pageable);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("data", lists.getContent());

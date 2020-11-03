@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import cn.spring.domain.SpringResourceRole;
 import cn.spring.domain.SpringRole;
 import cn.spring.domain.SpringUserRole;
+import cn.spring.domain.query.SpringRoleQuery;
 import cn.spring.service.ISpringResourceService;
 import cn.spring.service.ISpringRoleService;
 import cn.spring.util.Constant;
@@ -46,10 +47,11 @@ public class SpringRoleController extends BaseController {
 	private ISpringResourceService springResourceService;
 
 	@PostMapping(value = "ListByPage")
-	public R listByPage(@RequestBody SpringRole viewEntity, @PageableDefault(page = 1, size = 20) Pageable pageable) {
+	public R listByPage(@RequestBody SpringRoleQuery springRoleQuery,
+			@PageableDefault(page = 1, size = 20) Pageable pageable) {
 		R r = new R();
 		try {
-			Page<SpringRole> lists = springRoleService.getAllRecordByPage(viewEntity, pageable);
+			Page<SpringRole> lists = springRoleService.getAllRecordByPage(springRoleQuery, pageable);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("data", lists.getContent());

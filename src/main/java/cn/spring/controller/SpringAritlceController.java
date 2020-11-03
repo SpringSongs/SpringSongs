@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.spring.domain.SpringAritlce;
+import cn.spring.domain.query.SpringAritlceQuery;
 import cn.spring.service.ISpringAritlceService;
 import cn.spring.util.Constant;
 import cn.spring.util.IpKit;
@@ -34,15 +35,16 @@ import cn.spring.util.R;
 public class SpringAritlceController extends BaseController {
 
 	private static final Logger logger = LoggerFactory.getLogger(SpringAritlceController.class);
-	
+
 	@Autowired
 	private ISpringAritlceService springAritlceService;
 
 	@PostMapping(value = "/ListByPage")
-	public R listByPage(@RequestBody SpringAritlce viewEntity, @PageableDefault(page = 1, size = 20) Pageable pageable) {
+	public R listByPage(@RequestBody SpringAritlceQuery springAritlceQuery,
+			@PageableDefault(page = 1, size = 20) Pageable pageable) {
 		R r = new R();
 		try {
-			Page<SpringAritlce> lists = springAritlceService.getAllRecordByPage(viewEntity, pageable);
+			Page<SpringAritlce> lists = springAritlceService.getAllRecordByPage(springAritlceQuery, pageable);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("data", lists.getContent());
@@ -100,29 +102,29 @@ public class SpringAritlceController extends BaseController {
 				r.put("code", HttpServletResponse.SC_BAD_REQUEST);
 			} else {
 				entity.setCategoryId(viewEntity.getCategoryId());
- 				entity.setCategoryTitle(viewEntity.getCategoryTitle());
- 				entity.setColor(viewEntity.getColor());
- 				entity.setTag(viewEntity.getTag());
- 				entity.setKeyword(viewEntity.getKeyword());
- 				entity.setTitle(viewEntity.getTitle());
- 				entity.setSummary(viewEntity.getSummary());
- 				entity.setContents(viewEntity.getContents());
- 				entity.setAuthorId(viewEntity.getAuthorId());
- 				entity.setAuthor(viewEntity.getAuthor());
- 				entity.setAuthorUrl(viewEntity.getAuthorUrl());
- 				entity.setStatus(viewEntity.getStatus());
- 				entity.setLink(viewEntity.getLink());
- 				entity.setReadCount(viewEntity.getReadCount());
- 				entity.setLikeCount(viewEntity.getLikeCount());
- 				entity.setCollectCount(viewEntity.getCollectCount());
- 				entity.setShareCount(viewEntity.getShareCount());
- 				entity.setTopStatus(viewEntity.getTopStatus());
- 				entity.setHotStatus(viewEntity.getHotStatus());
- 				entity.setFeatured(viewEntity.getFeatured());
- 				entity.setCommentCount(viewEntity.getCommentCount());
- 				entity.setSortOrder(viewEntity.getSortOrder());
- 				entity.setComeFrom(viewEntity.getComeFrom());
- 				entity.setComeFromLink(viewEntity.getComeFromLink());
+				entity.setCategoryTitle(viewEntity.getCategoryTitle());
+				entity.setColor(viewEntity.getColor());
+				entity.setTag(viewEntity.getTag());
+				entity.setKeyword(viewEntity.getKeyword());
+				entity.setTitle(viewEntity.getTitle());
+				entity.setSummary(viewEntity.getSummary());
+				entity.setContents(viewEntity.getContents());
+				entity.setAuthorId(viewEntity.getAuthorId());
+				entity.setAuthor(viewEntity.getAuthor());
+				entity.setAuthorUrl(viewEntity.getAuthorUrl());
+				entity.setStatus(viewEntity.getStatus());
+				entity.setLink(viewEntity.getLink());
+				entity.setReadCount(viewEntity.getReadCount());
+				entity.setLikeCount(viewEntity.getLikeCount());
+				entity.setCollectCount(viewEntity.getCollectCount());
+				entity.setShareCount(viewEntity.getShareCount());
+				entity.setTopStatus(viewEntity.getTopStatus());
+				entity.setHotStatus(viewEntity.getHotStatus());
+				entity.setFeatured(viewEntity.getFeatured());
+				entity.setCommentCount(viewEntity.getCommentCount());
+				entity.setSortOrder(viewEntity.getSortOrder());
+				entity.setComeFrom(viewEntity.getComeFrom());
+				entity.setComeFromLink(viewEntity.getComeFromLink());
 				entity.setUpdatedOn(new Date());
 				entity.setUpdatedUserId(this.getUser().getId());
 				entity.setUpdatedBy(this.getUser().getUserName());
@@ -192,7 +194,7 @@ public class SpringAritlceController extends BaseController {
 					r.put("msg", Constant.INFO_CAN_NOT_DELETE);
 					r.put("code", 500);
 				} else {
-					if (entity.getStatus()== true) {
+					if (entity.getStatus() == true) {
 						entity.setStatus(false);
 					} else {
 						entity.setStatus(true);
@@ -210,7 +212,7 @@ public class SpringAritlceController extends BaseController {
 		}
 		return r;
 	}
-	
+
 	@PostMapping(value = "/HotStatus/{id}")
 	public R hotStatus(@PathVariable(value = "id", required = true) String id) {
 		R r = new R();
@@ -224,7 +226,7 @@ public class SpringAritlceController extends BaseController {
 					r.put("msg", Constant.INFO_CAN_NOT_DELETE);
 					r.put("code", 500);
 				} else {
-					if (entity.getHotStatus()== true) {
+					if (entity.getHotStatus() == true) {
 						entity.setHotStatus(false);
 					} else {
 						entity.setHotStatus(true);
@@ -242,7 +244,7 @@ public class SpringAritlceController extends BaseController {
 		}
 		return r;
 	}
-	
+
 	@PostMapping(value = "/TopStatus/{id}")
 	public R topStatus(@PathVariable(value = "id", required = true) String id) {
 		R r = new R();
@@ -256,7 +258,7 @@ public class SpringAritlceController extends BaseController {
 					r.put("msg", Constant.INFO_CAN_NOT_DELETE);
 					r.put("code", 500);
 				} else {
-					if (entity.getTopStatus()== true) {
+					if (entity.getTopStatus() == true) {
 						entity.setTopStatus(false);
 					} else {
 						entity.setTopStatus(true);
@@ -274,7 +276,7 @@ public class SpringAritlceController extends BaseController {
 		}
 		return r;
 	}
-	
+
 	@PostMapping(value = "/Featured/{id}")
 	public R featured(@PathVariable(value = "id", required = true) String id) {
 		R r = new R();
@@ -288,7 +290,7 @@ public class SpringAritlceController extends BaseController {
 					r.put("msg", Constant.INFO_CAN_NOT_DELETE);
 					r.put("code", 500);
 				} else {
-					if (entity.getFeatured()== true) {
+					if (entity.getFeatured() == true) {
 						entity.setFeatured(false);
 					} else {
 						entity.setFeatured(true);

@@ -20,6 +20,7 @@ import org.springframework.util.StringUtils;
 
 import cn.spring.dao.SpringDictionaryDetailDao;
 import cn.spring.domain.SpringDictionaryDetail;
+import cn.spring.domain.query.SpringDictionaryDetailQuery;
 import cn.spring.service.ISpringDictionaryDetailService;
 import cn.spring.util.R;
 
@@ -98,31 +99,27 @@ public class SpringDictionaryDetailServiceImpl implements ISpringDictionaryDetai
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public Page<SpringDictionaryDetail> getAllRecordByPage(SpringDictionaryDetail record, Pageable pageable) {
+	public Page<SpringDictionaryDetail> getAllRecordByPage(SpringDictionaryDetailQuery springDictionaryDetailQuery, Pageable pageable) {
 		Specification<SpringDictionaryDetail> specification = new Specification<SpringDictionaryDetail>() {
 
 			@Override
 			public Predicate toPredicate(Root<SpringDictionaryDetail> root, CriteriaQuery<?> query,
 					CriteriaBuilder cb) {
 				List<Predicate> predicates = new ArrayList<>();
-				if (!StringUtils.isEmpty(record.getCreatedUserId())) {
-					Predicate createdUserId = cb.equal(root.get("createdUserId").as(String.class),
-							record.getCreatedUserId());
-					predicates.add(createdUserId);
-				}
-				if (!StringUtils.isEmpty(record.getDictionaryCode())) {
+				
+				if (!StringUtils.isEmpty(springDictionaryDetailQuery.getDictionaryCode())) {
 					Predicate dictionaryCode = cb.equal(root.get("dictionaryCode").as(String.class),
-							record.getDictionaryCode());
+							springDictionaryDetailQuery.getDictionaryCode());
 					predicates.add(dictionaryCode);
 				}
-				if (!StringUtils.isEmpty(record.getDetailCode())) {
-					Predicate detailCode = cb.equal(root.get("detailCode").as(String.class),
-							record.getDetailCode());
+				if (!StringUtils.isEmpty(springDictionaryDetailQuery.getDetailCode())) {
+					Predicate detailCode = cb.like(root.get("detailCode").as(String.class),
+							"%"+springDictionaryDetailQuery.getDetailCode());
 					predicates.add(detailCode);
 				}
-				if (!StringUtils.isEmpty(record.getDetailName())) {
-					Predicate detailName = cb.equal(root.get("detailName").as(String.class),
-							record.getDetailName());
+				if (!StringUtils.isEmpty(springDictionaryDetailQuery.getDetailName())) {
+					Predicate detailName = cb.like(root.get("detailName").as(String.class),
+							"%"+springDictionaryDetailQuery.getDetailName());
 					predicates.add(detailName);
 				}
 				Predicate deletedStatus = cb.equal(root.get("deletedStatus").as(Boolean.class), false);

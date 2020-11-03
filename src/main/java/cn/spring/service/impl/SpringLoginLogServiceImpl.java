@@ -20,6 +20,7 @@ import org.springframework.util.StringUtils;
 
 import cn.spring.dao.SpringLoginLogDao;
 import cn.spring.domain.SpringLoginLog;
+import cn.spring.domain.query.SpringLoginLogQuery;
 import cn.spring.service.ISpringLoginLogService;
 import cn.spring.util.R;
 
@@ -97,15 +98,15 @@ public class SpringLoginLogServiceImpl implements ISpringLoginLogService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public Page<SpringLoginLog> getAllRecordByPage(SpringLoginLog record,Pageable pageable) {
+	public Page<SpringLoginLog> getAllRecordByPage(SpringLoginLogQuery springLoginLogQuery, Pageable pageable) {
 		Specification<SpringLoginLog> specification = new Specification<SpringLoginLog>() {
 
 			@Override
 			public Predicate toPredicate(Root<SpringLoginLog> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				List<Predicate> predicates = new ArrayList<>();
-				if (!StringUtils.isEmpty(record.getCreatedBy())) {
+				if (!StringUtils.isEmpty(springLoginLogQuery.getCreatedBy())) {
 					Predicate createdBy = cb.equal(root.get("createdBy").as(String.class),
-							record.getCreatedBy());
+							springLoginLogQuery.getCreatedBy());
 					predicates.add(createdBy);
 				}
 				Predicate[] pre = new Predicate[predicates.size()];
@@ -114,11 +115,9 @@ public class SpringLoginLogServiceImpl implements ISpringLoginLogService {
 				return query.getRestriction();
 			}
 		};
-		//Pageable pageable = PageRequest.of(currPage - 1, size);
+		// Pageable pageable = PageRequest.of(currPage - 1, size);
 		return springLoginLogDao.findAll(specification, pageable);
 	}
-
-	
 
 	/**
 	 *
@@ -137,6 +136,6 @@ public class SpringLoginLogServiceImpl implements ISpringLoginLogService {
 	@Override
 	public void delete(List<String> ids) {
 		springLoginLogDao.delete(ids);
-		
+
 	}
 }

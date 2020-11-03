@@ -23,7 +23,7 @@ import cn.spring.annotation.Description;
 @DynamicUpdate(true)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "spring_article_comment", schema = "base_system")
-public class SpringComment implements Serializable {
+public class SpringArticleComment implements Serializable {
 	/**
 	 * 
 	 */

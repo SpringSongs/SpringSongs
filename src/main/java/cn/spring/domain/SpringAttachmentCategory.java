@@ -7,23 +7,27 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import cn.spring.annotation.Description;
 
 @Entity
 @DynamicInsert(true)
 @DynamicUpdate(true)
-@Table(name = "spring_privilege", schema = "base_system")
-public class SpringPrivilege implements Serializable {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@Table(name = "spring_attachment_category", schema = "base_system")
+public class SpringAttachmentCategory implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -630176721163493529L;
+	private static final long serialVersionUID = 3525193876705191584L;
 	@Id
 	@GeneratedValue(generator = "paymentableGenerator")
 	@GenericGenerator(name = "paymentableGenerator", strategy = "uuid")
@@ -39,43 +43,71 @@ public class SpringPrivilege implements Serializable {
 		this.id = id;
 	}
 
-	@Size(max = 36, min = 0)
-	@Description(title = "角色主键")
-	@Column(name = "role_id")
-	private String roleId;
+	@NotBlank(message = "请填写文件夾名称")
+	@Size(max = 45, min = 1)
+	@Description(title = "文件夾名称")
+	@Column(name = "title")
+	private String title;
 
-	public String getRoleId() {
-		return this.roleId;
+	public String getTitle() {
+		return this.title;
 	}
 
-	public void setRoleId(String roleId) {
-		this.roleId = roleId;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
-	@Size(max = 36, min = 0)
-	@Description(title = "模块主键")
-	@Column(name = "module_id")
-	private String moduleId;
+	@NotBlank(message = "请填写说明")
+	@Size(max = 45, min = 1)
+	@Description(title = "说明")
+	@Column(name = "description")
+	private String description;
 
-	public String getModuleId() {
-		return this.moduleId;
+	public String getDescription() {
+		return this.description;
 	}
 
-	public void setModuleId(String moduleId) {
-		this.moduleId = moduleId;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	@Description(title = "排序")
-	@Column(name = "sort_code")
-	private int sortCode;
+	@Size(max = 45, min = 0)
+	@Description(title = "分类名称")
+	@Column(name = "dictionary_code")
+	private String dictionaryCode;
 
-	public int getSortCode() {
-		return this.sortCode;
+	public String getDictionaryCode() {
+		return this.dictionaryCode;
 	}
 
-	public void setSortCode(int sortCode) {
-		this.sortCode = sortCode;
+	public void setDictionaryCode(String dictionaryCode) {
+		this.dictionaryCode = dictionaryCode;
 	}
+
+	@Size(max = 45, min = 0)
+	@Description(title = "分类名称")
+	@Column(name = "dictionary_name")
+	private String dictionaryName;
+
+	public String getDictionaryName() {
+		return this.dictionaryName;
+	}
+
+	public void setDictionaryName(String dictionaryName) {
+		this.dictionaryName = dictionaryName;
+	}
+
+	@Description(title ="0未删1已删")
+    @Column(name="deleted_status")
+    private boolean deletedStatus;
+    public boolean getDeletedStatus(){
+        return  this.deletedStatus;
+    }
+    public void setDeletedStatus(boolean deletedStatus){
+        this.deletedStatus=deletedStatus;
+    }
+
+
 
 	@Size(max = 36, min = 0)
 	@Description(title = "创建人主键")

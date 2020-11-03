@@ -11,29 +11,27 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import cn.spring.domain.SpringAlbum;
+import cn.spring.domain.SpringArticleComment;
 
 @Repository
-public interface SpringAlbumDao extends JpaRepository <SpringAlbum, String> { 
-	
+public interface SpringArticleCommentDao extends JpaRepository <SpringArticleComment, String> { 
 	/**
 	 * 分页查询
 	 * @param spec
 	 * @param pageable
 	 * @return
 	 */
-	Page<SpringAlbum> findAll(Specification<SpringAlbum> spec, Pageable pageable);
-	
+	Page<SpringArticleComment> findAll(Specification<SpringArticleComment> spec, Pageable pageable);
     /**
     *
     * IN查询
     * @param ids
-    * @return List<BaseFolderEntity>
+    * @return List<BaseCommentEntity>
     * @see [相关类/方法]（可选）
     * @since [产品/模块版本] （可选）
     */
-    @Query(value = "from SpringAlbum where id in (:ids)")
-    public List<SpringAlbum> findInIds(@Param(value = "ids") List<String> ids);
+    @Query(value = "from SpringArticleComment where id in (:ids)")
+    public List<SpringArticleComment> findInIds(@Param(value = "ids") List<String> ids);
     /**
     *
     * 逻辑删除
@@ -43,7 +41,7 @@ public interface SpringAlbumDao extends JpaRepository <SpringAlbum, String> {
     * @since [产品/模块版本] （可选）
     */
     @Modifying
-    @Query(value = "update SpringAlbum set deletedStatus=1 where id=:id")
+    @Query(value = "update SpringArticleComment set deletedStatus=1 where id=:id")
     public void setDelete(@Param(value = "id") String id);
     /**
     *
@@ -54,7 +52,7 @@ public interface SpringAlbumDao extends JpaRepository <SpringAlbum, String> {
     * @since [产品/模块版本] （可选）
     */
     @Modifying
-    @Query(value = "update SpringAlbum set deletedStatus=1 where id in (:ids)")
+    @Query(value = "update SpringArticleComment set deletedStatus=1 where id in (:ids)")
     public void setDelete(@Param(value = "ids") List<String> ids);
     
     /**
@@ -62,6 +60,6 @@ public interface SpringAlbumDao extends JpaRepository <SpringAlbum, String> {
 	 * @param ids
 	 */
 	@Modifying
-	@Query(value = "delete from SpringAlbum where id in (:ids)")
+	@Query(value = "delete from SpringArticleComment where id in (:ids)")
 	public void delete(@Param(value = "ids") List<String> ids);
 }

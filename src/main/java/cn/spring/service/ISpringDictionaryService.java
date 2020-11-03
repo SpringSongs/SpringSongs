@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import cn.spring.domain.SpringDictionary;
+import cn.spring.domain.query.SpringDictionaryQuery;
 import cn.spring.util.R;
 
 public interface ISpringDictionaryService {
@@ -17,7 +18,7 @@ public interface ISpringDictionaryService {
 
 	void updateByPrimaryKey(SpringDictionary record);
 
-	Page<SpringDictionary> getAllRecordByPage(SpringDictionary record,Pageable pageable);
+	Page<SpringDictionary> getAllRecordByPage(SpringDictionaryQuery springDictionaryQuery,Pageable pageable);
 
 	R setDeleted(List<String> ids);
 	

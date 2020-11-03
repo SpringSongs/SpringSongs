@@ -18,16 +18,18 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import cn.spring.dao.SpringCommentDao;
-import cn.spring.domain.SpringComment;
+import cn.spring.dao.SpringArticleCommentDao;
+import cn.spring.domain.SpringArticleComment;
+import cn.spring.domain.query.SpringArticleCommentQuery;
 import cn.spring.service.ISpringArticleCommentService;
 import cn.spring.util.R;
+
 @Service
 @Transactional
 public class SpringArticleCommentServiceImpl implements ISpringArticleCommentService {
 
 	@Autowired
-	private SpringCommentDao springCommentDao;
+	private SpringArticleCommentDao springCommentDao;
 
 	/**
 	 *
@@ -54,7 +56,7 @@ public class SpringArticleCommentServiceImpl implements ISpringArticleCommentSer
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public void insert(SpringComment record) {
+	public void insert(SpringArticleComment record) {
 		springCommentDao.save(record);
 
 	}
@@ -69,7 +71,7 @@ public class SpringArticleCommentServiceImpl implements ISpringArticleCommentSer
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public SpringComment selectByPrimaryKey(String id) {
+	public SpringArticleComment selectByPrimaryKey(String id) {
 		return springCommentDao.getOne(id);
 	}
 
@@ -83,7 +85,7 @@ public class SpringArticleCommentServiceImpl implements ISpringArticleCommentSer
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public void updateByPrimaryKey(SpringComment record) {
+	public void updateByPrimaryKey(SpringArticleComment record) {
 		springCommentDao.save(record);
 	}
 
@@ -97,27 +99,25 @@ public class SpringArticleCommentServiceImpl implements ISpringArticleCommentSer
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public Page<SpringComment> getAllRecordByPage(SpringComment record,Pageable pageable) {
-		Specification<SpringComment> specification = new Specification<SpringComment>() {
+	public Page<SpringArticleComment> getAllRecordByPage(SpringArticleCommentQuery springArticleCommentQuery,
+			Pageable pageable) {
+		Specification<SpringArticleComment> specification = new Specification<SpringArticleComment>() {
 
 			@Override
-			public Predicate toPredicate(Root<SpringComment> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+			public Predicate toPredicate(Root<SpringArticleComment> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				List<Predicate> predicates = new ArrayList<>();
-				if (!StringUtils.isEmpty(record.getCreatedUserId())) {
-					Predicate createdUserId = cb.equal(root.get("createdUserId").as(String.class),
-							record.getCreatedUserId());
-					predicates.add(createdUserId);
-				}
-				if (!StringUtils.isEmpty(record.getContent())) {
+
+				if (!StringUtils.isEmpty(springArticleCommentQuery.getContent())) {
 					Predicate content = cb.like(root.get("content").as(String.class),
-							record.getContent() + "%");
+							springArticleCommentQuery.getContent() + "%");
 					predicates.add(content);
 				}
-				if (record.getAuditFlag()) {
-					Predicate auditFlag = cb.equal(root.get("auditFlag").as(Boolean.class),
-							record.getAuditFlag());
-					predicates.add(auditFlag);
+				if (!StringUtils.isEmpty(springArticleCommentQuery.getCreatedBy())) {
+					Predicate createdBy = cb.like(root.get("createdBy").as(String.class),
+							springArticleCommentQuery.getCreatedBy() + "%");
+					predicates.add(createdBy);
 				}
+
 				Predicate deletedStatus = cb.equal(root.get("deletedStatus").as(Boolean.class), false);
 				predicates.add(deletedStatus);
 				Predicate[] pre = new Predicate[predicates.size()];
@@ -126,7 +126,7 @@ public class SpringArticleCommentServiceImpl implements ISpringArticleCommentSer
 				return query.getRestriction();
 			}
 		};
-		//Pageable pageable = PageRequest.of(currPage - 1, size);
+		// Pageable pageable = PageRequest.of(currPage - 1, size);
 		return springCommentDao.findAll(specification, pageable);
 	}
 
@@ -161,6 +161,6 @@ public class SpringArticleCommentServiceImpl implements ISpringArticleCommentSer
 	@Override
 	public void delete(List<String> ids) {
 		springCommentDao.delete(ids);
-		
+
 	}
 }

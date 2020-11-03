@@ -21,6 +21,7 @@ import org.springframework.util.StringUtils;
 
 import cn.spring.dao.SpringAritlceDao;
 import cn.spring.domain.SpringAritlce;
+import cn.spring.domain.query.SpringAritlceQuery;
 import cn.spring.service.ISpringAritlceService;
 import cn.spring.util.R;
 
@@ -99,43 +100,59 @@ public class SpringAritlceServiceImpl implements ISpringAritlceService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public Page<SpringAritlce> getAllRecordByPage(SpringAritlce record, Pageable pageable) {
+	public Page<SpringAritlce> getAllRecordByPage(SpringAritlceQuery springAritlceQuery, Pageable pageable) {
 		Specification<SpringAritlce> specification = new Specification<SpringAritlce>() {
 
 			@Override
 			public Predicate toPredicate(Root<SpringAritlce> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				List<Predicate> predicates = new ArrayList<>();
-				if (!StringUtils.isEmpty(record.getCreatedUserId())) {
+				if (!StringUtils.isEmpty(springAritlceQuery.getCreatedUserId())) {
 					Predicate createdUserId = cb.equal(root.get("createdUserId").as(String.class),
-							record.getCreatedUserId());
+							springAritlceQuery.getCreatedUserId());
 					predicates.add(createdUserId);
 				}
-				if (!StringUtils.isEmpty(record.getCategoryId())) {
+				if (!StringUtils.isEmpty(springAritlceQuery.getCategoryId())) {
 					Predicate categoryId = cb.equal(root.get("categoryId").as(String.class),
-							record.getCategoryId());
+							springAritlceQuery.getCategoryId());
 					predicates.add(categoryId);
 				}
-				
-				if (!StringUtils.isEmpty(record.getMap().getCreateTimeStart())&&!StringUtils.isEmpty(record.getMap().getCreateTimeEnd())) {
+
+				if (!StringUtils.isEmpty(springAritlceQuery.getSearchDate().getCreateTimeStart())
+						&& !StringUtils.isEmpty(springAritlceQuery.getSearchDate().getCreateTimeEnd())) {
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					try {
 						Predicate createdOn;
-						createdOn = cb.between(root.get("createdOn"), sdf.parse(record.getMap().getCreateTimeStart()), sdf.parse(record.getMap().getCreateTimeEnd()));
+						createdOn = cb.between(root.get("createdOn"),
+								sdf.parse(springAritlceQuery.getSearchDate().getCreateTimeStart()),
+								sdf.parse(springAritlceQuery.getSearchDate().getCreateTimeEnd()));
 						predicates.add(createdOn);
 					} catch (ParseException e) {
 						e.printStackTrace();
 					}
 				}
-					
-				if (!StringUtils.isEmpty(record.getTitle())) {
-					Predicate title = cb.like(root.get("title").as(String.class),
-							record.getTitle() + "%");
+
+				if (!StringUtils.isEmpty(springAritlceQuery.getTitle())) {
+					Predicate title = cb.like(root.get("title").as(String.class), springAritlceQuery.getTitle() + "%");
 					predicates.add(title);
 				}
-				if (record.getStatus()) {
-					Predicate auditFlag = cb.equal(root.get("auditFlag").as(Boolean.class),
-							record.getStatus());
-					predicates.add(auditFlag);
+				if (!StringUtils.isEmpty(springAritlceQuery.getAuthor())) {
+					Predicate author = cb.like(root.get("author").as(String.class),
+							"%" + springAritlceQuery.getAuthor());
+					predicates.add(author);
+				}
+				if (!StringUtils.isEmpty(springAritlceQuery.getKeyword())) {
+					Predicate keyword = cb.like(root.get("keyword").as(String.class),
+							"%" + springAritlceQuery.getKeyword());
+					predicates.add(keyword);
+				}
+				if (!StringUtils.isEmpty(springAritlceQuery.getTag())) {
+					Predicate tag = cb.like(root.get("tag").as(String.class), "%" + springAritlceQuery.getTag());
+					predicates.add(tag);
+				}
+				if (!StringUtils.isEmpty(springAritlceQuery.getSummary())) {
+					Predicate summary = cb.like(root.get("summary").as(String.class),
+							"%" + springAritlceQuery.getSummary());
+					predicates.add(summary);
 				}
 				Predicate deletionStateCode = cb.equal(root.get("deletedStatus").as(Boolean.class), false);
 				predicates.add(deletionStateCode);
@@ -145,7 +162,7 @@ public class SpringAritlceServiceImpl implements ISpringAritlceService {
 				return query.getRestriction();
 			}
 		};
-		//Pageable pageable = PageRequest.of(currPage - 1, size);
+		// Pageable pageable = PageRequest.of(currPage - 1, size);
 		return springAritlceDao.findAll(specification, pageable);
 	}
 

@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import cn.spring.domain.SpringContact;
+import cn.spring.domain.query.SpringContactQuery;
 import cn.spring.util.R;
 
 public interface ISpringContactService {
@@ -18,7 +19,7 @@ public interface ISpringContactService {
 
 	void updateByPrimaryKey(SpringContact record);
 
-	Page<SpringContact> getAllRecordByPage(SpringContact record,Pageable pageable);
+	Page<SpringContact> getAllRecordByPage(SpringContactQuery springContactQuery,Pageable pageable);
 
 	void setDeleted(List<String> ids);
 	

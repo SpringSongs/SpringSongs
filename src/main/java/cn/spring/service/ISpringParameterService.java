@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import cn.spring.domain.SpringParameter;
+import cn.spring.domain.query.SpringParameterQuery;
 import cn.spring.util.R;
 
 public interface ISpringParameterService {
@@ -17,7 +18,7 @@ public interface ISpringParameterService {
 
 	void updateByPrimaryKey(SpringParameter record);
 
-	Page<SpringParameter> getAllRecordByPage(SpringParameter record,Pageable pageable);
+	Page<SpringParameter> getAllRecordByPage(SpringParameterQuery springParameterQuery,Pageable pageable);
 
 	void setDeleted(List<String> ids);
 	

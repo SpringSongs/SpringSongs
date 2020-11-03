@@ -1,4 +1,4 @@
-package cn.spring.vo;
+package cn.spring.domain.vo;
 
 public class ElementUiTreeVo {
 	private String id;

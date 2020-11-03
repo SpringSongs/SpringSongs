@@ -21,6 +21,7 @@ import org.springframework.util.StringUtils;
 import cn.spring.dao.SpringDictionaryDao;
 import cn.spring.dao.SpringDictionaryDetailDao;
 import cn.spring.domain.SpringDictionary;
+import cn.spring.domain.query.SpringDictionaryQuery;
 import cn.spring.service.ISpringDictionaryService;
 import cn.spring.util.R;
 
@@ -29,7 +30,7 @@ import cn.spring.util.R;
 public class SpringDictionaryServiceImpl implements ISpringDictionaryService {
 	@Autowired
 	private SpringDictionaryDao springDictionaryDao;
-	
+
 	@Autowired
 	private SpringDictionaryDetailDao springDictionaryDetailDao;
 
@@ -101,25 +102,22 @@ public class SpringDictionaryServiceImpl implements ISpringDictionaryService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public Page<SpringDictionary> getAllRecordByPage(SpringDictionary record,Pageable pageable) {
+	public Page<SpringDictionary> getAllRecordByPage(SpringDictionaryQuery springDictionaryQuery, Pageable pageable) {
 		Specification<SpringDictionary> specification = new Specification<SpringDictionary>() {
 
 			@Override
 			public Predicate toPredicate(Root<SpringDictionary> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				List<Predicate> predicates = new ArrayList<>();
-				if (!StringUtils.isEmpty(record.getCode())) {
-					Predicate code = cb.equal(root.get("code").as(String.class), record.getCode());
+				if (!StringUtils.isEmpty(springDictionaryQuery.getCode())) {
+					Predicate code = cb.like(root.get("code").as(String.class), "%" + springDictionaryQuery.getCode());
 					predicates.add(code);
 				}
-				if (!StringUtils.isEmpty(record.getTitle())) {
-					Predicate title = cb.equal(root.get("title").as(String.class), record.getTitle());
+				if (!StringUtils.isEmpty(springDictionaryQuery.getTitle())) {
+					Predicate title = cb.like(root.get("title").as(String.class),
+							"%" + springDictionaryQuery.getTitle());
 					predicates.add(title);
 				}
-				if (!StringUtils.isEmpty(record.getCreatedUserId())) {
-					Predicate createdUserId = cb.equal(root.get("createdUserId").as(String.class),
-							record.getCreatedUserId());
-					predicates.add(createdUserId);
-				}
+
 				Predicate deletedStatus = cb.equal(root.get("deletedStatus").as(Boolean.class), false);
 				predicates.add(deletedStatus);
 				Predicate[] pre = new Predicate[predicates.size()];
@@ -128,7 +126,7 @@ public class SpringDictionaryServiceImpl implements ISpringDictionaryService {
 				return query.getRestriction();
 			}
 		};
-		//Pageable pageable = PageRequest.of(currPage - 1, size);
+		// Pageable pageable = PageRequest.of(currPage - 1, size);
 		return springDictionaryDao.findAll(specification, pageable);
 	}
 
@@ -145,7 +143,7 @@ public class SpringDictionaryServiceImpl implements ISpringDictionaryService {
 	public R setDeleted(List<String> ids) {
 		R r = R.succeed("Ok");
 		try {
-			List<String> codes=new ArrayList<String>();
+			List<String> codes = new ArrayList<String>();
 			List<SpringDictionary> entityList = springDictionaryDao.listByIds(ids);
 			for (SpringDictionary entity : entityList) {
 				if (entity.getEnableDelete() == false) {

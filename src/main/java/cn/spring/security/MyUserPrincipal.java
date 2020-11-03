@@ -12,7 +12,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import cn.spring.domain.SpringUser;
-import cn.spring.dto.RoleCodeDto;
+import cn.spring.domain.dto.RoleCodeDto;
 
 public class MyUserPrincipal implements UserDetails {
 

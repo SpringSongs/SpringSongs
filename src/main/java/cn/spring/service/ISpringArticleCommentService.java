@@ -5,20 +5,21 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import cn.spring.domain.SpringComment;
+import cn.spring.domain.SpringArticleComment;
+import cn.spring.domain.query.SpringArticleCommentQuery;
 import cn.spring.util.R;
 
 public interface ISpringArticleCommentService {
 
 	void deleteByPrimaryKey(String id);
 
-	void insert(SpringComment record);
+	void insert(SpringArticleComment record);
 
-	SpringComment selectByPrimaryKey(String id);
+	SpringArticleComment selectByPrimaryKey(String id);
 
-	void updateByPrimaryKey(SpringComment record);
+	void updateByPrimaryKey(SpringArticleComment record);
 
-	Page<SpringComment> getAllRecordByPage(SpringComment record,Pageable pageable);
+	Page<SpringArticleComment> getAllRecordByPage(SpringArticleCommentQuery springArticleCommentQuery,Pageable pageable);
 
 	void setDeleted(List<String> ids);
 	

@@ -24,12 +24,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.spring.domain.SpringResource;
+import cn.spring.domain.query.SpringResourceQuery;
+import cn.spring.domain.vo.ElementUiTreeVo;
+import cn.spring.domain.vo.MenuVo;
 import cn.spring.service.ISpringResourceService;
 import cn.spring.util.Constant;
 import cn.spring.util.IpKit;
 import cn.spring.util.R;
-import cn.spring.vo.ElementUiTreeVo;
-import cn.spring.vo.MenuVo;
 
 @RestController
 @RequestMapping(value = "/SpringResource")
@@ -41,10 +42,11 @@ public class SpringResourceController extends BaseController {
 	private ISpringResourceService springResourceService;
 
 	@PostMapping(value = "ListByPage")
-	public R listByPage(@RequestBody SpringResource viewEntity, @PageableDefault(page = 1, size = 20) Pageable pageable) {
+	public R listByPage(@RequestBody SpringResourceQuery springResourceQuery,
+			@PageableDefault(page = 1, size = 20) Pageable pageable) {
 		R r = new R();
 		try {
-			Page<SpringResource> lists = springResourceService.getAllRecordByPage(viewEntity, pageable);
+			Page<SpringResource> lists = springResourceService.getAllRecordByPage(springResourceQuery, pageable);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("data", lists.getContent());
@@ -185,7 +187,8 @@ public class SpringResourceController extends BaseController {
 			r.put("msg", Constant.PARAMETER_NOT_NULL_ERROR);
 		} else {
 			try {
-				List<ElementUiTreeVo> elementUiTreeDtoList = springResourceService.getModulesByParentId(parentId, systemId);
+				List<ElementUiTreeVo> elementUiTreeDtoList = springResourceService.getModulesByParentId(parentId,
+						systemId);
 				r.put("code", HttpServletResponse.SC_OK);
 				r.put("data", elementUiTreeDtoList);
 				r.put("msg", Constant.SELECT_SUCCESSED);

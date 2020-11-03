@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import cn.spring.domain.SpringUser;
 import cn.spring.domain.SpringUserRole;
 import cn.spring.domain.SpringUserSecurity;
+import cn.spring.domain.query.SpringUserQuery;
 import cn.spring.service.ISpringUserService;
 import cn.spring.util.Constant;
 import cn.spring.util.HttpUtils;
@@ -61,10 +62,11 @@ public class SpringUserController extends BaseController {
 	}
 
 	@PostMapping(value = "/ListByPage")
-	public R listByPage(@RequestBody SpringUser viewEntity, @PageableDefault(page = 1, size = 20) Pageable pageable) {
+	public R listByPage(@RequestBody SpringUserQuery springUserQuery,
+			@PageableDefault(page = 1, size = 20) Pageable pageable) {
 		R r = new R();
 		try {
-			Page<SpringUser> lists = springUserService.getAllRecordByPage(viewEntity, pageable);
+			Page<SpringUser> lists = springUserService.getAllRecordByPage(springUserQuery, pageable);
 			r.put("code", HttpServletResponse.SC_OK);
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("data", lists.getContent());

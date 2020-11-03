@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 import cn.spring.domain.SpringRole;
 import cn.spring.domain.SpringUserRole;
+import cn.spring.domain.query.SpringRoleQuery;
 import cn.spring.util.R;
 
 public interface ISpringRoleService {
@@ -19,7 +20,7 @@ public interface ISpringRoleService {
 
 	void updateByPrimaryKey(SpringRole record);
 
-	Page<SpringRole> getAllRecordByPage(SpringRole record,Pageable pageable);
+	Page<SpringRole> getAllRecordByPage(SpringRoleQuery springRoleQuery,Pageable pageable);
 
 	void setDeleted(List<String> ids);
 	

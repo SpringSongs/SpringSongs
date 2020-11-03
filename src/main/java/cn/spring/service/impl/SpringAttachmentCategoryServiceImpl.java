@@ -17,17 +17,17 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import cn.spring.dao.SpringAlbumDao;
-import cn.spring.domain.SpringAlbum;
-import cn.spring.service.ISpringAlbumService;
+import cn.spring.dao.SpringAttachmentCategoryDao;
+import cn.spring.domain.SpringAttachmentCategory;
+import cn.spring.service.ISpringAttachmentCategoryService;
 import cn.spring.util.R;
 
 @Service
 @Transactional
-public class SpringAlbumServiceImpl implements ISpringAlbumService {
+public class SpringAttachmentCategoryServiceImpl implements ISpringAttachmentCategoryService {
 
 	@Autowired
-	private SpringAlbumDao springAlbumDao;
+	private SpringAttachmentCategoryDao springAlbumDao;
 
 	/**
 	 *
@@ -54,7 +54,7 @@ public class SpringAlbumServiceImpl implements ISpringAlbumService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public void insert(SpringAlbum record) {
+	public void insert(SpringAttachmentCategory record) {
 		springAlbumDao.save(record);
 
 	}
@@ -69,7 +69,7 @@ public class SpringAlbumServiceImpl implements ISpringAlbumService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public SpringAlbum selectByPrimaryKey(String id) {
+	public SpringAttachmentCategory selectByPrimaryKey(String id) {
 		return springAlbumDao.getOne(id);
 	}
 
@@ -83,7 +83,7 @@ public class SpringAlbumServiceImpl implements ISpringAlbumService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public void updateByPrimaryKey(SpringAlbum record) {
+	public void updateByPrimaryKey(SpringAttachmentCategory record) {
 		springAlbumDao.save(record);
 	}
 
@@ -97,11 +97,11 @@ public class SpringAlbumServiceImpl implements ISpringAlbumService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public Page<SpringAlbum> getAllRecordByPage(SpringAlbum record, Pageable pageable) {
-		Specification<SpringAlbum> specification = new Specification<SpringAlbum>() {
+	public Page<SpringAttachmentCategory> getAllRecordByPage(SpringAttachmentCategory record, Pageable pageable) {
+		Specification<SpringAttachmentCategory> specification = new Specification<SpringAttachmentCategory>() {
 
 			@Override
-			public Predicate toPredicate(Root<SpringAlbum> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+			public Predicate toPredicate(Root<SpringAttachmentCategory> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				List<Predicate> predicates = new ArrayList<>();
 				if (!StringUtils.isEmpty(record.getTitle())) {
 					Predicate title = cb.like(root.get("title").as(String.class), record.getTitle() + "%");

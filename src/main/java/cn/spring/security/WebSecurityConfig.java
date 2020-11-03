@@ -43,7 +43,7 @@ import org.springframework.security.web.session.SessionInformationExpiredStrateg
 import com.alibaba.fastjson.JSON;
 
 import cn.spring.domain.SpringLoginLog;
-import cn.spring.dto.UserLogonDto;
+import cn.spring.domain.dto.UserLogonDto;
 import cn.spring.service.ISpringLoginLogService;
 import cn.spring.util.HttpUtils;
 import cn.spring.util.IpKit;

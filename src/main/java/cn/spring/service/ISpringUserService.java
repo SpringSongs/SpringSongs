@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import cn.spring.domain.SpringUser;
 import cn.spring.domain.SpringUserRole;
 import cn.spring.domain.SpringUserSecurity;
+import cn.spring.domain.query.SpringUserQuery;
 import cn.spring.util.R;
 
 public interface ISpringUserService {
@@ -21,7 +22,7 @@ public interface ISpringUserService {
 
 	void updateByPrimaryKey(SpringUser record);
 
-	Page<SpringUser> getAllRecordByPage(SpringUser record,Pageable pageable);
+	Page<SpringUser> getAllRecordByPage(SpringUserQuery springUserQuery,Pageable pageable);
 
 	void setDeleted(List<String> ids);
 
