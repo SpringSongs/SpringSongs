@@ -1,6 +1,6 @@
-package cn.spring.domain.vo;
+package cn.spring.domain.dto;
 
-public class ElementUiTreeVo {
+public class ElementUiTreeDTO {
 	private String id;
 	private String name;
 	private boolean leaf;

@@ -1,15 +1,15 @@
-package cn.spring.domain.vo;
+package cn.spring.domain.dto;
 
 import java.util.List;
 
-public class MenuVo {
+public class MenuDTO {
 	private String id;
 	private String icon;
 	private String link;
 	private String title;
 	private String code;
 	private int index;
-	private List<MenuVo> menuDtoList;
+	private List<MenuDTO> menuDtoList;
 
 	public String getId() {
 		return id;
@@ -59,11 +59,11 @@ public class MenuVo {
 		this.index = index;
 	}
 
-	public List<MenuVo> getMenuDtoList() {
+	public List<MenuDTO> getMenuDtoList() {
 		return menuDtoList;
 	}
 
-	public void setMenuDtoList(List<MenuVo> menuDtoList) {
+	public void setMenuDtoList(List<MenuDTO> menuDtoList) {
 		this.menuDtoList = menuDtoList;
 	}
 

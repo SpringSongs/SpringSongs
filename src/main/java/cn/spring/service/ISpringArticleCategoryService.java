@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import cn.spring.domain.SpringArticleCategory;
-import cn.spring.domain.vo.ElementUiTreeVo;
+import cn.spring.domain.dto.ElementUiTreeDTO;
 import cn.spring.util.R;
 
 public interface ISpringArticleCategoryService {
@@ -24,7 +24,7 @@ public interface ISpringArticleCategoryService {
 	
 	R batchSaveExcel(List<String[]> list);
 	
-	List<ElementUiTreeVo> getCategoryByParentId(String parentId);
+	List<ElementUiTreeDTO> getCategoryByParentId(String parentId);
    
 	List<SpringArticleCategory> getByParentId(String parentId);
 	

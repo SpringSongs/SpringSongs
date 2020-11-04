@@ -14,7 +14,7 @@ import cn.spring.dao.SpringUserDao;
 import cn.spring.dao.SpringRoleDao;
 import cn.spring.domain.SpringUser;
 import cn.spring.domain.SpringUserSecurity;
-import cn.spring.domain.dto.RoleCodeDto;
+import cn.spring.domain.dto.RoleCodeDTO;
 
 @Service
 public class UserSecurityService implements UserDetailsService {
@@ -35,7 +35,7 @@ public class UserSecurityService implements UserDetailsService {
 		if (user == null) {
 			throw new UsernameNotFoundException("用户名没有注册");
 		}
-		List<RoleCodeDto> baseRoleLists = baseRoleDao.getRolesByUserId(user.getId());
+		List<RoleCodeDTO> baseRoleLists = baseRoleDao.getRolesByUserId(user.getId());
 		user.setRoleList(baseRoleLists);
 		SpringUserSecurity baseUserLogOnEntity = baseUserLoginOnDao.findByUserId(user.getId());
 		user.setBaseUserLogOnEntity(baseUserLogOnEntity);

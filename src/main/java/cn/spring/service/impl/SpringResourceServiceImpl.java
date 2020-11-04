@@ -26,10 +26,10 @@ import cn.spring.dao.SpringResourceDao;
 import cn.spring.dao.SpringResourceRoleDao;
 import cn.spring.domain.SpringResource;
 import cn.spring.domain.SpringResourceRole;
-import cn.spring.domain.dto.ModuleRoleDto;
+import cn.spring.domain.dto.ElementUiTreeDTO;
+import cn.spring.domain.dto.MenuDTO;
+import cn.spring.domain.dto.ResourceRoleDTO;
 import cn.spring.domain.query.SpringResourceQuery;
-import cn.spring.domain.vo.ElementUiTreeVo;
-import cn.spring.domain.vo.MenuVo;
 import cn.spring.service.ISpringResourceService;
 import cn.spring.util.R;
 
@@ -166,24 +166,24 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 	}
 
 	@Override
-	public List<MenuVo> ListModuleByUserId(String userId) {
+	public List<MenuDTO> ListModuleByUserId(String userId) {
 		List<SpringResource> modules = springResourceDao.listModuleByUserId(userId);
 		return getSoredModules(modules);
 	}
 
-	public List<MenuVo> getSoredModules(List<SpringResource> modules) {
+	public List<MenuDTO> getSoredModules(List<SpringResource> modules) {
 		List<SpringResource> parentModules = modules.stream().filter((SpringResource m) -> m.getParentId().equals("0")
 				&& m.getMenuFlag() == true && m.getDeletedStatus() == false).collect(toList());
 		List<SpringResource> secondModules = modules.stream().filter((SpringResource m) -> !m.getParentId().equals("0")
 				&& m.getMenuFlag() == true && m.getDeletedStatus() == false).collect(toList());
-		List<MenuVo> menuDtoList = this.getSecondModules(parentModules, secondModules);
+		List<MenuDTO> menuDtoList = this.getSecondModules(parentModules, secondModules);
 		return menuDtoList;
 	}
 
-	public List<MenuVo> getSecondModules(List<SpringResource> parentModules, List<SpringResource> secondModules) {
-		List<MenuVo> menuDtoList = new ArrayList<>();
+	public List<MenuDTO> getSecondModules(List<SpringResource> parentModules, List<SpringResource> secondModules) {
+		List<MenuDTO> menuDtoList = new ArrayList<>();
 		for (int i = 0; i < parentModules.size(); i++) {
-			MenuVo menuDto = new MenuVo();
+			MenuDTO menuDto = new MenuDTO();
 			menuDto.setId(parentModules.get(i).getId().toString());
 			menuDto.setIcon("");
 			menuDto.setLink(parentModules.get(i).getVueUrl());
@@ -191,10 +191,10 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 			menuDto.setCode(parentModules.get(i).getCode());
 			menuDto.setIndex(parentModules.get(i).getSortCode());
 			menuDtoList.add(menuDto);
-			List<MenuVo> secondMenuDtoList = new ArrayList<>();
+			List<MenuDTO> secondMenuDtoList = new ArrayList<>();
 			for (SpringResource secondModuleEntity : secondModules) {
 				if (parentModules.get(i).getId().equals(secondModuleEntity.getParentId())) {
-					MenuVo secondMenuDto = new MenuVo();
+					MenuDTO secondMenuDto = new MenuDTO();
 					secondMenuDto.setId(secondModuleEntity.getId().toString());
 					secondMenuDto.setIcon("");
 					secondMenuDto.setLink(secondModuleEntity.getVueUrl());
@@ -221,9 +221,9 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 	}
 
 	@Override
-	public List<ElementUiTreeVo> getModulesByParentId(String parentId, String systemId) {
+	public List<ElementUiTreeDTO> getModulesByParentId(String parentId, String systemId) {
 		List<SpringResource> baseModulesEntityList = springResourceDao.getByParentId(parentId, systemId);
-		List<ElementUiTreeVo> elementUiTreeDtoList = new ArrayList<ElementUiTreeVo>();
+		List<ElementUiTreeDTO> elementUiTreeDtoList = new ArrayList<ElementUiTreeDTO>();
 		List<String> ids = new ArrayList<String>();
 		for (SpringResource entity : baseModulesEntityList) {
 			ids.add(entity.getId());
@@ -231,7 +231,7 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 		if (ids.size() > 0) {
 			List<SpringResource> baseModulesEntityList1 = springResourceDao.getInParentId(ids);
 			for (SpringResource entity : baseModulesEntityList) {
-				ElementUiTreeVo elementUiTreeDto = new ElementUiTreeVo();
+				ElementUiTreeDTO elementUiTreeDto = new ElementUiTreeDTO();
 				elementUiTreeDto.setId(entity.getId());
 				elementUiTreeDto.setLeaf(true);
 				elementUiTreeDto.setName(entity.getTitle());
@@ -271,7 +271,7 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 	}
 
 	@Override
-	public List<ModuleRoleDto> listAllRoleModules() {
+	public List<ResourceRoleDTO> listAllRoleModules() {
 		return springResourceDao.listAllRoleModules();
 	}
 }

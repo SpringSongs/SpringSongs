@@ -1,13 +1,13 @@
 package cn.spring.domain.dto;
 
-public class ModuleRoleDto {
+public class ResourceRoleDTO {
 	
 
-	public ModuleRoleDto() {
+	public ResourceRoleDTO() {
 		super();
 	}
 
-	public ModuleRoleDto(String navigateUrl, String code) {
+	public ResourceRoleDTO(String navigateUrl, String code) {
 		super();
 		this.navigateUrl = navigateUrl;
 		this.code = code;

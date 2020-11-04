@@ -24,9 +24,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.spring.domain.SpringResource;
+import cn.spring.domain.dto.ElementUiTreeDTO;
+import cn.spring.domain.dto.MenuDTO;
 import cn.spring.domain.query.SpringResourceQuery;
-import cn.spring.domain.vo.ElementUiTreeVo;
-import cn.spring.domain.vo.MenuVo;
 import cn.spring.service.ISpringResourceService;
 import cn.spring.util.Constant;
 import cn.spring.util.IpKit;
@@ -166,7 +166,7 @@ public class SpringResourceController extends BaseController {
 	public R getMenus() {
 		R r = new R();
 		try {
-			List<MenuVo> menuList = springResourceService.ListModuleByUserId(this.getUser().getId());
+			List<MenuDTO> menuList = springResourceService.ListModuleByUserId(this.getUser().getId());
 			r.put("msg", Constant.SELECT_SUCCESSED);
 			r.put("data", menuList);
 			r.put("code", HttpServletResponse.SC_OK);
@@ -187,7 +187,7 @@ public class SpringResourceController extends BaseController {
 			r.put("msg", Constant.PARAMETER_NOT_NULL_ERROR);
 		} else {
 			try {
-				List<ElementUiTreeVo> elementUiTreeDtoList = springResourceService.getModulesByParentId(parentId,
+				List<ElementUiTreeDTO> elementUiTreeDtoList = springResourceService.getModulesByParentId(parentId,
 						systemId);
 				r.put("code", HttpServletResponse.SC_OK);
 				r.put("data", elementUiTreeDtoList);

@@ -1,6 +1,6 @@
 package cn.spring.domain.dto;
 
-public class UserLogonDto {
+public class UserLogonDTO {
 	
 	private String id;
 	private String userName;

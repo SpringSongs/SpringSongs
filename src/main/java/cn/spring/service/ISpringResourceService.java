@@ -8,10 +8,10 @@ import org.springframework.data.domain.Pageable;
 
 import cn.spring.domain.SpringResource;
 import cn.spring.domain.SpringResourceRole;
-import cn.spring.domain.dto.ModuleRoleDto;
+import cn.spring.domain.dto.ElementUiTreeDTO;
+import cn.spring.domain.dto.MenuDTO;
+import cn.spring.domain.dto.ResourceRoleDTO;
 import cn.spring.domain.query.SpringResourceQuery;
-import cn.spring.domain.vo.ElementUiTreeVo;
-import cn.spring.domain.vo.MenuVo;
 import cn.spring.util.R;
 
 public interface ISpringResourceService {
@@ -29,15 +29,15 @@ public interface ISpringResourceService {
 
 	R batchSaveExcel(List<String[]> list);
 
-	List<MenuVo> ListModuleByUserId(String userId);
+	List<MenuDTO> ListModuleByUserId(String userId);
 	
-	public List<ModuleRoleDto> listAllRoleModules();
+	public List<ResourceRoleDTO> listAllRoleModules();
 
 	void delete(List<String> ids);
 
 	List<SpringResource> listByIds(List<String> ids);
 
-	List<ElementUiTreeVo> getModulesByParentId(String parentId, String systemId);
+	List<ElementUiTreeDTO> getModulesByParentId(String parentId, String systemId);
 
 	void delete(Map map);
 

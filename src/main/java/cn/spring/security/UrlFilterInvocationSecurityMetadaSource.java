@@ -15,7 +15,7 @@ import org.springframework.util.StringUtils;
 
 import com.vip.vjtools.vjkit.collection.CollectionUtil;
 
-import cn.spring.domain.dto.ModuleRoleDto;
+import cn.spring.domain.dto.ResourceRoleDTO;
 import cn.spring.service.ISpringResourceService;
 
 @Component
@@ -30,7 +30,7 @@ public class UrlFilterInvocationSecurityMetadaSource implements FilterInvocation
 	@Override
 	public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
 		requestUrl= ((FilterInvocation) object).getRequestUrl();
-		List<ModuleRoleDto> mpoduleRoleList = baseModuleService.listAllRoleModules();
+		List<ResourceRoleDTO> mpoduleRoleList = baseModuleService.listAllRoleModules();
 		List<String> roles = new ArrayList<String>();
 		
 		mpoduleRoleList.stream().forEach(moduleRoleDto -> {

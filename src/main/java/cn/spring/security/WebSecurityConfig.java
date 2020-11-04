@@ -43,7 +43,7 @@ import org.springframework.security.web.session.SessionInformationExpiredStrateg
 import com.alibaba.fastjson.JSON;
 
 import cn.spring.domain.SpringLoginLog;
-import cn.spring.domain.dto.UserLogonDto;
+import cn.spring.domain.dto.UserLogonDTO;
 import cn.spring.service.ISpringLoginLogService;
 import cn.spring.util.HttpUtils;
 import cn.spring.util.IpKit;
@@ -88,11 +88,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				o.setAccessDecisionManager(urlAccessDecisionManager);
 				return o;
 			}
-		}).antMatchers("/BaseBuser/Invalidate", "/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html**",
+		}).antMatchers("/SpringUser/Invalidate", "/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html**",
 				"/css/**", "/img/**", "/js/**").permitAll().anyRequest().authenticated().and().formLogin()
 				.loginPage("/Login").permitAll().failureHandler(loginFailureHandler())
 				.successHandler(loginSuccessHandler()).and().logout().logoutUrl("/Logout")
-				.logoutSuccessUrl("/BaseBuser/Invalidate").permitAll().logoutSuccessHandler(logoutSuccessHandler())
+				.logoutSuccessUrl("/SpringUser/Invalidate").permitAll().logoutSuccessHandler(logoutSuccessHandler())
 				.deleteCookies("JSESSIONID", "SESSION").and().sessionManagement()
 				.invalidSessionUrl("/BaseBuser/Invalidate").sessionFixation().changeSessionId().maximumSessions(1)
 				.maxSessionsPreventsLogin(false)// false之后登录踢掉之前登录,true则不允许之后登录
@@ -182,7 +182,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 					PrintWriter out = null;
 					try {
 						out = response.getWriter();
-						UserLogonDto userLogonDto = new UserLogonDto();
+						UserLogonDTO userLogonDto = new UserLogonDTO();
 						userLogonDto.setId(userDetails.getBaseEntityUser().getId());
 						userLogonDto.setUserName(userDetails.getBaseEntityUser().getUserName());
 						Map<String, Object> map = new HashMap();

@@ -12,7 +12,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import cn.spring.domain.SpringUser;
-import cn.spring.domain.dto.RoleCodeDto;
+import cn.spring.domain.dto.RoleCodeDTO;
 
 public class MyUserPrincipal implements UserDetails {
 
@@ -37,7 +37,7 @@ public class MyUserPrincipal implements UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		List<SimpleGrantedAuthority> auths = new ArrayList<>();
-		List<RoleCodeDto> roles = baseEntityUser.getRoleList();
+		List<RoleCodeDTO> roles = baseEntityUser.getRoleList();
 		roles.stream().forEach(role -> {
 			auths.add(new SimpleGrantedAuthority("ROLE_" + role.getCode()));
 		});

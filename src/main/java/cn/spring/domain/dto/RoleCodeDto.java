@@ -1,11 +1,11 @@
 package cn.spring.domain.dto;
 
-public class RoleCodeDto {
+public class RoleCodeDTO {
 	private String id;
 	private String code;
 
 	
-	public RoleCodeDto(String id, String code) {
+	public RoleCodeDTO(String id, String code) {
 		super();
 		this.id = id;
 		this.code = code;

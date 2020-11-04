@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.spring.domain.SpringArticleCategory;
-import cn.spring.domain.vo.ElementUiTreeVo;
+import cn.spring.domain.dto.ElementUiTreeDTO;
 import cn.spring.service.ISpringArticleCategoryService;
 import cn.spring.util.Constant;
 import cn.spring.util.IpKit;
@@ -171,7 +171,7 @@ public class SpringArticleCategoryController extends BaseController {
 			r.put("msg", Constant.PARAMETER_NOT_NULL_ERROR);
 		} else {
 			try {
-				List<ElementUiTreeVo> elementUiTreeDtoList = springArticleCategoryService.getCategoryByParentId(parentId);
+				List<ElementUiTreeDTO> elementUiTreeDtoList = springArticleCategoryService.getCategoryByParentId(parentId);
 				r.put("code", HttpServletResponse.SC_OK);
 				r.put("data", elementUiTreeDtoList);
 				r.put("msg", Constant.SELECT_SUCCESSED);

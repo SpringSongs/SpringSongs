@@ -12,7 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import cn.spring.domain.SpringResource;
-import cn.spring.domain.dto.ModuleRoleDto;
+import cn.spring.domain.dto.ResourceRoleDTO;
 
 @Repository
 public interface SpringResourceDao extends JpaRepository<SpringResource, String> {
@@ -100,8 +100,8 @@ public interface SpringResourceDao extends JpaRepository<SpringResource, String>
 			+ "    WHERE bue.deleted_status=0 and bue.menu_flag=1 and bur.user_id = ?")
 	public List<SpringResource> listModuleByUserId(String userId);
 	
-	@Query(value = "SELECT DISTINCT new cn.spring.domain.dto.ModuleRoleDto(bm.vueUrl,br.title) FROM  SpringRole br" 
+	@Query(value = "SELECT DISTINCT new cn.spring.domain.dto.ResourceRoleDTO(bm.vueUrl,br.title) FROM  SpringRole br" 
 	+ "        LEFT JOIN SpringResourceRole bp ON br.id = bp.roleId "
 	+ "        LEFT JOIN SpringResource bm ON bm.id = bp.moduleId")
-	public List<ModuleRoleDto> listAllRoleModules();
+	public List<ResourceRoleDTO> listAllRoleModules();
 }

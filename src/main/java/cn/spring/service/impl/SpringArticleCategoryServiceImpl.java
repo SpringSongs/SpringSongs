@@ -19,8 +19,7 @@ import org.springframework.util.StringUtils;
 
 import cn.spring.dao.SpringArticleCategoryDao;
 import cn.spring.domain.SpringArticleCategory;
-import cn.spring.domain.SpringResource;
-import cn.spring.domain.vo.ElementUiTreeVo;
+import cn.spring.domain.dto.ElementUiTreeDTO;
 import cn.spring.service.ISpringArticleCategoryService;
 import cn.spring.util.R;
 
@@ -157,9 +156,9 @@ public class SpringArticleCategoryServiceImpl implements ISpringArticleCategoryS
 	}
 
 	@Override
-	public List<ElementUiTreeVo> getCategoryByParentId(String parentId) {
+	public List<ElementUiTreeDTO> getCategoryByParentId(String parentId) {
 		List<SpringArticleCategory> baseCategoryEntityList = springArticleCategoryDao.getByParentId(parentId);
-		List<ElementUiTreeVo> elementUiTreeDtoList = new ArrayList<ElementUiTreeVo>();
+		List<ElementUiTreeDTO> elementUiTreeDtoList = new ArrayList<ElementUiTreeDTO>();
 		List<String> ids = new ArrayList<String>();
 		for (SpringArticleCategory entity : baseCategoryEntityList) {
 			ids.add(entity.getId());
@@ -167,7 +166,7 @@ public class SpringArticleCategoryServiceImpl implements ISpringArticleCategoryS
 		if (ids.size() > 0) {
 			List<SpringArticleCategory> baseCategoryEntityList1 = springArticleCategoryDao.getInParentId(ids);
 			for (SpringArticleCategory entity : baseCategoryEntityList) {
-				ElementUiTreeVo elementUiTreeDto = new ElementUiTreeVo();
+				ElementUiTreeDTO elementUiTreeDto = new ElementUiTreeDTO();
 				elementUiTreeDto.setId(entity.getId());
 				elementUiTreeDto.setLeaf(true);
 				elementUiTreeDto.setName(entity.getTitle());
