@@ -23,8 +23,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.alibaba.fastjson.JSON;
 
-import cn.spring.dao.SpringAttachmentCategoryDao;
-import cn.spring.domain.SpringAttachmentCategory;
+import io.github.springsongs.dao.SpringAttachmentCategoryDao;
+import io.github.springsongs.domain.SpringAttachmentCategory;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

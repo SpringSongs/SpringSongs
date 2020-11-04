@@ -9,10 +9,10 @@
 		<version>2.2.0.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>cn.springsongs</groupId>
-	<artifactId>song</artifactId>
+	<groupId>io.github</groupId>
+	<artifactId>springsongs</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>cn.springsongs.song</name>
+	<name>springsongs</name>
 	<description>authority project for Spring Boot</description>
 
 	<properties>
@@ -45,6 +45,11 @@
 			<groupId>com.vip.vjtools</groupId>
 			<artifactId>vjkit</artifactId>
 			<version>1.0.6</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid-spring-boot-starter</artifactId>
+			<version>1.1.17</version>
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>

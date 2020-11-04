@@ -23,8 +23,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.alibaba.fastjson.JSON;
 
-import cn.spring.dao.SpringUserDao;
-import cn.spring.domain.SpringUser;
+import io.github.springsongs.dao.SpringUserDao;
+import io.github.springsongs.domain.SpringUser;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

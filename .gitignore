@@ -6,6 +6,4 @@
 .class
 *.class
 *.prefs
-target/classes/application.properties
-target/classes/META-INF/maven/cn.springsongs/song/pom.properties
-target/classes/META-INF/maven/cn.springsongs/song/pom.xml
+target/*
