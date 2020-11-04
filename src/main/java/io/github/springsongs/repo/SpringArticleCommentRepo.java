@@ -1,4 +1,4 @@
-package io.github.springsongs.dao;
+package io.github.springsongs.repo;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import io.github.springsongs.domain.SpringArticleComment;
 
 @Repository
-public interface SpringArticleCommentDao extends JpaRepository <SpringArticleComment, String> { 
+public interface SpringArticleCommentRepo extends JpaRepository <SpringArticleComment, String> { 
 	/**
 	 * 分页查询
 	 * @param spec

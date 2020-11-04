@@ -1,4 +1,4 @@
-package io.github.springsongs.dao;
+package io.github.springsongs.repo;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package io.github.springsongs.dao;
+package io.github.springsongs.repo;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import io.github.springsongs.domain.SpringContact;
 
 @Repository
-public interface SpringContactDao extends JpaRepository<SpringContact, String> {
+public interface SpringContactRepo extends JpaRepository<SpringContact, String> {
 	/**
 	 * 分页查询
 	 * @param spec

@@ -1,4 +1,4 @@
-package io.github.springsongs.dao;
+package io.github.springsongs.repo;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import io.github.springsongs.domain.SpringLoginLog;
 
 @Repository
-public interface SpringLoginLogDao extends JpaRepository<SpringLoginLog, String> {
+public interface SpringLoginLogRepo extends JpaRepository<SpringLoginLog, String> {
 	/**
 	 * 分页查询
 	 * 

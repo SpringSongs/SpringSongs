@@ -1,4 +1,4 @@
-package io.github.springsongs.dao;
+package io.github.springsongs.repo;
 
 import java.util.List;
 
@@ -11,29 +11,28 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import io.github.springsongs.domain.SpringOrganization;
+import io.github.springsongs.domain.SpringParameter;
 
 @Repository
-public interface SpringOrganizationDao extends JpaRepository <SpringOrganization, String>{ 
-	
+public interface SpringParameterRepo extends JpaRepository <SpringParameter, String>{ 
 	/**
 	 * 分页查询
 	 * @param spec
 	 * @param pageable
 	 * @return
 	 */
-	Page<SpringOrganization> findAll(Specification<SpringOrganization> spec, Pageable pageable);
+	Page<SpringParameter> findAll(Specification<SpringParameter> spec, Pageable pageable);
 	
     /**
     *
     * IN查询
     * @param ids
-    * @return List<BaseSpringOrganizationEntity>
+    * @return List<BaseParameterEntity>
     * @see [相关类/方法]（可选）
     * @since [产品/模块版本] （可选）
     */
-    @Query(value = "from SpringOrganization where id in (:ids)")
-    public List<SpringOrganization> findInIds(@Param(value = "ids") List<String> ids);
+    @Query(value = "from SpringParameter where id in (:ids)")
+    public List<SpringParameter> findInIds(@Param(value = "ids") List<String> ids);
     /**
     *
     * 逻辑删除
@@ -43,7 +42,7 @@ public interface SpringOrganizationDao extends JpaRepository <SpringOrganization
     * @since [产品/模块版本] （可选）
     */
     @Modifying
-    @Query(value = "update SpringOrganization set deletedStatus=1 where id=:id")
+    @Query(value = "update SpringParameter set deletedStatus=1 where id=:id")
     public void setDelete(@Param(value = "id") String id);
     /**
     *
@@ -54,21 +53,23 @@ public interface SpringOrganizationDao extends JpaRepository <SpringOrganization
     * @since [产品/模块版本] （可选）
     */
     @Modifying
-    @Query(value = "update SpringOrganization set deletedStatus=1 where id in (:ids)")
+    @Query(value = "update SpringParameter set deletedStatus=1 where id in (:ids)")
     public void setDelete(@Param(value = "ids") List<String> ids);
     
     /**
-     * 根据上级主键查询组织机构
-     * @param parentId
-     * @return 
-     */
-    @Query(value = "from SpringOrganization where deletedStatus=0 and parentId=:parentId")
-    public List<SpringOrganization> listOrganizationByParentId(@Param(value = "parentId") String parentId);
-
-    /**
-     * 查询所有组织机构
-     * @return
-     */
-    @Query(value = "from SpringOrganization where deletedStatus=0")
-	public List<SpringOrganization> listAllRecord();
+	 * 物理删除
+	 * 
+	 * @param ids
+	 */
+	@Modifying
+	@Query(value = "delete from SpringParameter where id in (:ids)")
+	public void delete(@Param(value = "ids") List<String> ids);
+	
+	/**
+	 * 
+	 * @param ids
+	 * @return
+	 */
+	@Query(value = "from SpringParameter where id in (:ids)")
+	List<SpringParameter> listByIds(@Param(value = "ids") List<String> ids);
 }

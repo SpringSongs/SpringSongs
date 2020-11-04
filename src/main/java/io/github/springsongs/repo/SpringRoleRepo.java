@@ -1,4 +1,4 @@
-package io.github.springsongs.dao;
+package io.github.springsongs.repo;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import io.github.springsongs.domain.SpringUser;
 import io.github.springsongs.domain.dto.RoleCodeDTO;
 
 @Repository
-public interface SpringRoleDao extends JpaRepository<SpringRole, String> {
+public interface SpringRoleRepo extends JpaRepository<SpringRole, String> {
 	/**
 	 * 分页查询
 	 * 

@@ -1,4 +1,4 @@
-package io.github.springsongs.dao;
+package io.github.springsongs.repo;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import io.github.springsongs.domain.SpringUserRole;
 
 @Repository
-public interface SpringUserRoleDao extends JpaRepository<SpringUserRole, String> {
+public interface SpringUserRoleRepo extends JpaRepository<SpringUserRole, String> {
 	/**
 	 *
 	 * IN查询

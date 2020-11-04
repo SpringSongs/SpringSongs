@@ -1,4 +1,4 @@
-package io.github.springsongs.dao;
+package io.github.springsongs.repo;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import io.github.springsongs.domain.SpringResourceRole;
 
-public interface SpringResourceRoleDao extends JpaRepository<SpringResourceRole, String> {
+public interface SpringResourceRoleRepo extends JpaRepository<SpringResourceRole, String> {
 	/**
 	 *
 	 * IN查询

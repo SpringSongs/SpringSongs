@@ -1,4 +1,4 @@
-package io.github.springsongs.dao;
+package io.github.springsongs.repo;
 
 import java.util.List;
 
@@ -11,29 +11,27 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import io.github.springsongs.domain.SpringAttachmentCategory;
+import io.github.springsongs.domain.SpringAttachment;
 
 @Repository
-public interface SpringAttachmentCategoryDao extends JpaRepository <SpringAttachmentCategory, String> { 
-	
+public interface SpringAttachmentRepo extends JpaRepository <SpringAttachment, String> { 
 	/**
 	 * 分页查询
 	 * @param spec
 	 * @param pageable
 	 * @return
 	 */
-	Page<SpringAttachmentCategory> findAll(Specification<SpringAttachmentCategory> spec, Pageable pageable);
-	
+	Page<SpringAttachment> findAll(Specification<SpringAttachment> spec, Pageable pageable);
     /**
     *
     * IN查询
     * @param ids
-    * @return List<BaseFolderEntity>
+    * @return List<BaseFileEntity>
     * @see [相关类/方法]（可选）
     * @since [产品/模块版本] （可选）
     */
-    @Query(value = "from SpringAttachmentCategory where id in (:ids)")
-    public List<SpringAttachmentCategory> findInIds(@Param(value = "ids") List<String> ids);
+    @Query(value = "from SpringAttachment where id in (:ids)")
+    public List<SpringAttachment> findInIds(@Param(value = "ids") List<String> ids);
     /**
     *
     * 逻辑删除
@@ -43,7 +41,7 @@ public interface SpringAttachmentCategoryDao extends JpaRepository <SpringAttach
     * @since [产品/模块版本] （可选）
     */
     @Modifying
-    @Query(value = "update SpringAttachmentCategory set deletedStatus=1 where id=:id")
+    @Query(value = "update SpringAttachment set deletedStatus=1 where id=:id")
     public void setDelete(@Param(value = "id") String id);
     /**
     *
@@ -54,7 +52,7 @@ public interface SpringAttachmentCategoryDao extends JpaRepository <SpringAttach
     * @since [产品/模块版本] （可选）
     */
     @Modifying
-    @Query(value = "update SpringAttachmentCategory set deletedStatus=1 where id in (:ids)")
+    @Query(value = "update SpringAttachment set deletedStatus=1 where id in (:ids)")
     public void setDelete(@Param(value = "ids") List<String> ids);
     
     /**
@@ -62,6 +60,6 @@ public interface SpringAttachmentCategoryDao extends JpaRepository <SpringAttach
 	 * @param ids
 	 */
 	@Modifying
-	@Query(value = "delete from SpringAttachmentCategory where id in (:ids)")
+	@Query(value = "delete from SpringAttachment where id in (:ids)")
 	public void delete(@Param(value = "ids") List<String> ids);
 }

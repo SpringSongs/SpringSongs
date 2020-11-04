@@ -1,4 +1,4 @@
-package io.github.springsongs.dao;
+package io.github.springsongs.repo;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import org.springframework.data.repository.query.Param;
 
 import io.github.springsongs.domain.SpringSystem;
 
-public interface SpringSystemDao extends JpaRepository<SpringSystem, String> {
+public interface SpringSystemRepo extends JpaRepository<SpringSystem, String> {
 	/**
 	 *
 	 * 分页查询

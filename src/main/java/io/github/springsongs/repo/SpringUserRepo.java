@@ -1,4 +1,4 @@
-package io.github.springsongs.dao;
+package io.github.springsongs.repo;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import io.github.springsongs.domain.SpringUser;
 
 @Repository
-public interface SpringUserDao extends JpaRepository<SpringUser, String> {
+public interface SpringUserRepo extends JpaRepository<SpringUser, String> {
 	/**
 	 * 分页查询
 	 * 

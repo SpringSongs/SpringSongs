@@ -1,4 +1,4 @@
-package io.github.springsongs.dao;
+package io.github.springsongs.repo;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import io.github.springsongs.domain.SpringDictionary;
 
 @Repository
-public interface SpringDictionaryDao extends JpaRepository<SpringDictionary, String> {
+public interface SpringDictionaryRepo extends JpaRepository<SpringDictionary, String> {
 	/**
 	 * 分页查询
 	 * 

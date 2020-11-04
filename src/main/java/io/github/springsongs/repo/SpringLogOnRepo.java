@@ -1,4 +1,4 @@
-package io.github.springsongs.dao;
+package io.github.springsongs.repo;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import io.github.springsongs.domain.SpringUserSecurity;
 
 @Repository
-public interface SpringLogOnDao extends JpaRepository<SpringUserSecurity, String> {
+public interface SpringLogOnRepo extends JpaRepository<SpringUserSecurity, String> {
 	/**
 	 * IN查询
 	 * @param ids

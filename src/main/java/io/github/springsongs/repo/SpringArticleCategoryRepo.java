@@ -1,4 +1,4 @@
-package io.github.springsongs.dao;
+package io.github.springsongs.repo;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import io.github.springsongs.domain.SpringAritlce;
 import io.github.springsongs.domain.SpringArticleCategory;
 import io.github.springsongs.domain.SpringResource;
 
-public interface SpringArticleCategoryDao extends JpaRepository<SpringArticleCategory, String> {
+public interface SpringArticleCategoryRepo extends JpaRepository<SpringArticleCategory, String> {
 
 	/**
 	 * 分页查询

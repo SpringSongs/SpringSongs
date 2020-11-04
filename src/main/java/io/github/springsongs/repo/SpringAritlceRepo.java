@@ -1,4 +1,4 @@
-package io.github.springsongs.dao;
+package io.github.springsongs.repo;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import io.github.springsongs.domain.SpringAritlce;
 
 @Repository
-public interface SpringAritlceDao extends JpaRepository<SpringAritlce, String> {
+public interface SpringAritlceRepo extends JpaRepository<SpringAritlce, String> {
 	/**
 	 * 分页查询
 	 * 
