@@ -10,6 +10,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,11 +21,11 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import io.github.springsongs.domain.SpringArticleComment;
 import io.github.springsongs.domain.SpringContact;
-import io.github.springsongs.domain.dto.SpringArticleCommentDTO;
 import io.github.springsongs.domain.dto.SpringContactDTO;
 import io.github.springsongs.domain.query.SpringContactQueryBO;
+import io.github.springsongs.enumeration.ResultCode;
+import io.github.springsongs.exception.SpringSongsException;
 import io.github.springsongs.repo.SpringContactRepo;
 import io.github.springsongs.service.ISpringContactService;
 import io.github.springsongs.util.R;
@@ -32,8 +34,10 @@ import io.github.springsongs.util.R;
 @Transactional
 public class SpringContactServiceImpl implements ISpringContactService {
 
+	static Logger logger = LoggerFactory.getLogger(SpringContactServiceImpl.class);
+
 	@Autowired
-	private SpringContactRepo springContactDao;
+	private SpringContactRepo springContactRepo;
 
 	/**
 	 *
@@ -46,8 +50,12 @@ public class SpringContactServiceImpl implements ISpringContactService {
 	 */
 	@Override
 	public void deleteByPrimaryKey(String id) {
-		springContactDao.deleteById(id);
-
+		try {
+			springContactRepo.deleteById(id);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 	}
 
 	/**
@@ -63,8 +71,12 @@ public class SpringContactServiceImpl implements ISpringContactService {
 	public void insert(SpringContactDTO record) {
 		SpringContact springContact = new SpringContact();
 		BeanUtils.copyProperties(record, springContact);
-		springContactDao.save(record);
-
+		try {
+			springContactRepo.save(record);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 	}
 
 	/**
@@ -78,7 +90,13 @@ public class SpringContactServiceImpl implements ISpringContactService {
 	 */
 	@Override
 	public SpringContactDTO selectByPrimaryKey(String id) {
-		SpringContact springContact = springContactDao.getOne(id);
+		SpringContact springContact = null;
+		try {
+			springContact = springContactRepo.getOne(id);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		}
 		SpringContactDTO springContactDTO = new SpringContactDTO();
 		BeanUtils.copyProperties(springContact, springContactDTO);
 		return springContactDTO;
@@ -94,10 +112,29 @@ public class SpringContactServiceImpl implements ISpringContactService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public void updateByPrimaryKey(SpringContactDTO record) {
-		SpringContact springContact = new SpringContact();
-		BeanUtils.copyProperties(record, springContact);
-		springContactDao.save(record);
+	public void updateByPrimaryKey(SpringContactDTO springContactDTO) {
+		SpringContact entity = springContactRepo.getOne(springContactDTO.getId());
+		if (null == entity) {
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		} else {
+			entity.setCompany(springContactDTO.getCompany());
+			entity.setTitle(springContactDTO.getTitle());
+			entity.setUsername(springContactDTO.getUsername());
+			entity.setEmail(springContactDTO.getEmail());
+			entity.setWeb(springContactDTO.getWeb());
+			entity.setFax(springContactDTO.getFax());
+			entity.setQq(springContactDTO.getQq());
+			entity.setWebchat(springContactDTO.getWebchat());
+			entity.setMobile(springContactDTO.getMobile());
+			entity.setTel(springContactDTO.getTel());
+			entity.setSortCode(springContactDTO.getSortCode());
+			try {
+				springContactRepo.save(entity);
+			} catch (Exception ex) {
+				logger.error(ex.getMessage());
+				throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+			}
+		}
 	}
 
 	/**
@@ -166,15 +203,14 @@ public class SpringContactServiceImpl implements ISpringContactService {
 			}
 		};
 		// Pageable pageable = PageRequest.of(currPage - 1, size);
-		Page<SpringContact> springContacts = springContactDao.findAll(specification, pageable);
+		Page<SpringContact> springContacts = springContactRepo.findAll(specification, pageable);
 		List<SpringContactDTO> springContactDTOs = new ArrayList<>();
 		springContacts.stream().forEach(springContact -> {
 			SpringContactDTO springContactDTO = new SpringContactDTO();
 			BeanUtils.copyProperties(springContact, springContactDTO);
 			springContactDTOs.add(springContactDTO);
 		});
-		Page<SpringContactDTO> pages = new PageImpl(springContactDTOs, pageable,
-				springContacts.getTotalElements());
+		Page<SpringContactDTO> pages = new PageImpl(springContactDTOs, pageable, springContacts.getTotalElements());
 		return pages;
 	}
 
@@ -189,7 +225,12 @@ public class SpringContactServiceImpl implements ISpringContactService {
 	 */
 	@Override
 	public void setDeleted(List<String> ids) {
-		springContactDao.setDelete(ids);
+		try {
+			springContactRepo.setDelete(ids);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		}
 	}
 
 	/**
@@ -208,7 +249,11 @@ public class SpringContactServiceImpl implements ISpringContactService {
 
 	@Override
 	public void delete(List<String> ids) {
-		springContactDao.delete(ids);
-
+		try {
+			springContactRepo.delete(ids);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		}
 	}
 }

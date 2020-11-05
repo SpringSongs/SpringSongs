@@ -2,6 +2,7 @@ package io.github.springsongs.service.impl;
 
 import static java.util.stream.Collectors.toList;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -13,8 +14,11 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,17 +34,20 @@ import io.github.springsongs.domain.SpringResourceRole;
 import io.github.springsongs.domain.dto.ElementUiTreeDTO;
 import io.github.springsongs.domain.dto.MenuDTO;
 import io.github.springsongs.domain.dto.ResourceRoleDTO;
-import io.github.springsongs.domain.dto.SpringParameterDTO;
 import io.github.springsongs.domain.dto.SpringResourceDTO;
 import io.github.springsongs.domain.query.SpringResourceQueryBO;
+import io.github.springsongs.enumeration.ResultCode;
+import io.github.springsongs.exception.SpringSongsException;
 import io.github.springsongs.repo.SpringResourceRepo;
 import io.github.springsongs.repo.SpringResourceRoleRepo;
 import io.github.springsongs.service.ISpringResourceService;
+import io.github.springsongs.util.Constant;
 import io.github.springsongs.util.R;
 
 @Service
 
 public class SpringResourceServiceImpl implements ISpringResourceService {
+	static Logger logger = LoggerFactory.getLogger(SpringResourceServiceImpl.class);
 	@Autowired
 	private SpringResourceRepo springResourceDao;
 
@@ -58,8 +65,12 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 	 */
 	@Override
 	public void deleteByPrimaryKey(String id) {
-		springResourceDao.deleteById(id);
-
+		try {
+			springResourceDao.deleteById(id);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 	}
 
 	/**
@@ -75,7 +86,12 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 	public void insert(SpringResourceDTO record) {
 		SpringResource springResource = new SpringResource();
 		BeanUtils.copyProperties(record, springResource);
-		springResourceDao.save(springResource);
+		try {
+			springResourceDao.save(springResource);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 	}
 
 	/**
@@ -89,7 +105,13 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 	 */
 	@Override
 	public SpringResourceDTO selectByPrimaryKey(String id) {
-		SpringResource springResource = springResourceDao.getOne(id);
+		SpringResource springResource = null;
+		try {
+			springResource = springResourceDao.getOne(id);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		}
 		SpringResourceDTO springResourceDTO = new SpringResourceDTO();
 		BeanUtils.copyProperties(springResource, springResourceDTO);
 		return springResourceDTO;
@@ -105,10 +127,30 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public void updateByPrimaryKey(SpringResourceDTO record) {
-		SpringResource springResource = new SpringResource();
-		BeanUtils.copyProperties(record, springResource);
-		springResourceDao.save(record);
+	public void updateByPrimaryKey(SpringResourceDTO springResourceDTO) {
+		SpringResource entity = springResourceDao.getOne(springResourceDTO.getId());
+		if (null == entity) {
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		} else if (!entity.getEnableEdit()) {
+			throw new SpringSongsException(ResultCode.INFO_CAN_NOT_EDIT);
+		} else {
+			entity.setCode(springResourceDTO.getCode());
+			entity.setTitle(springResourceDTO.getTitle());
+			entity.setMenuFlag(springResourceDTO.getMenuFlag());
+			entity.setVueUrl(springResourceDTO.getVueUrl());
+			entity.setAngularUrl(springResourceDTO.getAngularUrl());
+			entity.setParentId(springResourceDTO.getParentId());
+			entity.setParentName(springResourceDTO.getParentName());
+			entity.setSortCode(springResourceDTO.getSortCode());
+			entity.setEnableEdit(springResourceDTO.getEnableEdit());
+			entity.setEnableDelete(springResourceDTO.getEnableDelete());
+			try {
+				springResourceDao.save(entity);
+			} catch (Exception ex) {
+				logger.error(ex.getMessage());
+				throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+			}
+		}
 	}
 
 	/**
@@ -145,7 +187,7 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 			}
 		};
 		// Pageable pageable = PageRequest.of(currPage - 1, size);
-		//return springResourceDao.findAll(specification, pageable);
+		// return springResourceDao.findAll(specification, pageable);
 		Page<SpringResource> springResources = springResourceDao.findAll(specification, pageable);
 		List<SpringResourceDTO> springResourceDTOs = new ArrayList<>();
 		springResources.stream().forEach(springResource -> {
@@ -153,8 +195,7 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 			BeanUtils.copyProperties(springResource, springResourceDTO);
 			springResourceDTOs.add(springResourceDTO);
 		});
-		Page<SpringResourceDTO> pages = new PageImpl(springResourceDTOs, pageable,
-				springResources.getTotalElements());
+		Page<SpringResourceDTO> pages = new PageImpl(springResourceDTOs, pageable, springResources.getTotalElements());
 		return pages;
 	}
 
@@ -169,7 +210,18 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 	 */
 	@Override
 	public void setDeleted(List<String> ids) {
-		springResourceDao.setDelete(ids);
+		List<SpringResource> entityList = springResourceDao.findAllById(ids);
+		for (SpringResource entity : entityList) {
+			if (entity.getEnableDelete() == false) {
+				throw new SpringSongsException(ResultCode.INFO_CAN_NOT_DELETE);
+			}
+		}
+		try {
+			springResourceDao.setDelete(ids);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		}
 	}
 
 	/**

@@ -10,6 +10,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,16 +23,21 @@ import org.springframework.util.StringUtils;
 
 import io.github.springsongs.domain.SpringOrganization;
 import io.github.springsongs.domain.dto.SpringOrganizationDTO;
+import io.github.springsongs.enumeration.ResultCode;
+import io.github.springsongs.exception.SpringSongsException;
 import io.github.springsongs.repo.SpringOrganizationRepo;
 import io.github.springsongs.service.ISpringOrganizationService;
+import io.github.springsongs.util.Constant;
 import io.github.springsongs.util.R;
 
 @Service
 @Transactional
 public class SpringOrganizationServiceImpl implements ISpringOrganizationService {
 
+	static Logger logger = LoggerFactory.getLogger(SpringDictionaryServiceImpl.class);
+
 	@Autowired
-	private SpringOrganizationRepo springOrganizationDao;
+	private SpringOrganizationRepo springOrganizationRepo;
 
 	/**
 	 *
@@ -43,8 +50,12 @@ public class SpringOrganizationServiceImpl implements ISpringOrganizationService
 	 */
 	@Override
 	public void deleteByPrimaryKey(String id) {
-		springOrganizationDao.deleteById(id);
-
+		try {
+			springOrganizationRepo.deleteById(id);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 	}
 
 	/**
@@ -60,8 +71,12 @@ public class SpringOrganizationServiceImpl implements ISpringOrganizationService
 	public void insert(SpringOrganizationDTO record) {
 		SpringOrganization SpringOrganization = new SpringOrganization();
 		BeanUtils.copyProperties(record, SpringOrganization);
-		springOrganizationDao.save(SpringOrganization);
-
+		try {
+			springOrganizationRepo.save(SpringOrganization);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 	}
 
 	/**
@@ -75,7 +90,13 @@ public class SpringOrganizationServiceImpl implements ISpringOrganizationService
 	 */
 	@Override
 	public SpringOrganizationDTO selectByPrimaryKey(String id) {
-		SpringOrganization SpringOrganization = springOrganizationDao.getOne(id);
+		SpringOrganization SpringOrganization = null;
+		try {
+			SpringOrganization = springOrganizationRepo.getOne(id);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		}
 		SpringOrganizationDTO springOrganizationDTO = new SpringOrganizationDTO();
 		BeanUtils.copyProperties(SpringOrganization, springOrganizationDTO);
 		return springOrganizationDTO;
@@ -91,10 +112,23 @@ public class SpringOrganizationServiceImpl implements ISpringOrganizationService
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public void updateByPrimaryKey(SpringOrganizationDTO record) {
-		SpringOrganization SpringOrganization = new SpringOrganization();
-		BeanUtils.copyProperties(record, SpringOrganization);
-		springOrganizationDao.save(record);
+	public void updateByPrimaryKey(SpringOrganizationDTO springOrganizationDTO) {
+		SpringOrganization entity = springOrganizationRepo.getOne(springOrganizationDTO.getId());
+		if (null == entity) {
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		} else {
+			entity.setId(springOrganizationDTO.getId());
+			entity.setParentId(springOrganizationDTO.getParentId());
+			entity.setCode(springOrganizationDTO.getCode());
+			entity.setTitle(springOrganizationDTO.getTitle());
+			entity.setDeletedStatus(springOrganizationDTO.getDeletedStatus());
+			try {
+				springOrganizationRepo.save(entity);
+			} catch (Exception ex) {
+				logger.error(ex.getMessage());
+				throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+			}
+		}
 	}
 
 	/**
@@ -131,7 +165,7 @@ public class SpringOrganizationServiceImpl implements ISpringOrganizationService
 			}
 		};
 		// Pageable pageable = new PageRequest(currPage - 1, size);
-		Page<SpringOrganization> springOrganizations = springOrganizationDao.findAll(specification, pageable);
+		Page<SpringOrganization> springOrganizations = springOrganizationRepo.findAll(specification, pageable);
 		List<SpringOrganizationDTO> springOrganizationDTOs = new ArrayList<>();
 		springOrganizations.stream().forEach(springOrganization -> {
 			SpringOrganizationDTO springOrganizationDTO = new SpringOrganizationDTO();
@@ -154,7 +188,18 @@ public class SpringOrganizationServiceImpl implements ISpringOrganizationService
 	 */
 	@Override
 	public void setDeleted(List<String> ids) {
-		springOrganizationDao.setDelete(ids);
+		for (String id : ids) {
+			List<SpringOrganization> entitis = springOrganizationRepo.listOrganizationByParentId(id);
+			if (entitis.size() > 0) {
+				throw new SpringSongsException(ResultCode.HASED_CHILD_IDS_CANNOT_DELETE);
+			}
+		}
+		try {
+			springOrganizationRepo.setDelete(ids);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		}
 	}
 
 	/**
@@ -181,7 +226,7 @@ public class SpringOrganizationServiceImpl implements ISpringOrganizationService
 	 */
 	@Override
 	public List<SpringOrganizationDTO> listOrganizationsByParent(String parentId) {
-		List<SpringOrganization> springOrganizations=springOrganizationDao.listOrganizationByParentId(parentId);
+		List<SpringOrganization> springOrganizations = springOrganizationRepo.listOrganizationByParentId(parentId);
 		List<SpringOrganizationDTO> springOrganizationDTOs = new ArrayList<>();
 		springOrganizations.stream().forEach(springOrganization -> {
 			SpringOrganizationDTO springOrganizationDTO = new SpringOrganizationDTO();
@@ -193,7 +238,7 @@ public class SpringOrganizationServiceImpl implements ISpringOrganizationService
 
 	@Override
 	public List<SpringOrganizationDTO> listAll() {
-		List<SpringOrganization> springOrganizations=springOrganizationDao.listAllRecord();
+		List<SpringOrganization> springOrganizations = springOrganizationRepo.listAllRecord();
 		List<SpringOrganizationDTO> springOrganizationDTOs = new ArrayList<>();
 		springOrganizations.stream().forEach(springOrganization -> {
 			SpringOrganizationDTO springOrganizationDTO = new SpringOrganizationDTO();

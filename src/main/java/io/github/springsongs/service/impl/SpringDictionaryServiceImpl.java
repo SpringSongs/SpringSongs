@@ -10,6 +10,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,23 +22,27 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import io.github.springsongs.domain.SpringDictionary;
-import io.github.springsongs.domain.SpringDictionaryDetail;
 import io.github.springsongs.domain.dto.SpringDictionaryDTO;
-import io.github.springsongs.domain.dto.SpringDictionaryDetailDTO;
+import io.github.springsongs.domain.dto.SpringParameterDTO;
 import io.github.springsongs.domain.query.SpringDictionaryQueryBO;
+import io.github.springsongs.enumeration.ResultCode;
+import io.github.springsongs.exception.SpringSongsException;
+import io.github.springsongs.repo.SpringDictionaryDetailRepo;
 import io.github.springsongs.repo.SpringDictionaryRepo;
-import io.github.springsongs.repo.SpringDictionaryDetailDao;
 import io.github.springsongs.service.ISpringDictionaryService;
 import io.github.springsongs.util.R;
 
 @Service
 @Transactional
 public class SpringDictionaryServiceImpl implements ISpringDictionaryService {
-	@Autowired
-	private SpringDictionaryRepo springDictionaryDao;
+
+	static Logger logger = LoggerFactory.getLogger(SpringDictionaryServiceImpl.class);
 
 	@Autowired
-	private SpringDictionaryDetailDao springDictionaryDetailDao;
+	private SpringDictionaryRepo springDictionaryRepo;
+
+	@Autowired
+	private SpringDictionaryDetailRepo springDictionaryDetailRepo;
 
 	/**
 	 *
@@ -49,8 +55,12 @@ public class SpringDictionaryServiceImpl implements ISpringDictionaryService {
 	 */
 	@Override
 	public void deleteByPrimaryKey(String id) {
-		springDictionaryDao.deleteById(id);
-
+		try {
+			springDictionaryRepo.deleteById(id);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 	}
 
 	/**
@@ -66,7 +76,12 @@ public class SpringDictionaryServiceImpl implements ISpringDictionaryService {
 	public void insert(SpringDictionaryDTO record) {
 		SpringDictionary springDictionary = new SpringDictionary();
 		BeanUtils.copyProperties(record, springDictionary);
-		springDictionaryDao.save(springDictionary);
+		try {
+			springDictionaryRepo.save(springDictionary);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 	}
 
 	/**
@@ -80,7 +95,13 @@ public class SpringDictionaryServiceImpl implements ISpringDictionaryService {
 	 */
 	@Override
 	public SpringDictionaryDTO selectByPrimaryKey(String id) {
-		SpringDictionary springDictionary = springDictionaryDao.getOne(id);
+		SpringDictionary springDictionary = null;
+		try {
+			springDictionary = springDictionaryRepo.getOne(id);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		}
 		SpringDictionaryDTO springDictionaryDTO = new SpringDictionaryDTO();
 		BeanUtils.copyProperties(springDictionary, springDictionaryDTO);
 		return springDictionaryDTO;
@@ -96,10 +117,25 @@ public class SpringDictionaryServiceImpl implements ISpringDictionaryService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public void updateByPrimaryKey(SpringDictionaryDTO record) {
-		SpringDictionary springDictionary = new SpringDictionary();
-		BeanUtils.copyProperties(record, springDictionary);
-		springDictionaryDao.save(record);
+	public void updateByPrimaryKey(SpringDictionaryDTO springDictionaryDTO) {
+		SpringDictionary entity = springDictionaryRepo.getOne(springDictionaryDTO.getId());
+		if (null == entity) {
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		} else if (!entity.getEnableEdit()) {
+			throw new SpringSongsException(ResultCode.INFO_CAN_NOT_EDIT);
+		} else {
+			entity.setCode(springDictionaryDTO.getCode());
+			entity.setTitle(springDictionaryDTO.getTitle());
+			entity.setDescription(springDictionaryDTO.getDescription());
+			entity.setSortCode(springDictionaryDTO.getSortCode());
+			entity.setEnableEdit(springDictionaryDTO.getEnableEdit());
+			try {
+				springDictionaryRepo.save(springDictionaryDTO);
+			} catch (Exception ex) {
+				logger.error(ex.getMessage());
+				throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+			}
+		}
 	}
 
 	/**
@@ -138,7 +174,7 @@ public class SpringDictionaryServiceImpl implements ISpringDictionaryService {
 			}
 		};
 		// Pageable pageable = PageRequest.of(currPage - 1, size);
-		Page<SpringDictionary> springDictionarys = springDictionaryDao.findAll(specification, pageable);
+		Page<SpringDictionary> springDictionarys = springDictionaryRepo.findAll(specification, pageable);
 		List<SpringDictionaryDTO> pringDictionaryDTOs = new ArrayList<>();
 		springDictionarys.stream().forEach(springDictionary -> {
 			SpringDictionaryDTO springDictionaryDTO = new SpringDictionaryDTO();
@@ -160,32 +196,24 @@ public class SpringDictionaryServiceImpl implements ISpringDictionaryService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public R setDeleted(List<String> ids) {
-		R r = R.succeed("Ok");
-		try {
-			List<String> codes = new ArrayList<String>();
-			List<SpringDictionary> entityList = springDictionaryDao.listByIds(ids);
-			for (SpringDictionary entity : entityList) {
-				if (entity.getEnableDelete() == false) {
-					r.put("msg", entity.getTitle() + "不允许删除!");
-					r.put("code", 500);
-					break;
-				}
+	public void setDeleted(List<String> ids) {
+		List<String> codes = new ArrayList<String>();
+		List<SpringDictionary> entityList = springDictionaryRepo.listByIds(ids);
+		for (SpringDictionary entity : entityList) {
+			if (entity.getEnableDelete() == false) {
+				throw new SpringSongsException(ResultCode.INFO_CAN_NOT_DELETE);
 			}
-			if (r.get("code").toString().equals("200")) {
-				entityList.stream().forEach(t -> {
-					codes.add(t.getCode());
-				});
-				springDictionaryDetailDao.setDeleteByDictionCode(codes);
-				springDictionaryDao.setDelete(ids);
-				r.put("msg", "删除成功!");
-				r.put("code", 200);
-			}
-		} catch (Exception e) {
-			r.put("msg", "系统错误!");
-			r.put("code", 500);
 		}
-		return r;
+		entityList.stream().forEach(t -> {
+			codes.add(t.getCode());
+		});
+		try {
+			springDictionaryDetailRepo.setDeleteByDictionCode(codes);
+			springDictionaryRepo.setDelete(ids);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		}
 	}
 
 	/**
@@ -204,12 +232,25 @@ public class SpringDictionaryServiceImpl implements ISpringDictionaryService {
 
 	@Override
 	public void delete(List<String> ids) {
-		springDictionaryDao.delete(ids);
+		springDictionaryRepo.delete(ids);
 
 	}
 
 	@Override
-	public List<SpringDictionary> listByIds(List<String> ids) {
-		return springDictionaryDao.findInIds(ids);
+	public List<SpringDictionaryDTO> listByIds(List<String> ids) {
+		List<SpringDictionary> springDictionarys = null;
+		try {
+			springDictionarys = springDictionaryRepo.findInIds(ids);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
+		List<SpringDictionaryDTO> springDictionaryDTOs = new ArrayList<>();
+		springDictionarys.stream().forEach(springDictionary -> {
+			SpringDictionaryDTO springDictionaryDTO = new SpringDictionaryDTO();
+			BeanUtils.copyProperties(springDictionary, springDictionaryDTO);
+			springDictionaryDTOs.add(springDictionaryDTO);
+		});
+		return springDictionaryDTOs;
 	}
 }

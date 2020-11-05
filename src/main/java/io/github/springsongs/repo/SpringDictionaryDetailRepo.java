@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import io.github.springsongs.domain.SpringDictionaryDetail;
 
 @Repository
-public interface SpringDictionaryDetailDao extends JpaRepository<SpringDictionaryDetail, String> {
+public interface SpringDictionaryDetailRepo extends JpaRepository<SpringDictionaryDetail, String> {
 	/**
 	 * 分页查询
 	 * 

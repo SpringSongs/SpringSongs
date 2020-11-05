@@ -10,6 +10,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,12 +21,12 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import io.github.springsongs.domain.SpringContact;
 import io.github.springsongs.domain.SpringDictionaryDetail;
-import io.github.springsongs.domain.dto.SpringContactDTO;
 import io.github.springsongs.domain.dto.SpringDictionaryDetailDTO;
 import io.github.springsongs.domain.query.SpringDictionaryDetailQueryBO;
-import io.github.springsongs.repo.SpringDictionaryDetailDao;
+import io.github.springsongs.enumeration.ResultCode;
+import io.github.springsongs.exception.SpringSongsException;
+import io.github.springsongs.repo.SpringDictionaryDetailRepo;
 import io.github.springsongs.service.ISpringDictionaryDetailService;
 import io.github.springsongs.util.R;
 
@@ -32,8 +34,10 @@ import io.github.springsongs.util.R;
 @Transactional
 public class SpringDictionaryDetailServiceImpl implements ISpringDictionaryDetailService {
 
+	static Logger logger = LoggerFactory.getLogger(SpringContactServiceImpl.class);
+
 	@Autowired
-	private SpringDictionaryDetailDao springDictionaryDetailDao;
+	private SpringDictionaryDetailRepo springDictionaryDetailRepo;
 
 	/**
 	 *
@@ -46,8 +50,12 @@ public class SpringDictionaryDetailServiceImpl implements ISpringDictionaryDetai
 	 */
 	@Override
 	public void deleteByPrimaryKey(String id) {
-		springDictionaryDetailDao.deleteById(id);
-
+		try {
+			springDictionaryDetailRepo.deleteById(id);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 	}
 
 	/**
@@ -63,7 +71,12 @@ public class SpringDictionaryDetailServiceImpl implements ISpringDictionaryDetai
 	public void insert(SpringDictionaryDetailDTO record) {
 		SpringDictionaryDetail springDictionaryDetail = new SpringDictionaryDetail();
 		BeanUtils.copyProperties(record, springDictionaryDetail);
-		springDictionaryDetailDao.save(record);
+		try {
+			springDictionaryDetailRepo.save(record);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 	}
 
 	/**
@@ -77,7 +90,13 @@ public class SpringDictionaryDetailServiceImpl implements ISpringDictionaryDetai
 	 */
 	@Override
 	public SpringDictionaryDetailDTO selectByPrimaryKey(String id) {
-		SpringDictionaryDetail springDictionaryDetail = springDictionaryDetailDao.getOne(id);
+		SpringDictionaryDetail springDictionaryDetail = null;
+		try {
+			springDictionaryDetail = springDictionaryDetailRepo.getOne(id);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		}
 		SpringDictionaryDetailDTO springDictionaryDetailDTO = new SpringDictionaryDetailDTO();
 		BeanUtils.copyProperties(springDictionaryDetail, springDictionaryDetailDTO);
 		return springDictionaryDetailDTO;
@@ -93,10 +112,29 @@ public class SpringDictionaryDetailServiceImpl implements ISpringDictionaryDetai
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public void updateByPrimaryKey(SpringDictionaryDetailDTO record) {
-		SpringDictionaryDetail springDictionaryDetail = new SpringDictionaryDetail();
-		BeanUtils.copyProperties(record, springDictionaryDetail);
-		springDictionaryDetailDao.save(record);
+	public void updateByPrimaryKey(SpringDictionaryDetailDTO springDictionaryDetailDTO) {
+		SpringDictionaryDetail entity = springDictionaryDetailRepo.getOne(springDictionaryDetailDTO.getId());
+		if (null == entity) {
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		} else {
+			entity.setDictionaryCode(springDictionaryDetailDTO.getDictionaryCode());
+			entity.setParentId(springDictionaryDetailDTO.getParentId());
+			entity.setDetailCode(springDictionaryDetailDTO.getDetailCode());
+			entity.setDetailName(springDictionaryDetailDTO.getDetailName());
+			entity.setDetailValue(springDictionaryDetailDTO.getDetailValue());
+			entity.setDescription(springDictionaryDetailDTO.getDescription());
+			entity.setChildIds(springDictionaryDetailDTO.getChildIds());
+			entity.setSortCode(springDictionaryDetailDTO.getSortCode());
+			entity.setEnableEdit(springDictionaryDetailDTO.getEnableEdit());
+			entity.setEnableDelete(springDictionaryDetailDTO.getEnableDelete());
+			entity.setDeletedStatus(springDictionaryDetailDTO.getDeletedStatus());
+			try {
+				springDictionaryDetailRepo.save(entity);
+			} catch (Exception ex) {
+				logger.error(ex.getMessage());
+				throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+			}
+		}
 	}
 
 	/**
@@ -142,7 +180,7 @@ public class SpringDictionaryDetailServiceImpl implements ISpringDictionaryDetai
 			}
 		};
 		// Pageable pageable = PageRequest.of(currPage - 1, size);
-		Page<SpringDictionaryDetail> springDictionaryDetails = springDictionaryDetailDao.findAll(specification,
+		Page<SpringDictionaryDetail> springDictionaryDetails = springDictionaryDetailRepo.findAll(specification,
 				pageable);
 		List<SpringDictionaryDetailDTO> springDictionaryDetailDTOs = new ArrayList<>();
 		springDictionaryDetails.stream().forEach(springDictionaryDetail -> {
@@ -166,7 +204,12 @@ public class SpringDictionaryDetailServiceImpl implements ISpringDictionaryDetai
 	 */
 	@Override
 	public void setDeleted(List<String> ids) {
-		springDictionaryDetailDao.setDelete(ids);
+		try {
+			springDictionaryDetailRepo.setDelete(ids);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		}
 	}
 
 	/**
@@ -185,12 +228,21 @@ public class SpringDictionaryDetailServiceImpl implements ISpringDictionaryDetai
 
 	@Override
 	public void delete(List<String> ids) {
-		springDictionaryDetailDao.delete(ids);
-
+		try {
+			springDictionaryDetailRepo.delete(ids);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		}
 	}
 
 	@Override
 	public void setDeleteByCode(String code) {
-		springDictionaryDetailDao.setDeleteByCode(code);
+		try {
+			springDictionaryDetailRepo.setDeleteByCode(code);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		}
 	}
 }

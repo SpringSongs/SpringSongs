@@ -10,6 +10,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,6 +24,8 @@ import org.springframework.util.StringUtils;
 import io.github.springsongs.domain.SpringParameter;
 import io.github.springsongs.domain.dto.SpringParameterDTO;
 import io.github.springsongs.domain.query.SpringParameterQueryBO;
+import io.github.springsongs.enumeration.ResultCode;
+import io.github.springsongs.exception.SpringSongsException;
 import io.github.springsongs.repo.SpringParameterRepo;
 import io.github.springsongs.service.ISpringParameterService;
 import io.github.springsongs.util.R;
@@ -29,9 +33,9 @@ import io.github.springsongs.util.R;
 @Service
 @Transactional
 public class SpringParameterServiceImpl implements ISpringParameterService {
-
+	static Logger logger = LoggerFactory.getLogger(SpringDictionaryServiceImpl.class);
 	@Autowired
-	private SpringParameterRepo springParameterDao;
+	private SpringParameterRepo springParameterRepo;
 
 	/**
 	 *
@@ -44,8 +48,12 @@ public class SpringParameterServiceImpl implements ISpringParameterService {
 	 */
 	@Override
 	public void deleteByPrimaryKey(String id) {
-		springParameterDao.deleteById(id);
-
+		try {
+			springParameterRepo.deleteById(id);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 	}
 
 	/**
@@ -61,8 +69,12 @@ public class SpringParameterServiceImpl implements ISpringParameterService {
 	public void insert(SpringParameterDTO record) {
 		SpringParameter springParameter = new SpringParameter();
 		BeanUtils.copyProperties(record, springParameter);
-		springParameterDao.save(springParameter);
-
+		try {
+			springParameterRepo.save(springParameter);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 	}
 
 	/**
@@ -76,7 +88,13 @@ public class SpringParameterServiceImpl implements ISpringParameterService {
 	 */
 	@Override
 	public SpringParameterDTO selectByPrimaryKey(String id) {
-		SpringParameter springParameter = springParameterDao.getOne(id);
+		SpringParameter springParameter = null;
+		try {
+			springParameter = springParameterRepo.getOne(id);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		}
 		SpringParameterDTO springParameterDTO = new SpringParameterDTO();
 		BeanUtils.copyProperties(springParameter, springParameterDTO);
 		return springParameterDTO;
@@ -92,10 +110,26 @@ public class SpringParameterServiceImpl implements ISpringParameterService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public void updateByPrimaryKey(SpringParameterDTO record) {
-		SpringParameter springParameter = new SpringParameter();
-		BeanUtils.copyProperties(record, springParameter);
-		springParameterDao.save(springParameter);
+	public void updateByPrimaryKey(SpringParameterDTO springParameterDTO) {
+		SpringParameter entity = springParameterRepo.getOne(springParameterDTO.getId());
+		if (null == entity) {
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		} else if (!entity.getEnableEdit()) {
+			throw new SpringSongsException(ResultCode.INFO_CAN_NOT_EDIT);
+		} else {
+			entity.setCode(springParameterDTO.getCode());
+			entity.setK(springParameterDTO.getK());
+			entity.setV(springParameterDTO.getV());
+			entity.setSortCode(springParameterDTO.getSortCode());
+			entity.setEnableEdit(springParameterDTO.getEnableEdit());
+			entity.setEnableDelete(springParameterDTO.getEnableDelete());
+			try {
+				springParameterRepo.save(entity);
+			} catch (Exception ex) {
+				logger.error(ex.getMessage());
+				throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+			}
+		}
 	}
 
 	/**
@@ -132,8 +166,8 @@ public class SpringParameterServiceImpl implements ISpringParameterService {
 			}
 		};
 		// Pageable pageable = PageRequest.of(currPage - 1, size);
-		// return springParameterDao.findAll(specification, pageable);
-		Page<SpringParameter> springParameters = springParameterDao.findAll(specification, pageable);
+		// return springParameterRepo.findAll(specification, pageable);
+		Page<SpringParameter> springParameters = springParameterRepo.findAll(specification, pageable);
 		List<SpringParameterDTO> springParameterDTOs = new ArrayList<>();
 		springParameters.stream().forEach(springParameter -> {
 			SpringParameterDTO springParameterDTO = new SpringParameterDTO();
@@ -156,7 +190,18 @@ public class SpringParameterServiceImpl implements ISpringParameterService {
 	 */
 	@Override
 	public void setDeleted(List<String> ids) {
-		springParameterDao.setDelete(ids);
+		List<SpringParameter> entityList = springParameterRepo.listByIds(ids);
+		for (SpringParameter entity : entityList) {
+			if (entity.getEnableDelete() == false) {
+				throw new SpringSongsException(ResultCode.INFO_CAN_NOT_DELETE);
+			}
+		}
+		try {
+			springParameterRepo.setDelete(ids);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		}
 	}
 
 	/**
@@ -175,13 +220,23 @@ public class SpringParameterServiceImpl implements ISpringParameterService {
 
 	@Override
 	public void delete(List<String> ids) {
-		springParameterDao.delete(ids);
-
+		List<SpringParameter> entityList = springParameterRepo.listByIds(ids);
+		for (SpringParameter entity : entityList) {
+			if (entity.getEnableDelete() == false) {
+				throw new SpringSongsException(ResultCode.INFO_CAN_NOT_DELETE);
+			}
+		}
+		try {
+			springParameterRepo.delete(ids);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		}
 	}
 
 	@Override
 	public List<SpringParameterDTO> listByIds(List<String> ids) {
-		List<SpringParameter> springParameters=springParameterDao.listByIds(ids);
+		List<SpringParameter> springParameters = springParameterRepo.listByIds(ids);
 		List<SpringParameterDTO> springParameterDTOs = new ArrayList<>();
 		springParameters.stream().forEach(springParameter -> {
 			SpringParameterDTO springParameterDTO = new SpringParameterDTO();

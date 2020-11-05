@@ -32,7 +32,7 @@ import io.github.springsongs.util.R;
 @Transactional
 public class SpringLoginLogServiceImpl implements ISpringLoginLogService {
 	@Autowired
-	private SpringLoginLogRepo springLoginLogDao;
+	private SpringLoginLogRepo springLoginLogRepo;
 
 	/**
 	 *
@@ -45,7 +45,7 @@ public class SpringLoginLogServiceImpl implements ISpringLoginLogService {
 	 */
 	@Override
 	public void deleteByPrimaryKey(String id) {
-		springLoginLogDao.deleteById(id);
+		springLoginLogRepo.deleteById(id);
 
 	}
 
@@ -62,7 +62,7 @@ public class SpringLoginLogServiceImpl implements ISpringLoginLogService {
 	public void insert(SpringLoginLogDTO record) {
 		SpringLoginLog springLoginLog = new SpringLoginLog();
 		BeanUtils.copyProperties(record, springLoginLog);
-		springLoginLogDao.save(springLoginLog);
+		springLoginLogRepo.save(springLoginLog);
 
 	}
 
@@ -77,7 +77,7 @@ public class SpringLoginLogServiceImpl implements ISpringLoginLogService {
 	 */
 	@Override
 	public SpringLoginLogDTO selectByPrimaryKey(String id) {
-		SpringLoginLog springLoginLog = springLoginLogDao.getOne(id);
+		SpringLoginLog springLoginLog = springLoginLogRepo.getOne(id);
 		SpringLoginLogDTO springLoginLogDTO = new SpringLoginLogDTO();
 		BeanUtils.copyProperties(springLoginLog, springLoginLogDTO);
 		return springLoginLogDTO;
@@ -96,7 +96,7 @@ public class SpringLoginLogServiceImpl implements ISpringLoginLogService {
 	public void updateByPrimaryKey(SpringLoginLogDTO record) {
 		SpringLoginLog springLoginLog = new SpringLoginLog();
 		BeanUtils.copyProperties(record, springLoginLog);
-		springLoginLogDao.save(record);
+		springLoginLogRepo.save(record);
 	}
 
 	/**
@@ -128,7 +128,7 @@ public class SpringLoginLogServiceImpl implements ISpringLoginLogService {
 		};
 		// Pageable pageable = PageRequest.of(currPage - 1, size);
 		
-		Page<SpringLoginLog> springLoginLogs = springLoginLogDao.findAll(specification, pageable);
+		Page<SpringLoginLog> springLoginLogs = springLoginLogRepo.findAll(specification, pageable);
 		List<SpringLoginLogDTO> springLoginLogDTOs = new ArrayList<>();
 		springLoginLogs.stream().forEach(springLoginLog -> {
 			SpringLoginLogDTO springLoginLogDTO = new SpringLoginLogDTO();
@@ -156,7 +156,7 @@ public class SpringLoginLogServiceImpl implements ISpringLoginLogService {
 
 	@Override
 	public void delete(List<String> ids) {
-		springLoginLogDao.delete(ids);
+		springLoginLogRepo.delete(ids);
 
 	}
 }

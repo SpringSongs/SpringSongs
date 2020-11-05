@@ -27,7 +27,7 @@ import org.springframework.web.context.WebApplicationContext;
 import com.alibaba.fastjson.JSON;
 
 import io.github.springsongs.domain.SpringDictionaryDetail;
-import io.github.springsongs.repo.SpringDictionaryDetailDao;
+import io.github.springsongs.repo.SpringDictionaryDetailRepo;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -38,7 +38,7 @@ class BaseDictionaryDetailControllerTest {
 	private WebApplicationContext context;
 
 	@Autowired
-	private SpringDictionaryDetailDao dao;
+	private SpringDictionaryDetailRepo dao;
 
 	// @Autowired
 	private MockMvc mvc;

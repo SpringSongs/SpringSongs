@@ -11,8 +11,11 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,31 +26,35 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import io.github.springsongs.domain.SpringSystem;
+import io.github.springsongs.domain.SpringParameter;
 import io.github.springsongs.domain.SpringUser;
 import io.github.springsongs.domain.SpringUserRole;
 import io.github.springsongs.domain.SpringUserSecurity;
-import io.github.springsongs.domain.dto.SpringSystemDTO;
 import io.github.springsongs.domain.dto.SpringUserDTO;
 import io.github.springsongs.domain.query.SpringUserQueryBO;
+import io.github.springsongs.enumeration.ResultCode;
+import io.github.springsongs.exception.SpringSongsException;
 import io.github.springsongs.repo.SpringLogOnRepo;
 import io.github.springsongs.repo.SpringUserRepo;
 import io.github.springsongs.repo.SpringUserRoleRepo;
 import io.github.springsongs.service.ISpringUserService;
+import io.github.springsongs.util.Constant;
 import io.github.springsongs.util.R;
 
 @Service
 @Transactional
 public class SpringUserServiceImpl implements ISpringUserService {
 
-	@Autowired
-	private SpringUserRepo springUserDao;
+	static Logger logger = LoggerFactory.getLogger(SpringRoleServiceImpl.class);
 
 	@Autowired
-	private SpringLogOnRepo springLogOnDao;
+	private SpringUserRepo springUserRepo;
 
 	@Autowired
-	private SpringUserRoleRepo springUserRoleDao;
+	private SpringLogOnRepo springLogOnRepo;
+
+	@Autowired
+	private SpringUserRoleRepo springUserRoleRepo;
 
 	/**
 	 *
@@ -60,8 +67,12 @@ public class SpringUserServiceImpl implements ISpringUserService {
 	 */
 	@Override
 	public void deleteByPrimaryKey(String id) {
-		springUserDao.deleteById(id);
-
+		try {
+			springUserRepo.deleteById(id);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 	}
 
 	/**
@@ -77,8 +88,12 @@ public class SpringUserServiceImpl implements ISpringUserService {
 	public void insert(SpringUserDTO record) {
 		SpringUser springUser = new SpringUser();
 		BeanUtils.copyProperties(record, springUser);
-		springUserDao.save(record);
-
+		try {
+			springUserRepo.save(record);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 	}
 
 	/**
@@ -92,7 +107,13 @@ public class SpringUserServiceImpl implements ISpringUserService {
 	 */
 	@Override
 	public SpringUserDTO selectByPrimaryKey(String id) {
-		SpringUser springUser = springUserDao.getOne(id);
+		SpringUser springUser = null;
+		try {
+			springUser = springUserRepo.getOne(id);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		}
 		SpringUserDTO springUserDTO = new SpringUserDTO();
 		BeanUtils.copyProperties(springUser, springUserDTO);
 		return springUserDTO;
@@ -108,10 +129,27 @@ public class SpringUserServiceImpl implements ISpringUserService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public void updateByPrimaryKey(SpringUserDTO record) {
-		SpringUser springUser = new SpringUser();
-		BeanUtils.copyProperties(record, springUser);
-		springUserDao.save(springUser);
+	public void updateByPrimaryKey(SpringUserDTO springUserDTO) {
+		SpringUser entity = springUserRepo.getOne(springUserDTO.getId());
+		if (null == entity) {
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		} else if (!entity.getEnableEdit()) {
+			throw new SpringSongsException(ResultCode.INFO_CAN_NOT_EDIT);
+		} else {
+			entity.setTrueName(springUserDTO.getTrueName());
+			entity.setEmail(springUserDTO.getEmail());
+			entity.setMobile(springUserDTO.getMobile());
+			entity.setOrganizationId(springUserDTO.getOrganizationId());
+			entity.setOrganizationName(springUserDTO.getOrganizationName());
+			entity.setEnableEdit(springUserDTO.getEnableEdit());
+			entity.setEnableDelete(springUserDTO.getEnableDelete());
+			try {
+				springUserRepo.save(entity);
+			} catch (Exception ex) {
+				logger.error(ex.getMessage());
+				throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+			}
+		}
 	}
 
 	/**
@@ -169,8 +207,8 @@ public class SpringUserServiceImpl implements ISpringUserService {
 			}
 		};
 		// Pageable pageable = PageRequest.of(currPage - 1, size);
-		// return springUserDao.findAll(specification, pageable);
-		Page<SpringUser> springUsers = springUserDao.findAll(specification, pageable);
+		// return springUserRepo.findAll(specification, pageable);
+		Page<SpringUser> springUsers = springUserRepo.findAll(specification, pageable);
 		List<SpringUserDTO> springUserDTOs = new ArrayList<>();
 		springUsers.stream().forEach(springUser -> {
 			SpringUserDTO springUserDTO = new SpringUserDTO();
@@ -192,7 +230,19 @@ public class SpringUserServiceImpl implements ISpringUserService {
 	 */
 	@Override
 	public void setDeleted(List<String> ids) {
-		springUserDao.setDelete(ids);
+		List<SpringUser> entityList = springUserRepo.findAllById(ids);
+		for (SpringUser entity : entityList) {
+			if (entity.getEnableDelete() == false) {
+				throw new SpringSongsException(ResultCode.INFO_CAN_NOT_DELETE);
+			}
+		}
+		try {
+			springUserRepo.setDelete(ids);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		}
+
 	}
 
 	/**
@@ -211,7 +261,7 @@ public class SpringUserServiceImpl implements ISpringUserService {
 
 	@Override
 	public List<SpringUserDTO> listUserByIds(List<String> ids) {
-		List<SpringUser> springUsers = springUserDao.listUserByIds(ids);
+		List<SpringUser> springUsers = springUserRepo.listUserByIds(ids);
 		List<SpringUserDTO> springUserDTOs = new ArrayList<>();
 		springUsers.stream().forEach(springSystem -> {
 			SpringUserDTO springUserDTO = new SpringUserDTO();
@@ -223,22 +273,23 @@ public class SpringUserServiceImpl implements ISpringUserService {
 
 	@Override
 	public SpringUserDTO getByUserName(String username) {
-		SpringUser springUser = springUserDao.getByUserName(username);
+		SpringUser springUser = springUserRepo.getByUserName(username);
+		if (null == springUser) {
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		}
 		SpringUserDTO springUserDTO = new SpringUserDTO();
 		BeanUtils.copyProperties(springUser, springUserDTO);
 		return springUserDTO;
 	}
 
 	@Override
-	public R setPwd(SpringUserSecurity viewEntity) {
+	public void setPwd(SpringUserSecurity viewEntity) {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		R r = new R();
-		SpringUser entity = springUserDao.getOne(viewEntity.getUserId());
+		SpringUser entity = springUserRepo.getOne(viewEntity.getUserId());
 		if (null == entity) {
-			r.put("code", 500);
-			r.put("msg", "找不到用户!");
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
 		} else {
-			SpringUserSecurity baseUserLogOnEntity = springLogOnDao.findByUserId(viewEntity.getUserId());
+			SpringUserSecurity baseUserLogOnEntity = springLogOnRepo.findByUserId(viewEntity.getUserId());
 			if (null != baseUserLogOnEntity) {
 				viewEntity.setId(baseUserLogOnEntity.getId());
 				viewEntity.setCreatedBy(baseUserLogOnEntity.getCreatedBy());
@@ -247,24 +298,36 @@ public class SpringUserServiceImpl implements ISpringUserService {
 				viewEntity.setCreatedOn(baseUserLogOnEntity.getCreatedOn());
 			}
 			viewEntity.setPwd(passwordEncoder.encode(viewEntity.getPwd().trim()));
-			springLogOnDao.saveAndFlush(viewEntity);
-			r.put("code", 200);
-			r.put("msg", "设置密码成功！");
+			try {
+				springLogOnRepo.save(viewEntity);
+			} catch (Exception ex) {
+				logger.error(ex.getMessage());
+				throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+			}
 		}
-		return r;
 	}
 
 	@Override
 	public void delete(List<String> ids) {
-		springUserDao.delete(ids);
-
+		List<SpringUser> entityList = springUserRepo.findAllById(ids);
+		for (SpringUser entity : entityList) {
+			if (entity.getEnableDelete() == false) {
+				throw new SpringSongsException(ResultCode.INFO_CAN_NOT_DELETE);
+			}
+		}
+		try {
+			springUserRepo.delete(ids);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 	}
 
 	@Override
 	public Page<SpringUserDTO> ListUsersByRoleId(String roleId, Pageable pageable) {
 		// Pageable pageable = PageRequest.of(currPage - 1, size);
-		// return springUserDao.ListUsersByRoleId(roleId, pageable);
-		Page<SpringUser> springUsers = springUserDao.ListUsersByRoleId(roleId, pageable);
+		// return springUserRepo.ListUsersByRoleId(roleId, pageable);
+		Page<SpringUser> springUsers = springUserRepo.ListUsersByRoleId(roleId, pageable);
 		List<SpringUserDTO> springUserDTOs = new ArrayList<>();
 		springUsers.stream().forEach(springUser -> {
 			SpringUserDTO springUserDTO = new SpringUserDTO();
@@ -282,13 +345,13 @@ public class SpringUserServiceImpl implements ISpringUserService {
 			Entry<String, String> entry = it.next();
 			String roleId = entry.getKey();
 			String userId = entry.getValue();
-			springUserRoleDao.delete(userId, roleId);
+			springUserRoleRepo.delete(userId, roleId);
 		}
 	}
 
 	@Override
 	public void saveUserToRole(List<SpringUserRole> baseUserRoleEntityList, String userId) {
-		springUserRoleDao.deleteByUserId(userId);
-		springUserRoleDao.saveAll(baseUserRoleEntityList);
+		springUserRoleRepo.deleteByUserId(userId);
+		springUserRoleRepo.saveAll(baseUserRoleEntityList);
 	}
 }

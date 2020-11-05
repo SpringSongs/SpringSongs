@@ -10,6 +10,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,10 +21,13 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import io.github.springsongs.domain.SpringParameter;
 import io.github.springsongs.domain.SpringSystem;
 import io.github.springsongs.domain.dto.SpringParameterDTO;
 import io.github.springsongs.domain.dto.SpringSystemDTO;
 import io.github.springsongs.domain.query.SpringSystemQueryBO;
+import io.github.springsongs.enumeration.ResultCode;
+import io.github.springsongs.exception.SpringSongsException;
 import io.github.springsongs.repo.SpringSystemRepo;
 import io.github.springsongs.service.ISpringSystemService;
 import io.github.springsongs.util.R;
@@ -31,8 +36,10 @@ import io.github.springsongs.util.R;
 @Transactional
 public class SpringSystemServiceImpl implements ISpringSystemService {
 
+	static Logger logger = LoggerFactory.getLogger(SpringRoleServiceImpl.class);
+
 	@Autowired
-	private SpringSystemRepo springSystemDao;
+	private SpringSystemRepo springSystemRepo;
 
 	/**
 	 *
@@ -45,7 +52,12 @@ public class SpringSystemServiceImpl implements ISpringSystemService {
 	 */
 	@Override
 	public void deleteByPrimaryKey(String id) {
-		springSystemDao.deleteById(id);
+		try {
+			springSystemRepo.deleteById(id);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 
 	}
 
@@ -62,8 +74,12 @@ public class SpringSystemServiceImpl implements ISpringSystemService {
 	public void insert(SpringSystemDTO record) {
 		SpringSystem springSystem = new SpringSystem();
 		BeanUtils.copyProperties(record, springSystem);
-		springSystemDao.save(springSystem);
-
+		try {
+			springSystemRepo.save(springSystem);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 	}
 
 	/**
@@ -77,7 +93,13 @@ public class SpringSystemServiceImpl implements ISpringSystemService {
 	 */
 	@Override
 	public SpringSystemDTO selectByPrimaryKey(String id) {
-		SpringSystem springSystem = springSystemDao.getOne(id);
+		SpringSystem springSystem = null;
+		try {
+			springSystem = springSystemRepo.getOne(id);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		}
 		SpringSystemDTO springSystemDTO = new SpringSystemDTO();
 		BeanUtils.copyProperties(springSystem, springSystemDTO);
 		return springSystemDTO;
@@ -93,10 +115,24 @@ public class SpringSystemServiceImpl implements ISpringSystemService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public void updateByPrimaryKey(SpringSystemDTO record) {
-		SpringSystem springSystem = new SpringSystem();
-		BeanUtils.copyProperties(record, springSystem);
-		springSystemDao.save(springSystem);
+	public void updateByPrimaryKey(SpringSystemDTO springSystemDTO) {
+		SpringSystem entity = springSystemRepo.getOne(springSystemDTO.getId());
+		if (null == entity) {
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		} else {
+			entity.setCode(springSystemDTO.getCode());
+			entity.setTitle(springSystemDTO.getTitle());
+			entity.setDescription(springSystemDTO.getDescription());
+			entity.setEnableDelete(springSystemDTO.getEnableDelete());
+			entity.setEnableEdit(springSystemDTO.getEnableEdit());
+			try {
+				springSystemRepo.save(entity);
+			} catch (Exception ex) {
+				logger.error(ex.getMessage());
+				throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+			}
+		}
+
 	}
 
 	/**
@@ -132,8 +168,8 @@ public class SpringSystemServiceImpl implements ISpringSystemService {
 			}
 		};
 		// Pageable pageable = new PageRequest(currPage - 1, size);
-		// return springSystemDao.findAll(specification, pageable);
-		Page<SpringSystem> springSystems = springSystemDao.findAll(specification, pageable);
+		// return springSystemRepo.findAll(specification, pageable);
+		Page<SpringSystem> springSystems = springSystemRepo.findAll(specification, pageable);
 		List<SpringSystemDTO> springSystemDTOs = new ArrayList<>();
 		springSystems.stream().forEach(springSystem -> {
 			SpringSystemDTO springSystemDTO = new SpringSystemDTO();
@@ -155,7 +191,18 @@ public class SpringSystemServiceImpl implements ISpringSystemService {
 	 */
 	@Override
 	public void setDeleted(List<String> ids) {
-		springSystemDao.setDelete(ids);
+		List<SpringSystem> entityList = springSystemRepo.findAllById(ids);
+		for (SpringSystem entity : entityList) {
+			if (entity.getEnableDelete() == false) {
+				throw new SpringSongsException(ResultCode.INFO_CAN_NOT_DELETE);
+			}
+		}
+		try {
+			springSystemRepo.setDelete(ids);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		}
 	}
 
 	/**
@@ -174,12 +221,12 @@ public class SpringSystemServiceImpl implements ISpringSystemService {
 
 	@Override
 	public SpringSystem findByCode(String itemCode) {
-		return springSystemDao.findByCode(itemCode);
+		return springSystemRepo.findByCode(itemCode);
 	}
 
 	@Override
 	public List<SpringSystemDTO> findInIds(List<String> ids) {
-		List<SpringSystem> springSystems = springSystemDao.findInIds(ids);
+		List<SpringSystem> springSystems = springSystemRepo.findInIds(ids);
 		List<SpringSystemDTO> springSystemDTOs = new ArrayList<>();
 		springSystems.stream().forEach(springSystem -> {
 			SpringSystemDTO springSystemDTO = new SpringSystemDTO();
@@ -196,7 +243,7 @@ public class SpringSystemServiceImpl implements ISpringSystemService {
 
 	@Override
 	public List<SpringSystemDTO> ListAll() {
-		List<SpringSystem> springSystems = springSystemDao.listAllRecord();
+		List<SpringSystem> springSystems = springSystemRepo.listAllRecord();
 		List<SpringSystemDTO> springSystemDTOs = new ArrayList<>();
 		springSystems.stream().forEach(springSystem -> {
 			SpringSystemDTO springSystemDTO = new SpringSystemDTO();

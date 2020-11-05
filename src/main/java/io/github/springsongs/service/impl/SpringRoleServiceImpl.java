@@ -13,6 +13,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,6 +28,8 @@ import io.github.springsongs.domain.SpringRole;
 import io.github.springsongs.domain.SpringUserRole;
 import io.github.springsongs.domain.dto.SpringRoleDTO;
 import io.github.springsongs.domain.query.SpringRoleQueryBO;
+import io.github.springsongs.enumeration.ResultCode;
+import io.github.springsongs.exception.SpringSongsException;
 import io.github.springsongs.repo.SpringRoleRepo;
 import io.github.springsongs.repo.SpringUserRoleRepo;
 import io.github.springsongs.service.ISpringRoleService;
@@ -33,11 +37,13 @@ import io.github.springsongs.util.R;
 
 @Service
 public class SpringRoleServiceImpl implements ISpringRoleService {
-	@Autowired
-	private SpringRoleRepo springRoleDao;
+	static Logger logger = LoggerFactory.getLogger(SpringRoleServiceImpl.class);
 
 	@Autowired
-	private SpringUserRoleRepo springUserRoleDao;
+	private SpringRoleRepo springRoleRepo;
+
+	@Autowired
+	private SpringUserRoleRepo springUserRoleRepo;
 
 	/**
 	 *
@@ -50,8 +56,12 @@ public class SpringRoleServiceImpl implements ISpringRoleService {
 	 */
 	@Override
 	public void deleteByPrimaryKey(String id) {
-		springRoleDao.deleteById(id);
-
+		try {
+			springRoleRepo.deleteById(id);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 	}
 
 	/**
@@ -67,7 +77,12 @@ public class SpringRoleServiceImpl implements ISpringRoleService {
 	public void insert(SpringRoleDTO record) {
 		SpringRole springRole = new SpringRole();
 		BeanUtils.copyProperties(record, springRole);
-		springRoleDao.save(springRole);
+		try {
+			springRoleRepo.save(springRole);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 	}
 
 	/**
@@ -81,7 +96,13 @@ public class SpringRoleServiceImpl implements ISpringRoleService {
 	 */
 	@Override
 	public SpringRoleDTO selectByPrimaryKey(String id) {
-		SpringRole springRole = springRoleDao.getOne(id);
+		SpringRole springRole = null;
+		try {
+			springRole = springRoleRepo.getOne(id);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		}
 		SpringRoleDTO springRoleDTO = new SpringRoleDTO();
 		BeanUtils.copyProperties(springRole, springRoleDTO);
 		return springRoleDTO;
@@ -97,10 +118,23 @@ public class SpringRoleServiceImpl implements ISpringRoleService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public void updateByPrimaryKey(SpringRoleDTO record) {
-		SpringRole springRole = new SpringRole();
-		BeanUtils.copyProperties(record, springRole);
-		springRoleDao.save(record);
+	public void updateByPrimaryKey(SpringRoleDTO springRoleDTO) {
+		SpringRole entity = springRoleRepo.getOne(springRoleDTO.getId());
+		if (null == entity) {
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		} else if (!entity.getEnableEdit()) {
+			throw new SpringSongsException(ResultCode.INFO_CAN_NOT_EDIT);
+		} else {
+			entity.setDesc(springRoleDTO.getDesc());
+			entity.setEnableEdit(springRoleDTO.getEnableEdit());
+			entity.setEnableDelete(springRoleDTO.getEnableDelete());
+			try {
+				springRoleRepo.save(entity);
+			} catch (Exception ex) {
+				logger.error(ex.getMessage());
+				throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+			}
+		}
 	}
 
 	/**
@@ -132,8 +166,8 @@ public class SpringRoleServiceImpl implements ISpringRoleService {
 			}
 		};
 		// Pageable pageable = PageRequest.of(currPage - 1, size);
-		// return springRoleDao.findAll(specification, pageable);
-		Page<SpringRole> springRoles = springRoleDao.findAll(specification, pageable);
+		// return springRoleRepo.findAll(specification, pageable);
+		Page<SpringRole> springRoles = springRoleRepo.findAll(specification, pageable);
 		List<SpringRoleDTO> springRoleDTOs = new ArrayList<>();
 		springRoles.stream().forEach(springRole -> {
 			SpringRoleDTO springRoleDTO = new SpringRoleDTO();
@@ -155,7 +189,18 @@ public class SpringRoleServiceImpl implements ISpringRoleService {
 	 */
 	@Override
 	public void setDeleted(List<String> ids) {
-		springRoleDao.setDelete(ids);
+		List<SpringRole> entityList = springRoleRepo.findAllById(ids);
+		for (SpringRole entity : entityList) {
+			if (entity.getEnableDelete() == false) {
+				throw new SpringSongsException(ResultCode.INFO_CAN_NOT_DELETE);
+			}
+		}
+		try {
+			springRoleRepo.setDelete(ids);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		}
 	}
 
 	/**
@@ -174,13 +219,24 @@ public class SpringRoleServiceImpl implements ISpringRoleService {
 
 	@Override
 	public void delete(List<String> ids) {
-		springRoleDao.deleteAll();
+		List<SpringRole> entityList = springRoleRepo.findAllById(ids);
+		for (SpringRole entity : entityList) {
+			if (entity.getEnableDelete() == false) {
+				throw new SpringSongsException(ResultCode.INFO_CAN_NOT_DELETE);
+			}
+		}
+		try {
+			springRoleRepo.setDelete(ids);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		}
 
 	}
 
 	@Override
 	public List<SpringRoleDTO> listByIds(List<String> ids) {
-		List<SpringRole> springRoles = springRoleDao.findAllById(ids);
+		List<SpringRole> springRoles = springRoleRepo.findAllById(ids);
 		List<SpringRoleDTO> springRoleDTOs = new ArrayList<>();
 		springRoles.stream().forEach(springRole -> {
 			SpringRoleDTO springRoleDTO = new SpringRoleDTO();
@@ -197,21 +253,21 @@ public class SpringRoleServiceImpl implements ISpringRoleService {
 			Entry<String, String> entry = it.next();
 			String userId = entry.getKey();
 			String roleId = entry.getValue();
-			springUserRoleDao.delete(userId, roleId);
+			springUserRoleRepo.delete(userId, roleId);
 		}
 	}
 
 	@Override
 	@Transactional
 	public void saveUserToRole(List<SpringUserRole> baseUserRoleEntityList, String roleId) {
-		springUserRoleDao.deleteByRoleId(roleId);
-		springUserRoleDao.saveAll(baseUserRoleEntityList);
+		springUserRoleRepo.deleteByRoleId(roleId);
+		springUserRoleRepo.saveAll(baseUserRoleEntityList);
 	}
 
 	@Override
 	public Page<SpringRoleDTO> ListRoleByUserId(String userId, Pageable pageable) {
 		// Pageable pageable = PageRequest.of(page - 1, limit);
-		Page<SpringRole> springRoles = springRoleDao.ListRoleByUserId(userId, pageable);
+		Page<SpringRole> springRoles = springRoleRepo.ListRoleByUserId(userId, pageable);
 		List<SpringRoleDTO> springRoleDTOs = new ArrayList<>();
 		springRoles.stream().forEach(springRole -> {
 			SpringRoleDTO springRoleDTO = new SpringRoleDTO();

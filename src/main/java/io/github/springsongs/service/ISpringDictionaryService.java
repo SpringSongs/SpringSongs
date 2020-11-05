@@ -21,11 +21,11 @@ public interface ISpringDictionaryService {
 
 	Page<SpringDictionaryDTO> getAllRecordByPage(SpringDictionaryQueryBO springDictionaryQuery,Pageable pageable);
 
-	R setDeleted(List<String> ids);
+	void setDeleted(List<String> ids);
 	
 	R batchSaveExcel(List<String[]> list);
 	
 	void delete(List<String> ids);
 	
-	List<SpringDictionary> listByIds(List<String> ids);
+	List<SpringDictionaryDTO> listByIds(List<String> ids);
 }

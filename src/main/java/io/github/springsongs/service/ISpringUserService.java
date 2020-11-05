@@ -33,7 +33,7 @@ public interface ISpringUserService {
 
 	SpringUserDTO getByUserName(String username);
 
-	R setPwd(SpringUserSecurity entity);
+	void setPwd(SpringUserSecurity entity);
 
 	void delete(List<String> ids);
 

@@ -4,7 +4,7 @@ public class Constant {
 	public static final int PAGE_SIZE = 20;
 
 	public static final String INFO_NOT_FOUND = "信息不存在或者已经被删除！";
-	public static final String INFO_CAN_NOT_DELETE = "{0}不允许删除！";
+	public static final String INFO_CAN_NOT_DELETE = "不允许删除！";
 	public static final String INFO_CAN_NOT_EDIT="信息不允许编辑！";
 
 	public static final String FILE_UPLOAD_SECCUESSED = "上传成功！";
