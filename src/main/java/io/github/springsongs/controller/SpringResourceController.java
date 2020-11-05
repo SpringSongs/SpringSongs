@@ -27,7 +27,7 @@ import io.github.springsongs.domain.SpringResource;
 import io.github.springsongs.domain.dto.ElementUiTreeDTO;
 import io.github.springsongs.domain.dto.MenuDTO;
 import io.github.springsongs.domain.dto.SpringResourceDTO;
-import io.github.springsongs.domain.query.SpringResourceQuery;
+import io.github.springsongs.domain.query.SpringResourceQueryBO;
 import io.github.springsongs.service.ISpringResourceService;
 import io.github.springsongs.util.Constant;
 import io.github.springsongs.util.IpKit;
@@ -43,7 +43,7 @@ public class SpringResourceController extends BaseController {
 	private ISpringResourceService springResourceService;
 
 	@PostMapping(value = "ListByPage")
-	public R listByPage(@RequestBody SpringResourceQuery springResourceQuery,
+	public R listByPage(@RequestBody SpringResourceQueryBO springResourceQuery,
 			@PageableDefault(page = 1, size = 20) Pageable pageable) {
 		R r = new R();
 		try {

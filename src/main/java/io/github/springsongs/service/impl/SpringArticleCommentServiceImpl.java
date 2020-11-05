@@ -8,8 +8,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,21 +20,22 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import io.github.springsongs.dao.SpringArticleCommentDao;
-import io.github.springsongs.domain.SpringArticleCategory;
 import io.github.springsongs.domain.SpringArticleComment;
-import io.github.springsongs.domain.dto.SpringArticleCategoryDTO;
 import io.github.springsongs.domain.dto.SpringArticleCommentDTO;
-import io.github.springsongs.domain.query.SpringArticleCommentQuery;
+import io.github.springsongs.domain.query.SpringArticleCommentQueryBO;
+import io.github.springsongs.enumeration.ResultCode;
+import io.github.springsongs.exception.SpringSongsException;
+import io.github.springsongs.repo.SpringArticleCommentRepo;
 import io.github.springsongs.service.ISpringArticleCommentService;
 import io.github.springsongs.util.R;
 
 @Service
-@Transactional
 public class SpringArticleCommentServiceImpl implements ISpringArticleCommentService {
 
+	static Logger logger = LoggerFactory.getLogger(SpringArticleCategoryServiceImpl.class);
+
 	@Autowired
-	private SpringArticleCommentDao springCommentDao;
+	private SpringArticleCommentRepo springCommentDao;
 
 	/**
 	 *
@@ -46,8 +48,12 @@ public class SpringArticleCommentServiceImpl implements ISpringArticleCommentSer
 	 */
 	@Override
 	public void deleteByPrimaryKey(String id) {
-		springCommentDao.deleteById(id);
-
+		try {
+			springCommentDao.deleteById(id);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 	}
 
 	/**
@@ -63,7 +69,12 @@ public class SpringArticleCommentServiceImpl implements ISpringArticleCommentSer
 	public void insert(SpringArticleCommentDTO record) {
 		SpringArticleComment springArticleComment = new SpringArticleComment();
 		BeanUtils.copyProperties(record, springArticleComment);
-		springCommentDao.save(springArticleComment);
+		try {
+			springCommentDao.save(springArticleComment);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 
 	}
 
@@ -78,7 +89,13 @@ public class SpringArticleCommentServiceImpl implements ISpringArticleCommentSer
 	 */
 	@Override
 	public SpringArticleCommentDTO selectByPrimaryKey(String id) {
-		SpringArticleComment springArticleComment = springCommentDao.getOne(id);
+		SpringArticleComment springArticleComment = null;
+		try {
+			springArticleComment = springCommentDao.getOne(id);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 		SpringArticleCommentDTO springArticleCommentDTO = new SpringArticleCommentDTO();
 		BeanUtils.copyProperties(springArticleComment, springArticleCommentDTO);
 		return springArticleCommentDTO;
@@ -94,10 +111,23 @@ public class SpringArticleCommentServiceImpl implements ISpringArticleCommentSer
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public void updateByPrimaryKey(SpringArticleCommentDTO record) {
-		SpringArticleComment springArticleComment = new SpringArticleComment();
-		BeanUtils.copyProperties(record, springArticleComment);
-		springCommentDao.save(springArticleComment);
+	public void updateByPrimaryKey(SpringArticleCommentDTO springArticleCommentDTO) {
+		SpringArticleComment entity = springCommentDao.getOne(springArticleCommentDTO.getId());
+		if (null == entity) {
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		} else {
+			entity.setContent(springArticleCommentDTO.getContent());
+			entity.setArticleId(springArticleCommentDTO.getArticleId());
+			entity.setAuditFlag(springArticleCommentDTO.getAuditFlag());
+			entity.setSortCode(springArticleCommentDTO.getSortCode());
+			entity.setDeletedStatus(springArticleCommentDTO.getDeletedStatus());
+			try {
+				springCommentDao.save(entity);
+			} catch (Exception ex) {
+				logger.error(ex.getMessage());
+				throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+			}
+		}
 	}
 
 	/**
@@ -110,7 +140,7 @@ public class SpringArticleCommentServiceImpl implements ISpringArticleCommentSer
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public Page<SpringArticleCommentDTO> getAllRecordByPage(SpringArticleCommentQuery springArticleCommentQuery,
+	public Page<SpringArticleCommentDTO> getAllRecordByPage(SpringArticleCommentQueryBO springArticleCommentQuery,
 			Pageable pageable) {
 		Specification<SpringArticleComment> specification = new Specification<SpringArticleComment>() {
 
@@ -161,7 +191,12 @@ public class SpringArticleCommentServiceImpl implements ISpringArticleCommentSer
 	 */
 	@Override
 	public void setDeleted(List<String> ids) {
-		springCommentDao.setDelete(ids);
+		try {
+			springCommentDao.setDelete(ids);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 	}
 
 	/**
@@ -180,7 +215,32 @@ public class SpringArticleCommentServiceImpl implements ISpringArticleCommentSer
 
 	@Override
 	public void delete(List<String> ids) {
-		springCommentDao.delete(ids);
+		try {
+			springCommentDao.delete(ids);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
+	}
+
+	@Override
+	public void audit(String id) {
+		SpringArticleComment entity = springCommentDao.getOne(id);
+		if (null == entity) {
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		} else {
+			if (entity.getAuditFlag() == true) {
+				entity.setAuditFlag(false);
+			} else {
+				entity.setAuditFlag(true);
+			}
+			try {
+				springCommentDao.save(entity);
+			} catch (Exception ex) {
+				logger.error(ex.getMessage());
+				throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+			}
+		}
 
 	}
 }

@@ -1,6 +1,6 @@
 package io.github.springsongs.domain.query;
 
-public class SpringParameterQuery {
+public class SpringParameterQueryBO {
 	private String code;
 	private String k;
 

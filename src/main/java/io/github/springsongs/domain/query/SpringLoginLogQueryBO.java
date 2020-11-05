@@ -1,6 +1,6 @@
 package io.github.springsongs.domain.query;
 
-public class SpringLoginLogQuery {
+public class SpringLoginLogQueryBO {
 	private String createdBy;
 
 	public String getCreatedBy() {

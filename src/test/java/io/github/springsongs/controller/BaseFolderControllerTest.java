@@ -1,4 +1,4 @@
-package cn.spring.controller;
+package io.github.springsongs.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.hasItem;
@@ -23,8 +23,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.alibaba.fastjson.JSON;
 
-import io.github.springsongs.dao.SpringAttachmentCategoryDao;
 import io.github.springsongs.domain.SpringAttachmentCategory;
+import io.github.springsongs.repo.SpringAttachmentCategoryRepo;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -35,7 +35,7 @@ class BaseFolderControllerTest {
 	private WebApplicationContext context;
 
 	@Autowired
-	private SpringAttachmentCategoryDao dao;
+	private SpringAttachmentCategoryRepo dao;
 
 	// @Autowired
 	private MockMvc mvc;

@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 import io.github.springsongs.domain.SpringSystem;
 import io.github.springsongs.domain.dto.SpringSystemDTO;
-import io.github.springsongs.domain.query.SpringSystemQuery;
+import io.github.springsongs.domain.query.SpringSystemQueryBO;
 import io.github.springsongs.util.R;
 
 public interface ISpringSystemService {
@@ -19,7 +19,7 @@ public interface ISpringSystemService {
 
 	void updateByPrimaryKey(SpringSystemDTO record);
 
-	Page<SpringSystemDTO> getAllRecordByPage(SpringSystemQuery springSystemQuery, Pageable pageable);
+	Page<SpringSystemDTO> getAllRecordByPage(SpringSystemQueryBO springSystemQuery, Pageable pageable);
 
 	void setDeleted(List<String> ids);
 

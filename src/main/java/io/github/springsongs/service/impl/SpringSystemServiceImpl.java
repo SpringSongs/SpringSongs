@@ -19,11 +19,11 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import io.github.springsongs.dao.SpringSystemDao;
 import io.github.springsongs.domain.SpringSystem;
 import io.github.springsongs.domain.dto.SpringParameterDTO;
 import io.github.springsongs.domain.dto.SpringSystemDTO;
-import io.github.springsongs.domain.query.SpringSystemQuery;
+import io.github.springsongs.domain.query.SpringSystemQueryBO;
+import io.github.springsongs.repo.SpringSystemRepo;
 import io.github.springsongs.service.ISpringSystemService;
 import io.github.springsongs.util.R;
 
@@ -32,7 +32,7 @@ import io.github.springsongs.util.R;
 public class SpringSystemServiceImpl implements ISpringSystemService {
 
 	@Autowired
-	private SpringSystemDao springSystemDao;
+	private SpringSystemRepo springSystemDao;
 
 	/**
 	 *
@@ -109,7 +109,7 @@ public class SpringSystemServiceImpl implements ISpringSystemService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public Page<SpringSystemDTO> getAllRecordByPage(SpringSystemQuery springSystemQuery, Pageable pageable) {
+	public Page<SpringSystemDTO> getAllRecordByPage(SpringSystemQueryBO springSystemQuery, Pageable pageable) {
 		Specification<SpringSystem> specification = new Specification<SpringSystem>() {
 
 			@Override

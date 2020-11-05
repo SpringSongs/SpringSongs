@@ -24,8 +24,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import io.github.springsongs.dao.SpringResourceDao;
-import io.github.springsongs.dao.SpringResourceRoleDao;
 import io.github.springsongs.domain.SpringParameter;
 import io.github.springsongs.domain.SpringResource;
 import io.github.springsongs.domain.SpringResourceRole;
@@ -34,7 +32,9 @@ import io.github.springsongs.domain.dto.MenuDTO;
 import io.github.springsongs.domain.dto.ResourceRoleDTO;
 import io.github.springsongs.domain.dto.SpringParameterDTO;
 import io.github.springsongs.domain.dto.SpringResourceDTO;
-import io.github.springsongs.domain.query.SpringResourceQuery;
+import io.github.springsongs.domain.query.SpringResourceQueryBO;
+import io.github.springsongs.repo.SpringResourceRepo;
+import io.github.springsongs.repo.SpringResourceRoleRepo;
 import io.github.springsongs.service.ISpringResourceService;
 import io.github.springsongs.util.R;
 
@@ -42,10 +42,10 @@ import io.github.springsongs.util.R;
 
 public class SpringResourceServiceImpl implements ISpringResourceService {
 	@Autowired
-	private SpringResourceDao springResourceDao;
+	private SpringResourceRepo springResourceDao;
 
 	@Autowired
-	private SpringResourceRoleDao springResourceRoleDao;
+	private SpringResourceRoleRepo springResourceRoleDao;
 
 	/**
 	 *
@@ -121,7 +121,7 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public Page<SpringResourceDTO> getAllRecordByPage(SpringResourceQuery springResourceQuery, Pageable pageable) {
+	public Page<SpringResourceDTO> getAllRecordByPage(SpringResourceQueryBO springResourceQuery, Pageable pageable) {
 		Specification<SpringResource> specification = new Specification<SpringResource>() {
 			@Override
 			public Predicate toPredicate(Root<SpringResource> root, CriteriaQuery<?> query, CriteriaBuilder cb) {

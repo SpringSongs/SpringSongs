@@ -23,16 +23,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import io.github.springsongs.dao.SpringLogOnDao;
-import io.github.springsongs.dao.SpringUserDao;
-import io.github.springsongs.dao.SpringUserRoleDao;
 import io.github.springsongs.domain.SpringSystem;
 import io.github.springsongs.domain.SpringUser;
-import io.github.springsongs.domain.SpringUserDTO;
 import io.github.springsongs.domain.SpringUserRole;
 import io.github.springsongs.domain.SpringUserSecurity;
 import io.github.springsongs.domain.dto.SpringSystemDTO;
-import io.github.springsongs.domain.query.SpringUserQuery;
+import io.github.springsongs.domain.dto.SpringUserDTO;
+import io.github.springsongs.domain.query.SpringUserQueryBO;
+import io.github.springsongs.repo.SpringLogOnRepo;
+import io.github.springsongs.repo.SpringUserRepo;
+import io.github.springsongs.repo.SpringUserRoleRepo;
 import io.github.springsongs.service.ISpringUserService;
 import io.github.springsongs.util.R;
 
@@ -41,13 +41,13 @@ import io.github.springsongs.util.R;
 public class SpringUserServiceImpl implements ISpringUserService {
 
 	@Autowired
-	private SpringUserDao springUserDao;
+	private SpringUserRepo springUserDao;
 
 	@Autowired
-	private SpringLogOnDao springLogOnDao;
+	private SpringLogOnRepo springLogOnDao;
 
 	@Autowired
-	private SpringUserRoleDao springUserRoleDao;
+	private SpringUserRoleRepo springUserRoleDao;
 
 	/**
 	 *
@@ -124,7 +124,7 @@ public class SpringUserServiceImpl implements ISpringUserService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public Page<SpringUserDTO> getAllRecordByPage(SpringUserQuery springUserQuery, Pageable pageable) {
+	public Page<SpringUserDTO> getAllRecordByPage(SpringUserQueryBO springUserQuery, Pageable pageable) {
 		Specification<SpringUser> specification = new Specification<SpringUser>() {
 
 			@Override

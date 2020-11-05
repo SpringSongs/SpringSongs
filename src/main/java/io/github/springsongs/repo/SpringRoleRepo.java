@@ -12,7 +12,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import io.github.springsongs.domain.SpringRole;
-import io.github.springsongs.domain.SpringUser;
 import io.github.springsongs.domain.dto.RoleCodeDTO;
 
 @Repository

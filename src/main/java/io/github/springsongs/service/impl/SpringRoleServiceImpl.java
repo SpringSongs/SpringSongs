@@ -22,22 +22,22 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import io.github.springsongs.dao.SpringRoleDao;
-import io.github.springsongs.dao.SpringUserRoleDao;
 import io.github.springsongs.domain.SpringRole;
 import io.github.springsongs.domain.SpringUserRole;
 import io.github.springsongs.domain.dto.SpringRoleDTO;
-import io.github.springsongs.domain.query.SpringRoleQuery;
+import io.github.springsongs.domain.query.SpringRoleQueryBO;
+import io.github.springsongs.repo.SpringRoleRepo;
+import io.github.springsongs.repo.SpringUserRoleRepo;
 import io.github.springsongs.service.ISpringRoleService;
 import io.github.springsongs.util.R;
 
 @Service
 public class SpringRoleServiceImpl implements ISpringRoleService {
 	@Autowired
-	private SpringRoleDao springRoleDao;
+	private SpringRoleRepo springRoleDao;
 
 	@Autowired
-	private SpringUserRoleDao springUserRoleDao;
+	private SpringUserRoleRepo springUserRoleDao;
 
 	/**
 	 *
@@ -113,7 +113,7 @@ public class SpringRoleServiceImpl implements ISpringRoleService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public Page<SpringRoleDTO> getAllRecordByPage(SpringRoleQuery springRoleQuery, Pageable pageable) {
+	public Page<SpringRoleDTO> getAllRecordByPage(SpringRoleQueryBO springRoleQuery, Pageable pageable) {
 		Specification<SpringRole> specification = new Specification<SpringRole>() {
 			@Override
 			public Predicate toPredicate(Root<SpringRole> root, CriteriaQuery<?> query, CriteriaBuilder cb) {

@@ -9,24 +9,24 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import io.github.springsongs.dao.SpringLogOnDao;
-import io.github.springsongs.dao.SpringRoleDao;
-import io.github.springsongs.dao.SpringUserDao;
 import io.github.springsongs.domain.SpringUser;
 import io.github.springsongs.domain.SpringUserSecurity;
 import io.github.springsongs.domain.dto.RoleCodeDTO;
+import io.github.springsongs.repo.SpringLogOnRepo;
+import io.github.springsongs.repo.SpringRoleRepo;
+import io.github.springsongs.repo.SpringUserRepo;
 
 @Service
 public class UserSecurityService implements UserDetailsService {
 
 	@Autowired
-	private SpringUserDao userDao;
+	private SpringUserRepo userDao;
 
 	@Autowired
-	private SpringRoleDao baseRoleDao;
+	private SpringRoleRepo baseRoleDao;
 
 	@Autowired
-	private SpringLogOnDao baseUserLoginOnDao;
+	private SpringLogOnRepo baseUserLoginOnDao;
 
 	@Override
 	@Transactional(readOnly = true)  

@@ -11,7 +11,7 @@ import io.github.springsongs.domain.dto.ElementUiTreeDTO;
 import io.github.springsongs.domain.dto.MenuDTO;
 import io.github.springsongs.domain.dto.ResourceRoleDTO;
 import io.github.springsongs.domain.dto.SpringResourceDTO;
-import io.github.springsongs.domain.query.SpringResourceQuery;
+import io.github.springsongs.domain.query.SpringResourceQueryBO;
 import io.github.springsongs.util.R;
 
 public interface ISpringResourceService {
@@ -23,7 +23,7 @@ public interface ISpringResourceService {
 
 	void updateByPrimaryKey(SpringResourceDTO record);
 
-	Page<SpringResourceDTO> getAllRecordByPage(SpringResourceQuery springResourceQuery, Pageable pageable);
+	Page<SpringResourceDTO> getAllRecordByPage(SpringResourceQueryBO springResourceQuery, Pageable pageable);
 
 	void setDeleted(List<String> ids);
 

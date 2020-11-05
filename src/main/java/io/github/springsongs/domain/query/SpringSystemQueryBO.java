@@ -1,6 +1,6 @@
 package io.github.springsongs.domain.query;
 
-public class SpringSystemQuery {
+public class SpringSystemQueryBO {
 	private String code;
 	private String title;
 

@@ -1,6 +1,6 @@
 package io.github.springsongs.domain.query;
 
-public class SpringContactQuery {
+public class SpringContactQueryBO {
 	private String company;
 	private String title;
 	private String username;

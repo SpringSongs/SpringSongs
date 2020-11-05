@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.github.springsongs.domain.SpringParameter;
 import io.github.springsongs.domain.dto.SpringParameterDTO;
-import io.github.springsongs.domain.query.SpringParameterQuery;
+import io.github.springsongs.domain.query.SpringParameterQueryBO;
 import io.github.springsongs.service.ISpringParameterService;
 import io.github.springsongs.util.Constant;
 import io.github.springsongs.util.IpKit;
@@ -40,7 +40,7 @@ public class SpringParameterController extends BaseController {
 	private ISpringParameterService springParameterService;
 
 	@PostMapping(value = "ListByPage")
-	public R listByPage(@RequestBody SpringParameterQuery springParameterQuery,
+	public R listByPage(@RequestBody SpringParameterQueryBO springParameterQuery,
 			@PageableDefault(page = 1, size = 20) Pageable pageable) {
 		R r = new R();
 		try {

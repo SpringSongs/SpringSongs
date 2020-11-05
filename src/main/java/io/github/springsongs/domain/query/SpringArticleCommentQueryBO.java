@@ -1,6 +1,6 @@
 package io.github.springsongs.domain.query;
 
-public class SpringArticleCommentQuery {
+public class SpringArticleCommentQueryBO {
 	private String content;
 	private String createdBy;
 

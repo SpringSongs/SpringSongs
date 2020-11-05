@@ -19,9 +19,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import io.github.springsongs.dao.SpringOrganizationDao;
 import io.github.springsongs.domain.SpringOrganization;
 import io.github.springsongs.domain.dto.SpringOrganizationDTO;
+import io.github.springsongs.repo.SpringOrganizationRepo;
 import io.github.springsongs.service.ISpringOrganizationService;
 import io.github.springsongs.util.R;
 
@@ -30,7 +30,7 @@ import io.github.springsongs.util.R;
 public class SpringOrganizationServiceImpl implements ISpringOrganizationService {
 
 	@Autowired
-	private SpringOrganizationDao springOrganizationDao;
+	private SpringOrganizationRepo springOrganizationDao;
 
 	/**
 	 *

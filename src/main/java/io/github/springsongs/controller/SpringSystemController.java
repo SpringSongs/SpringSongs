@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.github.springsongs.domain.SpringSystem;
 import io.github.springsongs.domain.dto.SpringSystemDTO;
-import io.github.springsongs.domain.query.SpringSystemQuery;
+import io.github.springsongs.domain.query.SpringSystemQueryBO;
 import io.github.springsongs.service.ISpringSystemService;
 import io.github.springsongs.util.Constant;
 import io.github.springsongs.util.IpKit;
@@ -38,7 +38,7 @@ public class SpringSystemController extends BaseController {
 	private ISpringSystemService springSystemService;
 
 	@PostMapping(value = "/ListByPage")
-	public R getPage(@RequestBody SpringSystemQuery springSystemQuery,
+	public R getPage(@RequestBody SpringSystemQueryBO springSystemQuery,
 			@PageableDefault(page = 1, size = 20) Pageable pageable) {
 		R r = new R();
 		try {

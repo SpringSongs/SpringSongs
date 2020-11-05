@@ -10,6 +10,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,11 +21,13 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import io.github.springsongs.dao.SpringArticleCategoryDao;
 import io.github.springsongs.domain.SpringArticleCategory;
 import io.github.springsongs.domain.dto.ElementUiTreeDTO;
 import io.github.springsongs.domain.dto.SpringArticleCategoryDTO;
-import io.github.springsongs.domain.query.SpringArticleCategoryQuery;
+import io.github.springsongs.domain.query.SpringArticleCategoryQueryBO;
+import io.github.springsongs.enumeration.ResultCode;
+import io.github.springsongs.exception.SpringSongsException;
+import io.github.springsongs.repo.SpringArticleCategoryRepo;
 import io.github.springsongs.service.ISpringArticleCategoryService;
 import io.github.springsongs.util.R;
 
@@ -31,8 +35,10 @@ import io.github.springsongs.util.R;
 @Transactional
 public class SpringArticleCategoryServiceImpl implements ISpringArticleCategoryService {
 
+	static Logger logger = LoggerFactory.getLogger(SpringArticleCategoryServiceImpl.class);
+
 	@Autowired
-	private SpringArticleCategoryDao springArticleCategoryDao;
+	private SpringArticleCategoryRepo springArticleCategoryDao;
 
 	/**
 	 *
@@ -45,8 +51,12 @@ public class SpringArticleCategoryServiceImpl implements ISpringArticleCategoryS
 	 */
 	@Override
 	public void deleteByPrimaryKey(String id) {
-		springArticleCategoryDao.deleteById(id);
-
+		try {
+			springArticleCategoryDao.deleteById(id);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 	}
 
 	/**
@@ -62,8 +72,12 @@ public class SpringArticleCategoryServiceImpl implements ISpringArticleCategoryS
 	public void insert(SpringArticleCategoryDTO record) {
 		SpringArticleCategory springArticleCategory = new SpringArticleCategory();
 		BeanUtils.copyProperties(record, springArticleCategory);
-		springArticleCategoryDao.save(springArticleCategory);
-
+		try {
+			springArticleCategoryDao.save(springArticleCategory);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 	}
 
 	/**
@@ -77,7 +91,13 @@ public class SpringArticleCategoryServiceImpl implements ISpringArticleCategoryS
 	 */
 	@Override
 	public SpringArticleCategoryDTO selectByPrimaryKey(String id) {
-		SpringArticleCategory springArticleCategory = springArticleCategoryDao.getOne(id);
+		SpringArticleCategory springArticleCategory = null;
+		try {
+			springArticleCategory = springArticleCategoryDao.getOne(id);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		}
 		SpringArticleCategoryDTO springArticleCategoryDTO = new SpringArticleCategoryDTO();
 		BeanUtils.copyProperties(springArticleCategory, springArticleCategoryDTO);
 		return springArticleCategoryDTO;
@@ -93,10 +113,25 @@ public class SpringArticleCategoryServiceImpl implements ISpringArticleCategoryS
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public void updateByPrimaryKey(SpringArticleCategoryDTO record) {
-		SpringArticleCategory springArticleCategory = new SpringArticleCategory();
-		BeanUtils.copyProperties(record, springArticleCategory);
-		springArticleCategoryDao.save(springArticleCategory);
+	public void updateByPrimaryKey(SpringArticleCategoryDTO springArticleCategoryDTO) {
+		SpringArticleCategory entity = springArticleCategoryDao.getOne(springArticleCategoryDTO.getId());
+		if (null == entity) {
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		} else {
+			entity.setParentId(springArticleCategoryDTO.getParentId());
+			entity.setCode(springArticleCategoryDTO.getCode());
+			entity.setTitle(springArticleCategoryDTO.getTitle());
+			entity.setKeywords(springArticleCategoryDTO.getKeywords());
+			entity.setDescription(springArticleCategoryDTO.getDescription());
+			entity.setSortOrder(springArticleCategoryDTO.getSortOrder());
+			entity.setVersion(springArticleCategoryDTO.getVersion());
+			try {
+				springArticleCategoryDao.save(entity);
+			} catch (Exception ex) {
+				logger.error(ex.getMessage());
+				throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+			}
+		}
 	}
 
 	/**
@@ -109,7 +144,7 @@ public class SpringArticleCategoryServiceImpl implements ISpringArticleCategoryS
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public Page<SpringArticleCategoryDTO> getAllRecordByPage(SpringArticleCategoryQuery record, Pageable pageable) {
+	public Page<SpringArticleCategoryDTO> getAllRecordByPage(SpringArticleCategoryQueryBO record, Pageable pageable) {
 		Specification<SpringArticleCategory> specification = new Specification<SpringArticleCategory>() {
 			@Override
 			public Predicate toPredicate(Root<SpringArticleCategory> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
@@ -156,7 +191,18 @@ public class SpringArticleCategoryServiceImpl implements ISpringArticleCategoryS
 	 */
 	@Override
 	public void setDeleted(List<String> ids) {
-		springArticleCategoryDao.setDelete(ids);
+		for (String id : ids) {
+			List<SpringArticleCategory> entitys = springArticleCategoryDao.getByParentId(id);
+			if (!entitys.isEmpty()) {
+				throw new SpringSongsException(ResultCode.HASED_CHILD_IDS_CANNOT_DELETE);
+			}
+		}
+		try {
+			springArticleCategoryDao.setDelete(ids);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 	}
 
 	/**

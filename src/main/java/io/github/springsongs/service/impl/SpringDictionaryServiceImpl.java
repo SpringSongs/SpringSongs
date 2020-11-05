@@ -19,13 +19,13 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import io.github.springsongs.dao.SpringDictionaryDao;
-import io.github.springsongs.dao.SpringDictionaryDetailDao;
 import io.github.springsongs.domain.SpringDictionary;
 import io.github.springsongs.domain.SpringDictionaryDetail;
 import io.github.springsongs.domain.dto.SpringDictionaryDTO;
 import io.github.springsongs.domain.dto.SpringDictionaryDetailDTO;
-import io.github.springsongs.domain.query.SpringDictionaryQuery;
+import io.github.springsongs.domain.query.SpringDictionaryQueryBO;
+import io.github.springsongs.repo.SpringDictionaryRepo;
+import io.github.springsongs.repo.SpringDictionaryDetailDao;
 import io.github.springsongs.service.ISpringDictionaryService;
 import io.github.springsongs.util.R;
 
@@ -33,7 +33,7 @@ import io.github.springsongs.util.R;
 @Transactional
 public class SpringDictionaryServiceImpl implements ISpringDictionaryService {
 	@Autowired
-	private SpringDictionaryDao springDictionaryDao;
+	private SpringDictionaryRepo springDictionaryDao;
 
 	@Autowired
 	private SpringDictionaryDetailDao springDictionaryDetailDao;
@@ -112,7 +112,7 @@ public class SpringDictionaryServiceImpl implements ISpringDictionaryService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public Page<SpringDictionaryDTO> getAllRecordByPage(SpringDictionaryQuery springDictionaryQuery,
+	public Page<SpringDictionaryDTO> getAllRecordByPage(SpringDictionaryQueryBO springDictionaryQuery,
 			Pageable pageable) {
 		Specification<SpringDictionary> specification = new Specification<SpringDictionary>() {
 

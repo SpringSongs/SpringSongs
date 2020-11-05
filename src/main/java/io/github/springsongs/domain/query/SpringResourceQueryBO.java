@@ -1,6 +1,6 @@
 package io.github.springsongs.domain.query;
 
-public class SpringResourceQuery {
+public class SpringResourceQueryBO {
 	private String parentId;
 	private String systemId;
 

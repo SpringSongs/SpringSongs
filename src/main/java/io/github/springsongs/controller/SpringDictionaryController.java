@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.github.springsongs.domain.SpringDictionary;
 import io.github.springsongs.domain.dto.SpringDictionaryDTO;
-import io.github.springsongs.domain.query.SpringDictionaryQuery;
+import io.github.springsongs.domain.query.SpringDictionaryQueryBO;
 import io.github.springsongs.service.ISpringDictionaryService;
 import io.github.springsongs.util.Constant;
 import io.github.springsongs.util.IpKit;
@@ -38,7 +38,7 @@ public class SpringDictionaryController extends BaseController {
 	private ISpringDictionaryService springDictionaryService;
 
 	@PostMapping(value = "ListByPage")
-	public R listByPage(@RequestBody SpringDictionaryQuery springDictionaryQuery,
+	public R listByPage(@RequestBody SpringDictionaryQueryBO springDictionaryQuery,
 			@PageableDefault(page = 1, size = 20) Pageable pageable) {
 		R r = new R();
 		try {

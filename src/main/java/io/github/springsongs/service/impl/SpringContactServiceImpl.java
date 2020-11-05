@@ -19,12 +19,12 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import io.github.springsongs.dao.SpringContactDao;
 import io.github.springsongs.domain.SpringArticleComment;
 import io.github.springsongs.domain.SpringContact;
 import io.github.springsongs.domain.dto.SpringArticleCommentDTO;
 import io.github.springsongs.domain.dto.SpringContactDTO;
-import io.github.springsongs.domain.query.SpringContactQuery;
+import io.github.springsongs.domain.query.SpringContactQueryBO;
+import io.github.springsongs.repo.SpringContactRepo;
 import io.github.springsongs.service.ISpringContactService;
 import io.github.springsongs.util.R;
 
@@ -33,7 +33,7 @@ import io.github.springsongs.util.R;
 public class SpringContactServiceImpl implements ISpringContactService {
 
 	@Autowired
-	private SpringContactDao springContactDao;
+	private SpringContactRepo springContactDao;
 
 	/**
 	 *
@@ -110,7 +110,7 @@ public class SpringContactServiceImpl implements ISpringContactService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public Page<SpringContactDTO> getAllRecordByPage(SpringContactQuery springContactQuery, Pageable pageable) {
+	public Page<SpringContactDTO> getAllRecordByPage(SpringContactQueryBO springContactQuery, Pageable pageable) {
 		Specification<SpringContact> specification = new Specification<SpringContact>() {
 
 			@Override

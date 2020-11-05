@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 import io.github.springsongs.domain.dto.ElementUiTreeDTO;
 import io.github.springsongs.domain.dto.SpringArticleCategoryDTO;
-import io.github.springsongs.domain.query.SpringArticleCategoryQuery;
+import io.github.springsongs.domain.query.SpringArticleCategoryQueryBO;
 import io.github.springsongs.util.R;
 
 public interface ISpringArticleCategoryService {
@@ -19,7 +19,7 @@ public interface ISpringArticleCategoryService {
 
 	void updateByPrimaryKey(SpringArticleCategoryDTO record);
 
-	Page<SpringArticleCategoryDTO> getAllRecordByPage(SpringArticleCategoryQuery record,Pageable pageable);
+	Page<SpringArticleCategoryDTO> getAllRecordByPage(SpringArticleCategoryQueryBO record,Pageable pageable);
 
 	void setDeleted(List<String> ids);
 	

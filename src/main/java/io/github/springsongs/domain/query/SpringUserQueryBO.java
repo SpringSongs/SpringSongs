@@ -1,6 +1,6 @@
 package io.github.springsongs.domain.query;
 
-public class SpringUserQuery {
+public class SpringUserQueryBO {
 	private String userName;
 	private String trueName;
 	private String organizationId;

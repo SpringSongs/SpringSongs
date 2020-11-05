@@ -19,10 +19,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import io.github.springsongs.dao.SpringParameterDao;
 import io.github.springsongs.domain.SpringParameter;
 import io.github.springsongs.domain.dto.SpringParameterDTO;
-import io.github.springsongs.domain.query.SpringParameterQuery;
+import io.github.springsongs.domain.query.SpringParameterQueryBO;
+import io.github.springsongs.repo.SpringParameterRepo;
 import io.github.springsongs.service.ISpringParameterService;
 import io.github.springsongs.util.R;
 
@@ -31,7 +31,7 @@ import io.github.springsongs.util.R;
 public class SpringParameterServiceImpl implements ISpringParameterService {
 
 	@Autowired
-	private SpringParameterDao springParameterDao;
+	private SpringParameterRepo springParameterDao;
 
 	/**
 	 *
@@ -108,7 +108,7 @@ public class SpringParameterServiceImpl implements ISpringParameterService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public Page<SpringParameterDTO> getAllRecordByPage(SpringParameterQuery springParameterQuery, Pageable pageable) {
+	public Page<SpringParameterDTO> getAllRecordByPage(SpringParameterQueryBO springParameterQuery, Pageable pageable) {
 		Specification<SpringParameter> specification = new Specification<SpringParameter>() {
 
 			@Override

@@ -1,6 +1,6 @@
 package io.github.springsongs.domain.query;
 
-public class SpringArticleCategoryQuery {
+public class SpringArticleCategoryQueryBO {
 
 	private String parentId;
 	private String createdUserId;

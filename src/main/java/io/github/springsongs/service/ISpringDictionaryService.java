@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 import io.github.springsongs.domain.SpringDictionary;
 import io.github.springsongs.domain.dto.SpringDictionaryDTO;
-import io.github.springsongs.domain.query.SpringDictionaryQuery;
+import io.github.springsongs.domain.query.SpringDictionaryQueryBO;
 import io.github.springsongs.util.R;
 
 public interface ISpringDictionaryService {
@@ -19,7 +19,7 @@ public interface ISpringDictionaryService {
 
 	void updateByPrimaryKey(SpringDictionaryDTO record);
 
-	Page<SpringDictionaryDTO> getAllRecordByPage(SpringDictionaryQuery springDictionaryQuery,Pageable pageable);
+	Page<SpringDictionaryDTO> getAllRecordByPage(SpringDictionaryQueryBO springDictionaryQuery,Pageable pageable);
 
 	R setDeleted(List<String> ids);
 	

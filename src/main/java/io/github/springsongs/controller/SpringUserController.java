@@ -27,10 +27,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.github.springsongs.domain.SpringUser;
-import io.github.springsongs.domain.SpringUserDTO;
 import io.github.springsongs.domain.SpringUserRole;
 import io.github.springsongs.domain.SpringUserSecurity;
-import io.github.springsongs.domain.query.SpringUserQuery;
+import io.github.springsongs.domain.dto.SpringUserDTO;
+import io.github.springsongs.domain.query.SpringUserQueryBO;
 import io.github.springsongs.service.ISpringUserService;
 import io.github.springsongs.util.Constant;
 import io.github.springsongs.util.HttpUtils;
@@ -63,7 +63,7 @@ public class SpringUserController extends BaseController {
 	}
 
 	@PostMapping(value = "/ListByPage")
-	public R listByPage(@RequestBody SpringUserQuery springUserQuery,
+	public R listByPage(@RequestBody SpringUserQueryBO springUserQuery,
 			@PageableDefault(page = 1, size = 20) Pageable pageable) {
 		R r = new R();
 		try {

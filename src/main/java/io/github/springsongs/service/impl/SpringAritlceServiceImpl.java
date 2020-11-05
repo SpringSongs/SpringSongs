@@ -23,14 +23,13 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import io.github.springsongs.dao.SpringAritlceDao;
 import io.github.springsongs.domain.SpringAritlce;
 import io.github.springsongs.domain.dto.SpringAritlceDTO;
-import io.github.springsongs.domain.query.SpringAritlceQuery;
+import io.github.springsongs.domain.query.SpringAritlceQueryBO;
 import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.exception.SpringSongsException;
+import io.github.springsongs.repo.SpringAritlceRepo;
 import io.github.springsongs.service.ISpringAritlceService;
-import io.github.springsongs.util.Constant;
 import io.github.springsongs.util.R;
 
 @Service
@@ -39,7 +38,7 @@ public class SpringAritlceServiceImpl implements ISpringAritlceService {
 	static Logger logger = LoggerFactory.getLogger(SpringAritlceServiceImpl.class);
 
 	@Autowired
-	private SpringAritlceDao springAritlceDao;
+	private SpringAritlceRepo springAritlceDao;
 
 	/**
 	 *
@@ -52,7 +51,12 @@ public class SpringAritlceServiceImpl implements ISpringAritlceService {
 	 */
 	@Override
 	public void deleteByPrimaryKey(String id) {
-		springAritlceDao.deleteById(id);
+		try {
+			springAritlceDao.deleteById(id);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 	}
 
 	/**
@@ -157,7 +161,7 @@ public class SpringAritlceServiceImpl implements ISpringAritlceService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public Page<SpringAritlceDTO> getAllRecordByPage(SpringAritlceQuery springAritlceQuery, Pageable pageable) {
+	public Page<SpringAritlceDTO> getAllRecordByPage(SpringAritlceQueryBO springAritlceQuery, Pageable pageable) {
 		Specification<SpringAritlce> specification = new Specification<SpringAritlce>() {
 
 			@Override

@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.github.springsongs.domain.dto.SpringContactDTO;
-import io.github.springsongs.domain.query.SpringContactQuery;
+import io.github.springsongs.domain.query.SpringContactQueryBO;
 import io.github.springsongs.service.ISpringContactService;
 import io.github.springsongs.util.Constant;
 import io.github.springsongs.util.IpKit;
@@ -38,7 +38,7 @@ public class SpringContactController extends BaseController {
 	private ISpringContactService springContactService;
 
 	@PostMapping(value = "/ListByPage")
-	public R listByPage(@RequestBody SpringContactQuery springContactQuery,
+	public R listByPage(@RequestBody SpringContactQueryBO springContactQuery,
 			@PageableDefault(page = 0, size = 20) Pageable pageable) {
 		R r = new R();
 		try {

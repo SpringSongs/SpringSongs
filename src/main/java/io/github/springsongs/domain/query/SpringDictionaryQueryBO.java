@@ -1,6 +1,6 @@
 package io.github.springsongs.domain.query;
 
-public class SpringDictionaryQuery {
+public class SpringDictionaryQueryBO {
 	private String code;
 	private String title;
 

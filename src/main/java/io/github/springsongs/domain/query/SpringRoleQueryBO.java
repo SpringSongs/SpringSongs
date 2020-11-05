@@ -1,6 +1,6 @@
 package io.github.springsongs.domain.query;
 
-public class SpringRoleQuery {
+public class SpringRoleQueryBO {
 	private String title;
 
 	public String getTitle() {

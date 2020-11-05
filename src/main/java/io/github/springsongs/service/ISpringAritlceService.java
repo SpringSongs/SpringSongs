@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 import io.github.springsongs.domain.SpringAritlce;
 import io.github.springsongs.domain.dto.SpringAritlceDTO;
-import io.github.springsongs.domain.query.SpringAritlceQuery;
+import io.github.springsongs.domain.query.SpringAritlceQueryBO;
 import io.github.springsongs.util.R;
 
 
@@ -23,7 +23,7 @@ public interface ISpringAritlceService {
 	
 	
 
-	Page<SpringAritlceDTO> getAllRecordByPage(SpringAritlceQuery springAritlceQuery, Pageable pageable);
+	Page<SpringAritlceDTO> getAllRecordByPage(SpringAritlceQueryBO springAritlceQuery, Pageable pageable);
 
 	void setDeleted(List<String> ids);
 

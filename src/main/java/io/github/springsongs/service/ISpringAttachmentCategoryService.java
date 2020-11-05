@@ -6,22 +6,25 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import io.github.springsongs.domain.SpringAttachmentCategory;
+import io.github.springsongs.domain.dto.SpringAttachmentCategoryDTO;
 import io.github.springsongs.util.R;
 
 public interface ISpringAttachmentCategoryService {
 	void deleteByPrimaryKey(String id);
 
-	void insert(SpringAttachmentCategory record);
+	void insert(SpringAttachmentCategoryDTO record);
 
-	SpringAttachmentCategory selectByPrimaryKey(String id);
+	SpringAttachmentCategoryDTO selectByPrimaryKey(String id);
 
-	void updateByPrimaryKey(SpringAttachmentCategory record);
+	void updateByPrimaryKey(SpringAttachmentCategoryDTO record);
 
-	Page<SpringAttachmentCategory> getAllRecordByPage(SpringAttachmentCategory record,Pageable pageable);
+	Page<SpringAttachmentCategoryDTO> getAllRecordByPage(SpringAttachmentCategory record,Pageable pageable);
 
 	void setDeleted(List<String> ids);
 
 	R batchSaveExcel(List<String[]> list);
 	
 	void delete(List<String> ids);
+	
+	List<SpringAttachmentCategoryDTO> listSpringAttachmentCategoryByParentId(String parentId);
 }

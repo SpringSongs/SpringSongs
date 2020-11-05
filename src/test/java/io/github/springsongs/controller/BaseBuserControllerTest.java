@@ -1,4 +1,4 @@
-package cn.spring.controller;
+package io.github.springsongs.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.hasItem;
@@ -23,8 +23,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.alibaba.fastjson.JSON;
 
-import io.github.springsongs.dao.SpringUserDao;
 import io.github.springsongs.domain.SpringUser;
+import io.github.springsongs.repo.SpringUserRepo;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -34,7 +34,7 @@ class BaseBuserControllerTest {
 	private WebApplicationContext context;
 
 	@Autowired
-	private SpringUserDao dao;
+	private SpringUserRepo dao;
 
 	// @Autowired
 	private MockMvc mvc;

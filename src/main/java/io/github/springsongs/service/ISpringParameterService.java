@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 import io.github.springsongs.domain.SpringParameter;
 import io.github.springsongs.domain.dto.SpringParameterDTO;
-import io.github.springsongs.domain.query.SpringParameterQuery;
+import io.github.springsongs.domain.query.SpringParameterQueryBO;
 import io.github.springsongs.util.R;
 
 public interface ISpringParameterService {
@@ -19,7 +19,7 @@ public interface ISpringParameterService {
 
 	void updateByPrimaryKey(SpringParameterDTO record);
 
-	Page<SpringParameterDTO> getAllRecordByPage(SpringParameterQuery springParameterQuery,Pageable pageable);
+	Page<SpringParameterDTO> getAllRecordByPage(SpringParameterQueryBO springParameterQuery,Pageable pageable);
 
 	void setDeleted(List<String> ids);
 	

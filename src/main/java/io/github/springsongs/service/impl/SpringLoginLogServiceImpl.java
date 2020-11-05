@@ -19,12 +19,12 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import io.github.springsongs.dao.SpringLoginLogDao;
 import io.github.springsongs.domain.SpringDictionary;
 import io.github.springsongs.domain.SpringLoginLog;
 import io.github.springsongs.domain.dto.SpringDictionaryDTO;
 import io.github.springsongs.domain.dto.SpringLoginLogDTO;
-import io.github.springsongs.domain.query.SpringLoginLogQuery;
+import io.github.springsongs.domain.query.SpringLoginLogQueryBO;
+import io.github.springsongs.repo.SpringLoginLogRepo;
 import io.github.springsongs.service.ISpringLoginLogService;
 import io.github.springsongs.util.R;
 
@@ -32,7 +32,7 @@ import io.github.springsongs.util.R;
 @Transactional
 public class SpringLoginLogServiceImpl implements ISpringLoginLogService {
 	@Autowired
-	private SpringLoginLogDao springLoginLogDao;
+	private SpringLoginLogRepo springLoginLogDao;
 
 	/**
 	 *
@@ -109,7 +109,7 @@ public class SpringLoginLogServiceImpl implements ISpringLoginLogService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public Page<SpringLoginLogDTO> getAllRecordByPage(SpringLoginLogQuery springLoginLogQuery, Pageable pageable) {
+	public Page<SpringLoginLogDTO> getAllRecordByPage(SpringLoginLogQueryBO springLoginLogQuery, Pageable pageable) {
 		Specification<SpringLoginLog> specification = new Specification<SpringLoginLog>() {
 
 			@Override

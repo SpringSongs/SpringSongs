@@ -1,6 +1,6 @@
 package io.github.springsongs.domain.query;
 
-public class SpringAritlceQuery {
+public class SpringAritlceQueryBO {
 	private String categoryId;
 	private String tag;
 	private String keyword;

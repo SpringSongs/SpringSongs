@@ -10,16 +10,22 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import io.github.springsongs.dao.SpringAttachmentDao;
 import io.github.springsongs.domain.SpringAttachment;
+import io.github.springsongs.domain.dto.SpringAttachmentDTO;
+import io.github.springsongs.enumeration.ResultCode;
+import io.github.springsongs.exception.SpringSongsException;
+import io.github.springsongs.repo.SpringAttachmentRepo;
 import io.github.springsongs.service.ISpringAttachmentService;
 import io.github.springsongs.util.R;
 
@@ -27,8 +33,10 @@ import io.github.springsongs.util.R;
 @Transactional
 public class SpringAttachmentServiceImpl implements ISpringAttachmentService {
 
+	static Logger logger = LoggerFactory.getLogger(SpringAttachmentCategoryServiceImpl.class);
+
 	@Autowired
-	private SpringAttachmentDao springAttachmentDao;
+	private SpringAttachmentRepo springAttachmentDao;
 
 	/**
 	 *
@@ -41,8 +49,12 @@ public class SpringAttachmentServiceImpl implements ISpringAttachmentService {
 	 */
 	@Override
 	public void deleteByPrimaryKey(String id) {
-		springAttachmentDao.deleteById(id);
-
+		try {
+			springAttachmentDao.deleteById(id);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 	}
 
 	/**
@@ -55,9 +67,15 @@ public class SpringAttachmentServiceImpl implements ISpringAttachmentService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public void insert(SpringAttachment record) {
-		springAttachmentDao.save(record);
-
+	public void insert(SpringAttachmentDTO record) {
+		SpringAttachment springAttachment = new SpringAttachment();
+		BeanUtils.copyProperties(record, springAttachment);
+		try {
+			springAttachmentDao.save(record);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 	}
 
 	/**
@@ -70,8 +88,17 @@ public class SpringAttachmentServiceImpl implements ISpringAttachmentService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public SpringAttachment selectByPrimaryKey(String id) {
-		return springAttachmentDao.getOne(id);
+	public SpringAttachmentDTO selectByPrimaryKey(String id) {
+		SpringAttachment springAttachment = null;
+		try {
+			springAttachment = springAttachmentDao.getOne(id);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		}
+		SpringAttachmentDTO springAttachmentDTO = new SpringAttachmentDTO();
+		BeanUtils.copyProperties(springAttachment, springAttachmentDTO);
+		return springAttachmentDTO;
 	}
 
 	/**
@@ -84,8 +111,18 @@ public class SpringAttachmentServiceImpl implements ISpringAttachmentService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public void updateByPrimaryKey(SpringAttachment record) {
-		springAttachmentDao.save(record);
+	public void updateByPrimaryKey(SpringAttachmentDTO springAttachmentDTO) {
+		SpringAttachment entity = springAttachmentDao.getOne(springAttachmentDTO.getId());
+		if (null == entity) {
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		}
+		entity.setDescription(springAttachmentDTO.getDescription());
+		try {
+			springAttachmentDao.save(entity);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 	}
 
 	/**
@@ -98,20 +135,18 @@ public class SpringAttachmentServiceImpl implements ISpringAttachmentService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public Page<SpringAttachment> getAllRecordByPage(SpringAttachment record,Pageable pageable) {
+	public Page<SpringAttachmentDTO> getAllRecordByPage(SpringAttachment record, Pageable pageable) {
 		Specification<SpringAttachment> specification = new Specification<SpringAttachment>() {
 
 			@Override
 			public Predicate toPredicate(Root<SpringAttachment> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				List<Predicate> predicates = new ArrayList<>();
 				if (!StringUtils.isEmpty(record.getFolderId())) {
-					Predicate folderId = cb.equal(root.get("folderId").as(String.class),
-							record.getFolderId());
+					Predicate folderId = cb.equal(root.get("folderId").as(String.class), record.getFolderId());
 					predicates.add(folderId);
 				}
 				if (!StringUtils.isEmpty(record.getDescription())) {
-					Predicate description = cb.equal(root.get("description").as(String.class),
-							record.getDescription());
+					Predicate description = cb.equal(root.get("description").as(String.class), record.getDescription());
 					predicates.add(description);
 				}
 				if (!StringUtils.isEmpty(record.getCreatedUserId())) {
@@ -127,8 +162,18 @@ public class SpringAttachmentServiceImpl implements ISpringAttachmentService {
 				return query.getRestriction();
 			}
 		};
-		//Pageable pageable = PageRequest.of(currPage - 1, size);
-		return springAttachmentDao.findAll(specification, pageable);
+		// Pageable pageable = PageRequest.of(currPage - 1, size);
+		// return springAttachmentDao.findAll(specification, pageable);
+		Page<SpringAttachment> springAttachments = springAttachmentDao.findAll(specification, pageable);
+		List<SpringAttachmentDTO> springAttachmentDTOs = new ArrayList<>();
+		springAttachments.stream().forEach(springAttachment -> {
+			SpringAttachmentDTO springAttachmentDTO = new SpringAttachmentDTO();
+			BeanUtils.copyProperties(springAttachment, springAttachmentDTO);
+			springAttachmentDTOs.add(springAttachmentDTO);
+		});
+		Page<SpringAttachmentDTO> pages = new PageImpl(springAttachmentDTOs, pageable,
+				springAttachments.getTotalElements());
+		return pages;
 	}
 
 	/**
@@ -142,7 +187,12 @@ public class SpringAttachmentServiceImpl implements ISpringAttachmentService {
 	 */
 	@Override
 	public void setDeleted(List<String> ids) {
-		springAttachmentDao.setDelete(ids);
+		try {
+			springAttachmentDao.setDelete(ids);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 	}
 
 	/**
@@ -161,7 +211,11 @@ public class SpringAttachmentServiceImpl implements ISpringAttachmentService {
 
 	@Override
 	public void delete(List<String> ids) {
-		springAttachmentDao.delete(ids);
-		
+		try {
+			springAttachmentDao.delete(ids);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 	}
 }

@@ -19,12 +19,12 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import io.github.springsongs.dao.SpringDictionaryDetailDao;
 import io.github.springsongs.domain.SpringContact;
 import io.github.springsongs.domain.SpringDictionaryDetail;
 import io.github.springsongs.domain.dto.SpringContactDTO;
 import io.github.springsongs.domain.dto.SpringDictionaryDetailDTO;
-import io.github.springsongs.domain.query.SpringDictionaryDetailQuery;
+import io.github.springsongs.domain.query.SpringDictionaryDetailQueryBO;
+import io.github.springsongs.repo.SpringDictionaryDetailDao;
 import io.github.springsongs.service.ISpringDictionaryDetailService;
 import io.github.springsongs.util.R;
 
@@ -109,7 +109,7 @@ public class SpringDictionaryDetailServiceImpl implements ISpringDictionaryDetai
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public Page<SpringDictionaryDetailDTO> getAllRecordByPage(SpringDictionaryDetailQuery springDictionaryDetailQuery,
+	public Page<SpringDictionaryDetailDTO> getAllRecordByPage(SpringDictionaryDetailQueryBO springDictionaryDetailQuery,
 			Pageable pageable) {
 		Specification<SpringDictionaryDetail> specification = new Specification<SpringDictionaryDetail>() {
 

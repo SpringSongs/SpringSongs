@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
@@ -27,8 +26,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import io.github.springsongs.domain.SpringAttachment;
+import io.github.springsongs.domain.dto.ReponseResultPageDTO;
+import io.github.springsongs.domain.dto.ResponseDTO;
+import io.github.springsongs.domain.dto.SpringAttachmentDTO;
+import io.github.springsongs.enumeration.ResultCode;
+import io.github.springsongs.exception.SpringSongsException;
 import io.github.springsongs.service.ISpringAttachmentService;
-import io.github.springsongs.util.Constant;
 import io.github.springsongs.util.IpKit;
 import io.github.springsongs.util.R;
 
@@ -45,126 +48,63 @@ public class SpringAttachmentController extends BaseController {
 	private String uploadPath;
 
 	@PostMapping(value = "ListByPage")
-	public R listByPage(@RequestBody SpringAttachment viewEntity, @PageableDefault(page = 1, size = 20) Pageable pageable) {
-		R r = new R();
-		try {
-			Page<SpringAttachment> lists = springAttachmentService.getAllRecordByPage(viewEntity, pageable);
-			r.put("code", HttpServletResponse.SC_OK);
-			r.put("msg", Constant.SELECT_SUCCESSED);
-			r.put("data", lists.getContent());
-			r.put("count", lists.getTotalElements());
-			return r;
-		} catch (Exception e) {
-			r.put("msg", Constant.SYSTEM_ERROR);
-			r.put("code", HttpServletResponse.SC_BAD_REQUEST);
-			logger.error(e.getMessage());
-		}
-		return r;
+	public ReponseResultPageDTO<SpringAttachmentDTO> listByPage(@RequestBody SpringAttachment viewEntity,
+			@PageableDefault(page = 1, size = 20) Pageable pageable) {
+
+		Page<SpringAttachmentDTO> lists = springAttachmentService.getAllRecordByPage(viewEntity, pageable);
+		return ReponseResultPageDTO.successed(lists.getContent(), lists.getTotalElements(),
+				ResultCode.SELECT_SUCCESSED);
 	}
 
 	@PostMapping(value = "/Detail")
-	public R get(@NotEmpty(message = "id不能为空") String id) {
-		R r = new R();
-		try {
-			SpringAttachment entity = springAttachmentService.selectByPrimaryKey(id);
-			r.put("msg", Constant.SELECT_SUCCESSED);
-			r.put("code", HttpServletResponse.SC_OK);
-			r.put("data", entity);
-		} catch (Exception e) {
-			r.put("msg", Constant.SYSTEM_ERROR);
-			r.put("code", HttpServletResponse.SC_BAD_REQUEST);
-			logger.error(e.getMessage());
-		}
-		return r;
+	public ResponseDTO<String> get(@NotEmpty(message = "id不能为空") String id) {
+		SpringAttachment entity = springAttachmentService.selectByPrimaryKey(id);
+		return ResponseDTO.successed(entity, ResultCode.SELECT_SUCCESSED);
 	}
 
 	@PostMapping(value = "/Create")
-	public R save(@RequestBody @Valid SpringAttachment viewEntity, HttpServletRequest request) {
-		R r = new R();
-		try {
-			viewEntity.setCreatedBy(this.getUser().getUserName());
-			viewEntity.setCreatedUserId(this.getUser().getId());
-			viewEntity.setCreatedIp(IpKit.getRealIp(request));
-			viewEntity.setCreatedOn(new Date());
-			springAttachmentService.insert(viewEntity);
-			r.put("msg", Constant.SAVE_SUCCESSED);
-			r.put("code", HttpServletResponse.SC_OK);
-		} catch (Exception e) {
-			r.put("msg", Constant.SYSTEM_ERROR);
-			r.put("code", HttpServletResponse.SC_BAD_REQUEST);
-			logger.error(e.getMessage());
-		}
-		return r;
+	public ResponseDTO<String> save(@RequestBody @Valid SpringAttachmentDTO viewEntity, HttpServletRequest request) {
+		viewEntity.setCreatedBy(this.getUser().getUserName());
+		viewEntity.setCreatedUserId(this.getUser().getId());
+		viewEntity.setCreatedIp(IpKit.getRealIp(request));
+		viewEntity.setCreatedOn(new Date());
+		springAttachmentService.insert(viewEntity);
+		return ResponseDTO.successed(null, ResultCode.SAVE_SUCCESSED);
 	}
 
 	@PostMapping(value = "/Edit")
-	public R update(@RequestBody @Valid SpringAttachment viewEntity, HttpServletRequest request) {
-		R r = new R();
-		try {
-			SpringAttachment entity = springAttachmentService.selectByPrimaryKey(viewEntity.getId());
-			if (null == entity) {
-				r.put("msg", Constant.INFO_NOT_FOUND);
-				r.put("code", HttpServletResponse.SC_BAD_REQUEST);
-			} else {
-				entity.setDescription(viewEntity.getDescription());
-				entity.setUpdatedOn(new Date());
-				entity.setUpdatedUserId(this.getUser().getId());
-				entity.setUpdatedBy(this.getUser().getUserName());
-				entity.setUpdatedIp(IpKit.getRealIp(request));
-				springAttachmentService.updateByPrimaryKey(entity);
-				r.put("msg", Constant.SAVE_SUCCESSED);
-				r.put("code", HttpServletResponse.SC_OK);
-			}
-		} catch (Exception e) {
-			r.put("msg", Constant.SYSTEM_ERROR);
-			r.put("code", HttpServletResponse.SC_BAD_REQUEST);
-			logger.error(e.getMessage());
-		}
-		return r;
+	public ResponseDTO<String> update(@RequestBody @Valid SpringAttachmentDTO viewEntity, HttpServletRequest request) {
+		viewEntity.setUpdatedOn(new Date());
+		viewEntity.setUpdatedUserId(this.getUser().getId());
+		viewEntity.setUpdatedBy(this.getUser().getUserName());
+		viewEntity.setUpdatedIp(IpKit.getRealIp(request));
+		springAttachmentService.updateByPrimaryKey(viewEntity);
+		return ResponseDTO.successed(null, ResultCode.SAVE_SUCCESSED);
+
 	}
 
 	@PostMapping(value = "/SetDeleted")
-	public R setDeleted(@RequestParam(value = "ids", required = true) List<String> ids) {
+	public ResponseDTO<String> setDeleted(@RequestParam(value = "ids", required = true) List<String> ids) {
 		R r = new R();
 		if (CollectionUtils.isEmpty(ids)) {
-			r.put("msg", Constant.PARAMETER_NOT_NULL_ERROR);
-			r.put("code", 500);
-		} else {
-			try {
-				springAttachmentService.setDeleted(ids);
-				r.put("msg", Constant.DELETE_SUCCESSED);
-				r.put("code", HttpServletResponse.SC_OK);
-			} catch (Exception e) {
-				r.put("msg", Constant.SYSTEM_ERROR);
-				r.put("code", HttpServletResponse.SC_BAD_REQUEST);
-				logger.error(e.getMessage());
-			}
+			return ResponseDTO.successed(null, ResultCode.PARAMETER_NOT_NULL_ERROR);
 		}
-		return r;
+		springAttachmentService.setDeleted(ids);
+		return ResponseDTO.successed(null, ResultCode.DELETE_SUCCESSED);
 	}
 
 	@PostMapping(value = "/Deleted")
-	public R deleted(@RequestParam(value = "ids", required = true) List<String> ids) {
+	public ResponseDTO<String> deleted(@RequestParam(value = "ids", required = true) List<String> ids) {
 		R r = new R();
 		if (CollectionUtils.isEmpty(ids)) {
-			r.put("msg", Constant.PARAMETER_NOT_NULL_ERROR);
-			r.put("code", 500);
-		} else {
-			try {
-				springAttachmentService.delete(ids);
-				r.put("msg", Constant.DELETE_SUCCESSED);
-				r.put("code", HttpServletResponse.SC_OK);
-			} catch (Exception e) {
-				r.put("msg", Constant.SYSTEM_ERROR);
-				r.put("code", HttpServletResponse.SC_BAD_REQUEST);
-				logger.error(e.getMessage());
-			}
+			return ResponseDTO.successed(null, ResultCode.PARAMETER_NOT_NULL_ERROR);
 		}
-		return r;
+		springAttachmentService.delete(ids);
+		return ResponseDTO.successed(null, ResultCode.DELETE_SUCCESSED);
 	}
 
 	@PostMapping(value = "/Upload")
-	public R importExcel(MultipartFile file, HttpServletRequest request) {
+	public ResponseDTO<String> upload(MultipartFile file, HttpServletRequest request) {
 		R r = new R();
 		String originalFileName = file.getOriginalFilename();
 		String fileName = UUID.randomUUID().toString()
@@ -172,18 +112,12 @@ public class SpringAttachmentController extends BaseController {
 		File f = new File(uploadPath + fileName);
 		try {
 			file.transferTo(f);
-			r.put("msg", Constant.FILE_UPLOAD_SECCUESSED);
-			r.put("data", fileName);
-			r.put("code", HttpServletResponse.SC_OK);
+			return ResponseDTO.successed(fileName, ResultCode.DELETE_SUCCESSED);
 		} catch (IllegalStateException e) {
 			logger.error(e.getMessage());
-			r.put("msg", Constant.SYSTEM_ERROR);
-			r.put("code", HttpServletResponse.SC_BAD_REQUEST);
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
 		} catch (IOException e) {
-			logger.error(e.getMessage());
-			r.put("msg", Constant.SYSTEM_ERROR);
-			r.put("code", HttpServletResponse.SC_BAD_REQUEST);
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
 		}
-		return r;
 	}
 }

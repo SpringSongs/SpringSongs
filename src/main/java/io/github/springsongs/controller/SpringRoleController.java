@@ -28,7 +28,7 @@ import io.github.springsongs.domain.SpringResourceRole;
 import io.github.springsongs.domain.SpringRole;
 import io.github.springsongs.domain.SpringUserRole;
 import io.github.springsongs.domain.dto.SpringRoleDTO;
-import io.github.springsongs.domain.query.SpringRoleQuery;
+import io.github.springsongs.domain.query.SpringRoleQueryBO;
 import io.github.springsongs.service.ISpringResourceService;
 import io.github.springsongs.service.ISpringRoleService;
 import io.github.springsongs.util.Constant;
@@ -48,7 +48,7 @@ public class SpringRoleController extends BaseController {
 	private ISpringResourceService springResourceService;
 
 	@PostMapping(value = "ListByPage")
-	public R listByPage(@RequestBody SpringRoleQuery springRoleQuery,
+	public R listByPage(@RequestBody SpringRoleQueryBO springRoleQuery,
 			@PageableDefault(page = 1, size = 20) Pageable pageable) {
 		R r = new R();
 		try {
