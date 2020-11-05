@@ -78,9 +78,6 @@ public class SpringResourceController extends BaseController {
 
 	@PostMapping(value = "/SetDeleted")
 	public ResponseDTO<String> setDeleted(@RequestParam(value = "ids", required = true) List<String> ids) {
-		if (CollectionUtils.isEmpty(ids)) {
-			return ResponseDTO.successed(null, ResultCode.PARAMETER_NOT_NULL_ERROR);
-		}
 		springResourceService.setDeleted(ids);
 		return ResponseDTO.successed(null, ResultCode.DELETE_SUCCESSED);
 	}

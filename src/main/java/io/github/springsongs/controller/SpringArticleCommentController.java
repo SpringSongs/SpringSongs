@@ -84,25 +84,18 @@ public class SpringArticleCommentController extends BaseController {
 
 	@PostMapping(value = "/SetDeleted")
 	public ResponseDTO<String> setDeleted(@RequestParam(value = "ids", required = true) List<String> ids) {
-		if (CollectionUtils.isEmpty(ids)) {
-			return ResponseDTO.successed(null, ResultCode.PARAMETER_NOT_NULL_ERROR);
-		}
 		springArticleCommentService.setDeleted(ids);
 		return ResponseDTO.successed(null, ResultCode.DELETE_SUCCESSED);
 	}
 
 	@PostMapping(value = "/Deleted")
 	public ResponseDTO<String> deleted(@RequestParam(value = "ids", required = true) List<String> ids) {
-		if (CollectionUtils.isEmpty(ids)) {
-			return ResponseDTO.successed(null, ResultCode.PARAMETER_NOT_NULL_ERROR);
-		}
 		springArticleCommentService.delete(ids);
 		return ResponseDTO.successed(null, ResultCode.DELETE_SUCCESSED);
 	}
 
 	@PostMapping(value = "/Audit/{id}")
 	public ResponseDTO<String> audit(@PathVariable(value = "id", required = true) String id) {
-		R r = new R();
 		if (StringUtils.isEmpty(id)) {
 			return ResponseDTO.successed(null, ResultCode.PARAMETER_NOT_NULL_ERROR);
 		}

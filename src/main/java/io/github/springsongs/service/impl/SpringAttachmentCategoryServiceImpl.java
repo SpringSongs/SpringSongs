@@ -19,6 +19,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import io.github.springsongs.domain.SpringAttachmentCategory;
@@ -188,6 +189,11 @@ public class SpringAttachmentCategoryServiceImpl implements ISpringAttachmentCat
 	 */
 	@Override
 	public void setDeleted(List<String> ids) {
+		if (CollectionUtils.isEmpty(ids)) {
+			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
+		} else if (ids.size() > 1000) {
+			throw new SpringSongsException(ResultCode.PARAMETER_MORE_1000);
+		}
 		for (String id : ids) {
 			List<SpringAttachmentCategory> springAttachmentCategorys = springAttachmentCategoryRepo
 					.listSpringAttachmentCategoryByParentId(id);
@@ -219,6 +225,11 @@ public class SpringAttachmentCategoryServiceImpl implements ISpringAttachmentCat
 
 	@Override
 	public void delete(List<String> ids) {
+		if (CollectionUtils.isEmpty(ids)) {
+			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
+		} else if (ids.size() > 1000) {
+			throw new SpringSongsException(ResultCode.PARAMETER_MORE_1000);
+		}
 		for (String id : ids) {
 			List<SpringAttachmentCategory> springAttachmentCategorys = springAttachmentCategoryRepo
 					.listSpringAttachmentCategoryByParentId(id);

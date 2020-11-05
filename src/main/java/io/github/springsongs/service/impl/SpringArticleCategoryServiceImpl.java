@@ -19,10 +19,12 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import io.github.springsongs.domain.SpringArticleCategory;
 import io.github.springsongs.domain.dto.ElementUiTreeDTO;
+import io.github.springsongs.domain.dto.ResponseDTO;
 import io.github.springsongs.domain.dto.SpringArticleCategoryDTO;
 import io.github.springsongs.domain.query.SpringArticleCategoryQueryBO;
 import io.github.springsongs.enumeration.ResultCode;
@@ -191,6 +193,11 @@ public class SpringArticleCategoryServiceImpl implements ISpringArticleCategoryS
 	 */
 	@Override
 	public void setDeleted(List<String> ids) {
+		if (CollectionUtils.isEmpty(ids)) {
+			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
+		} else if (ids.size() > 1000) {
+			throw new SpringSongsException(ResultCode.PARAMETER_MORE_1000);
+		}
 		for (String id : ids) {
 			List<SpringArticleCategory> entitys = springArticleCategoryDao.getByParentId(id);
 			if (!entitys.isEmpty()) {
@@ -221,6 +228,9 @@ public class SpringArticleCategoryServiceImpl implements ISpringArticleCategoryS
 
 	@Override
 	public List<ElementUiTreeDTO> getCategoryByParentId(String parentId) {
+		if (StringUtils.isEmpty(parentId)) {
+			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
+		}
 		List<SpringArticleCategory> baseCategoryEntityList = springArticleCategoryDao.getByParentId(parentId);
 		List<ElementUiTreeDTO> elementUiTreeDtoList = new ArrayList<ElementUiTreeDTO>();
 		List<String> ids = new ArrayList<String>();

@@ -21,6 +21,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import io.github.springsongs.domain.SpringAritlce;
@@ -247,6 +248,11 @@ public class SpringAritlceServiceImpl implements ISpringAritlceService {
 	@Override
 	@Transactional
 	public void setDeleted(List<String> ids) {
+		if (CollectionUtils.isEmpty(ids)) {
+			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
+		} else if (ids.size() > 1000) {
+			throw new SpringSongsException(ResultCode.PARAMETER_MORE_1000);
+		}
 		try {
 			springAritlceDao.setDelete(ids);
 		} catch (Exception ex) {
@@ -271,8 +277,17 @@ public class SpringAritlceServiceImpl implements ISpringAritlceService {
 
 	@Override
 	public void delete(List<String> ids) {
-		springAritlceDao.delete(ids);
-
+		if (CollectionUtils.isEmpty(ids)) {
+			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
+		} else if (ids.size() > 1000) {
+			throw new SpringSongsException(ResultCode.PARAMETER_MORE_1000);
+		}
+		try {
+			springAritlceDao.delete(ids);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 	}
 
 	@Override

@@ -90,18 +90,12 @@ public class SpringRoleController extends BaseController {
 
 	@PostMapping(value = "/SetDeleted")
 	public ResponseDTO<String> setDeleted(@RequestParam(value = "ids", required = true) List<String> ids) {
-		if (CollectionUtils.isEmpty(ids)) {
-			return ResponseDTO.successed(null, ResultCode.PARAMETER_NOT_NULL_ERROR);
-		}
 		springRoleService.setDeleted(ids);
 		return ResponseDTO.successed(null, ResultCode.DELETE_SUCCESSED);
 	}
 
 	@PostMapping(value = "/Deleted")
 	public ResponseDTO<String> deleted(@RequestParam(value = "ids", required = true) List<String> ids) {
-		if (CollectionUtils.isEmpty(ids)) {
-			return ResponseDTO.successed(null, ResultCode.PARAMETER_NOT_NULL_ERROR);
-		}
 		springRoleService.setDeleted(ids);
 		return ResponseDTO.successed(null, ResultCode.DELETE_SUCCESSED);
 	}

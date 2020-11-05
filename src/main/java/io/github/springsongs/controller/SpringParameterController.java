@@ -73,18 +73,12 @@ public class SpringParameterController extends BaseController {
 
 	@PostMapping(value = "/SetDeleted")
 	public ResponseDTO<String> setDeleted(@RequestParam(value = "ids", required = true) List<String> ids) {
-		if (CollectionUtils.isEmpty(ids)) {
-			return ResponseDTO.successed(null, ResultCode.PARAMETER_NOT_NULL_ERROR);
-		}
 		springParameterService.setDeleted(ids);
 		return ResponseDTO.successed(null, ResultCode.DELETE_SUCCESSED);
 	}
 
 	@PostMapping(value = "/Deleted")
 	public ResponseDTO<String> deleted(@RequestParam(value = "ids", required = true) List<String> ids) {
-		if (CollectionUtils.isEmpty(ids)) {
-			return ResponseDTO.successed(null, ResultCode.PARAMETER_NOT_NULL_ERROR);
-		}
 		springParameterService.delete(ids);
 		return ResponseDTO.successed(null, ResultCode.DELETE_SUCCESSED);
 	}

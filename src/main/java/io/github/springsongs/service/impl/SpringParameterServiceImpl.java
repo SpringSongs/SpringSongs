@@ -19,6 +19,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import io.github.springsongs.domain.SpringParameter;
@@ -190,6 +191,11 @@ public class SpringParameterServiceImpl implements ISpringParameterService {
 	 */
 	@Override
 	public void setDeleted(List<String> ids) {
+		if (CollectionUtils.isEmpty(ids)) {
+			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
+		} else if (ids.size() > 1000) {
+			throw new SpringSongsException(ResultCode.PARAMETER_MORE_1000);
+		}
 		List<SpringParameter> entityList = springParameterRepo.listByIds(ids);
 		for (SpringParameter entity : entityList) {
 			if (entity.getEnableDelete() == false) {
@@ -220,6 +226,11 @@ public class SpringParameterServiceImpl implements ISpringParameterService {
 
 	@Override
 	public void delete(List<String> ids) {
+		if (CollectionUtils.isEmpty(ids)) {
+			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
+		} else if (ids.size() > 1000) {
+			throw new SpringSongsException(ResultCode.PARAMETER_MORE_1000);
+		}
 		List<SpringParameter> entityList = springParameterRepo.listByIds(ids);
 		for (SpringParameter entity : entityList) {
 			if (entity.getEnableDelete() == false) {

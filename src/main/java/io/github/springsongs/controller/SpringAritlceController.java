@@ -75,18 +75,12 @@ public class SpringAritlceController extends BaseController {
 
 	@PostMapping(value = "/SetDeleted")
 	public ResponseDTO<String> setDeleted(@RequestParam(value = "ids") List<String> ids) {
-		if (CollectionUtils.isEmpty(ids)) {
-			return ResponseDTO.successed(null, ResultCode.PARAMETER_NOT_NULL_ERROR);
-		}
 		springAritlceService.setDeleted(ids);
 		return ResponseDTO.successed(null, ResultCode.DELETE_SUCCESSED);
 	}
 
 	@PostMapping(value = "/Deleted")
 	public ResponseDTO<String> deleted(@RequestParam(value = "ids") List<String> ids) {
-		if (CollectionUtils.isEmpty(ids)) {
-			return ResponseDTO.successed(null, ResultCode.PARAMETER_NOT_NULL_ERROR);
-		}
 		springAritlceService.delete(ids);
 		return ResponseDTO.successed(null, ResultCode.DELETE_SUCCESSED);
 	}
@@ -99,19 +93,22 @@ public class SpringAritlceController extends BaseController {
 	}
 
 	@PostMapping(value = "/HotStatus/{id}")
-	public ResponseDTO<String> hotStatus(@PathVariable(value = "id", required = true)  @Valid @NotEmpty(message = Constant.PARAMETER_NOT_NULL_ERROR) String id) {
+	public ResponseDTO<String> hotStatus(
+			@PathVariable(value = "id", required = true) @Valid @NotEmpty(message = Constant.PARAMETER_NOT_NULL_ERROR) String id) {
 		springAritlceService.hotStatus(id);
 		return ResponseDTO.successed(null, ResultCode.SAVE_SUCCESSED);
 	}
 
 	@PostMapping(value = "/TopStatus/{id}")
-	public ResponseDTO<String> topStatus(@PathVariable(value = "id", required = true)  @Valid @NotEmpty(message = Constant.PARAMETER_NOT_NULL_ERROR) String id) {
+	public ResponseDTO<String> topStatus(
+			@PathVariable(value = "id", required = true) @Valid @NotEmpty(message = Constant.PARAMETER_NOT_NULL_ERROR) String id) {
 		springAritlceService.topStatus(id);
 		return ResponseDTO.successed(null, ResultCode.SAVE_SUCCESSED);
 	}
 
 	@PostMapping(value = "/Featured/{id}")
-	public ResponseDTO<String> featured(@PathVariable(value = "id", required = true)  @Valid @NotEmpty(message = Constant.PARAMETER_NOT_NULL_ERROR) String id) {
+	public ResponseDTO<String> featured(
+			@PathVariable(value = "id", required = true) @Valid @NotEmpty(message = Constant.PARAMETER_NOT_NULL_ERROR) String id) {
 		springAritlceService.featured(id);
 		return ResponseDTO.successed(null, ResultCode.SAVE_SUCCESSED);
 	}

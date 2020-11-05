@@ -74,9 +74,6 @@ public class SpringArticleCategoryController extends BaseController {
 
 	@PostMapping(value = "/SetDeleted")
 	public ResponseDTO<String> setDeleted(@RequestParam(value = "ids", required = true) List<String> ids) {
-		if (CollectionUtils.isEmpty(ids)) {
-			return ResponseDTO.successed(null, ResultCode.PARAMETER_NOT_NULL_ERROR);
-		}
 		springArticleCategoryService.setDeleted(ids);
 		return ResponseDTO.successed(null, ResultCode.DELETE_SUCCESSED);
 	}
@@ -84,10 +81,7 @@ public class SpringArticleCategoryController extends BaseController {
 	@PostMapping(value = "/GetCategorysByParent")
 	public ResponseDTO<ElementUiTreeDTO> getModuleByParentId(
 			@RequestParam(value = "parentId", required = true) String parentId) {
-		R r = new R();
-		if (StringUtils.isEmpty(parentId)) {
-			return ResponseDTO.successed(null, ResultCode.PARAMETER_NOT_NULL_ERROR);
-		}
+		
 		List<ElementUiTreeDTO> elementUiTreeDtoList = springArticleCategoryService.getCategoryByParentId(parentId);
 
 		return ResponseDTO.successed(elementUiTreeDtoList, ResultCode.DELETE_SUCCESSED);

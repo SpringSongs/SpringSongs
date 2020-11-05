@@ -19,6 +19,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import io.github.springsongs.domain.SpringDictionary;
@@ -197,6 +198,11 @@ public class SpringDictionaryServiceImpl implements ISpringDictionaryService {
 	 */
 	@Override
 	public void setDeleted(List<String> ids) {
+		if (CollectionUtils.isEmpty(ids)) {
+			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
+		} else if (ids.size() > 1000) {
+			throw new SpringSongsException(ResultCode.PARAMETER_MORE_1000);
+		}
 		List<String> codes = new ArrayList<String>();
 		List<SpringDictionary> entityList = springDictionaryRepo.listByIds(ids);
 		for (SpringDictionary entity : entityList) {
@@ -232,8 +238,17 @@ public class SpringDictionaryServiceImpl implements ISpringDictionaryService {
 
 	@Override
 	public void delete(List<String> ids) {
-		springDictionaryRepo.delete(ids);
-
+		if (CollectionUtils.isEmpty(ids)) {
+			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
+		} else if (ids.size() > 1000) {
+			throw new SpringSongsException(ResultCode.PARAMETER_MORE_1000);
+		}
+		try {
+			springDictionaryRepo.delete(ids);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		}
 	}
 
 	@Override

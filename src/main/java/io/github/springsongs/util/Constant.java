@@ -29,4 +29,6 @@ public class Constant {
 	
 	public static final String AUTHORITY_SUCCESSED="授权成功！";
 
+	public static final String PARAMETER_MORE_1000 = "参数数量太多";
+
 }

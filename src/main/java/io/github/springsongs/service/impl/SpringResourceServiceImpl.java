@@ -26,6 +26,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import io.github.springsongs.domain.SpringParameter;
@@ -210,6 +211,11 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 	 */
 	@Override
 	public void setDeleted(List<String> ids) {
+		if (CollectionUtils.isEmpty(ids)) {
+			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
+		} else if (ids.size() > 1000) {
+			throw new SpringSongsException(ResultCode.PARAMETER_MORE_1000);
+		}
 		List<SpringResource> entityList = springResourceDao.findAllById(ids);
 		for (SpringResource entity : entityList) {
 			if (entity.getEnableDelete() == false) {
@@ -285,7 +291,23 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 
 	@Override
 	public void delete(List<String> ids) {
-		springResourceDao.deleteAll();
+		if (CollectionUtils.isEmpty(ids)) {
+			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
+		} else if (ids.size() > 1000) {
+			throw new SpringSongsException(ResultCode.PARAMETER_MORE_1000);
+		}
+		List<SpringResource> entityList = springResourceDao.findAllById(ids);
+		for (SpringResource entity : entityList) {
+			if (entity.getEnableDelete() == false) {
+				throw new SpringSongsException(ResultCode.INFO_CAN_NOT_DELETE);
+			}
+		}
+		try {
+			springResourceDao.setDelete(ids);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		}
 	}
 
 	@Override
