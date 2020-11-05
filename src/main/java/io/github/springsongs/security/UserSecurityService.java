@@ -9,12 +9,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import io.github.springsongs.domain.SpringUser;
-import io.github.springsongs.domain.SpringUserSecurity;
-import io.github.springsongs.domain.dto.RoleCodeDTO;
-import io.github.springsongs.repo.SpringLogOnRepo;
-import io.github.springsongs.repo.SpringRoleRepo;
-import io.github.springsongs.repo.SpringUserRepo;
+import io.github.springsongs.modules.sys.domain.SpringUser;
+import io.github.springsongs.modules.sys.domain.SpringUserSecurity;
+import io.github.springsongs.modules.sys.dto.RoleCodeDTO;
+import io.github.springsongs.modules.sys.repo.SpringLogOnRepo;
+import io.github.springsongs.modules.sys.repo.SpringRoleRepo;
+import io.github.springsongs.modules.sys.repo.SpringUserRepo;
 
 @Service
 public class UserSecurityService implements UserDetailsService {

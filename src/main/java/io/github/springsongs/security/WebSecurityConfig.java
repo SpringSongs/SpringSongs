@@ -3,8 +3,6 @@ package io.github.springsongs.security;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -42,12 +40,14 @@ import org.springframework.security.web.session.SessionInformationExpiredStrateg
 
 import com.alibaba.fastjson.JSON;
 
-import io.github.springsongs.domain.dto.SpringLoginLogDTO;
-import io.github.springsongs.domain.dto.UserLogonDTO;
-import io.github.springsongs.service.ISpringLoginLogService;
+import io.github.springsongs.common.dto.ResponseDTO;
+import io.github.springsongs.enumeration.ResultCode;
+import io.github.springsongs.modules.sys.dto.SpringLoginLogDTO;
+import io.github.springsongs.modules.sys.dto.UserLogonDTO;
+import io.github.springsongs.modules.sys.service.ISpringLoginLogService;
+import io.github.springsongs.util.Constant;
 import io.github.springsongs.util.HttpUtils;
 import io.github.springsongs.util.IpKit;
-import io.github.springsongs.util.R;
 
 @Configuration
 @EnableWebSecurity
@@ -107,8 +107,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			@Override
 			public void onLogoutSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
 					Authentication authentication) throws IOException, ServletException {
-				logger.info("loginSuccessHandler");
-				logger.info("## 请求时间：" + new Date() + "");
+
 				long startTime = System.currentTimeMillis();
 				try {
 					MyUserPrincipal userDetails = (MyUserPrincipal) authentication.getPrincipal();
@@ -121,9 +120,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 					entity.setCreatedIp(IpKit.getRealIp(httpServletRequest));
 					entity.setCreatedOn(new Date());
 					baseLoginLogService.insert(entity);
-					logger.info("USER : " + userDetails.getUsername() + " LOGOUT SUCCESS !  ");
+
 				} catch (Exception e) {
-					logger.info("LOGOUT EXCEPTION , e : " + e.getMessage());
+					logger.error(e.getMessage());
 				}
 				long endTime = System.currentTimeMillis();
 				if (HttpUtils.isAjaxRequest(httpServletRequest)) {
@@ -131,11 +130,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 					PrintWriter out = null;
 					try {
 						out = httpServletResponse.getWriter();
-						Map<String, Object> map = new HashMap();
-						map.put("code", "200");
-						map.put("msg", "注销成功");
-
-						out.append(JSON.toJSONString(new R().succeed(map)));
+						out.append(JSON.toJSONString(ResponseDTO.successed(null, ResultCode.LOGOUT_SUCCESSED)));
 					} catch (IOException e) {
 						logger.error(e.getMessage());
 					} finally {
@@ -145,7 +140,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						}
 					}
 				}
-				logger.info("## 请求时间：" + (endTime - startTime) + "");
+
 				if (!HttpUtils.isAjaxRequest(httpServletRequest)) {
 					httpServletResponse.sendRedirect("/login");
 				}
@@ -161,11 +156,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 					Authentication authentication) throws IOException, ServletException {
 				MyUserPrincipal userDetails = (MyUserPrincipal) authentication.getPrincipal();
 
-				logger.info("loginSuccessHandler");
-				logger.info("## " + userDetails.getUsername() + "");
-				logger.info("## 请求时间：" + new Date() + "");
-				logger.info("USER : " + userDetails.getUsername() + " LOGIN SUCCESS !  ");
-				logger.info("ROLE :" + userDetails.getAuthorities());
 				long startTime = System.currentTimeMillis();
 
 				// 记录登录信息
@@ -185,11 +175,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						UserLogonDTO userLogonDto = new UserLogonDTO();
 						userLogonDto.setId(userDetails.getBaseEntityUser().getId());
 						userLogonDto.setUserName(userDetails.getBaseEntityUser().getUserName());
-						Map<String, Object> map = new HashMap();
-						map.put("code", "200");
-						map.put("msg", "登录成功");
-						map.put("data", userLogonDto);
-						out.append(JSON.toJSONString(new R().succeed(map)));
+						out.append(JSON.toJSONString(ResponseDTO.successed(userLogonDto, ResultCode.LOGIN_SUCCESSED)));
 					} catch (IOException e) {
 						logger.error(e.getMessage());
 					} finally {
@@ -199,8 +185,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						}
 					}
 				}
-				long endTime = System.currentTimeMillis();
-				logger.info("## 请求时间：" + (endTime - startTime) + "");
+
 				super.onAuthenticationSuccess(request, response, authentication);
 			}
 		};
@@ -212,46 +197,35 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			@Override
 			public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 					AuthenticationException exception) throws IOException, ServletException {
-				logger.info("loginFailureHandler");
-				logger.info("## 请求时间：" + new Date() + "");
-				long startTime = System.currentTimeMillis();
 				response.setContentType("application/json;charset=utf-8");
 				PrintWriter out = response.getWriter();
-				R r = new R();
+				ResponseDTO responseDto = null;
 				if (exception instanceof UsernameNotFoundException) {
 					logger.error(exception.getMessage());
-					r.put("code", 500);
-					r.put("msg", "用户名或者密码不对，登录失败!");
+					responseDto = ResponseDTO.successed(null, ResultCode.USER_NOT_FOUND);
 				} else if (exception instanceof BadCredentialsException) {
 					logger.error(exception.getMessage());
-					r.put("code", 500);
-					r.put("msg", "密码不对，登录失败!");
+					responseDto = ResponseDTO.successed(null, ResultCode.BAD_CREDENTIALSEXCEPTION);
 				} else if (exception instanceof LockedException) {
 					logger.error(exception.getMessage());
-					r.put("code", 500);
-					r.put("msg", "账户被锁定，登录失败，请联系管理员!");
+					responseDto = ResponseDTO.successed(null, ResultCode.LOCKED_EXCEPTION);
 				} else if (exception instanceof AccountExpiredException) {
 					logger.error(exception.getMessage());
-					r.put("code", 500);
-					r.put("msg", "账户已过期，登录失败，请联系管理员!");
+					responseDto = ResponseDTO.successed(null, ResultCode.ACCOUNT_EXPIRE_EXCEPTION);
 				} else if (exception instanceof DisabledException) {
 					logger.error(exception.getMessage());
-					r.put("code", 500);
-					r.put("msg", "账户被禁用，登录失败，请联系管理员!");
+					responseDto = ResponseDTO.successed(null, ResultCode.ACCOUNT_DISABLED_EXCEPTION);
 				} else if (exception instanceof CredentialsExpiredException) {
 					logger.error(exception.getMessage());
-					r.put("code", 500);
-					r.put("msg", "密码凭证已过期，登录失败!");
+					responseDto = ResponseDTO.successed(null, ResultCode.CREDENTIALS_EXCPIRE_EXCEPTION);
 				} else {
-					logger.error("登录失败!");
-					r.put("code", 500);
-					r.put("msg", "登录失败!");
+					logger.error(Constant.LOGIN_FAIL);
+					responseDto = ResponseDTO.successed(null, ResultCode.LOGIN_FAIL);
 				}
-				out.write(JSON.toJSONString(r));
+				out.write(JSON.toJSONString(responseDto));
 				out.flush();
 				out.close();
-				long endTime = System.currentTimeMillis();
-				logger.info("## 请求时间：" + (endTime - startTime) + "");
+
 			}
 		};
 	}
@@ -277,10 +251,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				if (HttpUtils.isAjaxRequest(request)) {
 					response.setContentType("application/json;charset=utf-8");
 					PrintWriter pw = response.getWriter();
-					R r = new R();
-					r.put("code", HttpServletResponse.SC_FORBIDDEN);
-					r.put("msg", "权限不足，请联系管理员");
-					pw.write(JSON.toJSONString(r));
+					pw.write(JSON.toJSONString(ResponseDTO.successed(null, ResultCode.FORBIDDEN)));
 					pw.flush();
 					pw.close();
 				} else {

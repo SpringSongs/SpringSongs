@@ -11,8 +11,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import io.github.springsongs.domain.SpringUser;
-import io.github.springsongs.domain.dto.RoleCodeDTO;
+import io.github.springsongs.modules.sys.domain.SpringUser;
+import io.github.springsongs.modules.sys.dto.RoleCodeDTO;
 
 public class MyUserPrincipal implements UserDetails {
 

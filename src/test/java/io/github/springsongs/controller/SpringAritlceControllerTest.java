@@ -27,8 +27,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.alibaba.fastjson.JSON;
 
-import io.github.springsongs.domain.SpringAritlce;
-import io.github.springsongs.repo.SpringAritlceRepo;
+import io.github.springsongs.modules.article.domain.SpringAritlce;
+import io.github.springsongs.modules.article.repo.SpringAritlceRepo;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

@@ -15,8 +15,8 @@ import org.springframework.util.StringUtils;
 
 import com.vip.vjtools.vjkit.collection.CollectionUtil;
 
-import io.github.springsongs.domain.dto.ResourceRoleDTO;
-import io.github.springsongs.service.ISpringResourceService;
+import io.github.springsongs.modules.sys.dto.ResourceRoleDTO;
+import io.github.springsongs.modules.sys.service.ISpringResourceService;
 
 @Component
 public class UrlFilterInvocationSecurityMetadaSource implements FilterInvocationSecurityMetadataSource {

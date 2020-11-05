@@ -23,8 +23,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.alibaba.fastjson.JSON;
 
-import io.github.springsongs.domain.SpringArticleComment;
-import io.github.springsongs.repo.SpringArticleCommentRepo;
+import io.github.springsongs.modules.article.domain.SpringArticleComment;
+import io.github.springsongs.modules.article.repo.SpringArticleCommentRepo;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
