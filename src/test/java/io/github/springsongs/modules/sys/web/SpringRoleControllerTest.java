@@ -29,7 +29,7 @@ import io.github.springsongs.modules.sys.repo.SpringRoleRepo;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-class BaseRoleControllerTest {
+class SpringRoleControllerTest {
 	@Autowired
 	private WebApplicationContext context;
 

@@ -29,7 +29,7 @@ import io.github.springsongs.modules.sys.repo.SpringArticleCommentRepo;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-class BaseCommentControllerTest {
+class SpringArticleCommentControllerTest {
 
 	@Autowired
 	private WebApplicationContext context;

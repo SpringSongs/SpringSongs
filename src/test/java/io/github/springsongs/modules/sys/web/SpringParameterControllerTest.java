@@ -29,7 +29,7 @@ import io.github.springsongs.modules.sys.repo.SpringParameterRepo;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-class BaseParameterControllerTest {
+class SpringParameterControllerTest {
 
 	@Autowired
 	private WebApplicationContext context;

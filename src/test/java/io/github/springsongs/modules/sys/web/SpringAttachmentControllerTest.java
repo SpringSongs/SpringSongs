@@ -29,7 +29,7 @@ import io.github.springsongs.modules.sys.repo.SpringAttachmentRepo;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-class BaseFileControllerTest {
+class SpringAttachmentControllerTest {
 
 	@Autowired
 	private WebApplicationContext context;

@@ -29,7 +29,7 @@ import io.github.springsongs.modules.sys.repo.SpringUserRepo;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-class BaseBuserControllerTest {
+class SpringUserControllerTest {
 	@Autowired
 	private WebApplicationContext context;
 

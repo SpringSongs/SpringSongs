@@ -29,7 +29,7 @@ import io.github.springsongs.modules.sys.repo.SpringAttachmentCategoryRepo;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-class BaseFolderControllerTest {
+class SpringAttachmentCategoryControllerTest {
 
 	@Autowired
 	private WebApplicationContext context;

@@ -31,7 +31,7 @@ import io.github.springsongs.modules.sys.repo.SpringResourceRepo;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-class BaseModuleControllerTest {
+class SpringResourceControllerTest {
 
 	@Autowired
 	private WebApplicationContext context;

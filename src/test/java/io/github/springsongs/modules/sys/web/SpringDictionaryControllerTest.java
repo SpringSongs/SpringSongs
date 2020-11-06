@@ -29,7 +29,7 @@ import io.github.springsongs.modules.sys.repo.SpringDictionaryRepo;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-class BaseDictionaryControllerTest {
+class SpringDictionaryControllerTest {
 
 	@Autowired
 	private WebApplicationContext context;

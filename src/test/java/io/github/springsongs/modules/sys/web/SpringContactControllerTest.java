@@ -29,7 +29,7 @@ import io.github.springsongs.modules.sys.repo.SpringContactRepo;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-class BaseBusinessCardControllerTest {
+class SpringContactControllerTest {
 
 	@Autowired
 	private WebApplicationContext context;
