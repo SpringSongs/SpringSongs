@@ -27,6 +27,7 @@ import io.github.springsongs.modules.sys.domain.SpringAttachmentCategory;
 import io.github.springsongs.modules.sys.dto.SpringAttachmentCategoryDTO;
 import io.github.springsongs.modules.sys.repo.SpringAttachmentCategoryRepo;
 import io.github.springsongs.modules.sys.service.ISpringAttachmentCategoryService;
+import io.github.springsongs.util.Constant;
 
 @Service
 public class SpringAttachmentCategoryServiceImpl implements ISpringAttachmentCategoryService {
@@ -132,6 +133,9 @@ public class SpringAttachmentCategoryServiceImpl implements ISpringAttachmentCat
 	 */
 	@Override
 	public Page<SpringAttachmentCategoryDTO> getAllRecordByPage(SpringAttachmentCategory record, Pageable pageable) {
+		if (pageable.getPageSize()>Constant.MAX_PAGE_SIZE) {
+			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
+		}
 		Specification<SpringAttachmentCategory> specification = new Specification<SpringAttachmentCategory>() {
 
 			@Override

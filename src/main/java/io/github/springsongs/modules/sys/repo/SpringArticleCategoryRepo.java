@@ -10,8 +10,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import io.github.springsongs.modules.article.web.SpringAritlce;
-import io.github.springsongs.modules.article.web.SpringArticleCategory;
+import io.github.springsongs.modules.sys.domain.SpringAritlce;
+import io.github.springsongs.modules.sys.domain.SpringArticleCategory;
 import io.github.springsongs.modules.sys.domain.SpringResource;
 
 public interface SpringArticleCategoryRepo extends JpaRepository<SpringArticleCategory, String> {

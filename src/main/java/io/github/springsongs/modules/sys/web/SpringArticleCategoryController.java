@@ -1,4 +1,4 @@
-package io.github.springsongs.modules.system;
+package io.github.springsongs.modules.sys.web;
 
 import java.util.Date;
 import java.util.List;

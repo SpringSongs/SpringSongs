@@ -24,12 +24,13 @@ import org.springframework.util.StringUtils;
 
 import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.exception.SpringSongsException;
-import io.github.springsongs.modules.article.web.SpringArticleCategory;
+import io.github.springsongs.modules.sys.domain.SpringArticleCategory;
 import io.github.springsongs.modules.sys.dto.ElementUiTreeDTO;
 import io.github.springsongs.modules.sys.dto.SpringArticleCategoryDTO;
 import io.github.springsongs.modules.sys.dto.query.SpringArticleCategoryQuery;
 import io.github.springsongs.modules.sys.repo.SpringArticleCategoryRepo;
 import io.github.springsongs.modules.sys.service.ISpringArticleCategoryService;
+import io.github.springsongs.util.Constant;
 
 @Service
 @Transactional
@@ -145,6 +146,9 @@ public class SpringArticleCategoryServiceImpl implements ISpringArticleCategoryS
 	 */
 	@Override
 	public Page<SpringArticleCategoryDTO> getAllRecordByPage(SpringArticleCategoryQuery record, Pageable pageable) {
+		if (pageable.getPageSize()>Constant.MAX_PAGE_SIZE) {
+			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
+		}
 		Specification<SpringArticleCategory> specification = new Specification<SpringArticleCategory>() {
 			@Override
 			public Predicate toPredicate(Root<SpringArticleCategory> root, CriteriaQuery<?> query, CriteriaBuilder cb) {

@@ -39,6 +39,7 @@ import io.github.springsongs.modules.sys.dto.query.SpringResourceQuery;
 import io.github.springsongs.modules.sys.repo.SpringResourceRepo;
 import io.github.springsongs.modules.sys.repo.SpringResourceRoleRepo;
 import io.github.springsongs.modules.sys.service.ISpringResourceService;
+import io.github.springsongs.util.Constant;
 
 @Service
 
@@ -160,6 +161,11 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 	 */
 	@Override
 	public Page<SpringResourceDTO> getAllRecordByPage(SpringResourceQuery springResourceQuery, Pageable pageable) {
+		
+		if (pageable.getPageSize()>Constant.MAX_PAGE_SIZE) {
+			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
+		}
+		
 		Specification<SpringResource> specification = new Specification<SpringResource>() {
 			@Override
 			public Predicate toPredicate(Root<SpringResource> root, CriteriaQuery<?> query, CriteriaBuilder cb) {

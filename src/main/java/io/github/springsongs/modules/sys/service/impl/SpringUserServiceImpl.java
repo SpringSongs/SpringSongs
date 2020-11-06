@@ -37,6 +37,7 @@ import io.github.springsongs.modules.sys.repo.SpringLogOnRepo;
 import io.github.springsongs.modules.sys.repo.SpringUserRepo;
 import io.github.springsongs.modules.sys.repo.SpringUserRoleRepo;
 import io.github.springsongs.modules.sys.service.ISpringUserService;
+import io.github.springsongs.util.Constant;
 
 @Service
 @Transactional
@@ -160,6 +161,9 @@ public class SpringUserServiceImpl implements ISpringUserService {
 	 */
 	@Override
 	public Page<SpringUserDTO> getAllRecordByPage(SpringUserQuery springUserQuery, Pageable pageable) {
+		if (pageable.getPageSize()>Constant.MAX_PAGE_SIZE) {
+			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
+		}
 		Specification<SpringUser> specification = new Specification<SpringUser>() {
 
 			@Override

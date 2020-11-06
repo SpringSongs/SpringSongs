@@ -23,11 +23,12 @@ import org.springframework.util.StringUtils;
 
 import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.exception.SpringSongsException;
-import io.github.springsongs.modules.article.web.SpringArticleComment;
+import io.github.springsongs.modules.sys.domain.SpringArticleComment;
 import io.github.springsongs.modules.sys.dto.SpringArticleCommentDTO;
 import io.github.springsongs.modules.sys.dto.query.SpringArticleCommentQuery;
 import io.github.springsongs.modules.sys.repo.SpringArticleCommentRepo;
 import io.github.springsongs.modules.sys.service.ISpringArticleCommentService;
+import io.github.springsongs.util.Constant;
 
 @Service
 public class SpringArticleCommentServiceImpl implements ISpringArticleCommentService {
@@ -142,6 +143,9 @@ public class SpringArticleCommentServiceImpl implements ISpringArticleCommentSer
 	@Override
 	public Page<SpringArticleCommentDTO> getAllRecordByPage(SpringArticleCommentQuery springArticleCommentQuery,
 			Pageable pageable) {
+		if (pageable.getPageSize()>Constant.MAX_PAGE_SIZE) {
+			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
+		}
 		Specification<SpringArticleComment> specification = new Specification<SpringArticleComment>() {
 
 			@Override

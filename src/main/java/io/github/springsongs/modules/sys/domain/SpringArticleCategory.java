@@ -1,4 +1,4 @@
-package io.github.springsongs.modules.article.web;
+package io.github.springsongs.modules.sys.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

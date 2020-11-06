@@ -28,6 +28,7 @@ import io.github.springsongs.modules.sys.domain.SpringOrganization;
 import io.github.springsongs.modules.sys.dto.SpringOrganizationDTO;
 import io.github.springsongs.modules.sys.repo.SpringOrganizationRepo;
 import io.github.springsongs.modules.sys.service.ISpringOrganizationService;
+import io.github.springsongs.util.Constant;
 
 @Service
 @Transactional
@@ -141,6 +142,10 @@ public class SpringOrganizationServiceImpl implements ISpringOrganizationService
 	 */
 	@Override
 	public Page<SpringOrganizationDTO> getAllRecordByPage(SpringOrganization record, Pageable pageable) {
+		if (pageable.getPageSize()>Constant.MAX_PAGE_SIZE) {
+			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
+		}
+		
 		Specification<SpringOrganization> specification = new Specification<SpringOrganization>() {
 
 			@Override

@@ -26,11 +26,12 @@ import org.springframework.util.StringUtils;
 
 import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.exception.SpringSongsException;
-import io.github.springsongs.modules.article.web.SpringAritlce;
+import io.github.springsongs.modules.sys.domain.SpringAritlce;
 import io.github.springsongs.modules.sys.dto.SpringAritlceDTO;
 import io.github.springsongs.modules.sys.dto.query.SpringAritlceQuery;
 import io.github.springsongs.modules.sys.repo.SpringAritlceRepo;
 import io.github.springsongs.modules.sys.service.ISpringAritlceService;
+import io.github.springsongs.util.Constant;
 
 @Service
 public class SpringAritlceServiceImpl implements ISpringAritlceService {
@@ -162,6 +163,9 @@ public class SpringAritlceServiceImpl implements ISpringAritlceService {
 	 */
 	@Override
 	public Page<SpringAritlceDTO> getAllRecordByPage(SpringAritlceQuery springAritlceQuery, Pageable pageable) {
+		if (pageable.getPageSize()>Constant.MAX_PAGE_SIZE) {
+			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
+		}
 		Specification<SpringAritlce> specification = new Specification<SpringAritlce>() {
 
 			@Override

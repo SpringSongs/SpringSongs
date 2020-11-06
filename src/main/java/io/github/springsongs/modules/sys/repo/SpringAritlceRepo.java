@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import io.github.springsongs.modules.article.web.SpringAritlce;
+import io.github.springsongs.modules.sys.domain.SpringAritlce;
 
 @Repository
 public interface SpringAritlceRepo extends JpaRepository<SpringAritlce, String> {

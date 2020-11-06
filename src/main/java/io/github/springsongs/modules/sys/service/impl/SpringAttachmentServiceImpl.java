@@ -28,6 +28,7 @@ import io.github.springsongs.modules.sys.domain.SpringAttachment;
 import io.github.springsongs.modules.sys.dto.SpringAttachmentDTO;
 import io.github.springsongs.modules.sys.repo.SpringAttachmentRepo;
 import io.github.springsongs.modules.sys.service.ISpringAttachmentService;
+import io.github.springsongs.util.Constant;
 
 @Service
 @Transactional
@@ -136,6 +137,11 @@ public class SpringAttachmentServiceImpl implements ISpringAttachmentService {
 	 */
 	@Override
 	public Page<SpringAttachmentDTO> getAllRecordByPage(SpringAttachment record, Pageable pageable) {
+		
+		if (pageable.getPageSize()>Constant.MAX_PAGE_SIZE) {
+			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
+		}
+		
 		Specification<SpringAttachment> specification = new Specification<SpringAttachment>() {
 
 			@Override

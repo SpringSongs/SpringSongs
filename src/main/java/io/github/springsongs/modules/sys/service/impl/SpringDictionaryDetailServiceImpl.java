@@ -29,6 +29,7 @@ import io.github.springsongs.modules.sys.dto.SpringDictionaryDetailDTO;
 import io.github.springsongs.modules.sys.dto.query.SpringDictionaryDetailQuery;
 import io.github.springsongs.modules.sys.repo.SpringDictionaryDetailRepo;
 import io.github.springsongs.modules.sys.service.ISpringDictionaryDetailService;
+import io.github.springsongs.util.Constant;
 
 @Service
 @Transactional
@@ -149,6 +150,9 @@ public class SpringDictionaryDetailServiceImpl implements ISpringDictionaryDetai
 	@Override
 	public Page<SpringDictionaryDetailDTO> getAllRecordByPage(SpringDictionaryDetailQuery springDictionaryDetailQuery,
 			Pageable pageable) {
+		if (pageable.getPageSize()>Constant.MAX_PAGE_SIZE) {
+			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
+		}
 		Specification<SpringDictionaryDetail> specification = new Specification<SpringDictionaryDetail>() {
 
 			@Override

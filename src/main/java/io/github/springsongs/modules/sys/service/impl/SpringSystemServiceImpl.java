@@ -29,6 +29,7 @@ import io.github.springsongs.modules.sys.dto.SpringSystemDTO;
 import io.github.springsongs.modules.sys.dto.query.SpringSystemQuery;
 import io.github.springsongs.modules.sys.repo.SpringSystemRepo;
 import io.github.springsongs.modules.sys.service.ISpringSystemService;
+import io.github.springsongs.util.Constant;
 
 @Service
 @Transactional
@@ -144,6 +145,9 @@ public class SpringSystemServiceImpl implements ISpringSystemService {
 	 */
 	@Override
 	public Page<SpringSystemDTO> getAllRecordByPage(SpringSystemQuery springSystemQuery, Pageable pageable) {
+		if (pageable.getPageSize()>Constant.MAX_PAGE_SIZE) {
+			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
+		}
 		Specification<SpringSystem> specification = new Specification<SpringSystem>() {
 
 			@Override

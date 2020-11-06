@@ -29,6 +29,7 @@ import io.github.springsongs.modules.sys.dto.SpringContactDTO;
 import io.github.springsongs.modules.sys.dto.query.SpringContactQuery;
 import io.github.springsongs.modules.sys.repo.SpringContactRepo;
 import io.github.springsongs.modules.sys.service.ISpringContactService;
+import io.github.springsongs.util.Constant;
 
 @Service
 @Transactional
@@ -148,6 +149,9 @@ public class SpringContactServiceImpl implements ISpringContactService {
 	 */
 	@Override
 	public Page<SpringContactDTO> getAllRecordByPage(SpringContactQuery springContactQuery, Pageable pageable) {
+		if (pageable.getPageSize()>Constant.MAX_PAGE_SIZE) {
+			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
+		}
 		Specification<SpringContact> specification = new Specification<SpringContact>() {
 
 			@Override

@@ -34,6 +34,7 @@ import io.github.springsongs.modules.sys.dto.query.SpringRoleQuery;
 import io.github.springsongs.modules.sys.repo.SpringRoleRepo;
 import io.github.springsongs.modules.sys.repo.SpringUserRoleRepo;
 import io.github.springsongs.modules.sys.service.ISpringRoleService;
+import io.github.springsongs.util.Constant;
 
 @Service
 public class SpringRoleServiceImpl implements ISpringRoleService {
@@ -148,6 +149,9 @@ public class SpringRoleServiceImpl implements ISpringRoleService {
 	 */
 	@Override
 	public Page<SpringRoleDTO> getAllRecordByPage(SpringRoleQuery springRoleQuery, Pageable pageable) {
+		if (pageable.getPageSize()>Constant.MAX_PAGE_SIZE) {
+			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
+		}
 		Specification<SpringRole> specification = new Specification<SpringRole>() {
 			@Override
 			public Predicate toPredicate(Root<SpringRole> root, CriteriaQuery<?> query, CriteriaBuilder cb) {

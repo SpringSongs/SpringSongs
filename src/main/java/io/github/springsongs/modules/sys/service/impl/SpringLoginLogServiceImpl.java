@@ -19,11 +19,14 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import io.github.springsongs.enumeration.ResultCode;
+import io.github.springsongs.exception.SpringSongsException;
 import io.github.springsongs.modules.sys.domain.SpringLoginLog;
 import io.github.springsongs.modules.sys.dto.SpringLoginLogDTO;
 import io.github.springsongs.modules.sys.dto.query.SpringLoginLogQuery;
 import io.github.springsongs.modules.sys.repo.SpringLoginLogRepo;
 import io.github.springsongs.modules.sys.service.ISpringLoginLogService;
+import io.github.springsongs.util.Constant;
 
 @Service
 @Transactional
@@ -107,6 +110,12 @@ public class SpringLoginLogServiceImpl implements ISpringLoginLogService {
 	 */
 	@Override
 	public Page<SpringLoginLogDTO> getAllRecordByPage(SpringLoginLogQuery springLoginLogQuery, Pageable pageable) {
+		
+		if (pageable.getPageSize()>Constant.MAX_PAGE_SIZE) {
+			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
+		}
+		
+		
 		Specification<SpringLoginLog> specification = new Specification<SpringLoginLog>() {
 
 			@Override

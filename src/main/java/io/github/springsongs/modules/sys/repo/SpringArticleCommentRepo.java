@@ -13,7 +13,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import io.github.springsongs.modules.article.web.SpringArticleComment;
+import io.github.springsongs.modules.sys.domain.SpringArticleComment;
 
 @Repository
 public interface SpringArticleCommentRepo extends JpaRepository<SpringArticleComment, String> {
