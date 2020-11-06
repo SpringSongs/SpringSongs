@@ -27,10 +27,10 @@ import org.springframework.util.StringUtils;
 
 import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.exception.SpringSongsException;
-import io.github.springsongs.modules.sys.bo.SpringRoleQueryBO;
 import io.github.springsongs.modules.sys.domain.SpringRole;
 import io.github.springsongs.modules.sys.domain.SpringUserRole;
 import io.github.springsongs.modules.sys.dto.SpringRoleDTO;
+import io.github.springsongs.modules.sys.dto.query.SpringRoleQuery;
 import io.github.springsongs.modules.sys.repo.SpringRoleRepo;
 import io.github.springsongs.modules.sys.repo.SpringUserRoleRepo;
 import io.github.springsongs.modules.sys.service.ISpringRoleService;
@@ -147,7 +147,7 @@ public class SpringRoleServiceImpl implements ISpringRoleService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public Page<SpringRoleDTO> getAllRecordByPage(SpringRoleQueryBO springRoleQuery, Pageable pageable) {
+	public Page<SpringRoleDTO> getAllRecordByPage(SpringRoleQuery springRoleQuery, Pageable pageable) {
 		Specification<SpringRole> specification = new Specification<SpringRole>() {
 			@Override
 			public Predicate toPredicate(Root<SpringRole> root, CriteriaQuery<?> query, CriteriaBuilder cb) {

@@ -6,10 +6,10 @@ import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import io.github.springsongs.modules.sys.bo.SpringUserQueryBO;
 import io.github.springsongs.modules.sys.domain.SpringUserRole;
 import io.github.springsongs.modules.sys.domain.SpringUserSecurity;
 import io.github.springsongs.modules.sys.dto.SpringUserDTO;
+import io.github.springsongs.modules.sys.dto.query.SpringUserQuery;
 
 public interface ISpringUserService {
 
@@ -21,7 +21,7 @@ public interface ISpringUserService {
 
 	void updateByPrimaryKey(SpringUserDTO record);
 
-	Page<SpringUserDTO> getAllRecordByPage(SpringUserQueryBO springUserQuery,Pageable pageable);
+	Page<SpringUserDTO> getAllRecordByPage(SpringUserQuery springUserQuery,Pageable pageable);
 
 	void setDeleted(List<String> ids);
 

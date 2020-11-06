@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,11 +29,14 @@ import io.github.springsongs.common.dto.ReponseResultPageDTO;
 import io.github.springsongs.common.dto.ResponseDTO;
 import io.github.springsongs.common.web.BaseController;
 import io.github.springsongs.enumeration.ResultCode;
-import io.github.springsongs.modules.sys.bo.SpringUserQueryBO;
 import io.github.springsongs.modules.sys.domain.SpringUser;
 import io.github.springsongs.modules.sys.domain.SpringUserRole;
 import io.github.springsongs.modules.sys.domain.SpringUserSecurity;
+import io.github.springsongs.modules.sys.dto.MenuDTO;
 import io.github.springsongs.modules.sys.dto.SpringUserDTO;
+import io.github.springsongs.modules.sys.dto.UserInfoDTO;
+import io.github.springsongs.modules.sys.dto.query.SpringUserQuery;
+import io.github.springsongs.modules.sys.service.ISpringResourceService;
 import io.github.springsongs.modules.sys.service.ISpringUserService;
 import io.github.springsongs.util.HttpUtils;
 import io.github.springsongs.util.IpKit;
@@ -45,6 +49,9 @@ public class SpringUserController extends BaseController {
 
 	@Autowired
 	private ISpringUserService springUserService;
+	
+	@Autowired
+	private ISpringResourceService springResourceService;
 
 	@PostMapping(value = "Invalidate")
 	public ResponseDTO<String> invalidateSession(HttpServletRequest reqeust, HttpServletResponse response) {
@@ -59,9 +66,18 @@ public class SpringUserController extends BaseController {
 		}
 		return ResponseDTO.successed(null, ResultCode.SESSION_HAS_GONE);
 	}
+	
+	@GetMapping(value = "/GetUserInfo")
+	public ResponseDTO<UserInfoDTO> getUserInfo(){
+		UserInfoDTO userInfoDTO=new UserInfoDTO();
+		userInfoDTO.setRoles(this.getAuth());
+		List<MenuDTO> menuList = springResourceService.ListModuleByUserId(this.getUser().getId());
+		userInfoDTO.setMenuDTOs(menuList);
+		return ResponseDTO.successed(userInfoDTO, ResultCode.SELECT_SUCCESSED);
+	}
 
 	@PostMapping(value = "/ListByPage")
-	public ReponseResultPageDTO<SpringUserDTO> listByPage(@RequestBody SpringUserQueryBO springUserQuery,
+	public ReponseResultPageDTO<SpringUserDTO> listByPage(@RequestBody SpringUserQuery springUserQuery,
 			@PageableDefault(page = 1, size = 20) Pageable pageable) {
 		Page<SpringUserDTO> lists = springUserService.getAllRecordByPage(springUserQuery, pageable);
 		return ReponseResultPageDTO.successed(lists.getContent(), lists.getTotalElements(),

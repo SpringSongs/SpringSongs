@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import io.github.springsongs.modules.sys.bo.SpringLoginLogQueryBO;
 import io.github.springsongs.modules.sys.dto.SpringLoginLogDTO;
+import io.github.springsongs.modules.sys.dto.query.SpringLoginLogQuery;
 
 public interface ISpringLoginLogService {
 
@@ -18,7 +18,7 @@ public interface ISpringLoginLogService {
 
 	void updateByPrimaryKey(SpringLoginLogDTO record);
 
-	Page<SpringLoginLogDTO> getAllRecordByPage(SpringLoginLogQueryBO springLoginLogQuery,Pageable pageable);
+	Page<SpringLoginLogDTO> getAllRecordByPage(SpringLoginLogQuery springLoginLogQuery,Pageable pageable);
 
 	
 	void batchSaveExcel(List<String[]> list);

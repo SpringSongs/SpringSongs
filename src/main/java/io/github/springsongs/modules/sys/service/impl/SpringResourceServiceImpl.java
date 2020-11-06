@@ -29,13 +29,13 @@ import org.springframework.util.StringUtils;
 
 import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.exception.SpringSongsException;
-import io.github.springsongs.modules.sys.bo.SpringResourceQueryBO;
 import io.github.springsongs.modules.sys.domain.SpringResource;
 import io.github.springsongs.modules.sys.domain.SpringResourceRole;
 import io.github.springsongs.modules.sys.dto.ElementUiTreeDTO;
 import io.github.springsongs.modules.sys.dto.MenuDTO;
 import io.github.springsongs.modules.sys.dto.ResourceRoleDTO;
 import io.github.springsongs.modules.sys.dto.SpringResourceDTO;
+import io.github.springsongs.modules.sys.dto.query.SpringResourceQuery;
 import io.github.springsongs.modules.sys.repo.SpringResourceRepo;
 import io.github.springsongs.modules.sys.repo.SpringResourceRoleRepo;
 import io.github.springsongs.modules.sys.service.ISpringResourceService;
@@ -159,7 +159,7 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public Page<SpringResourceDTO> getAllRecordByPage(SpringResourceQueryBO springResourceQuery, Pageable pageable) {
+	public Page<SpringResourceDTO> getAllRecordByPage(SpringResourceQuery springResourceQuery, Pageable pageable) {
 		Specification<SpringResource> specification = new Specification<SpringResource>() {
 			@Override
 			public Predicate toPredicate(Root<SpringResource> root, CriteriaQuery<?> query, CriteriaBuilder cb) {

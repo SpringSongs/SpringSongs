@@ -28,11 +28,11 @@ import org.springframework.util.StringUtils;
 
 import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.exception.SpringSongsException;
-import io.github.springsongs.modules.sys.bo.SpringUserQueryBO;
 import io.github.springsongs.modules.sys.domain.SpringUser;
 import io.github.springsongs.modules.sys.domain.SpringUserRole;
 import io.github.springsongs.modules.sys.domain.SpringUserSecurity;
 import io.github.springsongs.modules.sys.dto.SpringUserDTO;
+import io.github.springsongs.modules.sys.dto.query.SpringUserQuery;
 import io.github.springsongs.modules.sys.repo.SpringLogOnRepo;
 import io.github.springsongs.modules.sys.repo.SpringUserRepo;
 import io.github.springsongs.modules.sys.repo.SpringUserRoleRepo;
@@ -159,7 +159,7 @@ public class SpringUserServiceImpl implements ISpringUserService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public Page<SpringUserDTO> getAllRecordByPage(SpringUserQueryBO springUserQuery, Pageable pageable) {
+	public Page<SpringUserDTO> getAllRecordByPage(SpringUserQuery springUserQuery, Pageable pageable) {
 		Specification<SpringUser> specification = new Specification<SpringUser>() {
 
 			@Override

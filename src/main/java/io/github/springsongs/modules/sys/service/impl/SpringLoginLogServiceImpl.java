@@ -19,9 +19,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import io.github.springsongs.modules.sys.bo.SpringLoginLogQueryBO;
 import io.github.springsongs.modules.sys.domain.SpringLoginLog;
 import io.github.springsongs.modules.sys.dto.SpringLoginLogDTO;
+import io.github.springsongs.modules.sys.dto.query.SpringLoginLogQuery;
 import io.github.springsongs.modules.sys.repo.SpringLoginLogRepo;
 import io.github.springsongs.modules.sys.service.ISpringLoginLogService;
 
@@ -106,7 +106,7 @@ public class SpringLoginLogServiceImpl implements ISpringLoginLogService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public Page<SpringLoginLogDTO> getAllRecordByPage(SpringLoginLogQueryBO springLoginLogQuery, Pageable pageable) {
+	public Page<SpringLoginLogDTO> getAllRecordByPage(SpringLoginLogQuery springLoginLogQuery, Pageable pageable) {
 		Specification<SpringLoginLog> specification = new Specification<SpringLoginLog>() {
 
 			@Override

@@ -99,6 +99,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.expiredSessionStrategy(sessionInformationExpiredStrategy());// 登录被踢掉时的自定义操作;
 		http.headers().frameOptions().disable();
 		http.csrf().disable().exceptionHandling().accessDeniedHandler(accessDeniedHandler());
+		http.cors();
 	}
 
 	@Bean
@@ -108,7 +109,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			public void onLogoutSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
 					Authentication authentication) throws IOException, ServletException {
 
-				long startTime = System.currentTimeMillis();
+				
 				try {
 					MyUserPrincipal userDetails = (MyUserPrincipal) authentication.getPrincipal();
 
@@ -156,7 +157,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 					Authentication authentication) throws IOException, ServletException {
 				MyUserPrincipal userDetails = (MyUserPrincipal) authentication.getPrincipal();
 
-				long startTime = System.currentTimeMillis();
+				
 
 				// 记录登录信息
 				SpringLoginLogDTO entity = new SpringLoginLogDTO();
@@ -199,7 +200,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 					AuthenticationException exception) throws IOException, ServletException {
 				response.setContentType("application/json;charset=utf-8");
 				PrintWriter out = response.getWriter();
-				ResponseDTO responseDto = null;
+				
+				ResponseDTO<String> responseDto = null;
 				if (exception instanceof UsernameNotFoundException) {
 					logger.error(exception.getMessage());
 					responseDto = ResponseDTO.successed(null, ResultCode.USER_NOT_FOUND);

@@ -26,10 +26,10 @@ import io.github.springsongs.common.dto.ReponseResultPageDTO;
 import io.github.springsongs.common.dto.ResponseDTO;
 import io.github.springsongs.common.web.BaseController;
 import io.github.springsongs.enumeration.ResultCode;
-import io.github.springsongs.modules.sys.bo.SpringRoleQueryBO;
 import io.github.springsongs.modules.sys.domain.SpringResourceRole;
 import io.github.springsongs.modules.sys.domain.SpringUserRole;
 import io.github.springsongs.modules.sys.dto.SpringRoleDTO;
+import io.github.springsongs.modules.sys.dto.query.SpringRoleQuery;
 import io.github.springsongs.modules.sys.service.ISpringResourceService;
 import io.github.springsongs.modules.sys.service.ISpringRoleService;
 import io.github.springsongs.util.IpKit;
@@ -47,7 +47,7 @@ public class SpringRoleController extends BaseController {
 	private ISpringResourceService springResourceService;
 
 	@PostMapping(value = "ListByPage")
-	public ReponseResultPageDTO<SpringRoleDTO> listByPage(@RequestBody SpringRoleQueryBO springRoleQuery,
+	public ReponseResultPageDTO<SpringRoleDTO> listByPage(@RequestBody SpringRoleQuery springRoleQuery,
 			@PageableDefault(page = 1, size = 20) Pageable pageable) {
 		Page<SpringRoleDTO> lists = springRoleService.getAllRecordByPage(springRoleQuery, pageable);
 		return ReponseResultPageDTO.successed(lists.getContent(), lists.getTotalElements(),

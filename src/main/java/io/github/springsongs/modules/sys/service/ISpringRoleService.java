@@ -6,9 +6,9 @@ import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import io.github.springsongs.modules.sys.bo.SpringRoleQueryBO;
 import io.github.springsongs.modules.sys.domain.SpringUserRole;
 import io.github.springsongs.modules.sys.dto.SpringRoleDTO;
+import io.github.springsongs.modules.sys.dto.query.SpringRoleQuery;
 
 public interface ISpringRoleService {
 	void deleteByPrimaryKey(String id);
@@ -19,7 +19,7 @@ public interface ISpringRoleService {
 
 	void updateByPrimaryKey(SpringRoleDTO record);
 
-	Page<SpringRoleDTO> getAllRecordByPage(SpringRoleQueryBO springRoleQuery, Pageable pageable);
+	Page<SpringRoleDTO> getAllRecordByPage(SpringRoleQuery springRoleQuery, Pageable pageable);
 
 	void setDeleted(List<String> ids);
 

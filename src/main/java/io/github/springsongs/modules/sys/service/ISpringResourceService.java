@@ -6,12 +6,12 @@ import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import io.github.springsongs.modules.sys.bo.SpringResourceQueryBO;
 import io.github.springsongs.modules.sys.domain.SpringResourceRole;
 import io.github.springsongs.modules.sys.dto.ElementUiTreeDTO;
 import io.github.springsongs.modules.sys.dto.MenuDTO;
 import io.github.springsongs.modules.sys.dto.ResourceRoleDTO;
 import io.github.springsongs.modules.sys.dto.SpringResourceDTO;
+import io.github.springsongs.modules.sys.dto.query.SpringResourceQuery;
 
 public interface ISpringResourceService {
 	void deleteByPrimaryKey(String id);
@@ -22,7 +22,7 @@ public interface ISpringResourceService {
 
 	void updateByPrimaryKey(SpringResourceDTO record);
 
-	Page<SpringResourceDTO> getAllRecordByPage(SpringResourceQueryBO springResourceQuery, Pageable pageable);
+	Page<SpringResourceDTO> getAllRecordByPage(SpringResourceQuery springResourceQuery, Pageable pageable);
 
 	void setDeleted(List<String> ids);
 

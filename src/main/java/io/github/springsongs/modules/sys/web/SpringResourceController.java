@@ -24,12 +24,12 @@ import io.github.springsongs.common.dto.ReponseResultPageDTO;
 import io.github.springsongs.common.dto.ResponseDTO;
 import io.github.springsongs.common.web.BaseController;
 import io.github.springsongs.enumeration.ResultCode;
-import io.github.springsongs.modules.parameter.dto.SpringParameterDTO;
-import io.github.springsongs.modules.sys.bo.SpringResourceQueryBO;
 import io.github.springsongs.modules.sys.domain.SpringResource;
 import io.github.springsongs.modules.sys.dto.ElementUiTreeDTO;
 import io.github.springsongs.modules.sys.dto.MenuDTO;
+import io.github.springsongs.modules.sys.dto.SpringParameterDTO;
 import io.github.springsongs.modules.sys.dto.SpringResourceDTO;
+import io.github.springsongs.modules.sys.dto.query.SpringResourceQuery;
 import io.github.springsongs.modules.sys.service.ISpringResourceService;
 import io.github.springsongs.util.IpKit;
 
@@ -43,7 +43,7 @@ public class SpringResourceController extends BaseController {
 	private ISpringResourceService springResourceService;
 
 	@PostMapping(value = "ListByPage")
-	public ReponseResultPageDTO<SpringResourceDTO> listByPage(@RequestBody SpringResourceQueryBO springResourceQuery,
+	public ReponseResultPageDTO<SpringResourceDTO> listByPage(@RequestBody SpringResourceQuery springResourceQuery,
 			@PageableDefault(page = 1, size = 20) Pageable pageable) {
 		Page<SpringResourceDTO> lists = springResourceService.getAllRecordByPage(springResourceQuery, pageable);
 		return ReponseResultPageDTO.successed(lists.getContent(), lists.getTotalElements(),

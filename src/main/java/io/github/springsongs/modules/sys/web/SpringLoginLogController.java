@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import io.github.springsongs.common.dto.ReponseResultPageDTO;
 import io.github.springsongs.common.web.BaseController;
 import io.github.springsongs.enumeration.ResultCode;
-import io.github.springsongs.modules.sys.bo.SpringLoginLogQueryBO;
 import io.github.springsongs.modules.sys.dto.SpringLoginLogDTO;
+import io.github.springsongs.modules.sys.dto.query.SpringLoginLogQuery;
 import io.github.springsongs.modules.sys.service.ISpringLoginLogService;
 
 @RestController
@@ -28,7 +28,7 @@ public class SpringLoginLogController extends BaseController {
 	private ISpringLoginLogService springLoginLogService;
 
 	@PostMapping(value = "ListByPage")
-	public ReponseResultPageDTO<SpringLoginLogDTO> listByPage(@RequestBody SpringLoginLogQueryBO springLoginLogQuery,
+	public ReponseResultPageDTO<SpringLoginLogDTO> listByPage(@RequestBody SpringLoginLogQuery springLoginLogQuery,
 			@PageableDefault(page = 1, size = 20) Pageable pageable) {
 		Page<SpringLoginLogDTO> lists = springLoginLogService.getAllRecordByPage(springLoginLogQuery, pageable);
 		return ReponseResultPageDTO.successed(lists.getContent(), lists.getTotalElements(),
