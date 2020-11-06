@@ -1,4 +1,4 @@
-package io.github.springsongs.controller;
+package io.github.springsongs.modules.sys.web;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.hasItem;

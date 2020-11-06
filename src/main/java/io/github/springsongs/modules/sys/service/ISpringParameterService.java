@@ -1,4 +1,4 @@
-package io.github.springsongs.modules.sys.repo;
+package io.github.springsongs.modules.sys.service;
 
 import java.util.List;
 

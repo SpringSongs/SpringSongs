@@ -27,7 +27,6 @@ import io.github.springsongs.exception.SpringSongsException;
 import io.github.springsongs.modules.sys.domain.SpringParameter;
 import io.github.springsongs.modules.sys.dto.SpringParameterDTO;
 import io.github.springsongs.modules.sys.dto.query.SpringParameterQuery;
-import io.github.springsongs.modules.sys.repo.ISpringParameterService;
 import io.github.springsongs.modules.sys.repo.SpringParameterRepo;
 import io.github.springsongs.modules.sys.service.impl.SpringDictionaryServiceImpl;
 
