@@ -15,7 +15,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
 import io.github.springsongs.annotation.Description;
-import io.github.springsongs.common.SpringBase;
+import io.github.springsongs.common.base.SpringBase;
 
 @Entity
 @DynamicInsert(true)

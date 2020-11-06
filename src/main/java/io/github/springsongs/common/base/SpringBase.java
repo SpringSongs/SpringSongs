@@ -1,4 +1,4 @@
-package io.github.springsongs.common;
+package io.github.springsongs.common.base;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;

@@ -18,7 +18,7 @@ import org.hibernate.annotations.GenericGenerator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import io.github.springsongs.annotation.Description;
-import io.github.springsongs.common.SpringBase;
+import io.github.springsongs.common.base.SpringBase;
 
 @Entity
 @DynamicInsert(true)
