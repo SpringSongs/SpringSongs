@@ -2,6 +2,8 @@ package io.github.springsongs.modules.sys.repo;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -32,6 +34,7 @@ public interface SpringOrganizationRepo extends JpaRepository <SpringOrganizatio
     * @see [相关类/方法]（可选）
     * @since [产品/模块版本] （可选）
     */
+	@Transactional
     @Query(value = "from SpringOrganization where id in (:ids)")
     public List<SpringOrganization> findInIds(@Param(value = "ids") List<String> ids);
     /**
@@ -53,6 +56,7 @@ public interface SpringOrganizationRepo extends JpaRepository <SpringOrganizatio
     * @see [相关类/方法]（可选）
     * @since [产品/模块版本] （可选）
     */
+    @Transactional
     @Modifying
     @Query(value = "update SpringOrganization set deletedStatus=1 where id in (:ids)")
     public void setDelete(@Param(value = "ids") List<String> ids);

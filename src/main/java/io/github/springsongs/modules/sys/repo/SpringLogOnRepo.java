@@ -2,6 +2,8 @@ package io.github.springsongs.modules.sys.repo;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -34,6 +36,7 @@ public interface SpringLogOnRepo extends JpaRepository<SpringUserSecurity, Strin
 	 * 物理删除
 	 * @param ids
 	 */
+	@Transactional
 	@Modifying
 	@Query(value = "delete from SpringUserSecurity where userId in (:ids)")
 	public void delete(@Param(value = "ids") List<String> ids);

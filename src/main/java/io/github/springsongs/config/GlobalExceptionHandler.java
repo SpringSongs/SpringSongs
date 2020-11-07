@@ -1,10 +1,13 @@
 package io.github.springsongs.config;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -12,13 +15,25 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import io.github.springsongs.common.dto.ResponseDTO;
 import io.github.springsongs.enumeration.ResultCode;
+import io.github.springsongs.exception.SpringSongsException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+	@ExceptionHandler(SpringSongsException.class)
+	@ResponseBody
+	//@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	public Map<String, Object> handleUserNotExistException(SpringSongsException ex) {
+		Map<String, Object> result = new HashMap<>();
+		result.put("code", ex.getCode());
+		result.put("msg", ex.getMessage());
+		return result;
+	}
+	
 	/**
 	 * 未被关注的异常信息，统一返回给客户端为“系统异常”
 	 *

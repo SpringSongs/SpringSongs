@@ -40,7 +40,6 @@ import io.github.springsongs.modules.sys.service.ISpringUserService;
 import io.github.springsongs.util.Constant;
 
 @Service
-@Transactional
 public class SpringUserServiceImpl implements ISpringUserService {
 
 	static Logger logger = LoggerFactory.getLogger(SpringRoleServiceImpl.class);

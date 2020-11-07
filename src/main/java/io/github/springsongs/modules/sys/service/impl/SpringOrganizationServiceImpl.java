@@ -31,7 +31,6 @@ import io.github.springsongs.modules.sys.service.ISpringOrganizationService;
 import io.github.springsongs.util.Constant;
 
 @Service
-@Transactional
 public class SpringOrganizationServiceImpl implements ISpringOrganizationService {
 
 	static Logger logger = LoggerFactory.getLogger(SpringDictionaryServiceImpl.class);

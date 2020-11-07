@@ -29,7 +29,6 @@ import io.github.springsongs.modules.sys.service.ISpringLoginLogService;
 import io.github.springsongs.util.Constant;
 
 @Service
-@Transactional
 public class SpringLoginLogServiceImpl implements ISpringLoginLogService {
 	@Autowired
 	private SpringLoginLogRepo springLoginLogRepo;

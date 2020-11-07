@@ -2,7 +2,7 @@ package io.github.springsongs.util;
 
 public class Constant {
 	public static final int PAGE_SIZE = 20;
-	public static final int MAX_PAGE_SIZE=10000;
+	public static final int MAX_PAGE_SIZE = 10000;
 
 	public static final String INFO_NOT_FOUND = "信息不存在或者已经被删除！";
 	public static final String INFO_CAN_NOT_DELETE = "不允许删除！";
@@ -52,6 +52,6 @@ public class Constant {
 
 	public static final String LOGOUT_SUCCESSED = "注销成功";
 	
-
+	public static final String DATA_EXIST = "插入数据已经存在";
 
 }

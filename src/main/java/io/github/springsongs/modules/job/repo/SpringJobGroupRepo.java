@@ -2,6 +2,8 @@ package io.github.springsongs.modules.job.repo;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -41,7 +43,7 @@ public interface SpringJobGroupRepo  extends JpaRepository <SpringJobGroup, Stri
     * @since [产品/模块版本] （可选）
     */
     @Modifying
-    @Query(value = "update SpringJobGroup set deletedFlag=1 where id=:id")
+    @Query(value = "update SpringJobGroup set deletedStatus=1 where id=:id")
     public void setDelete(@Param(value = "id") String id);
     /**
     *
@@ -51,8 +53,16 @@ public interface SpringJobGroupRepo  extends JpaRepository <SpringJobGroup, Stri
     * @see [相关类/方法]（可选）
     * @since [产品/模块版本] （可选）
     */
+    @Transactional
     @Modifying
-    @Query(value = "update SpringJobGroup set deletedFlag=1 where id in (:ids)")
+    @Query(value = "update SpringJobGroup set deletedStatus=1 where id in (:ids)")
     public void setDelete(@Param(value = "ids") List<String> ids);
+    
+    /**
+     * 根据组别ID查询
+     * @param code
+     */
+    @Query(value = "from SpringJobGroup where deletedStatus=0 and code=:code")
+    public SpringJobGroup getByCode (@Param(value="code") String code);
 
 }

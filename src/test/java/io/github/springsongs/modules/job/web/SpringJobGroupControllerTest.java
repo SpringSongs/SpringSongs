@@ -11,6 +11,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,6 +36,7 @@ import io.github.springsongs.modules.job.repo.SpringJobGroupRepo;
 @SpringBootTest
 @AutoConfigureMockMvc
 @WithUserDetails("Administrator")
+@Transactional
 public class SpringJobGroupControllerTest {
 
 	@Autowired

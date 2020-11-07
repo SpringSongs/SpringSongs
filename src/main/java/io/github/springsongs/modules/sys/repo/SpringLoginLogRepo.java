@@ -2,6 +2,8 @@ package io.github.springsongs.modules.sys.repo;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -29,6 +31,7 @@ public interface SpringLoginLogRepo extends JpaRepository<SpringLoginLog, String
 	 * 
 	 * @param ids
 	 */
+	@Transactional
 	@Modifying
 	@Query(value = "delete from SpringLoginLog where id in (:ids)")
 	public void delete(@Param(value = "ids") List<String> ids);

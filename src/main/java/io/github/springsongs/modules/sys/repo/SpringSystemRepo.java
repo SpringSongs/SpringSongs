@@ -2,6 +2,8 @@ package io.github.springsongs.modules.sys.repo;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -57,6 +59,7 @@ public interface SpringSystemRepo extends JpaRepository<SpringSystem, String> {
 	 * @see [相关类/方法]（可选）
 	 * @since [产品/模块版本] （可选）
 	 */
+	@Transactional
 	@Modifying
 	@Query(value = "update SpringSystem set deletedStatus=1 where id=:id")
 	public void setDelete(@Param(value = "id") String id);
@@ -70,6 +73,7 @@ public interface SpringSystemRepo extends JpaRepository<SpringSystem, String> {
 	 * @see [相关类/方法]（可选）
 	 * @since [产品/模块版本] （可选）
 	 */
+	@Transactional
 	@Modifying
 	@Query(value = "update SpringSystem set deletedStatus=1 where id in (:ids)")
 	public void setDelete(@Param(value = "ids") List<String> ids);
@@ -82,6 +86,6 @@ public interface SpringSystemRepo extends JpaRepository<SpringSystem, String> {
 	 * @see [相关类/方法]（可选）
 	 * @since [产品/模块版本] （可选）
 	 */
-	@Query(value = "from SpringSystem where deletedStatus=1")
+	@Query(value = "from SpringSystem where deletedStatus=0")
 	public List<SpringSystem> listAllRecord();
 }

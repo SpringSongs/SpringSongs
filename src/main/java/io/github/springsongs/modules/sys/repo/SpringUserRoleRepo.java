@@ -2,6 +2,8 @@ package io.github.springsongs.modules.sys.repo;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -30,6 +32,7 @@ public interface SpringUserRoleRepo extends JpaRepository<SpringUserRole, String
 	 * @param userId
 	 * @param roleId
 	 */
+	@Transactional
 	@Modifying
 	@Query(value = "delete from SpringUserRole where userId=:userId and roleId=:roleId")
 	public void delete(@Param(value = "userId") String userId, @Param(value = "roleId") String roleId);
@@ -40,6 +43,7 @@ public interface SpringUserRoleRepo extends JpaRepository<SpringUserRole, String
 	 * @param userId
 	 * @param roleId
 	 */
+	@Transactional
 	@Modifying
 	@Query(value = "delete from SpringUserRole where roleId=:roleId")
 	public void deleteByRoleId(@Param(value = "roleId") String roleId);
@@ -50,6 +54,7 @@ public interface SpringUserRoleRepo extends JpaRepository<SpringUserRole, String
 	 * @param userId
 	 * @param roleId
 	 */
+	@Transactional
 	@Modifying
 	@Query(value = "delete from SpringUserRole where userId=:userId")
 	public void deleteByUserId(@Param(value = "userId") String userId);

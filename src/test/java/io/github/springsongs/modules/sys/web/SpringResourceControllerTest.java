@@ -11,6 +11,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -32,6 +34,7 @@ import io.github.springsongs.modules.sys.repo.SpringResourceRepo;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@Transactional
 @WithUserDetails("Administrator")
 class SpringResourceControllerTest {
 
@@ -41,7 +44,7 @@ class SpringResourceControllerTest {
 	@Autowired
 	private SpringResourceRepo dao;
 
-	// @Autowired
+	@Autowired
 	private MockMvc mvc;
 
 	@BeforeEach

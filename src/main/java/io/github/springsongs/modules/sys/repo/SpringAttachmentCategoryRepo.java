@@ -48,6 +48,7 @@ public interface SpringAttachmentCategoryRepo extends JpaRepository<SpringAttach
 	 * @see [相关类/方法]（可选）
 	 * @since [产品/模块版本] （可选）
 	 */
+	@Transactional
 	@Modifying
 	@Query(value = "update SpringAttachmentCategory set deletedStatus=1 where id=:id")
 	public void setDelete(@Param(value = "id") String id);
@@ -71,6 +72,7 @@ public interface SpringAttachmentCategoryRepo extends JpaRepository<SpringAttach
 	 * 
 	 * @param ids
 	 */
+	@Transactional
 	@Modifying
 	@Query(value = "delete from SpringAttachmentCategory where id in (:ids)")
 	public void delete(@Param(value = "ids") List<String> ids);

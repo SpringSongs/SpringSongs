@@ -33,7 +33,6 @@ import io.github.springsongs.modules.sys.service.ISpringArticleCategoryService;
 import io.github.springsongs.util.Constant;
 
 @Service
-@Transactional
 public class SpringArticleCategoryServiceImpl implements ISpringArticleCategoryService {
 
 	static Logger logger = LoggerFactory.getLogger(SpringArticleCategoryServiceImpl.class);

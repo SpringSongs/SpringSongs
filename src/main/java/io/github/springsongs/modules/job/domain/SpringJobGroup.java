@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.DynamicInsert;
@@ -39,6 +40,18 @@ public class SpringJobGroup extends SpringBase implements Serializable {
         this.id=id;
     }
 
+    @Pattern(regexp = "^[A-Za-z]+$", message = "请填写字母")
+    @Description(title ="组别ID")
+    @Column(name="code")
+    private String code;
+    public String getCode(){
+        return  this.code;
+    }
+    public void setCode(String code){
+        this.code=code;
+    }
+    
+    
     @NotBlank(message="请填写任务组")
     @Size(max=45, min=1)
     @Description(title ="任务组")

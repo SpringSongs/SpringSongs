@@ -2,6 +2,8 @@ package io.github.springsongs.modules.sys.repo;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -33,6 +35,7 @@ public interface SpringDictionaryDetailRepo extends JpaRepository<SpringDictiona
 	 * @see [相关类/方法]（可选）
 	 * @since [产品/模块版本] （可选）
 	 */
+	@Transactional
 	@Query(value = "from SpringDictionaryDetail where id in (:ids)")
 	public List<SpringDictionaryDetail> findInIds(@Param(value = "ids") List<String> ids);
 	
@@ -47,6 +50,7 @@ public interface SpringDictionaryDetailRepo extends JpaRepository<SpringDictiona
 	 * @see [相关类/方法]（可选）
 	 * @since [产品/模块版本] （可选）
 	 */
+	@Transactional
 	@Modifying
 	@Query(value = "update SpringDictionaryDetail set deletedStatus=1 where id=:id")
 	public void setDelete(@Param(value = "id") String id);
@@ -60,6 +64,7 @@ public interface SpringDictionaryDetailRepo extends JpaRepository<SpringDictiona
 	 * @see [相关类/方法]（可选）
 	 * @since [产品/模块版本] （可选）
 	 */
+	@Transactional
 	@Modifying
 	@Query(value = "update SpringDictionaryDetail set deletedStatus=1 where id in (:ids)")
 	public void setDelete(@Param(value = "ids") List<String> ids);
@@ -77,6 +82,7 @@ public interface SpringDictionaryDetailRepo extends JpaRepository<SpringDictiona
 	 * 
 	 * @param ids
 	 */
+	@Transactional
 	@Modifying
 	@Query(value = "delete from SpringDictionaryDetail where id in (:ids)")
 	public void delete(@Param(value = "ids") List<String> ids);
@@ -86,6 +92,7 @@ public interface SpringDictionaryDetailRepo extends JpaRepository<SpringDictiona
 	 * 
 	 * @param code
 	 */
+	@Transactional
 	@Modifying
 	@Query(value = "delete from SpringDictionaryDetail where dictionaryCode=:code")
 	public void deleteByDictionCode(@Param(value = "code") String code);
@@ -94,6 +101,7 @@ public interface SpringDictionaryDetailRepo extends JpaRepository<SpringDictiona
 	 * 逻辑删除
 	 * @param code
 	 */
+	@Transactional
 	@Modifying
 	@Query(value = "update SpringDictionaryDetail set deletedStatus=1  where dictionaryCode in (:codes)")
 	public void setDeleteByDictionCode(@Param(value = "codes") List<String> codes);

@@ -2,6 +2,8 @@ package io.github.springsongs.modules.sys.repo;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -46,6 +48,7 @@ public interface SpringRoleRepo extends JpaRepository<SpringRole, String> {
 	 * @see [相关类/方法]（可选）
 	 * @since [产品/模块版本] （可选）
 	 */
+	@Transactional
 	@Modifying
 	@Query(value = "update SpringRole set deletedStatus=1 where id=:id")
 	public void setDelete(@Param(value = "id") String id);
@@ -59,6 +62,7 @@ public interface SpringRoleRepo extends JpaRepository<SpringRole, String> {
 	 * @see [相关类/方法]（可选）
 	 * @since [产品/模块版本] （可选）
 	 */
+	@Transactional
 	@Modifying
 	@Query(value = "update SpringRole set deletedStatus=1 where id in (:ids)")
 	public void setDelete(@Param(value = "ids") List<String> ids);

@@ -42,7 +42,6 @@ import io.github.springsongs.modules.sys.service.ISpringResourceService;
 import io.github.springsongs.util.Constant;
 
 @Service
-
 public class SpringResourceServiceImpl implements ISpringResourceService {
 	static Logger logger = LoggerFactory.getLogger(SpringResourceServiceImpl.class);
 	@Autowired

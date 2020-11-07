@@ -32,7 +32,6 @@ import io.github.springsongs.modules.sys.service.ISpringSystemService;
 import io.github.springsongs.util.Constant;
 
 @Service
-@Transactional
 public class SpringSystemServiceImpl implements ISpringSystemService {
 
 	static Logger logger = LoggerFactory.getLogger(SpringRoleServiceImpl.class);

@@ -9,6 +9,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -28,6 +30,7 @@ import io.github.springsongs.modules.sys.repo.SpringAttachmentRepo;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Transactional
 @AutoConfigureMockMvc
 class SpringAttachmentControllerTest {
 
@@ -37,7 +40,7 @@ class SpringAttachmentControllerTest {
 	@Autowired
 	private SpringAttachmentRepo dao;
 
-	// @Autowired
+	@Autowired
 	private MockMvc mvc;
 
 	@BeforeEach

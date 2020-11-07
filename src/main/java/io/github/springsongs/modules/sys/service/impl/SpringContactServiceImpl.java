@@ -32,7 +32,6 @@ import io.github.springsongs.modules.sys.service.ISpringContactService;
 import io.github.springsongs.util.Constant;
 
 @Service
-@Transactional
 public class SpringContactServiceImpl implements ISpringContactService {
 
 	static Logger logger = LoggerFactory.getLogger(SpringContactServiceImpl.class);

@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.DynamicInsert;
@@ -44,7 +45,7 @@ public class SpringDictionary extends SpringBase implements Serializable {
 		this.id = id;
 	}
 
-	@NotBlank(message = "请填写编码")
+	@Pattern(regexp = "^[A-Za-z]+$", message = "编码请填写字母")
 	@Size(max = 45, min = 1)
 	@Description(title = "编码")
 	@Column(name = "code")

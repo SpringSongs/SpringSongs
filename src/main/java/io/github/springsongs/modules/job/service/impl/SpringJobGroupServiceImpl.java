@@ -68,10 +68,14 @@ public class SpringJobGroupServiceImpl implements ISpringJobGroupService {
 	 */
 	@Override
 	public void insert(SpringJobGroupDTO springJobGroupDTO) {
-		SpringJobGroup springJobGroup = new SpringJobGroup();
-		BeanUtils.copyProperties(springJobGroupDTO, springJobGroup);
+		SpringJobGroup springJobGroup =springJobGroupRepo.getByCode(springJobGroupDTO.getCode());
+		if (null!=springJobGroup) {
+			throw new SpringSongsException(ResultCode.DATA_EXIST);
+		}
+		SpringJobGroup addSpringJobGroup=new SpringJobGroup();
+		BeanUtils.copyProperties(springJobGroupDTO, addSpringJobGroup);
 		try {
-			springJobGroupRepo.save(springJobGroup);
+			springJobGroupRepo.save(addSpringJobGroup);
 		} catch (Exception ex) {
 			logger.error(ex.getMessage());
 			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
@@ -145,6 +149,11 @@ public class SpringJobGroupServiceImpl implements ISpringJobGroupService {
 			@Override
 			public Predicate toPredicate(Root<SpringJobGroup> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				List<Predicate> predicates = new ArrayList<>();
+				if (!StringUtils.isEmpty(springJobGroupQuery.getCode())) {
+					Predicate summary = cb.like(root.get("code").as(String.class),
+							"%" + springJobGroupQuery.getCode());
+					predicates.add(summary);
+				}
 				if (!StringUtils.isEmpty(springJobGroupQuery.getTitle())) {
 					Predicate summary = cb.like(root.get("title").as(String.class),
 							"%" + springJobGroupQuery.getTitle());
@@ -154,7 +163,7 @@ public class SpringJobGroupServiceImpl implements ISpringJobGroupService {
 				predicates.add(deletionStateCode);
 				Predicate[] pre = new Predicate[predicates.size()];
 				query.where(predicates.toArray(pre));
-				query.orderBy(cb.desc(root.get("createOn").as(Date.class)));
+				query.orderBy(cb.desc(root.get("createdOn").as(Date.class)));
 				return query.getRestriction();
 			}
 		};

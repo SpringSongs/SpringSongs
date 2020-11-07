@@ -30,7 +30,8 @@ public enum ResultCode {
 	CREDENTIALS_EXCPIRE_EXCEPTION(HttpServletResponse.SC_BAD_REQUEST, Constant.CREDENTIALS_EXCPIRE_EXCEPTION),
 	LOGIN_FAIL(HttpServletResponse.SC_BAD_REQUEST, Constant.LOGIN_FAIL),
 	LOGIN_SUCCESSED(HttpServletResponse.SC_OK, Constant.LOGIN_SUCCESSED),
-	LOGOUT_SUCCESSED(HttpServletResponse.SC_OK, Constant.LOGOUT_SUCCESSED);
+	LOGOUT_SUCCESSED(HttpServletResponse.SC_OK, Constant.LOGOUT_SUCCESSED), 
+	DATA_EXIST(HttpServletResponse.SC_BAD_REQUEST, Constant.DATA_EXIST), ;
 	final int code;
 	final String message;
 

@@ -36,7 +36,7 @@ public class SpringJobGroupController extends BaseController {
 	@Autowired
 	private ISpringJobGroupService springJobGroupService;
 
-	@PostMapping(value = "ListByPage")
+	@PostMapping(value = "/ListByPage")
 	public ReponseResultPageDTO<SpringJobGroupDTO> listByPage(@RequestBody SpringJobGroupQuery springJobGroupQuery,
 			@PageableDefault(page = 1, size = 20) Pageable pageable) {
 		Page<SpringJobGroupDTO> lists = springJobGroupService.getAllRecordByPage(springJobGroupQuery, pageable);

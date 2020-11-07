@@ -31,7 +31,6 @@ import io.github.springsongs.modules.sys.service.ISpringAttachmentService;
 import io.github.springsongs.util.Constant;
 
 @Service
-@Transactional
 public class SpringAttachmentServiceImpl implements ISpringAttachmentService {
 
 	static Logger logger = LoggerFactory.getLogger(SpringAttachmentCategoryServiceImpl.class);

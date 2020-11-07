@@ -32,7 +32,6 @@ import io.github.springsongs.modules.sys.service.ISpringDictionaryDetailService;
 import io.github.springsongs.util.Constant;
 
 @Service
-@Transactional
 public class SpringDictionaryDetailServiceImpl implements ISpringDictionaryDetailService {
 
 	static Logger logger = LoggerFactory.getLogger(SpringContactServiceImpl.class);
