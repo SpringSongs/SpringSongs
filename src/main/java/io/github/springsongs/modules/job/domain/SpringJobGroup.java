@@ -40,7 +40,7 @@ public class SpringJobGroup extends SpringBase implements Serializable {
         this.id=id;
     }
 
-    @Pattern(regexp = "^[A-Za-z]+$", message = "请填写字母")
+    @Pattern(regexp = "^[A-Za-z]+$", message = "组别ID请填写字母")
     @Description(title ="组别ID")
     @Column(name="code")
     private String code;
