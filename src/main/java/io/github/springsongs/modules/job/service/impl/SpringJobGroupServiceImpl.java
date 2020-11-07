@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -27,7 +28,9 @@ import io.github.springsongs.modules.job.dto.SpringJobGroupDTO;
 import io.github.springsongs.modules.job.query.SpringJobGroupQuery;
 import io.github.springsongs.modules.job.repo.SpringJobGroupRepo;
 import io.github.springsongs.modules.job.service.ISpringJobGroupService;
+import io.github.springsongs.util.Constant;
 
+@Service
 public class SpringJobGroupServiceImpl implements ISpringJobGroupService {
 
 	static Logger logger = LoggerFactory.getLogger(SpringJobGroupServiceImpl.class);
@@ -134,6 +137,9 @@ public class SpringJobGroupServiceImpl implements ISpringJobGroupService {
 	 */
 	@Override
 	public Page<SpringJobGroupDTO> getAllRecordByPage(SpringJobGroupQuery springJobGroupQuery, Pageable pageable) {
+		if (pageable.getPageSize()>Constant.MAX_PAGE_SIZE) {
+			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
+		}
 		Specification<SpringJobGroup> specification = new Specification<SpringJobGroup>() {
 
 			@Override

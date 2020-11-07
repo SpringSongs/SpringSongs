@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -29,6 +30,7 @@ import io.github.springsongs.modules.sys.repo.SpringDictionaryRepo;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@WithUserDetails("Administrator")
 class SpringDictionaryControllerTest {
 
 	@Autowired
@@ -37,7 +39,7 @@ class SpringDictionaryControllerTest {
 	@Autowired
 	private SpringDictionaryRepo dao;
 
-	// @Autowired
+	@Autowired
 	private MockMvc mvc;
 
 	@BeforeEach
@@ -57,7 +59,7 @@ class SpringDictionaryControllerTest {
 		entity.setUpdatedUserId("TfEFJqqXcPxKHHeHHaWjsdfOvVGVvxKCleDe");
 		entity.setUpdatedBy("EXjEvuhKWbpKDzRWHAOTEFFJclBdxMWmSolo");
 		entity.setUpdatedIp("KwrMmiwTyPMKjnDyXQflbynseMEHdCwGZIbf");
-		this.mvc.perform(post("/BaseDictionary/ListByPage").param("page", "1").param("limit", "20")
+		this.mvc.perform(post("/SpringDictionary/ListByPage").param("page", "1").param("limit", "20")
 				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
 				.content(JSON.toJSONString(entity))).andExpect(status().isOk())
 				.andExpect(jsonPath("$.data.[*].code").value(hasItem("NsrXIPJJjPivAeYphvRiFkqvFRkVPvHzeHsp")))
@@ -84,7 +86,7 @@ class SpringDictionaryControllerTest {
 		entity.setUpdatedBy("czGobiTSvbvLdyewfYFvgvyuLnimbnYXnHZR");
 		entity.setUpdatedIp("jtbcYogGSOJwSxHCBdjQNPPRvtLdWOYEgKxL");
 		dao.saveAndFlush(entity);
-		this.mvc.perform(post("/BaseDictionary/Detail").param("id", entity.getId())).andExpect(status().isOk())
+		this.mvc.perform(post("/SpringDictionary/Detail").param("id", entity.getId())).andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$..code").value(hasItem("ziaaCtmYHcUIilUgUSZoSgJAInysCtlOLLRa")))
 				.andExpect(jsonPath("$..createdBy").value(hasItem("rWdJvHUVhBuFXnyIKKJqpjafmZbIgNiRkfcU")))
@@ -110,21 +112,21 @@ class SpringDictionaryControllerTest {
 		entity.setUpdatedUserId("RPQXKKcRijtiSGBGpaHOHPOeyosjTpTwUnam");
 		entity.setUpdatedBy("jcynezrTioGrHuDdNlTiHeSQiXYBSXpXYbYJ");
 		entity.setUpdatedIp("bPntVyfiWFVlWwFHSOSfZpJRnZIlfzSvyGIs");
-		this.mvc.perform(post("/BaseDictionary/Create").contentType(MediaType.APPLICATION_JSON)
+		this.mvc.perform(post("/SpringDictionary/Create").contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON).content(JSON.toJSONString(entity))).andExpect(status().isOk());
-		List<SpringDictionary> baseDictionaryEntityList = dao.findAll();
-		assertThat(baseDictionaryEntityList).hasSize(databaseSizeBeforeCreate + 1);
-		SpringDictionary testBaseDictionaryEntity = baseDictionaryEntityList
-				.get(baseDictionaryEntityList.size() - 1);
-		assertThat(testBaseDictionaryEntity.getCode()).isEqualTo("hCgNkcXQSxdiaiNecLAircTmXDLtlVCORifX");
-		assertThat(testBaseDictionaryEntity.getCreatedBy()).isEqualTo("PnboDovcsiXlWIYzCwVMIjlKybgiyrywEmxv");
-		assertThat(testBaseDictionaryEntity.getCreatedIp()).isEqualTo("KveqTAilzkHtPlZQYvkwXHuVUkJsrIYmmjEo");
-		assertThat(testBaseDictionaryEntity.getCreatedUserId()).isEqualTo("HTIzyrKGwxeCJdheZQnyKbZnccbhjrMosMFI");
-		assertThat(testBaseDictionaryEntity.getDescription()).isEqualTo("AcWyDNruLiYPWpRXSwptGlZexivxCRCgVOeM");
-		assertThat(testBaseDictionaryEntity.getTitle()).isEqualTo("hjgDzskICbNlreBWQwXfabXBfbVjxekbqlto");
-		assertThat(testBaseDictionaryEntity.getUpdatedBy()).isEqualTo("jcynezrTioGrHuDdNlTiHeSQiXYBSXpXYbYJ");
-		assertThat(testBaseDictionaryEntity.getUpdatedIp()).isEqualTo("bPntVyfiWFVlWwFHSOSfZpJRnZIlfzSvyGIs");
-		assertThat(testBaseDictionaryEntity.getUpdatedUserId()).isEqualTo("RPQXKKcRijtiSGBGpaHOHPOeyosjTpTwUnam");
+		List<SpringDictionary> SpringDictionaryEntityList = dao.findAll();
+		assertThat(SpringDictionaryEntityList).hasSize(databaseSizeBeforeCreate + 1);
+		SpringDictionary testSpringDictionaryEntity = SpringDictionaryEntityList
+				.get(SpringDictionaryEntityList.size() - 1);
+		assertThat(testSpringDictionaryEntity.getCode()).isEqualTo("hCgNkcXQSxdiaiNecLAircTmXDLtlVCORifX");
+		assertThat(testSpringDictionaryEntity.getCreatedBy()).isEqualTo("PnboDovcsiXlWIYzCwVMIjlKybgiyrywEmxv");
+		assertThat(testSpringDictionaryEntity.getCreatedIp()).isEqualTo("KveqTAilzkHtPlZQYvkwXHuVUkJsrIYmmjEo");
+		assertThat(testSpringDictionaryEntity.getCreatedUserId()).isEqualTo("HTIzyrKGwxeCJdheZQnyKbZnccbhjrMosMFI");
+		assertThat(testSpringDictionaryEntity.getDescription()).isEqualTo("AcWyDNruLiYPWpRXSwptGlZexivxCRCgVOeM");
+		assertThat(testSpringDictionaryEntity.getTitle()).isEqualTo("hjgDzskICbNlreBWQwXfabXBfbVjxekbqlto");
+		assertThat(testSpringDictionaryEntity.getUpdatedBy()).isEqualTo("jcynezrTioGrHuDdNlTiHeSQiXYBSXpXYbYJ");
+		assertThat(testSpringDictionaryEntity.getUpdatedIp()).isEqualTo("bPntVyfiWFVlWwFHSOSfZpJRnZIlfzSvyGIs");
+		assertThat(testSpringDictionaryEntity.getUpdatedUserId()).isEqualTo("RPQXKKcRijtiSGBGpaHOHPOeyosjTpTwUnam");
 		;
 	}
 
@@ -152,22 +154,22 @@ class SpringDictionaryControllerTest {
 		updatedEntity.setUpdatedUserId("cpnrGQGIgZPyEIGvtTvTyGGhsZgyvRZllgWJ");
 		updatedEntity.setUpdatedBy("KtvoksTJpnWcoNCFOzLMNFHaHPBCupvOukgc");
 		updatedEntity.setUpdatedIp("xQbrGvnQzvBUFFjWNhogGlNIvQKMRPVqRCWW");
-		this.mvc.perform(post("/BaseDictionary/Edit").contentType(MediaType.APPLICATION_JSON)
+		this.mvc.perform(post("/SpringDictionary/Edit").contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON).content(JSON.toJSONString(updatedEntity)))
 				.andExpect(status().isOk());
-		List<SpringDictionary> baseDictionaryEntityList = dao.findAll();
-		assertThat(baseDictionaryEntityList).hasSize(databaseSizeBeforeUpdate);
-		SpringDictionary testBaseDictionaryEntity = baseDictionaryEntityList
-				.get(baseDictionaryEntityList.size() - 1);
-		assertThat(testBaseDictionaryEntity.getCode()).isEqualTo("lFEuqkLpgWatvjytznzaggyKocxsnknKpIeg");
-		assertThat(testBaseDictionaryEntity.getCreatedBy()).isEqualTo("lZwinvRPnHPyDXkBZsdavOUlzcOiLXgitqhe");
-		assertThat(testBaseDictionaryEntity.getCreatedIp()).isEqualTo("pJXWNptDfwkbMyfFrjGGlmhgjBQSVGSpDuEI");
-		assertThat(testBaseDictionaryEntity.getCreatedUserId()).isEqualTo("HmSfbectdMMCOIWIQrUmXxgtLXmoPcXSmAFy");
-		assertThat(testBaseDictionaryEntity.getDescription()).isEqualTo("UWVZTUwMSrzkNHmIgrojePYhjuMSMufjDGeh");
-		assertThat(testBaseDictionaryEntity.getTitle()).isEqualTo("sFQmqHFzmiCaqyURUVRyucYZFTOfZdCzYCQL");
-		assertThat(testBaseDictionaryEntity.getUpdatedBy()).isEqualTo("KtvoksTJpnWcoNCFOzLMNFHaHPBCupvOukgc");
-		assertThat(testBaseDictionaryEntity.getUpdatedIp()).isEqualTo("xQbrGvnQzvBUFFjWNhogGlNIvQKMRPVqRCWW");
-		assertThat(testBaseDictionaryEntity.getUpdatedUserId()).isEqualTo("cpnrGQGIgZPyEIGvtTvTyGGhsZgyvRZllgWJ");
+		List<SpringDictionary> SpringDictionaryEntityList = dao.findAll();
+		assertThat(SpringDictionaryEntityList).hasSize(databaseSizeBeforeUpdate);
+		SpringDictionary testSpringDictionaryEntity = SpringDictionaryEntityList
+				.get(SpringDictionaryEntityList.size() - 1);
+		assertThat(testSpringDictionaryEntity.getCode()).isEqualTo("lFEuqkLpgWatvjytznzaggyKocxsnknKpIeg");
+		assertThat(testSpringDictionaryEntity.getCreatedBy()).isEqualTo("lZwinvRPnHPyDXkBZsdavOUlzcOiLXgitqhe");
+		assertThat(testSpringDictionaryEntity.getCreatedIp()).isEqualTo("pJXWNptDfwkbMyfFrjGGlmhgjBQSVGSpDuEI");
+		assertThat(testSpringDictionaryEntity.getCreatedUserId()).isEqualTo("HmSfbectdMMCOIWIQrUmXxgtLXmoPcXSmAFy");
+		assertThat(testSpringDictionaryEntity.getDescription()).isEqualTo("UWVZTUwMSrzkNHmIgrojePYhjuMSMufjDGeh");
+		assertThat(testSpringDictionaryEntity.getTitle()).isEqualTo("sFQmqHFzmiCaqyURUVRyucYZFTOfZdCzYCQL");
+		assertThat(testSpringDictionaryEntity.getUpdatedBy()).isEqualTo("KtvoksTJpnWcoNCFOzLMNFHaHPBCupvOukgc");
+		assertThat(testSpringDictionaryEntity.getUpdatedIp()).isEqualTo("xQbrGvnQzvBUFFjWNhogGlNIvQKMRPVqRCWW");
+		assertThat(testSpringDictionaryEntity.getUpdatedUserId()).isEqualTo("cpnrGQGIgZPyEIGvtTvTyGGhsZgyvRZllgWJ");
 		;
 	}
 
@@ -184,7 +186,7 @@ class SpringDictionaryControllerTest {
 		entity.setUpdatedBy("rDWrmEoRSZOXSGxXOpPJHbcMtnUPUdSRiPXw");
 		entity.setUpdatedIp("mVXxoDwsddknVJilVOVTmNKxwkaqhALrJEMx");
 		dao.saveAndFlush(entity);
-		this.mvc.perform(post("/BaseDictionary/SetDeleted").param("ids", entity.getId())
+		this.mvc.perform(post("/SpringDictionary/SetDeleted").param("ids", entity.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)).andExpect(status().isOk());
 	}
 

@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -29,6 +30,7 @@ import io.github.springsongs.modules.sys.repo.SpringArticleCommentRepo;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@WithUserDetails("Administrator")
 class SpringArticleCommentControllerTest {
 
 	@Autowired
@@ -37,7 +39,7 @@ class SpringArticleCommentControllerTest {
 	@Autowired
 	private SpringArticleCommentRepo dao;
 
-	// @Autowired
+	@Autowired
 	private MockMvc mvc;
 
 	@BeforeEach
@@ -56,7 +58,7 @@ class SpringArticleCommentControllerTest {
 		entity.setUpdatedUserId("XlDpBZYDnGMCVKUSrfESvfPUFbVFYSTvBJmN");
 		entity.setUpdatedBy("NiAMwhbbKOmdIxPuiLyOjaJLOsSWrtJVYeaW");
 		entity.setUpdatedIp("GTzdfZMreraVDgGPwCxCKlwaEWuJjBalJUWI");
-		this.mvc.perform(post("/BaseComment/ListByPage").param("page", "1").param("limit", "20")
+		this.mvc.perform(post("/SpringArticleComment/ListByPage").param("page", "1").param("limit", "20")
 				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
 				.content(JSON.toJSONString(entity))).andExpect(status().isOk())
 				.andExpect(jsonPath("$.data.[*].content").value(hasItem("DTmyuXaWowENMcwWSiXRSTlMZlaqjdkOoaun")))
@@ -81,7 +83,7 @@ class SpringArticleCommentControllerTest {
 		entity.setUpdatedBy("VGuPitzBYtKjWXXJOSpPEBCjVQHnFscAPfWn");
 		entity.setUpdatedIp("CGdltuDBRIVBexJuFxxbswfkxPDSQRyqFYZY");
 		dao.saveAndFlush(entity);
-		this.mvc.perform(post("/BaseComment/Detail").param("id", entity.getId())).andExpect(status().isOk())
+		this.mvc.perform(post("/SpringArticleComment/Detail").param("id", entity.getId())).andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$..content").value(hasItem("PgqBNHROELCJVGwKAUxiBHscEvkzfJVbeGRb")))
 				.andExpect(jsonPath("$..createdBy").value(hasItem("jvnkALCzZcbtlNQtjkJXtJJOtfFdYStFiIZT")))
@@ -105,19 +107,19 @@ class SpringArticleCommentControllerTest {
 		entity.setUpdatedUserId("IEJhrsGBwxrXuDWwHIdlQPKLatWzdBKbLZmH");
 		entity.setUpdatedBy("rNMXZUWwNHNMPpmnJgSdKiaAelZauRTXAxkq");
 		entity.setUpdatedIp("vDcBYAnJRNsTAYDusWVgiZVvOpZZZwncmUrn");
-		this.mvc.perform(post("/BaseComment/Create").contentType(MediaType.APPLICATION_JSON)
+		this.mvc.perform(post("/SpringArticleComment/Create").contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON).content(JSON.toJSONString(entity))).andExpect(status().isOk());
-		List<SpringArticleComment> baseCommentEntityList = dao.findAll();
-		assertThat(baseCommentEntityList).hasSize(databaseSizeBeforeCreate + 1);
-		SpringArticleComment testBaseCommentEntity = baseCommentEntityList.get(baseCommentEntityList.size() - 1);
-		assertThat(testBaseCommentEntity.getContent()).isEqualTo("HYvUIfQWRjiivpIOvzWEQqLpkIhyRQjPewKY");
-		assertThat(testBaseCommentEntity.getCreatedBy()).isEqualTo("IxAZlqHBKgoiLFZDHSqDAzzFOQNqFpTvwJOw");
-		assertThat(testBaseCommentEntity.getCreatedIp()).isEqualTo("SMYdGFEaAAPyiZkHkRXkxBetPVvAczlcaIDp");
-		assertThat(testBaseCommentEntity.getCreatedUserId()).isEqualTo("CIBxsVepbxqHyEmOFWYrepvUwJaBWAeRtqYV");
-		assertThat(testBaseCommentEntity.getArticleId()).isEqualTo("CwjUetoENVbLBiJDqxylSxOKdkKXNxvToYQf");
-		assertThat(testBaseCommentEntity.getUpdatedBy()).isEqualTo("rNMXZUWwNHNMPpmnJgSdKiaAelZauRTXAxkq");
-		assertThat(testBaseCommentEntity.getUpdatedIp()).isEqualTo("vDcBYAnJRNsTAYDusWVgiZVvOpZZZwncmUrn");
-		assertThat(testBaseCommentEntity.getUpdatedUserId()).isEqualTo("IEJhrsGBwxrXuDWwHIdlQPKLatWzdBKbLZmH");
+		List<SpringArticleComment> SpringArticleCommentEntityList = dao.findAll();
+		assertThat(SpringArticleCommentEntityList).hasSize(databaseSizeBeforeCreate + 1);
+		SpringArticleComment testSpringArticleCommentEntity = SpringArticleCommentEntityList.get(SpringArticleCommentEntityList.size() - 1);
+		assertThat(testSpringArticleCommentEntity.getContent()).isEqualTo("HYvUIfQWRjiivpIOvzWEQqLpkIhyRQjPewKY");
+		assertThat(testSpringArticleCommentEntity.getCreatedBy()).isEqualTo("IxAZlqHBKgoiLFZDHSqDAzzFOQNqFpTvwJOw");
+		assertThat(testSpringArticleCommentEntity.getCreatedIp()).isEqualTo("SMYdGFEaAAPyiZkHkRXkxBetPVvAczlcaIDp");
+		assertThat(testSpringArticleCommentEntity.getCreatedUserId()).isEqualTo("CIBxsVepbxqHyEmOFWYrepvUwJaBWAeRtqYV");
+		assertThat(testSpringArticleCommentEntity.getArticleId()).isEqualTo("CwjUetoENVbLBiJDqxylSxOKdkKXNxvToYQf");
+		assertThat(testSpringArticleCommentEntity.getUpdatedBy()).isEqualTo("rNMXZUWwNHNMPpmnJgSdKiaAelZauRTXAxkq");
+		assertThat(testSpringArticleCommentEntity.getUpdatedIp()).isEqualTo("vDcBYAnJRNsTAYDusWVgiZVvOpZZZwncmUrn");
+		assertThat(testSpringArticleCommentEntity.getUpdatedUserId()).isEqualTo("IEJhrsGBwxrXuDWwHIdlQPKLatWzdBKbLZmH");
 		;
 	}
 
@@ -143,20 +145,20 @@ class SpringArticleCommentControllerTest {
 		updatedEntity.setUpdatedUserId("PbEcabkYGiJBSVMjOgFzjznNddIwbtBVuoxb");
 		updatedEntity.setUpdatedBy("jLclUFsbkEpCyoKwbDIgcNabkqqXlrbpRhTq");
 		updatedEntity.setUpdatedIp("TmnKPfHpMSHQMOawDpnIwKmRqCnqrJtuqPce");
-		this.mvc.perform(post("/BaseComment/Edit").contentType(MediaType.APPLICATION_JSON)
+		this.mvc.perform(post("/SpringArticleComment/Edit").contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON).content(JSON.toJSONString(updatedEntity)))
 				.andExpect(status().isOk());
-		List<SpringArticleComment> baseCommentEntityList = dao.findAll();
-		assertThat(baseCommentEntityList).hasSize(databaseSizeBeforeUpdate);
-		SpringArticleComment testBaseCommentEntity = baseCommentEntityList.get(baseCommentEntityList.size() - 1);
-		assertThat(testBaseCommentEntity.getContent()).isEqualTo("koPPyCVlfzFedESoNowDLtkqwevlwyiZExvm");
-		assertThat(testBaseCommentEntity.getCreatedBy()).isEqualTo("kQxEMAzNiaOAOsjYYEjBUwUOpkTqRKndcTMB");
-		assertThat(testBaseCommentEntity.getCreatedIp()).isEqualTo("YLwqCaMLpQhXWjhUczNaOJFjZULgtrqCWbPI");
-		assertThat(testBaseCommentEntity.getCreatedUserId()).isEqualTo("iRvIsVQuKPEoRFtCAeTZJItHVZzyXojdeFEs");
-		assertThat(testBaseCommentEntity.getArticleId()).isEqualTo("WiJvIWROCkJFEapTWirdwixMNQoXhdkRVjAd");
-		assertThat(testBaseCommentEntity.getUpdatedBy()).isEqualTo("jLclUFsbkEpCyoKwbDIgcNabkqqXlrbpRhTq");
-		assertThat(testBaseCommentEntity.getUpdatedIp()).isEqualTo("TmnKPfHpMSHQMOawDpnIwKmRqCnqrJtuqPce");
-		assertThat(testBaseCommentEntity.getUpdatedUserId()).isEqualTo("PbEcabkYGiJBSVMjOgFzjznNddIwbtBVuoxb");
+		List<SpringArticleComment> SpringArticleCommentEntityList = dao.findAll();
+		assertThat(SpringArticleCommentEntityList).hasSize(databaseSizeBeforeUpdate);
+		SpringArticleComment testSpringArticleCommentEntity = SpringArticleCommentEntityList.get(SpringArticleCommentEntityList.size() - 1);
+		assertThat(testSpringArticleCommentEntity.getContent()).isEqualTo("koPPyCVlfzFedESoNowDLtkqwevlwyiZExvm");
+		assertThat(testSpringArticleCommentEntity.getCreatedBy()).isEqualTo("kQxEMAzNiaOAOsjYYEjBUwUOpkTqRKndcTMB");
+		assertThat(testSpringArticleCommentEntity.getCreatedIp()).isEqualTo("YLwqCaMLpQhXWjhUczNaOJFjZULgtrqCWbPI");
+		assertThat(testSpringArticleCommentEntity.getCreatedUserId()).isEqualTo("iRvIsVQuKPEoRFtCAeTZJItHVZzyXojdeFEs");
+		assertThat(testSpringArticleCommentEntity.getArticleId()).isEqualTo("WiJvIWROCkJFEapTWirdwixMNQoXhdkRVjAd");
+		assertThat(testSpringArticleCommentEntity.getUpdatedBy()).isEqualTo("jLclUFsbkEpCyoKwbDIgcNabkqqXlrbpRhTq");
+		assertThat(testSpringArticleCommentEntity.getUpdatedIp()).isEqualTo("TmnKPfHpMSHQMOawDpnIwKmRqCnqrJtuqPce");
+		assertThat(testSpringArticleCommentEntity.getUpdatedUserId()).isEqualTo("PbEcabkYGiJBSVMjOgFzjznNddIwbtBVuoxb");
 		;
 	}
 
@@ -172,7 +174,7 @@ class SpringArticleCommentControllerTest {
 		entity.setUpdatedBy("uvvLytgeSSRQBQKDKZoyWjsZUONUOfKHvMnQ");
 		entity.setUpdatedIp("IhlSwqQeNAjsVqCnyDhBYdjlhZJzoVXOQeKv");
 		dao.saveAndFlush(entity);
-		this.mvc.perform(post("/BaseComment/SetDeleted").param("ids", entity.getId())
+		this.mvc.perform(post("/SpringArticleComment/SetDeleted").param("ids", entity.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)).andExpect(status().isOk());
 	}
 

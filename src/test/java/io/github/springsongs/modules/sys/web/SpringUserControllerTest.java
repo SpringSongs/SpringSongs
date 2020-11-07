@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -29,6 +30,7 @@ import io.github.springsongs.modules.sys.repo.SpringUserRepo;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@WithUserDetails("Administrator")
 class SpringUserControllerTest {
 	@Autowired
 	private WebApplicationContext context;
@@ -36,7 +38,7 @@ class SpringUserControllerTest {
 	@Autowired
 	private SpringUserRepo dao;
 
-	// @Autowired
+	@Autowired
 	private MockMvc mvc;
 
 	@BeforeEach
@@ -55,7 +57,7 @@ class SpringUserControllerTest {
 		entity.setUpdatedUserId("pVeLIvTsRtOLMnlpKYguhIbHWLjicdgdCfZa");
 		entity.setUpdatedBy("vHztwFZmpPkXDnvofpHGsvJMWWwrnYpXnBEU");
 		entity.setUpdatedIp("jBmqMImNIsbKuqDsmukWJQiFBhrayPQuPBtf");
-		this.mvc.perform(post("/BaseBuser/ListByPage").param("page", "1").param("limit", "20")
+		this.mvc.perform(post("/SpringUser/ListByPage").param("page", "1").param("limit", "20")
 				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
 				.content(JSON.toJSONString(entity))).andExpect(status().isOk())
 				.andExpect(jsonPath("$.data.[*].createdBy").value(hasItem("abLZGuRCAKuglBtzQhnZUtpTQGdSDlvnBKSF")))
@@ -80,7 +82,7 @@ class SpringUserControllerTest {
 		entity.setUpdatedBy("LOHufgMQKFjKCQWWnoNHNxTMlDvfLzEvttuv");
 		entity.setUpdatedIp("DiBHHSzidiCFjfuCfnVsYTsJYZmHJYjaXQMc");
 		dao.saveAndFlush(entity);
-		this.mvc.perform(post("/BaseBuser/Detail").param("id", entity.getId())).andExpect(status().isOk())
+		this.mvc.perform(post("/SpringUser/Detail").param("id", entity.getId())).andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$..createdBy").value(hasItem("OHHyHCtZBsuygmqdCdMafWiNRPAVThqsgDav")))
 				.andExpect(jsonPath("$..createdIp").value(hasItem("hFpiMxNvvjJBXZTSgLkgLHtZdwTPfAqBaOXv")))
@@ -104,19 +106,19 @@ class SpringUserControllerTest {
 		entity.setUpdatedUserId("CagTcSKargeSvBEspDzKbUyrmHrBeDoQwPsr");
 		entity.setUpdatedBy("PoLaERVfeqANpvAGNIhCjHvlMsaivtgZMAtk");
 		entity.setUpdatedIp("GlqsEYEhioUwWrzesnKIZwUXmaRedwrWtWzC");
-		this.mvc.perform(post("/BaseBuser/Create").contentType(MediaType.APPLICATION_JSON)
+		this.mvc.perform(post("/SpringUser/Create").contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON).content(JSON.toJSONString(entity))).andExpect(status().isOk());
-		List<SpringUser> baseBuserEntityList = dao.findAll();
-		assertThat(baseBuserEntityList).hasSize(databaseSizeBeforeCreate + 1);
-		SpringUser testBaseBuserEntity = baseBuserEntityList.get(baseBuserEntityList.size() - 1);
-		assertThat(testBaseBuserEntity.getCreatedBy()).isEqualTo("gusAnYWpyTadKCuiJpicrwJIGPAAmxlHfBgY");
-		assertThat(testBaseBuserEntity.getCreatedIp()).isEqualTo("NnDZiRgAkRGYorzhDTcoxzAPhimxLHdmQBxa");
-		assertThat(testBaseBuserEntity.getCreatedUserId()).isEqualTo("jYDlZQvvbBonbeHwubnTyFQYfFceYEkoFXCK");
-		assertThat(testBaseBuserEntity.getTrueName()).isEqualTo("KflkmVtCfcgJskcXYgzGNBTwVqQJuIIFSNon");
-		assertThat(testBaseBuserEntity.getUpdatedBy()).isEqualTo("PoLaERVfeqANpvAGNIhCjHvlMsaivtgZMAtk");
-		assertThat(testBaseBuserEntity.getUpdatedIp()).isEqualTo("GlqsEYEhioUwWrzesnKIZwUXmaRedwrWtWzC");
-		assertThat(testBaseBuserEntity.getUpdatedUserId()).isEqualTo("CagTcSKargeSvBEspDzKbUyrmHrBeDoQwPsr");
-		assertThat(testBaseBuserEntity.getUserName()).isEqualTo("okkcBpmdcJIBfaknbqrxkzqhpzDhNcUQfnDN");
+		List<SpringUser> SpringUserEntityList = dao.findAll();
+		assertThat(SpringUserEntityList).hasSize(databaseSizeBeforeCreate + 1);
+		SpringUser testSpringUserEntity = SpringUserEntityList.get(SpringUserEntityList.size() - 1);
+		assertThat(testSpringUserEntity.getCreatedBy()).isEqualTo("gusAnYWpyTadKCuiJpicrwJIGPAAmxlHfBgY");
+		assertThat(testSpringUserEntity.getCreatedIp()).isEqualTo("NnDZiRgAkRGYorzhDTcoxzAPhimxLHdmQBxa");
+		assertThat(testSpringUserEntity.getCreatedUserId()).isEqualTo("jYDlZQvvbBonbeHwubnTyFQYfFceYEkoFXCK");
+		assertThat(testSpringUserEntity.getTrueName()).isEqualTo("KflkmVtCfcgJskcXYgzGNBTwVqQJuIIFSNon");
+		assertThat(testSpringUserEntity.getUpdatedBy()).isEqualTo("PoLaERVfeqANpvAGNIhCjHvlMsaivtgZMAtk");
+		assertThat(testSpringUserEntity.getUpdatedIp()).isEqualTo("GlqsEYEhioUwWrzesnKIZwUXmaRedwrWtWzC");
+		assertThat(testSpringUserEntity.getUpdatedUserId()).isEqualTo("CagTcSKargeSvBEspDzKbUyrmHrBeDoQwPsr");
+		assertThat(testSpringUserEntity.getUserName()).isEqualTo("okkcBpmdcJIBfaknbqrxkzqhpzDhNcUQfnDN");
 		;
 	}
 
@@ -142,20 +144,20 @@ class SpringUserControllerTest {
 		updatedEntity.setUpdatedUserId("zVgUTOtdYqLhbbyHgwGxIoDzDaMnzjsZoKoj");
 		updatedEntity.setUpdatedBy("xeXRjiVnpsahfJJWSskbbLcdQSmuXNPhubBA");
 		updatedEntity.setUpdatedIp("moiNPAIxYYFEREFYWrUFTdAjpsNfLSVPFWCg");
-		this.mvc.perform(post("/BaseBuser/Edit").contentType(MediaType.APPLICATION_JSON)
+		this.mvc.perform(post("/SpringUser/Edit").contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON).content(JSON.toJSONString(updatedEntity)))
 				.andExpect(status().isOk());
-		List<SpringUser> baseBuserEntityList = dao.findAll();
-		assertThat(baseBuserEntityList).hasSize(databaseSizeBeforeUpdate);
-		SpringUser testBaseBuserEntity = baseBuserEntityList.get(baseBuserEntityList.size() - 1);
-		assertThat(testBaseBuserEntity.getCreatedBy()).isEqualTo("CvQJOFogArZaDQHjjchctEyooYCnDHLSrELO");
-		assertThat(testBaseBuserEntity.getCreatedIp()).isEqualTo("pfOyFpMsuXZbDkotIImuHWwQSwbPZfXfhgVN");
-		assertThat(testBaseBuserEntity.getCreatedUserId()).isEqualTo("uVtjLKRxSbmwfXIOEbqOtKIPJeKozaOXLDcq");
-		assertThat(testBaseBuserEntity.getTrueName()).isEqualTo("ZbVAoxTfhWwIoKBnxyWXqiEZvDHJEBbOyUWt");
-		assertThat(testBaseBuserEntity.getUpdatedBy()).isEqualTo("xeXRjiVnpsahfJJWSskbbLcdQSmuXNPhubBA");
-		assertThat(testBaseBuserEntity.getUpdatedIp()).isEqualTo("moiNPAIxYYFEREFYWrUFTdAjpsNfLSVPFWCg");
-		assertThat(testBaseBuserEntity.getUpdatedUserId()).isEqualTo("zVgUTOtdYqLhbbyHgwGxIoDzDaMnzjsZoKoj");
-		assertThat(testBaseBuserEntity.getUserName()).isEqualTo("qjOaCdemUCyVMqhPWBwmPgpuTRfsbIJHVGZu");
+		List<SpringUser> SpringUserEntityList = dao.findAll();
+		assertThat(SpringUserEntityList).hasSize(databaseSizeBeforeUpdate);
+		SpringUser testSpringUserEntity = SpringUserEntityList.get(SpringUserEntityList.size() - 1);
+		assertThat(testSpringUserEntity.getCreatedBy()).isEqualTo("CvQJOFogArZaDQHjjchctEyooYCnDHLSrELO");
+		assertThat(testSpringUserEntity.getCreatedIp()).isEqualTo("pfOyFpMsuXZbDkotIImuHWwQSwbPZfXfhgVN");
+		assertThat(testSpringUserEntity.getCreatedUserId()).isEqualTo("uVtjLKRxSbmwfXIOEbqOtKIPJeKozaOXLDcq");
+		assertThat(testSpringUserEntity.getTrueName()).isEqualTo("ZbVAoxTfhWwIoKBnxyWXqiEZvDHJEBbOyUWt");
+		assertThat(testSpringUserEntity.getUpdatedBy()).isEqualTo("xeXRjiVnpsahfJJWSskbbLcdQSmuXNPhubBA");
+		assertThat(testSpringUserEntity.getUpdatedIp()).isEqualTo("moiNPAIxYYFEREFYWrUFTdAjpsNfLSVPFWCg");
+		assertThat(testSpringUserEntity.getUpdatedUserId()).isEqualTo("zVgUTOtdYqLhbbyHgwGxIoDzDaMnzjsZoKoj");
+		assertThat(testSpringUserEntity.getUserName()).isEqualTo("qjOaCdemUCyVMqhPWBwmPgpuTRfsbIJHVGZu");
 		;
 	}
 
@@ -171,7 +173,7 @@ class SpringUserControllerTest {
 		entity.setUpdatedBy("qnDMqFAOAtkXyMngHFLrUrUbrsknyRUDUDck");
 		entity.setUpdatedIp("IwIZXujDHlWzCAjdiMuTmglapNKIsnwCyNpC");
 		dao.saveAndFlush(entity);
-		this.mvc.perform(post("/BaseBuser/SetDeleted").param("ids", entity.getId())
+		this.mvc.perform(post("/SpringUser/SetDeleted").param("ids", entity.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)).andExpect(status().isOk());
 	}
 

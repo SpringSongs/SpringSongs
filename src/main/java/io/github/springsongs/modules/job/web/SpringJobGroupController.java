@@ -15,7 +15,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import io.github.springsongs.common.dto.ReponseResultPageDTO;
 import io.github.springsongs.common.dto.ResponseDTO;
@@ -24,11 +26,12 @@ import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.modules.job.dto.SpringJobGroupDTO;
 import io.github.springsongs.modules.job.query.SpringJobGroupQuery;
 import io.github.springsongs.modules.job.service.ISpringJobGroupService;
-import io.github.springsongs.modules.sys.web.SpringParameterController;
 import io.github.springsongs.util.IpKit;
 
+@RestController
+@RequestMapping(value = "/SpringJobGroup")
 public class SpringJobGroupController extends BaseController {
-	private static final Logger logger = LoggerFactory.getLogger(SpringParameterController.class);
+	private static final Logger logger = LoggerFactory.getLogger(SpringJobGroupController.class);
 
 	@Autowired
 	private ISpringJobGroupService springJobGroupService;

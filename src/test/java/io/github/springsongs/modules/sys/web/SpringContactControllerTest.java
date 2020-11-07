@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -29,6 +30,7 @@ import io.github.springsongs.modules.sys.repo.SpringContactRepo;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@WithUserDetails("Administrator")
 class SpringContactControllerTest {
 
 	@Autowired
@@ -37,7 +39,7 @@ class SpringContactControllerTest {
 	@Autowired
 	private SpringContactRepo dao;
 
-	// @Autowired
+	@Autowired
 	private MockMvc mvc;
 
 	@BeforeEach
@@ -64,7 +66,7 @@ class SpringContactControllerTest {
 		entity.setUpdatedUserId("efVseujfQLyrVCsypSTXoTRuLvqNaxWqADwt");
 		entity.setUpdatedBy("purOsrdeMmUPbkuxIseivLtzrmSdsEojOPEn");
 		entity.setUpdatedIp("EaYLRjMKVkdoPLDJVkCUjkCnxGPGuAXNnwpz");
-		this.mvc.perform(post("/BaseBusinessCard/ListByPage").param("page", "1").param("limit", "20")
+		this.mvc.perform(post("/SpringContact/ListByPage").param("page", "1").param("limit", "20")
 				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
 				.content(JSON.toJSONString(entity))).andExpect(status().isOk())
 				.andExpect(jsonPath("$.data.[*].company").value(hasItem("maWLwMVhQWQVLyAKpZlmJmZmCKFElXziWgHz")))
@@ -105,7 +107,7 @@ class SpringContactControllerTest {
 		entity.setUpdatedBy("yTgVYhNcnGOtqNjpdiPgtroxulbWNbMjXSNB");
 		entity.setUpdatedIp("RhiLIzkXeqUKCWYFcUTznNXiDHDaskbTzRRU");
 		dao.saveAndFlush(entity);
-		this.mvc.perform(post("/BaseBusinessCard/Detail").param("id", entity.getId())).andExpect(status().isOk())
+		this.mvc.perform(post("/SpringContact/Detail").param("id", entity.getId())).andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$..company").value(hasItem("jvyeyhLcaJprLvphjQwKAemuDqIEHwVGeLDh")))
 				.andExpect(jsonPath("$..createdBy").value(hasItem("wJbckkMESiqgoRTlOZeAopfxSPOgLApNDCuk")))
@@ -145,28 +147,28 @@ class SpringContactControllerTest {
 		entity.setUpdatedUserId("VIdxAYUerRSrseLBknumtFmgMczTVaYujYOi");
 		entity.setUpdatedBy("LgMWILQJtCnTmCWxrNfBtPBFmerXUVSGYhoi");
 		entity.setUpdatedIp("tVhuyzSfuQkFxaQMbekeKxlXCceJbwzMiMrr");
-		this.mvc.perform(post("/BaseBusinessCard/Create").contentType(MediaType.APPLICATION_JSON)
+		this.mvc.perform(post("/SpringContact/Create").contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON).content(JSON.toJSONString(entity))).andExpect(status().isOk());
-		List<SpringContact> baseBusinessCardEntityList = dao.findAll();
-		assertThat(baseBusinessCardEntityList).hasSize(databaseSizeBeforeCreate + 1);
-		SpringContact testBaseBusinessCardEntity = baseBusinessCardEntityList
-				.get(baseBusinessCardEntityList.size() - 1);
-		assertThat(testBaseBusinessCardEntity.getCompany()).isEqualTo("ZpEySVaBNrUWfqIxQuPeopIKOXYHSumBsmxl");
-		assertThat(testBaseBusinessCardEntity.getCreatedBy()).isEqualTo("gXiaNbQQqzsCRokoRUTBvbLaLjTlJPzdGGZT");
-		assertThat(testBaseBusinessCardEntity.getCreatedIp()).isEqualTo("vpIVVkUcROFIrpnKYvRZNwlVJixJYjXzrhie");
-		assertThat(testBaseBusinessCardEntity.getCreatedUserId()).isEqualTo("UNEVjyILePZfpxcOObNIjIpRnxJllZAMvEaz");
-		assertThat(testBaseBusinessCardEntity.getEmail()).isEqualTo("PmqiUhcTmCJoNYEuISWAlQhhkIkTTEQyhJLg");
-		assertThat(testBaseBusinessCardEntity.getFax()).isEqualTo("OcjjxXrGWrvwIDUEHfruSfmYTxOdkPQBvOJu");
-		assertThat(testBaseBusinessCardEntity.getMobile()).isEqualTo("MVHzUwAlsGjqSfnNPPQAeOkwiNLoXzQDXses");
-		assertThat(testBaseBusinessCardEntity.getQq()).isEqualTo("CrIaClUESvZKXMZwQmZpXdclaJjnYMGKgpOn");
-		assertThat(testBaseBusinessCardEntity.getTel()).isEqualTo("VsndAOaucfxrkMcGqxiozsLuaNgjuFUlPwkE");
-		assertThat(testBaseBusinessCardEntity.getTitle()).isEqualTo("dLpbcuwiINGvmnWMfEQjebDQhPoUKqAuDEhi");
-		assertThat(testBaseBusinessCardEntity.getUpdatedBy()).isEqualTo("LgMWILQJtCnTmCWxrNfBtPBFmerXUVSGYhoi");
-		assertThat(testBaseBusinessCardEntity.getUpdatedIp()).isEqualTo("tVhuyzSfuQkFxaQMbekeKxlXCceJbwzMiMrr");
-		assertThat(testBaseBusinessCardEntity.getUpdatedUserId()).isEqualTo("VIdxAYUerRSrseLBknumtFmgMczTVaYujYOi");
-		assertThat(testBaseBusinessCardEntity.getUsername()).isEqualTo("sXVbjgxSSaHmpuDDFZAlGOKfFFvyNkrwPhsF");
-		assertThat(testBaseBusinessCardEntity.getWeb()).isEqualTo("ErGrlogkIUxFGWnEtxjqNuYMrIjIrkvFNMYE");
-		assertThat(testBaseBusinessCardEntity.getWebchat()).isEqualTo("pvISRVsNimedWEgFTYBLNbbXRLuFiSyKIVHu");
+		List<SpringContact> SpringContactEntityList = dao.findAll();
+		assertThat(SpringContactEntityList).hasSize(databaseSizeBeforeCreate + 1);
+		SpringContact testSpringContactEntity = SpringContactEntityList
+				.get(SpringContactEntityList.size() - 1);
+		assertThat(testSpringContactEntity.getCompany()).isEqualTo("ZpEySVaBNrUWfqIxQuPeopIKOXYHSumBsmxl");
+		assertThat(testSpringContactEntity.getCreatedBy()).isEqualTo("gXiaNbQQqzsCRokoRUTBvbLaLjTlJPzdGGZT");
+		assertThat(testSpringContactEntity.getCreatedIp()).isEqualTo("vpIVVkUcROFIrpnKYvRZNwlVJixJYjXzrhie");
+		assertThat(testSpringContactEntity.getCreatedUserId()).isEqualTo("UNEVjyILePZfpxcOObNIjIpRnxJllZAMvEaz");
+		assertThat(testSpringContactEntity.getEmail()).isEqualTo("PmqiUhcTmCJoNYEuISWAlQhhkIkTTEQyhJLg");
+		assertThat(testSpringContactEntity.getFax()).isEqualTo("OcjjxXrGWrvwIDUEHfruSfmYTxOdkPQBvOJu");
+		assertThat(testSpringContactEntity.getMobile()).isEqualTo("MVHzUwAlsGjqSfnNPPQAeOkwiNLoXzQDXses");
+		assertThat(testSpringContactEntity.getQq()).isEqualTo("CrIaClUESvZKXMZwQmZpXdclaJjnYMGKgpOn");
+		assertThat(testSpringContactEntity.getTel()).isEqualTo("VsndAOaucfxrkMcGqxiozsLuaNgjuFUlPwkE");
+		assertThat(testSpringContactEntity.getTitle()).isEqualTo("dLpbcuwiINGvmnWMfEQjebDQhPoUKqAuDEhi");
+		assertThat(testSpringContactEntity.getUpdatedBy()).isEqualTo("LgMWILQJtCnTmCWxrNfBtPBFmerXUVSGYhoi");
+		assertThat(testSpringContactEntity.getUpdatedIp()).isEqualTo("tVhuyzSfuQkFxaQMbekeKxlXCceJbwzMiMrr");
+		assertThat(testSpringContactEntity.getUpdatedUserId()).isEqualTo("VIdxAYUerRSrseLBknumtFmgMczTVaYujYOi");
+		assertThat(testSpringContactEntity.getUsername()).isEqualTo("sXVbjgxSSaHmpuDDFZAlGOKfFFvyNkrwPhsF");
+		assertThat(testSpringContactEntity.getWeb()).isEqualTo("ErGrlogkIUxFGWnEtxjqNuYMrIjIrkvFNMYE");
+		assertThat(testSpringContactEntity.getWebchat()).isEqualTo("pvISRVsNimedWEgFTYBLNbbXRLuFiSyKIVHu");
 		;
 	}
 
@@ -208,29 +210,29 @@ class SpringContactControllerTest {
 		updatedEntity.setUpdatedUserId("yaUiziPvhZXXKWeWqpBLQimzwiYRVNXGxEeL");
 		updatedEntity.setUpdatedBy("oIFzQABHqRrBDBwMtOIwebMziRtyluSWUUiB");
 		updatedEntity.setUpdatedIp("zUTPmqZaCGcPmNcfTpZNLLbBFoEdTpefZkVO");
-		this.mvc.perform(post("/BaseBusinessCard/Edit").contentType(MediaType.APPLICATION_JSON)
+		this.mvc.perform(post("/SpringContact/Edit").contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON).content(JSON.toJSONString(updatedEntity)))
 				.andExpect(status().isOk());
-		List<SpringContact> baseBusinessCardEntityList = dao.findAll();
-		assertThat(baseBusinessCardEntityList).hasSize(databaseSizeBeforeUpdate);
-		SpringContact testBaseBusinessCardEntity = baseBusinessCardEntityList
-				.get(baseBusinessCardEntityList.size() - 1);
-		assertThat(testBaseBusinessCardEntity.getCompany()).isEqualTo("jelJYinWAlTHXlszAFANjNqSqOiNcfpohzlO");
-		assertThat(testBaseBusinessCardEntity.getCreatedBy()).isEqualTo("rXoaqgiELWSvbnybsYIQxdzApVieXAejHmJm");
-		assertThat(testBaseBusinessCardEntity.getCreatedIp()).isEqualTo("DhRAytlaYzLhkuUmaEnUVSoqViUfikgAyDcq");
-		assertThat(testBaseBusinessCardEntity.getCreatedUserId()).isEqualTo("hTYJiqRNQCyktkyHegNglpbAtnDLSBBfNGTz");
-		assertThat(testBaseBusinessCardEntity.getEmail()).isEqualTo("JtxBuBmyVTuBfgtHcWIeIepzQGVWVnENasxr");
-		assertThat(testBaseBusinessCardEntity.getFax()).isEqualTo("HgjXEinZHsRFsGVtjSLoFcRfUUpoayhGqorK");
-		assertThat(testBaseBusinessCardEntity.getMobile()).isEqualTo("LzUGcubFIapfpSzwLDwWRDazGsFeDLcDMoRd");
-		assertThat(testBaseBusinessCardEntity.getQq()).isEqualTo("zzDHcgiJHNHWeAmSYmwQPNzMqAnBObBLJplh");
-		assertThat(testBaseBusinessCardEntity.getTel()).isEqualTo("DSsIEQzJpKjHpssJlkpzjPlajsBIYTDOHwJk");
-		assertThat(testBaseBusinessCardEntity.getTitle()).isEqualTo("nYvzYiOUdNCZKQnQISdOpaZBKzIaAwQTnZNX");
-		assertThat(testBaseBusinessCardEntity.getUpdatedBy()).isEqualTo("oIFzQABHqRrBDBwMtOIwebMziRtyluSWUUiB");
-		assertThat(testBaseBusinessCardEntity.getUpdatedIp()).isEqualTo("zUTPmqZaCGcPmNcfTpZNLLbBFoEdTpefZkVO");
-		assertThat(testBaseBusinessCardEntity.getUpdatedUserId()).isEqualTo("yaUiziPvhZXXKWeWqpBLQimzwiYRVNXGxEeL");
-		assertThat(testBaseBusinessCardEntity.getUsername()).isEqualTo("qwUEHwegCyVAYHRmJwyFJnnLBpkUdTJBWKZE");
-		assertThat(testBaseBusinessCardEntity.getWeb()).isEqualTo("YQaYqEFwDGCvlWjtuCwhZhElhdNVCCwnCjHh");
-		assertThat(testBaseBusinessCardEntity.getWebchat()).isEqualTo("lKjKnXgSQbddXCtmAmIuSLHmpNTOWxdEUQdt");
+		List<SpringContact> SpringContactEntityList = dao.findAll();
+		assertThat(SpringContactEntityList).hasSize(databaseSizeBeforeUpdate);
+		SpringContact testSpringContactEntity = SpringContactEntityList
+				.get(SpringContactEntityList.size() - 1);
+		assertThat(testSpringContactEntity.getCompany()).isEqualTo("jelJYinWAlTHXlszAFANjNqSqOiNcfpohzlO");
+		assertThat(testSpringContactEntity.getCreatedBy()).isEqualTo("rXoaqgiELWSvbnybsYIQxdzApVieXAejHmJm");
+		assertThat(testSpringContactEntity.getCreatedIp()).isEqualTo("DhRAytlaYzLhkuUmaEnUVSoqViUfikgAyDcq");
+		assertThat(testSpringContactEntity.getCreatedUserId()).isEqualTo("hTYJiqRNQCyktkyHegNglpbAtnDLSBBfNGTz");
+		assertThat(testSpringContactEntity.getEmail()).isEqualTo("JtxBuBmyVTuBfgtHcWIeIepzQGVWVnENasxr");
+		assertThat(testSpringContactEntity.getFax()).isEqualTo("HgjXEinZHsRFsGVtjSLoFcRfUUpoayhGqorK");
+		assertThat(testSpringContactEntity.getMobile()).isEqualTo("LzUGcubFIapfpSzwLDwWRDazGsFeDLcDMoRd");
+		assertThat(testSpringContactEntity.getQq()).isEqualTo("zzDHcgiJHNHWeAmSYmwQPNzMqAnBObBLJplh");
+		assertThat(testSpringContactEntity.getTel()).isEqualTo("DSsIEQzJpKjHpssJlkpzjPlajsBIYTDOHwJk");
+		assertThat(testSpringContactEntity.getTitle()).isEqualTo("nYvzYiOUdNCZKQnQISdOpaZBKzIaAwQTnZNX");
+		assertThat(testSpringContactEntity.getUpdatedBy()).isEqualTo("oIFzQABHqRrBDBwMtOIwebMziRtyluSWUUiB");
+		assertThat(testSpringContactEntity.getUpdatedIp()).isEqualTo("zUTPmqZaCGcPmNcfTpZNLLbBFoEdTpefZkVO");
+		assertThat(testSpringContactEntity.getUpdatedUserId()).isEqualTo("yaUiziPvhZXXKWeWqpBLQimzwiYRVNXGxEeL");
+		assertThat(testSpringContactEntity.getUsername()).isEqualTo("qwUEHwegCyVAYHRmJwyFJnnLBpkUdTJBWKZE");
+		assertThat(testSpringContactEntity.getWeb()).isEqualTo("YQaYqEFwDGCvlWjtuCwhZhElhdNVCCwnCjHh");
+		assertThat(testSpringContactEntity.getWebchat()).isEqualTo("lKjKnXgSQbddXCtmAmIuSLHmpNTOWxdEUQdt");
 		;
 	}
 
@@ -254,7 +256,7 @@ class SpringContactControllerTest {
 		entity.setUpdatedBy("FNdzYHxWItVdZBMPXSKrNmZllCUUwCHJWCns");
 		entity.setUpdatedIp("NroXSyNBJJrCqGwSMxnsfKxDamsSrRlNPuya");
 		dao.saveAndFlush(entity);
-		this.mvc.perform(post("/BaseBusinessCard/SetDeleted").param("ids", entity.getId())
+		this.mvc.perform(post("/SpringContact/SetDeleted").param("ids", entity.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)).andExpect(status().isOk());
 	}
 

@@ -33,7 +33,7 @@ import io.github.springsongs.modules.sys.repo.SpringAritlceRepo;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-//@WithMockUser(username = "administrator", roles = "Administrator")
+@WithMockUser(username = "administrator", roles = "Administrator")
 class SpringAritlceControllerTest {
 
 	@Autowired
@@ -42,7 +42,7 @@ class SpringAritlceControllerTest {
 	@Autowired
 	private SpringAritlceRepo dao;
 
-	// @Autowired
+	@Autowired
 	private MockMvc mvc;
 
 	@BeforeEach
@@ -76,7 +76,7 @@ class SpringAritlceControllerTest {
 		entity.setUpdatedUserId("AXXKqFeroCbNtgrjXMlhJXJQrRQXPMBlOMlS");
 		entity.setUpdatedBy("vxqhsQvZsRdMdRHVVlhaltaYvMQeebuIKzoB");
 		entity.setUpdatedIp("HBKFEnKrmgLtBoNooeqFEamPWXpLVdCKVzkO");
-		this.mvc.perform(post("/BaseAritlce/ListByPage").param("page", "1").param("size", "20").with(csrf().useInvalidToken())
+		this.mvc.perform(post("/SpringAritlce/ListByPage").param("page", "1").param("size", "20").with(csrf().useInvalidToken())
 				.with(user("Administrator").password("qweasd").roles("USER", "Administrators"))
 				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
 				.content(JSON.toJSONString(entity))).andExpect(status().isOk())
@@ -126,7 +126,7 @@ class SpringAritlceControllerTest {
 		entity.setUpdatedBy("jmPxRdopOWUcVoHdGkNKCPSLTAfZngtQQVwh");
 		entity.setUpdatedIp("LZDGnSkcEkEttpEswMNQlAjAfRxkQzDsxfse");
 		dao.saveAndFlush(entity);
-		this.mvc.perform(post("/BaseAritlce/Detail").param("id", entity.getId()).with(csrf().useInvalidToken())
+		this.mvc.perform(post("/SpringAritlce/Detail").param("id", entity.getId()).with(csrf().useInvalidToken())
 				.with(user("Administrator").password("qweasd").roles("USER", "Administrators"))).andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$..author").value(hasItem("bMybWHWNsHyHLlXeGRFGvEakmyrMmVgTGPdq")))
@@ -183,12 +183,12 @@ class SpringAritlceControllerTest {
 		entity.setUpdatedUserId("vZLFpITMrKyQqEsIpLagzHaliqtVeHcjCFJN");
 		entity.setUpdatedBy("SBeLxWyJINiMqVTwOPGZDgWOUooEbgTAPCZP");
 		entity.setUpdatedIp("DfbmJPplhjeSNhFwiafjpLDPaVZPfmWZthUT");
-		this.mvc.perform(post("/BaseAritlce/Create").with(csrf().useInvalidToken())
+		this.mvc.perform(post("/SpringAritlce/Create").with(csrf().useInvalidToken())
 				.with(user("Administrator").password("qweasd").roles("USER", "Administrators")).contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON).content(JSON.toJSONString(entity))).andExpect(status().isOk());
-		List<SpringAritlce> baseAritlceEntityList = dao.findAll();
-		assertThat(baseAritlceEntityList).hasSize(databaseSizeBeforeCreate + 1);
-		SpringAritlce testBaseSpringAritlceEntity = baseAritlceEntityList.get(baseAritlceEntityList.size() - 1);
+		List<SpringAritlce> SpringAritlceEntityList = dao.findAll();
+		assertThat(SpringAritlceEntityList).hasSize(databaseSizeBeforeCreate + 1);
+		SpringAritlce testBaseSpringAritlceEntity = SpringAritlceEntityList.get(SpringAritlceEntityList.size() - 1);
 		assertThat(testBaseSpringAritlceEntity.getAuthor()).isEqualTo("QGdoSfHTUCwzJGRMgLOWrLhvpYTaKwrrwxRz");
 		assertThat(testBaseSpringAritlceEntity.getAuthorId()).isEqualTo("APnJfRRMnahVXBGhuiPRrxLTgUjlWzYbQWQe");
 		assertThat(testBaseSpringAritlceEntity.getAuthorUrl()).isEqualTo("EhrTrvKfepehXUSPNdJorMabtsTGIYsBqvim");
@@ -257,12 +257,12 @@ class SpringAritlceControllerTest {
 		updatedEntity.setUpdatedUserId("YkebfPHoeqmfrskFtfAahngvKCbfyRnxpptX");
 		updatedEntity.setUpdatedBy("vLhOPqQDAeAWZQYNGOaGicyTHiuNNeGTDpbX");
 		updatedEntity.setUpdatedIp("WXSsfyEMJfTZjryoVTfJaVNOXdGogAOiyDlE");
-		this.mvc.perform(post("/BaseAritlce/Edit").contentType(MediaType.APPLICATION_JSON)
+		this.mvc.perform(post("/SpringAritlce/Edit").contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON).content(JSON.toJSONString(updatedEntity)))
 				.andExpect(status().isOk());
-		List<SpringAritlce> baseAritlceEntityList = dao.findAll();
-		assertThat(baseAritlceEntityList).hasSize(databaseSizeBeforeUpdate);
-		SpringAritlce testBaseSpringAritlceEntity = baseAritlceEntityList.get(baseAritlceEntityList.size() - 1);
+		List<SpringAritlce> SpringAritlceEntityList = dao.findAll();
+		assertThat(SpringAritlceEntityList).hasSize(databaseSizeBeforeUpdate);
+		SpringAritlce testBaseSpringAritlceEntity = SpringAritlceEntityList.get(SpringAritlceEntityList.size() - 1);
 		assertThat(testBaseSpringAritlceEntity.getAuthor()).isEqualTo("JcBhgMiNrSGQEgNETRWutNJuyyAuPeKSIWyC");
 		assertThat(testBaseSpringAritlceEntity.getAuthorId()).isEqualTo("BdutrlPVPUYXcgjQFkYnoXDvbiAPHUdcgbtJ");
 		assertThat(testBaseSpringAritlceEntity.getAuthorUrl()).isEqualTo("FxpDIVDAqVMlgIWJCcUKkKSXWNDHDbiNmbJo");
@@ -309,7 +309,7 @@ class SpringAritlceControllerTest {
 		entity.setUpdatedBy("karpGYiBaYsSHmKQfEJxnscVbgVBWWqOhqiy");
 		entity.setUpdatedIp("ldKWvGJPTLpmcafkLGsiDfRoqVUQbYCStUyF");
 		dao.saveAndFlush(entity);
-		this.mvc.perform(post("/BaseAritlce/SetDeleted").param("ids", entity.getId())
+		this.mvc.perform(post("/SpringAritlce/SetDeleted").param("ids", entity.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)).andExpect(status().isOk());
 	}
 

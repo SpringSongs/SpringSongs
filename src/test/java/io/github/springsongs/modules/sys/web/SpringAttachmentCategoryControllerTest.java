@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -29,6 +30,7 @@ import io.github.springsongs.modules.sys.repo.SpringAttachmentCategoryRepo;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@WithUserDetails("Administrator")
 class SpringAttachmentCategoryControllerTest {
 
 	@Autowired
@@ -58,7 +60,7 @@ class SpringAttachmentCategoryControllerTest {
 		entity.setUpdatedUserId("kizhuLzTGJUezhIopTvsczKBjmxTCYrygeUP");
 		entity.setUpdatedBy("yIzZysYnJpHWrdZkDVuDLltSvokROGixHnZi");
 		entity.setUpdatedIp("NVnoOZCJEGgzHyELJjCaEATfvHHYXgfToISP");
-		this.mvc.perform(post("/BaseFolder/ListByPage").param("page", "1").param("limit", "20")
+		this.mvc.perform(post("/SpringAttachmentCategory/ListByPage").param("page", "1").param("limit", "20")
 				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
 				.content(JSON.toJSONString(entity))).andExpect(status().isOk())
 				.andExpect(jsonPath("$.data.[*].createdBy").value(hasItem("okgTFXijuKTrZKIhYEIhBJPQdktGqZlaEQWV")))
@@ -87,7 +89,7 @@ class SpringAttachmentCategoryControllerTest {
 		entity.setUpdatedBy("OViRrKdhubhRwJlGIXwlLTPcxQiUBKMtfRmz");
 		entity.setUpdatedIp("zcerBKdlkepeyZyUZKGZvBwapRmhlrKqEpOJ");
 		dao.saveAndFlush(entity);
-		this.mvc.perform(post("/BaseFolder/Detail").param("id", entity.getId())).andExpect(status().isOk())
+		this.mvc.perform(post("/SpringAttachmentCategory/Detail").param("id", entity.getId())).andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$..createdBy").value(hasItem("QiMSwPGoljprEUUGuPiEBWibEAnbGWjCcRDb")))
 				.andExpect(jsonPath("$..createdIp").value(hasItem("llHGWtEDvJxBkUQdipBPtOYpNAiAeBOPNuDf")))
@@ -115,21 +117,21 @@ class SpringAttachmentCategoryControllerTest {
 		entity.setUpdatedUserId("PiBPeVsdlRdbsDQTFvFoSiZVjfRgNydlQjNu");
 		entity.setUpdatedBy("lqPdxGGnUdaHzvrlNHutjEXoPocKHTwefkZH");
 		entity.setUpdatedIp("WRlUgOBxXnimyCqfBbNDqWRbwIUrSkbiVpjl");
-		this.mvc.perform(post("/BaseFolder/Create").contentType(MediaType.APPLICATION_JSON)
+		this.mvc.perform(post("/SpringAttachmentCategory/Create").contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON).content(JSON.toJSONString(entity))).andExpect(status().isOk());
-		List<SpringAttachmentCategory> baseFolderEntityList = dao.findAll();
-		assertThat(baseFolderEntityList).hasSize(databaseSizeBeforeCreate + 1);
-		SpringAttachmentCategory testBaseFolderEntity = baseFolderEntityList.get(baseFolderEntityList.size() - 1);
-		assertThat(testBaseFolderEntity.getCreatedBy()).isEqualTo("BKZNyHAzhFXTZCmRLpRMerydMrJZavXBRPqz");
-		assertThat(testBaseFolderEntity.getCreatedIp()).isEqualTo("ADksZaeEBcYXKTBZiyjSfLdWAtuCzGzkLfro");
-		assertThat(testBaseFolderEntity.getCreatedUserId()).isEqualTo("DUMrntyZwOwSuscCusStlwrnXdafZtKilRJn");
-		assertThat(testBaseFolderEntity.getDescription()).isEqualTo("TWJjGxxFhUyNEKiPWmDYbMzmVYpKvuqgRSXe");
-		assertThat(testBaseFolderEntity.getDictionaryCode()).isEqualTo("qzsYrSDLthrgAfdKygWqrMgSqAvWNoiVPCqS");
-		assertThat(testBaseFolderEntity.getDictionaryName()).isEqualTo("FPodnyppeFZiOziYFGtTLyMlZyflFpMmbGPw");
-		assertThat(testBaseFolderEntity.getTitle()).isEqualTo("sCRtYTkrgYSILttVqUCprjljXByBihJtDbBm");
-		assertThat(testBaseFolderEntity.getUpdatedBy()).isEqualTo("lqPdxGGnUdaHzvrlNHutjEXoPocKHTwefkZH");
-		assertThat(testBaseFolderEntity.getUpdatedIp()).isEqualTo("WRlUgOBxXnimyCqfBbNDqWRbwIUrSkbiVpjl");
-		assertThat(testBaseFolderEntity.getUpdatedUserId()).isEqualTo("PiBPeVsdlRdbsDQTFvFoSiZVjfRgNydlQjNu");
+		List<SpringAttachmentCategory> SpringAttachmentCategoryEntityList = dao.findAll();
+		assertThat(SpringAttachmentCategoryEntityList).hasSize(databaseSizeBeforeCreate + 1);
+		SpringAttachmentCategory testSpringAttachmentCategoryEntity = SpringAttachmentCategoryEntityList.get(SpringAttachmentCategoryEntityList.size() - 1);
+		assertThat(testSpringAttachmentCategoryEntity.getCreatedBy()).isEqualTo("BKZNyHAzhFXTZCmRLpRMerydMrJZavXBRPqz");
+		assertThat(testSpringAttachmentCategoryEntity.getCreatedIp()).isEqualTo("ADksZaeEBcYXKTBZiyjSfLdWAtuCzGzkLfro");
+		assertThat(testSpringAttachmentCategoryEntity.getCreatedUserId()).isEqualTo("DUMrntyZwOwSuscCusStlwrnXdafZtKilRJn");
+		assertThat(testSpringAttachmentCategoryEntity.getDescription()).isEqualTo("TWJjGxxFhUyNEKiPWmDYbMzmVYpKvuqgRSXe");
+		assertThat(testSpringAttachmentCategoryEntity.getDictionaryCode()).isEqualTo("qzsYrSDLthrgAfdKygWqrMgSqAvWNoiVPCqS");
+		assertThat(testSpringAttachmentCategoryEntity.getDictionaryName()).isEqualTo("FPodnyppeFZiOziYFGtTLyMlZyflFpMmbGPw");
+		assertThat(testSpringAttachmentCategoryEntity.getTitle()).isEqualTo("sCRtYTkrgYSILttVqUCprjljXByBihJtDbBm");
+		assertThat(testSpringAttachmentCategoryEntity.getUpdatedBy()).isEqualTo("lqPdxGGnUdaHzvrlNHutjEXoPocKHTwefkZH");
+		assertThat(testSpringAttachmentCategoryEntity.getUpdatedIp()).isEqualTo("WRlUgOBxXnimyCqfBbNDqWRbwIUrSkbiVpjl");
+		assertThat(testSpringAttachmentCategoryEntity.getUpdatedUserId()).isEqualTo("PiBPeVsdlRdbsDQTFvFoSiZVjfRgNydlQjNu");
 		;
 	}
 
@@ -159,22 +161,22 @@ class SpringAttachmentCategoryControllerTest {
 		updatedEntity.setUpdatedUserId("MSldmbdlKEMzQMAydVthclRLEIKsHZSTkJSa");
 		updatedEntity.setUpdatedBy("tiimpXojSTnsbWnYaGuRmePuMvRjXblECsal");
 		updatedEntity.setUpdatedIp("WSxZhYDkYmoWBwmBWoLRHJIARUPcxVUvWGCW");
-		this.mvc.perform(post("/BaseFolder/Edit").contentType(MediaType.APPLICATION_JSON)
+		this.mvc.perform(post("/SpringAttachmentCategory/Edit").contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON).content(JSON.toJSONString(updatedEntity)))
 				.andExpect(status().isOk());
-		List<SpringAttachmentCategory> baseFolderEntityList = dao.findAll();
-		assertThat(baseFolderEntityList).hasSize(databaseSizeBeforeUpdate);
-		SpringAttachmentCategory testBaseFolderEntity = baseFolderEntityList.get(baseFolderEntityList.size() - 1);
-		assertThat(testBaseFolderEntity.getCreatedBy()).isEqualTo("eVRhCiGfpiYBdPojPowfJURFGrzBulpBzdCs");
-		assertThat(testBaseFolderEntity.getCreatedIp()).isEqualTo("fIGvDEBgRDeBNsMtpQcqvcoTAUMHiPQKfcqw");
-		assertThat(testBaseFolderEntity.getCreatedUserId()).isEqualTo("DkGsQBdqMIPaiZOqGtsJyJceoGEZcbXQfxpL");
-		assertThat(testBaseFolderEntity.getDescription()).isEqualTo("aYAiqRdjriCBcMZBXrkMswpcuGjnTaYYXuMV");
-		assertThat(testBaseFolderEntity.getDictionaryCode()).isEqualTo("fcgmGLmmasGZdmNLofxScPToWbsGyPtKQHqe");
-		assertThat(testBaseFolderEntity.getDictionaryName()).isEqualTo("DUjwkEWkQCvhbMiMdlmPSiqVbJUdEHQksYYF");
-		assertThat(testBaseFolderEntity.getTitle()).isEqualTo("ggGDNHIrdHETRKUqUmkSZAjQwfDBlgaSvBej");
-		assertThat(testBaseFolderEntity.getUpdatedBy()).isEqualTo("tiimpXojSTnsbWnYaGuRmePuMvRjXblECsal");
-		assertThat(testBaseFolderEntity.getUpdatedIp()).isEqualTo("WSxZhYDkYmoWBwmBWoLRHJIARUPcxVUvWGCW");
-		assertThat(testBaseFolderEntity.getUpdatedUserId()).isEqualTo("MSldmbdlKEMzQMAydVthclRLEIKsHZSTkJSa");
+		List<SpringAttachmentCategory> SpringAttachmentCategoryEntityList = dao.findAll();
+		assertThat(SpringAttachmentCategoryEntityList).hasSize(databaseSizeBeforeUpdate);
+		SpringAttachmentCategory testSpringAttachmentCategoryEntity = SpringAttachmentCategoryEntityList.get(SpringAttachmentCategoryEntityList.size() - 1);
+		assertThat(testSpringAttachmentCategoryEntity.getCreatedBy()).isEqualTo("eVRhCiGfpiYBdPojPowfJURFGrzBulpBzdCs");
+		assertThat(testSpringAttachmentCategoryEntity.getCreatedIp()).isEqualTo("fIGvDEBgRDeBNsMtpQcqvcoTAUMHiPQKfcqw");
+		assertThat(testSpringAttachmentCategoryEntity.getCreatedUserId()).isEqualTo("DkGsQBdqMIPaiZOqGtsJyJceoGEZcbXQfxpL");
+		assertThat(testSpringAttachmentCategoryEntity.getDescription()).isEqualTo("aYAiqRdjriCBcMZBXrkMswpcuGjnTaYYXuMV");
+		assertThat(testSpringAttachmentCategoryEntity.getDictionaryCode()).isEqualTo("fcgmGLmmasGZdmNLofxScPToWbsGyPtKQHqe");
+		assertThat(testSpringAttachmentCategoryEntity.getDictionaryName()).isEqualTo("DUjwkEWkQCvhbMiMdlmPSiqVbJUdEHQksYYF");
+		assertThat(testSpringAttachmentCategoryEntity.getTitle()).isEqualTo("ggGDNHIrdHETRKUqUmkSZAjQwfDBlgaSvBej");
+		assertThat(testSpringAttachmentCategoryEntity.getUpdatedBy()).isEqualTo("tiimpXojSTnsbWnYaGuRmePuMvRjXblECsal");
+		assertThat(testSpringAttachmentCategoryEntity.getUpdatedIp()).isEqualTo("WSxZhYDkYmoWBwmBWoLRHJIARUPcxVUvWGCW");
+		assertThat(testSpringAttachmentCategoryEntity.getUpdatedUserId()).isEqualTo("MSldmbdlKEMzQMAydVthclRLEIKsHZSTkJSa");
 		;
 	}
 
@@ -192,7 +194,7 @@ class SpringAttachmentCategoryControllerTest {
 		entity.setUpdatedBy("LIzpZxGWivvlidNivEcNRnXgoXQLkssMIDDx");
 		entity.setUpdatedIp("WojrXaTzUQiejMsHuIpYZLxwzppezzHeDphL");
 		dao.saveAndFlush(entity);
-		this.mvc.perform(post("/BaseFolder/SetDeleted").param("ids", entity.getId())
+		this.mvc.perform(post("/SpringAttachmentCategory/SetDeleted").param("ids", entity.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)).andExpect(status().isOk());
 	}
 

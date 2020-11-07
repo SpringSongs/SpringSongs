@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -29,6 +30,7 @@ import io.github.springsongs.modules.sys.repo.SpringParameterRepo;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@WithUserDetails("Administrator")
 class SpringParameterControllerTest {
 
 	@Autowired
@@ -57,7 +59,7 @@ class SpringParameterControllerTest {
 		entity.setUpdatedUserId("DpYAjaXlowBzLudOXESVIcwNRpGDGRnTPyAO");
 		entity.setUpdatedBy("FAMGJvCFnQoqCNIYxXdJzQTmUmsjPKTkWouw");
 		entity.setUpdatedIp("AUryLDZOKbgYUJpVXLJiomdhrzKhVnjUVFPc");
-		this.mvc.perform(post("/BaseParameter/ListByPage").param("page", "1").param("limit", "20")
+		this.mvc.perform(post("/SpringParameter/ListByPage").param("page", "1").param("limit", "20")
 				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
 				.content(JSON.toJSONString(entity))).andExpect(status().isOk())
 				.andExpect(jsonPath("$.data.[*].code").value(hasItem("NkYnVBmguyHzXBAgTErvwDbJYohHfUYamaUm")))
@@ -84,7 +86,7 @@ class SpringParameterControllerTest {
 		entity.setUpdatedBy("UVcnEulqtyPQWbQCVperwflavUXZMLpXzkBC");
 		entity.setUpdatedIp("CXEvWcDiPcXSuFQAJrLbzMusNBqRhHQeHUTU");
 		dao.saveAndFlush(entity);
-		this.mvc.perform(post("/BaseParameter/Detail").param("id", entity.getId())).andExpect(status().isOk())
+		this.mvc.perform(post("/SpringParameter/Detail").param("id", entity.getId())).andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$..code").value(hasItem("qCuCvvqwddtSwqWaYLpHfvSHFrTQvzFxjVBa")))
 				.andExpect(jsonPath("$..content").value(hasItem("jwfZjSQABjZSNoosVlrEqvRPAXJMgSbTfuei")))
@@ -110,20 +112,20 @@ class SpringParameterControllerTest {
 		entity.setUpdatedUserId("XhuGcRhINRDIuoJiQMsasyMuRtmXSjlXzrxU");
 		entity.setUpdatedBy("SaLfJZezmPwVIDybPInHtBjAnoUFnztIireN");
 		entity.setUpdatedIp("uxCuYsYfJWczspGtObPdjkKIBbxBuJmHvTwr");
-		this.mvc.perform(post("/BaseParameter/Create").contentType(MediaType.APPLICATION_JSON)
+		this.mvc.perform(post("/SpringParameter/Create").contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON).content(JSON.toJSONString(entity))).andExpect(status().isOk());
-		List<SpringParameter> baseParameterEntityList = dao.findAll();
-		assertThat(baseParameterEntityList).hasSize(databaseSizeBeforeCreate + 1);
-		SpringParameter testBaseParameterEntity = baseParameterEntityList.get(baseParameterEntityList.size() - 1);
-		assertThat(testBaseParameterEntity.getCode()).isEqualTo("RjjPInNaSVBPbCZwxEHKMjZvBDqdDVJiompk");
-		assertThat(testBaseParameterEntity.getV()).isEqualTo("GbPgKGIMVuUIszqnufeuNhMVfmulrCuLvJeA");
-		assertThat(testBaseParameterEntity.getCreatedBy()).isEqualTo("jRxzOYSQtclsgSFojOiJVcfLgwAGgFcbNTWs");
-		assertThat(testBaseParameterEntity.getCreatedIp()).isEqualTo("QejRDsoVLRCHMmuTikddglLOsJEkxXoOuHdY");
-		assertThat(testBaseParameterEntity.getCreatedUserId()).isEqualTo("puGLhEvIENodOdOOFjUEsYUitPbBmJHHXVeG");
-		assertThat(testBaseParameterEntity.getK()).isEqualTo("ibIOWeSDiQqzFXYNFquLisDdHnDTwCeNXjvc");
-		assertThat(testBaseParameterEntity.getUpdatedBy()).isEqualTo("SaLfJZezmPwVIDybPInHtBjAnoUFnztIireN");
-		assertThat(testBaseParameterEntity.getUpdatedIp()).isEqualTo("uxCuYsYfJWczspGtObPdjkKIBbxBuJmHvTwr");
-		assertThat(testBaseParameterEntity.getUpdatedUserId()).isEqualTo("XhuGcRhINRDIuoJiQMsasyMuRtmXSjlXzrxU");
+		List<SpringParameter> SpringParameterEntityList = dao.findAll();
+		assertThat(SpringParameterEntityList).hasSize(databaseSizeBeforeCreate + 1);
+		SpringParameter testSpringParameterEntity = SpringParameterEntityList.get(SpringParameterEntityList.size() - 1);
+		assertThat(testSpringParameterEntity.getCode()).isEqualTo("RjjPInNaSVBPbCZwxEHKMjZvBDqdDVJiompk");
+		assertThat(testSpringParameterEntity.getV()).isEqualTo("GbPgKGIMVuUIszqnufeuNhMVfmulrCuLvJeA");
+		assertThat(testSpringParameterEntity.getCreatedBy()).isEqualTo("jRxzOYSQtclsgSFojOiJVcfLgwAGgFcbNTWs");
+		assertThat(testSpringParameterEntity.getCreatedIp()).isEqualTo("QejRDsoVLRCHMmuTikddglLOsJEkxXoOuHdY");
+		assertThat(testSpringParameterEntity.getCreatedUserId()).isEqualTo("puGLhEvIENodOdOOFjUEsYUitPbBmJHHXVeG");
+		assertThat(testSpringParameterEntity.getK()).isEqualTo("ibIOWeSDiQqzFXYNFquLisDdHnDTwCeNXjvc");
+		assertThat(testSpringParameterEntity.getUpdatedBy()).isEqualTo("SaLfJZezmPwVIDybPInHtBjAnoUFnztIireN");
+		assertThat(testSpringParameterEntity.getUpdatedIp()).isEqualTo("uxCuYsYfJWczspGtObPdjkKIBbxBuJmHvTwr");
+		assertThat(testSpringParameterEntity.getUpdatedUserId()).isEqualTo("XhuGcRhINRDIuoJiQMsasyMuRtmXSjlXzrxU");
 		;
 	}
 
@@ -151,21 +153,21 @@ class SpringParameterControllerTest {
 		updatedEntity.setUpdatedUserId("FMCTgXngaDyfKrEOZQjDxvGMFXrawjAUVPOL");
 		updatedEntity.setUpdatedBy("LPQRaTXqXSKMHjwDuOaGZRGCldgYjWFyLMCU");
 		updatedEntity.setUpdatedIp("ssdJYkdqHTaEHnYitMXgTyicCpDbzpYZKttR");
-		this.mvc.perform(post("/BaseParameter/Edit").contentType(MediaType.APPLICATION_JSON)
+		this.mvc.perform(post("/SpringParameter/Edit").contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON).content(JSON.toJSONString(updatedEntity)))
 				.andExpect(status().isOk());
-		List<SpringParameter> baseParameterEntityList = dao.findAll();
-		assertThat(baseParameterEntityList).hasSize(databaseSizeBeforeUpdate);
-		SpringParameter testBaseParameterEntity = baseParameterEntityList.get(baseParameterEntityList.size() - 1);
-		assertThat(testBaseParameterEntity.getCode()).isEqualTo("sksXdqbXuPKMvRXovkibPyXcqsGSrWnzporP");
-		assertThat(testBaseParameterEntity.getV()).isEqualTo("twuHcNnKrBOrdcWoDnLBHBMerLowPRIDuJUv");
-		assertThat(testBaseParameterEntity.getCreatedBy()).isEqualTo("YdsACKflnhyjhAnmSewoKsxYPkyTBjmHlaPW");
-		assertThat(testBaseParameterEntity.getCreatedIp()).isEqualTo("iQvWOKKghRFcfrNtAhcEfyvSOjuitLEaZCzT");
-		assertThat(testBaseParameterEntity.getCreatedUserId()).isEqualTo("KgSWTzLDieOqEqOAVIWSHStEknWewZCkoNTh");
-		assertThat(testBaseParameterEntity.getK()).isEqualTo("FOjerpnnhsNsExLymMEfrsNAQUToGNZFmtEY");
-		assertThat(testBaseParameterEntity.getUpdatedBy()).isEqualTo("LPQRaTXqXSKMHjwDuOaGZRGCldgYjWFyLMCU");
-		assertThat(testBaseParameterEntity.getUpdatedIp()).isEqualTo("ssdJYkdqHTaEHnYitMXgTyicCpDbzpYZKttR");
-		assertThat(testBaseParameterEntity.getUpdatedUserId()).isEqualTo("FMCTgXngaDyfKrEOZQjDxvGMFXrawjAUVPOL");
+		List<SpringParameter> SpringParameterEntityList = dao.findAll();
+		assertThat(SpringParameterEntityList).hasSize(databaseSizeBeforeUpdate);
+		SpringParameter testSpringParameterEntity = SpringParameterEntityList.get(SpringParameterEntityList.size() - 1);
+		assertThat(testSpringParameterEntity.getCode()).isEqualTo("sksXdqbXuPKMvRXovkibPyXcqsGSrWnzporP");
+		assertThat(testSpringParameterEntity.getV()).isEqualTo("twuHcNnKrBOrdcWoDnLBHBMerLowPRIDuJUv");
+		assertThat(testSpringParameterEntity.getCreatedBy()).isEqualTo("YdsACKflnhyjhAnmSewoKsxYPkyTBjmHlaPW");
+		assertThat(testSpringParameterEntity.getCreatedIp()).isEqualTo("iQvWOKKghRFcfrNtAhcEfyvSOjuitLEaZCzT");
+		assertThat(testSpringParameterEntity.getCreatedUserId()).isEqualTo("KgSWTzLDieOqEqOAVIWSHStEknWewZCkoNTh");
+		assertThat(testSpringParameterEntity.getK()).isEqualTo("FOjerpnnhsNsExLymMEfrsNAQUToGNZFmtEY");
+		assertThat(testSpringParameterEntity.getUpdatedBy()).isEqualTo("LPQRaTXqXSKMHjwDuOaGZRGCldgYjWFyLMCU");
+		assertThat(testSpringParameterEntity.getUpdatedIp()).isEqualTo("ssdJYkdqHTaEHnYitMXgTyicCpDbzpYZKttR");
+		assertThat(testSpringParameterEntity.getUpdatedUserId()).isEqualTo("FMCTgXngaDyfKrEOZQjDxvGMFXrawjAUVPOL");
 		;
 	}
 
@@ -182,7 +184,7 @@ class SpringParameterControllerTest {
 		entity.setUpdatedBy("hgathQRLUzJNSFqPNhmxFYnHPuVIHyLkpGTz");
 		entity.setUpdatedIp("JlwUjIEKIHWTYsznBwxoKkqaKPYLOxmYqBsf");
 		dao.saveAndFlush(entity);
-		this.mvc.perform(post("/BaseParameter/SetDeleted").param("ids", entity.getId())
+		this.mvc.perform(post("/SpringParameter/SetDeleted").param("ids", entity.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)).andExpect(status().isOk());
 	}
 

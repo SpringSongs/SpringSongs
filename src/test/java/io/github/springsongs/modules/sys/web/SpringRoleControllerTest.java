@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -29,6 +30,7 @@ import io.github.springsongs.modules.sys.repo.SpringRoleRepo;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@WithUserDetails("Administrator")
 class SpringRoleControllerTest {
 	@Autowired
 	private WebApplicationContext context;
@@ -36,7 +38,7 @@ class SpringRoleControllerTest {
 	@Autowired
 	private SpringRoleRepo dao;
 
-	// @Autowired
+	@Autowired
 	private MockMvc mvc;
 
 	@BeforeEach
@@ -55,7 +57,7 @@ class SpringRoleControllerTest {
 		entity.setUpdatedUserId("rbjQkPZRknoRqLIyHKTdKlDMrhmVTtFpjsYW");
 		entity.setUpdatedBy("JjzdvUbAeaxuUbYuudUhXkOtZqyKWDfFAoOi");
 		entity.setUpdatedIp("EJmAtagplJlmCQcrdkrEVBLJWEwOahELoYnB");
-		this.mvc.perform(post("/BaseRole/ListByPage").param("page", "1").param("limit", "20")
+		this.mvc.perform(post("/SpringRole/ListByPage").param("page", "1").param("limit", "20")
 				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
 				.content(JSON.toJSONString(entity))).andExpect(status().isOk())
 				.andExpect(jsonPath("$.data.[*].createdBy").value(hasItem("sBuTsUYKNCZUpbVmsdefdQrBtiNnpHhcKdUL")))
@@ -80,7 +82,7 @@ class SpringRoleControllerTest {
 		entity.setUpdatedBy("sGYkbVmqcunmvdOJiXJnatAeVQJXglufHnit");
 		entity.setUpdatedIp("iSwLUsWhgsfsJHZEWckhxmFzIguKXGBzdjgM");
 		dao.saveAndFlush(entity);
-		this.mvc.perform(post("/BaseRole/Detail").param("id", entity.getId())).andExpect(status().isOk())
+		this.mvc.perform(post("/SpringRole/Detail").param("id", entity.getId())).andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$..createdBy").value(hasItem("bOjZJlABiYBNtPAHoHGOpnThDNmlphBFPBsU")))
 				.andExpect(jsonPath("$..createdIp").value(hasItem("EDpaqLxLPyScYcGripNzACrsxuNIwFlIyiPR")))
@@ -104,19 +106,19 @@ class SpringRoleControllerTest {
 		entity.setUpdatedUserId("cYXGPZtSLKLszYpXtluIBbveKqrmbGHIoErH");
 		entity.setUpdatedBy("pCudzbIyUPgwUJckMAVzuCExYBrBEAZzkVYD");
 		entity.setUpdatedIp("EzgEwPkOXyhARkQQKXxBWeVibmePZssOUacs");
-		this.mvc.perform(post("/BaseRole/Create").contentType(MediaType.APPLICATION_JSON)
+		this.mvc.perform(post("/SpringRole/Create").contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON).content(JSON.toJSONString(entity))).andExpect(status().isOk());
-		List<SpringRole> baseRoleEntityList = dao.findAll();
-		assertThat(baseRoleEntityList).hasSize(databaseSizeBeforeCreate + 1);
-		SpringRole testBaseRoleEntity = baseRoleEntityList.get(baseRoleEntityList.size() - 1);
-		assertThat(testBaseRoleEntity.getCreatedBy()).isEqualTo("RiXxNWqsNroyLxNCUMltKQGrRrQgHrCMkDaV");
-		assertThat(testBaseRoleEntity.getCreatedIp()).isEqualTo("rQVhorEKrYtHCsivEXqlQvGvgGSqChvBHYZA");
-		assertThat(testBaseRoleEntity.getCreatedUserId()).isEqualTo("RRZOdzYUqwyJXCETOvgVWZQTdVowIhKneCiA");
-		assertThat(testBaseRoleEntity.getDesc()).isEqualTo("NdqzlsKETrFclJuKzGCDNPtWfSwFHwjIMsBs");
-		assertThat(testBaseRoleEntity.getTitle()).isEqualTo("tKwMWHROmqDReGROvzpqkhdzqbqGNPzUaNoH");
-		assertThat(testBaseRoleEntity.getUpdatedBy()).isEqualTo("pCudzbIyUPgwUJckMAVzuCExYBrBEAZzkVYD");
-		assertThat(testBaseRoleEntity.getUpdatedIp()).isEqualTo("EzgEwPkOXyhARkQQKXxBWeVibmePZssOUacs");
-		assertThat(testBaseRoleEntity.getUpdatedUserId()).isEqualTo("cYXGPZtSLKLszYpXtluIBbveKqrmbGHIoErH");
+		List<SpringRole> SpringRoleEntityList = dao.findAll();
+		assertThat(SpringRoleEntityList).hasSize(databaseSizeBeforeCreate + 1);
+		SpringRole testSpringRoleEntity = SpringRoleEntityList.get(SpringRoleEntityList.size() - 1);
+		assertThat(testSpringRoleEntity.getCreatedBy()).isEqualTo("RiXxNWqsNroyLxNCUMltKQGrRrQgHrCMkDaV");
+		assertThat(testSpringRoleEntity.getCreatedIp()).isEqualTo("rQVhorEKrYtHCsivEXqlQvGvgGSqChvBHYZA");
+		assertThat(testSpringRoleEntity.getCreatedUserId()).isEqualTo("RRZOdzYUqwyJXCETOvgVWZQTdVowIhKneCiA");
+		assertThat(testSpringRoleEntity.getDesc()).isEqualTo("NdqzlsKETrFclJuKzGCDNPtWfSwFHwjIMsBs");
+		assertThat(testSpringRoleEntity.getTitle()).isEqualTo("tKwMWHROmqDReGROvzpqkhdzqbqGNPzUaNoH");
+		assertThat(testSpringRoleEntity.getUpdatedBy()).isEqualTo("pCudzbIyUPgwUJckMAVzuCExYBrBEAZzkVYD");
+		assertThat(testSpringRoleEntity.getUpdatedIp()).isEqualTo("EzgEwPkOXyhARkQQKXxBWeVibmePZssOUacs");
+		assertThat(testSpringRoleEntity.getUpdatedUserId()).isEqualTo("cYXGPZtSLKLszYpXtluIBbveKqrmbGHIoErH");
 		;
 	}
 
@@ -142,20 +144,20 @@ class SpringRoleControllerTest {
 		updatedEntity.setUpdatedUserId("ggjOIsKvgwyqWwGlgwRBtTfyfMoTuHaabNLv");
 		updatedEntity.setUpdatedBy("iRAmGQMKTFtLXngCoBdTVFSVmrnfqQvGGomX");
 		updatedEntity.setUpdatedIp("LWQuqMwqgXbIVWBrxuSeSKREVEqKlRpfMMaF");
-		this.mvc.perform(post("/BaseRole/Edit").contentType(MediaType.APPLICATION_JSON)
+		this.mvc.perform(post("/SpringRole/Edit").contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON).content(JSON.toJSONString(updatedEntity)))
 				.andExpect(status().isOk());
-		List<SpringRole> baseRoleEntityList = dao.findAll();
-		assertThat(baseRoleEntityList).hasSize(databaseSizeBeforeUpdate);
-		SpringRole testBaseRoleEntity = baseRoleEntityList.get(baseRoleEntityList.size() - 1);
-		assertThat(testBaseRoleEntity.getCreatedBy()).isEqualTo("LaeBKmpNxAHVBpOWSRULnbyrQjHWZOxKKDTa");
-		assertThat(testBaseRoleEntity.getCreatedIp()).isEqualTo("NCQdaGrGWEKNQipfzJFNXyBoifPMvaTPhURT");
-		assertThat(testBaseRoleEntity.getCreatedUserId()).isEqualTo("GhpltAsGUsHMcGzfLIEXTOxDfIYAShgwLyJu");
-		assertThat(testBaseRoleEntity.getDesc()).isEqualTo("feyoNklSmzQrUwyVBPlspnPUGMZeDteUWgSc");
-		assertThat(testBaseRoleEntity.getTitle()).isEqualTo("dUlHLBaqWMFzYCqOLziVGIQRRwyOSVUXQxkm");
-		assertThat(testBaseRoleEntity.getUpdatedBy()).isEqualTo("iRAmGQMKTFtLXngCoBdTVFSVmrnfqQvGGomX");
-		assertThat(testBaseRoleEntity.getUpdatedIp()).isEqualTo("LWQuqMwqgXbIVWBrxuSeSKREVEqKlRpfMMaF");
-		assertThat(testBaseRoleEntity.getUpdatedUserId()).isEqualTo("ggjOIsKvgwyqWwGlgwRBtTfyfMoTuHaabNLv");
+		List<SpringRole> SpringRoleEntityList = dao.findAll();
+		assertThat(SpringRoleEntityList).hasSize(databaseSizeBeforeUpdate);
+		SpringRole testSpringRoleEntity = SpringRoleEntityList.get(SpringRoleEntityList.size() - 1);
+		assertThat(testSpringRoleEntity.getCreatedBy()).isEqualTo("LaeBKmpNxAHVBpOWSRULnbyrQjHWZOxKKDTa");
+		assertThat(testSpringRoleEntity.getCreatedIp()).isEqualTo("NCQdaGrGWEKNQipfzJFNXyBoifPMvaTPhURT");
+		assertThat(testSpringRoleEntity.getCreatedUserId()).isEqualTo("GhpltAsGUsHMcGzfLIEXTOxDfIYAShgwLyJu");
+		assertThat(testSpringRoleEntity.getDesc()).isEqualTo("feyoNklSmzQrUwyVBPlspnPUGMZeDteUWgSc");
+		assertThat(testSpringRoleEntity.getTitle()).isEqualTo("dUlHLBaqWMFzYCqOLziVGIQRRwyOSVUXQxkm");
+		assertThat(testSpringRoleEntity.getUpdatedBy()).isEqualTo("iRAmGQMKTFtLXngCoBdTVFSVmrnfqQvGGomX");
+		assertThat(testSpringRoleEntity.getUpdatedIp()).isEqualTo("LWQuqMwqgXbIVWBrxuSeSKREVEqKlRpfMMaF");
+		assertThat(testSpringRoleEntity.getUpdatedUserId()).isEqualTo("ggjOIsKvgwyqWwGlgwRBtTfyfMoTuHaabNLv");
 		;
 	}
 
@@ -171,7 +173,7 @@ class SpringRoleControllerTest {
 		entity.setUpdatedBy("BbZptRzJtmHsaohGnQPeMWOFsjUXwIkPsLgt");
 		entity.setUpdatedIp("bDacjQdELwzSptvwAVzQdlAWejoLqCnTvuNw");
 		dao.saveAndFlush(entity);
-		this.mvc.perform(post("/BaseRole/SetDeleted").param("ids", entity.getId())
+		this.mvc.perform(post("/SpringRole/SetDeleted").param("ids", entity.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)).andExpect(status().isOk());
 	}
 

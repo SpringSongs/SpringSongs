@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -31,6 +32,7 @@ import io.github.springsongs.modules.sys.repo.SpringResourceRepo;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@WithUserDetails("Administrator")
 class SpringResourceControllerTest {
 
 	@Autowired
@@ -63,7 +65,7 @@ class SpringResourceControllerTest {
 		entity.setUpdatedUserId("zHYeAVfxUDCECXvzVaagSyOUfMVMotDzlrow");
 		entity.setUpdatedBy("gOgvQaUAaWLPQiHxcYPGaBGmczKCEmEeGUTJ");
 		entity.setUpdatedIp("woshSnwczOZKLSpICpKDdLLDZaGibvflFtFL");
-		this.mvc.perform(post("/BaseModule/ListByPage").with(csrf().useInvalidToken())
+		this.mvc.perform(post("/SpringResource/ListByPage").with(csrf().useInvalidToken())
 				.with(user("Administrator").password("qweasd").roles("USER", "Administrators")).param("page", "1").param("limit", "20")
 				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
 				.content(JSON.toJSONString(entity))).andExpect(status().isOk())
@@ -100,7 +102,7 @@ class SpringResourceControllerTest {
 		entity.setUpdatedBy("DJJIOTVVezMTjDvWMpTDACVXzTfeWQmhvenP");
 		entity.setUpdatedIp("rlcKdWnyvOyWVrrfPlDeXNtiRgDovVCbWoov");
 		dao.saveAndFlush(entity);
-		this.mvc.perform(post("/BaseModule/Detail").param("id", entity.getId())).andExpect(status().isOk())
+		this.mvc.perform(post("/SpringResource/Detail").param("id", entity.getId())).andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$..angularUrl").value(hasItem("HJQVxeHHuGXQHGgbrKrVkysaZskvkQCkhyzP")))
 				.andExpect(jsonPath("$..code").value(hasItem("VkCDZvITglIZfgwkNzdoEnjArKrzgecALXbY")))
@@ -135,24 +137,24 @@ class SpringResourceControllerTest {
 		entity.setUpdatedUserId("JQbGlPfWAQCpQIZRsNkwCTmIVxpAnlnrSiVE");
 		entity.setUpdatedBy("RbODKCrjxkMsIwNeQxofRCLnMXgKQgtEOoPy");
 		entity.setUpdatedIp("NEOLQoUwtnhcDAjWZkWTNSZXudgvWIaybUmR");
-		this.mvc.perform(post("/BaseModule/Create").contentType(MediaType.APPLICATION_JSON)
+		this.mvc.perform(post("/SpringResource/Create").contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON).content(JSON.toJSONString(entity))).andExpect(status().isOk());
-		List<SpringResource> baseModuleEntityList = dao.findAll();
-		assertThat(baseModuleEntityList).hasSize(databaseSizeBeforeCreate + 1);
-		SpringResource testBaseModuleEntity = baseModuleEntityList.get(baseModuleEntityList.size() - 1);
-		assertThat(testBaseModuleEntity.getAngularUrl()).isEqualTo("JlXcmJxSCdUncYmbVfcLMAqGAZIERbTJVoJq");
-		assertThat(testBaseModuleEntity.getCode()).isEqualTo("MGzAOcxYHlQLfIxXzvLoWwAuLlVdBjihLmrB");
-		assertThat(testBaseModuleEntity.getCreatedBy()).isEqualTo("ruVJFeQxnRbWHKgNmHEzcRioVjJDKGvNkxcE");
-		assertThat(testBaseModuleEntity.getCreatedIp()).isEqualTo("MTGUvzDnlVYyXRjWiPcIkYytBRkdMUUNabKL");
-		assertThat(testBaseModuleEntity.getCreatedUserId()).isEqualTo("bBfTjNyhgmxxrfLSGKqVIRbeBbsjyxIySkue");
-		assertThat(testBaseModuleEntity.getParentId()).isEqualTo("BwnheZcsBdndFPXtzHrxjXXmWaPvRexFJGyg");
-		assertThat(testBaseModuleEntity.getParentName()).isEqualTo("JyNrnTaPKhcbzgruuJoihAxCXorHRMfTroeL");
-		assertThat(testBaseModuleEntity.getSystemId()).isEqualTo("lfCmzeiXpXuCHhdwoCwAWcRGkEfMveewPJpu");
-		assertThat(testBaseModuleEntity.getTitle()).isEqualTo("BLBvgpqIeyqloyvUeJlmewnKrVvFbBldYwNu");
-		assertThat(testBaseModuleEntity.getUpdatedBy()).isEqualTo("RbODKCrjxkMsIwNeQxofRCLnMXgKQgtEOoPy");
-		assertThat(testBaseModuleEntity.getUpdatedIp()).isEqualTo("NEOLQoUwtnhcDAjWZkWTNSZXudgvWIaybUmR");
-		assertThat(testBaseModuleEntity.getUpdatedUserId()).isEqualTo("JQbGlPfWAQCpQIZRsNkwCTmIVxpAnlnrSiVE");
-		assertThat(testBaseModuleEntity.getVueUrl()).isEqualTo("XRpKbNSlgPSVWVtanURaXjifJRhrUUzOzFTb");
+		List<SpringResource> SpringResourceEntityList = dao.findAll();
+		assertThat(SpringResourceEntityList).hasSize(databaseSizeBeforeCreate + 1);
+		SpringResource testSpringResourceEntity = SpringResourceEntityList.get(SpringResourceEntityList.size() - 1);
+		assertThat(testSpringResourceEntity.getAngularUrl()).isEqualTo("JlXcmJxSCdUncYmbVfcLMAqGAZIERbTJVoJq");
+		assertThat(testSpringResourceEntity.getCode()).isEqualTo("MGzAOcxYHlQLfIxXzvLoWwAuLlVdBjihLmrB");
+		assertThat(testSpringResourceEntity.getCreatedBy()).isEqualTo("ruVJFeQxnRbWHKgNmHEzcRioVjJDKGvNkxcE");
+		assertThat(testSpringResourceEntity.getCreatedIp()).isEqualTo("MTGUvzDnlVYyXRjWiPcIkYytBRkdMUUNabKL");
+		assertThat(testSpringResourceEntity.getCreatedUserId()).isEqualTo("bBfTjNyhgmxxrfLSGKqVIRbeBbsjyxIySkue");
+		assertThat(testSpringResourceEntity.getParentId()).isEqualTo("BwnheZcsBdndFPXtzHrxjXXmWaPvRexFJGyg");
+		assertThat(testSpringResourceEntity.getParentName()).isEqualTo("JyNrnTaPKhcbzgruuJoihAxCXorHRMfTroeL");
+		assertThat(testSpringResourceEntity.getSystemId()).isEqualTo("lfCmzeiXpXuCHhdwoCwAWcRGkEfMveewPJpu");
+		assertThat(testSpringResourceEntity.getTitle()).isEqualTo("BLBvgpqIeyqloyvUeJlmewnKrVvFbBldYwNu");
+		assertThat(testSpringResourceEntity.getUpdatedBy()).isEqualTo("RbODKCrjxkMsIwNeQxofRCLnMXgKQgtEOoPy");
+		assertThat(testSpringResourceEntity.getUpdatedIp()).isEqualTo("NEOLQoUwtnhcDAjWZkWTNSZXudgvWIaybUmR");
+		assertThat(testSpringResourceEntity.getUpdatedUserId()).isEqualTo("JQbGlPfWAQCpQIZRsNkwCTmIVxpAnlnrSiVE");
+		assertThat(testSpringResourceEntity.getVueUrl()).isEqualTo("XRpKbNSlgPSVWVtanURaXjifJRhrUUzOzFTb");
 		;
 	}
 
@@ -188,25 +190,25 @@ class SpringResourceControllerTest {
 		updatedEntity.setUpdatedUserId("ANdDCVlZEWNkLVxbPdCXNAZoRYMDnKKRgFcN");
 		updatedEntity.setUpdatedBy("HbUpwFocBdFDMIWodvXIirebRfvHwEktEAOX");
 		updatedEntity.setUpdatedIp("OuHiUJcGRpCAtNRWwmpKrnRjPZsnYNiRtXJY");
-		this.mvc.perform(post("/BaseModule/Edit").contentType(MediaType.APPLICATION_JSON)
+		this.mvc.perform(post("/SpringResource/Edit").contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON).content(JSON.toJSONString(updatedEntity)))
 				.andExpect(status().isOk());
-		List<SpringResource> baseModuleEntityList = dao.findAll();
-		assertThat(baseModuleEntityList).hasSize(databaseSizeBeforeUpdate);
-		SpringResource testBaseModuleEntity = baseModuleEntityList.get(baseModuleEntityList.size() - 1);
-		assertThat(testBaseModuleEntity.getAngularUrl()).isEqualTo("orlZsEGcfENNYWqVixEWfOwsMpQBSrgKcIGn");
-		assertThat(testBaseModuleEntity.getCode()).isEqualTo("JweNdsixaqBNNVihYyBqirastrTSUTXDYzyT");
-		assertThat(testBaseModuleEntity.getCreatedBy()).isEqualTo("XwYLMiXcZQCCHEBRztJxmQMDcifIZAmNcjoo");
-		assertThat(testBaseModuleEntity.getCreatedIp()).isEqualTo("XENPvtaIttDWVUxQvJyydNFXrmjoazDaNbrf");
-		assertThat(testBaseModuleEntity.getCreatedUserId()).isEqualTo("EBbwUOktzXtrACyoOWuzefijUrUDzlFKDrts");
-		assertThat(testBaseModuleEntity.getParentId()).isEqualTo("wnaHkQxdgViNHtPmPGJdzcwUYhwIZAruYAMl");
-		assertThat(testBaseModuleEntity.getParentName()).isEqualTo("nnvfjoRcTCgOdrJCJGmhUzQQporKShWXlpdE");
-		assertThat(testBaseModuleEntity.getSystemId()).isEqualTo("NNRqFXZXvMrdoocYHaGzuPCvovFVHJFkHNeE");
-		assertThat(testBaseModuleEntity.getTitle()).isEqualTo("UKFeOHxkwQjfNLRMQzfhotsWlILrUzpwNfUQ");
-		assertThat(testBaseModuleEntity.getUpdatedBy()).isEqualTo("HbUpwFocBdFDMIWodvXIirebRfvHwEktEAOX");
-		assertThat(testBaseModuleEntity.getUpdatedIp()).isEqualTo("OuHiUJcGRpCAtNRWwmpKrnRjPZsnYNiRtXJY");
-		assertThat(testBaseModuleEntity.getUpdatedUserId()).isEqualTo("ANdDCVlZEWNkLVxbPdCXNAZoRYMDnKKRgFcN");
-		assertThat(testBaseModuleEntity.getVueUrl()).isEqualTo("AGayTXhKzswiijqpWiKeFZjCPWVKkzkprmqe");
+		List<SpringResource> SpringResourceEntityList = dao.findAll();
+		assertThat(SpringResourceEntityList).hasSize(databaseSizeBeforeUpdate);
+		SpringResource testSpringResourceEntity = SpringResourceEntityList.get(SpringResourceEntityList.size() - 1);
+		assertThat(testSpringResourceEntity.getAngularUrl()).isEqualTo("orlZsEGcfENNYWqVixEWfOwsMpQBSrgKcIGn");
+		assertThat(testSpringResourceEntity.getCode()).isEqualTo("JweNdsixaqBNNVihYyBqirastrTSUTXDYzyT");
+		assertThat(testSpringResourceEntity.getCreatedBy()).isEqualTo("XwYLMiXcZQCCHEBRztJxmQMDcifIZAmNcjoo");
+		assertThat(testSpringResourceEntity.getCreatedIp()).isEqualTo("XENPvtaIttDWVUxQvJyydNFXrmjoazDaNbrf");
+		assertThat(testSpringResourceEntity.getCreatedUserId()).isEqualTo("EBbwUOktzXtrACyoOWuzefijUrUDzlFKDrts");
+		assertThat(testSpringResourceEntity.getParentId()).isEqualTo("wnaHkQxdgViNHtPmPGJdzcwUYhwIZAruYAMl");
+		assertThat(testSpringResourceEntity.getParentName()).isEqualTo("nnvfjoRcTCgOdrJCJGmhUzQQporKShWXlpdE");
+		assertThat(testSpringResourceEntity.getSystemId()).isEqualTo("NNRqFXZXvMrdoocYHaGzuPCvovFVHJFkHNeE");
+		assertThat(testSpringResourceEntity.getTitle()).isEqualTo("UKFeOHxkwQjfNLRMQzfhotsWlILrUzpwNfUQ");
+		assertThat(testSpringResourceEntity.getUpdatedBy()).isEqualTo("HbUpwFocBdFDMIWodvXIirebRfvHwEktEAOX");
+		assertThat(testSpringResourceEntity.getUpdatedIp()).isEqualTo("OuHiUJcGRpCAtNRWwmpKrnRjPZsnYNiRtXJY");
+		assertThat(testSpringResourceEntity.getUpdatedUserId()).isEqualTo("ANdDCVlZEWNkLVxbPdCXNAZoRYMDnKKRgFcN");
+		assertThat(testSpringResourceEntity.getVueUrl()).isEqualTo("AGayTXhKzswiijqpWiKeFZjCPWVKkzkprmqe");
 		;
 	}
 
@@ -227,7 +229,7 @@ class SpringResourceControllerTest {
 		entity.setUpdatedBy("rQNzlxwhgVSqLCqgdGYtDWypTblIDjbNLSKg");
 		entity.setUpdatedIp("NIBFwXOgoFrBilpkrIgsvTbmlfxTOuRAyUPW");
 		dao.saveAndFlush(entity);
-		this.mvc.perform(post("/BaseModule/SetDeleted").param("ids", entity.getId())
+		this.mvc.perform(post("/SpringResource/SetDeleted").param("ids", entity.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)).andExpect(status().isOk());
 	}
 
