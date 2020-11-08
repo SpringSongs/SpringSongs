@@ -22,4 +22,6 @@ public interface ISpringJobGroupService {
 	void setDeleted(List<String> ids);
 
 	void batchSaveExcel(List<String[]> list);
+	
+	List<SpringJobGroupDTO> listAll();
 }

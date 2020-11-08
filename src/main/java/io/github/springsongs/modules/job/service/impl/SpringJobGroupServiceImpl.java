@@ -28,6 +28,8 @@ import io.github.springsongs.modules.job.dto.SpringJobGroupDTO;
 import io.github.springsongs.modules.job.query.SpringJobGroupQuery;
 import io.github.springsongs.modules.job.repo.SpringJobGroupRepo;
 import io.github.springsongs.modules.job.service.ISpringJobGroupService;
+import io.github.springsongs.modules.sys.domain.SpringSystem;
+import io.github.springsongs.modules.sys.dto.SpringSystemDTO;
 import io.github.springsongs.util.Constant;
 
 @Service
@@ -216,6 +218,18 @@ public class SpringJobGroupServiceImpl implements ISpringJobGroupService {
 	@Override
 	public void batchSaveExcel(List<String[]> list) {
 
+	}
+
+	@Override
+	public List<SpringJobGroupDTO> listAll() {
+		List<SpringJobGroup> springJobGroups = springJobGroupRepo.listAll();
+		List<SpringJobGroupDTO> springJobGroupDTOs = new ArrayList<>();
+		springJobGroups.stream().forEach(springSystem -> {
+			SpringJobGroupDTO springJobGroupDTO = new SpringJobGroupDTO();
+			BeanUtils.copyProperties(springSystem, springJobGroupDTO);
+			springJobGroupDTOs.add(springJobGroupDTO);
+		});
+		return springJobGroupDTOs;
 	}
 
 }

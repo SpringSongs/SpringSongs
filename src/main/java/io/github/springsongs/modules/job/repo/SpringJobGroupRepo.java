@@ -13,6 +13,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import io.github.springsongs.modules.job.domain.SpringJobGroup;
+import io.github.springsongs.modules.job.dto.SpringJobGroupDTO;
 
 public interface SpringJobGroupRepo  extends JpaRepository <SpringJobGroup, String>{ 
 	
@@ -64,5 +65,12 @@ public interface SpringJobGroupRepo  extends JpaRepository <SpringJobGroup, Stri
      */
     @Query(value = "from SpringJobGroup where deletedStatus=0 and code=:code")
     public SpringJobGroup getByCode (@Param(value="code") String code);
+    
+    /**
+     * 查询全部
+     * @return
+     */
+    @Query(value = "from SpringJobGroup where deletedStatus=0")
+    public List<SpringJobGroup> listAll();
 
 }

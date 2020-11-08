@@ -52,7 +52,7 @@ public class SpringSystemController extends BaseController {
 		return ResponseDTO.successed(entity, ResultCode.SELECT_SUCCESSED);
 	}
 
-	@PostMapping(value = "/save")
+	@PostMapping(value = "/Create")
 	public ResponseDTO<String> save(@RequestBody SpringSystemDTO viewEntity, HttpServletRequest request) {
 		viewEntity.setCreatedBy(this.getUser().getUserName());
 		viewEntity.setCreatedUserId(this.getUser().getId());

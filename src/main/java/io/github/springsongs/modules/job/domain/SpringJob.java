@@ -97,11 +97,11 @@ public class SpringJob extends SpringBase {
 
     @Description(title ="状态0创建1暂停2恢复3删除")
     @Column(name="status")
-    private boolean status;
-    public boolean getStatus(){
+    private int status;
+    public int getStatus(){
         return  this.status;
     }
-    public void setStatus(boolean status){
+    public void setStatus(int status){
         this.status=status;
     }
 

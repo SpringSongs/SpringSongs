@@ -81,4 +81,10 @@ public class SpringJobGroupController extends BaseController {
 		springJobGroupService.setDeleted(ids);
 		return ResponseDTO.successed(null, ResultCode.DELETE_SUCCESSED);
 	}
+
+	@PostMapping(value = "/ListAll")
+	public ResponseDTO<List<SpringJobGroupDTO>> listAll() {
+		List<SpringJobGroupDTO> springJobGroupDTOs = springJobGroupService.listAll();
+		return ResponseDTO.successed(springJobGroupDTOs, ResultCode.SELECT_SUCCESSED);
+	}
 }

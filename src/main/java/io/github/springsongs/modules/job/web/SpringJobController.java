@@ -81,4 +81,46 @@ public class SpringJobController extends BaseController {
 		springJobService.setDeleted(ids);
 		return ResponseDTO.successed(null, ResultCode.DELETE_SUCCESSED);
 	}
+
+	@PostMapping(value = "/AddTask")
+	public ResponseDTO<String> addTask(@RequestBody @Valid SpringJobDTO viewEntity, HttpServletRequest request) {
+		viewEntity.setUpdatedOn(new Date());
+		viewEntity.setUpdatedUserId(this.getUser().getId());
+		viewEntity.setUpdatedBy(this.getUser().getUserName());
+		viewEntity.setUpdatedIp(IpKit.getRealIp(request));
+		springJobService.addTask(viewEntity);
+		return ResponseDTO.successed(null, ResultCode.SAVE_SUCCESSED);
+	}
+
+	@PostMapping(value = "/UpdateTask")
+	public ResponseDTO<String> updateTask(@RequestBody @Valid SpringJobDTO viewEntity, HttpServletRequest request) {
+		viewEntity.setUpdatedOn(new Date());
+		viewEntity.setUpdatedUserId(this.getUser().getId());
+		viewEntity.setUpdatedBy(this.getUser().getUserName());
+		viewEntity.setUpdatedIp(IpKit.getRealIp(request));
+		springJobService.updateTask(viewEntity);
+		return ResponseDTO.successed(null, ResultCode.UPDATE_SUCCESSED);
+	}
+
+	@PostMapping(value = "/PauseTask")
+	public ResponseDTO<String> pauseTask(@RequestParam(value = "taskClassName", required = true) String taskClassName,
+			@RequestParam(value = "groupCode", required = true) String groupCode) {
+		springJobService.pauseTask(taskClassName, groupCode);
+		return ResponseDTO.successed(null, ResultCode.UPDATE_SUCCESSED);
+	}
+
+	@PostMapping(value = "/ResumeTask")
+	public ResponseDTO<String> resumeTask(@RequestParam(value = "taskClassName", required = true) String taskClassName,
+			@RequestParam(value = "groupCode", required = true) String groupCode) {
+		springJobService.resumeTask(taskClassName, groupCode);
+		return ResponseDTO.successed(null, ResultCode.UPDATE_SUCCESSED);
+	}
+
+	@PostMapping(value = "/DeleteTask")
+	public ResponseDTO<String> deleteTask(@RequestParam(value = "taskClassName", required = true) String taskClassName,
+			@RequestParam(value = "groupCode", required = true) String groupCode) {
+		springJobService.deleteTask(taskClassName, groupCode);
+		return ResponseDTO.successed(null, ResultCode.UPDATE_SUCCESSED);
+
+	}
 }

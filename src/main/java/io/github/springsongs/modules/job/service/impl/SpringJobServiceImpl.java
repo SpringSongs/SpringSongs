@@ -8,7 +8,17 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
 
+import org.quartz.CronScheduleBuilder;
+import org.quartz.CronTrigger;
+import org.quartz.JobBuilder;
+import org.quartz.JobDetail;
+import org.quartz.JobKey;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.TriggerBuilder;
+import org.quartz.TriggerKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -21,7 +31,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import io.github.springsongs.enumeration.ResultCode;
+import io.github.springsongs.enumeration.SchedulerStatus;
 import io.github.springsongs.exception.SpringSongsException;
+import io.github.springsongs.modules.job.domain.SpringBaseJob;
 import io.github.springsongs.modules.job.domain.SpringJob;
 import io.github.springsongs.modules.job.dto.SpringJobDTO;
 import io.github.springsongs.modules.job.query.SpringJobQuery;
@@ -31,10 +43,14 @@ import io.github.springsongs.modules.job.service.ISpringJobService;
 @Service
 public class SpringJobServiceImpl implements ISpringJobService {
 
-	static Logger logger = LoggerFactory.getLogger(SpringJobGroupServiceImpl.class);
+	static Logger logger = LoggerFactory.getLogger(SpringJobServiceImpl.class);
 
 	@Autowired
 	private SpringJobRepo springJobRepo;
+
+	@Autowired
+	// @Qualifier("Scheduler")
+	private Scheduler scheduler;
 
 	/**
 	 *
@@ -199,5 +215,153 @@ public class SpringJobServiceImpl implements ISpringJobService {
 	@Override
 	public void batchSaveExcel(List<String[]> list) {
 
+	}
+
+	@Override
+	@Transactional
+	public void addTask(SpringJobDTO record) {
+		try {
+
+			scheduler.start();
+
+			JobDetail jobDetail = JobBuilder.newJob(getClass(record.getTaskClassTitle()).getClass())
+					.withIdentity(record.getTaskClassTitle(), record.getGroupCode()).build();
+
+			CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(record.getCronExpression());
+
+			CronTrigger trigger = TriggerBuilder.newTrigger()
+					.withIdentity(record.getTaskClassTitle(), record.getGroupCode()).withSchedule(scheduleBuilder)
+					.build();
+
+			scheduler.scheduleJob(jobDetail, trigger);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			throw new SpringSongsException(ResultCode.ADD_TASK_FAIL);
+		}
+		try {
+			SpringJob springJob = new SpringJob();
+			record.setStatus(SchedulerStatus.CREATED.getStatus());
+			BeanUtils.copyProperties(record, springJob);
+			springJobRepo.save(springJob);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
+	}
+
+	@Override
+	@Transactional
+	public void updateTask(SpringJobDTO springJobDTO) {
+		try {
+			TriggerKey triggerKey = TriggerKey.triggerKey(springJobDTO.getTaskClassTitle(),
+					springJobDTO.getGroupCode());
+
+			CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(springJobDTO.getCronExpression());
+
+			CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
+
+			trigger = trigger.getTriggerBuilder().withIdentity(triggerKey).withSchedule(scheduleBuilder).build();
+
+			scheduler.rescheduleJob(triggerKey, trigger);
+
+		} catch (SchedulerException e) {
+			logger.error(e.getMessage());
+			throw new SpringSongsException(ResultCode.UPDATE_TASK_FAIL);
+		}
+
+		SpringJob entity = springJobRepo.getOne(springJobDTO.getId());
+		if (null == entity) {
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		} else {
+			springJobDTO.setStatus(SchedulerStatus.UPDATED.getStatus());
+			entity.setGroupCode(springJobDTO.getGroupCode());
+			entity.setGroupTitle(springJobDTO.getGroupTitle());
+			entity.setTaskTitle(springJobDTO.getTaskTitle());
+			entity.setTaskClassTitle(springJobDTO.getTaskClassTitle());
+			entity.setCronExpression(springJobDTO.getCronExpression());
+			entity.setStatus(springJobDTO.getStatus());
+			try {
+				springJobRepo.save(entity);
+			} catch (Exception ex) {
+				logger.error(ex.getMessage());
+				throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+			}
+		}
+	}
+
+	@Override
+	@Transactional
+	public void pauseTask(String taskClassName, String groupCode) {
+		try {
+			scheduler.pauseJob(JobKey.jobKey(taskClassName, groupCode));
+		} catch (SchedulerException ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.PAUSE_TASK_FAIL);
+		}
+		SpringJob entity = springJobRepo.findByGroupCodeAndTaskClassTitle(groupCode, taskClassName);
+		if (null == entity) {
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		} else {
+			try {
+				entity.setStatus(SchedulerStatus.PAUSED.getStatus());
+				springJobRepo.save(entity);
+			} catch (Exception ex) {
+				logger.error(ex.getMessage());
+				throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+			}
+		}
+	}
+
+	@Override
+	@Transactional
+	public void deleteTask(String taskClassName, String groupCode) {
+		try {
+			scheduler.pauseTrigger(TriggerKey.triggerKey(taskClassName, groupCode));
+			scheduler.unscheduleJob(TriggerKey.triggerKey(taskClassName, groupCode));
+			scheduler.deleteJob(JobKey.jobKey(taskClassName, groupCode));
+		} catch (SchedulerException ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.DELETE_TASK_FAIL);
+		}
+		SpringJob entity = springJobRepo.findByGroupCodeAndTaskClassTitle(groupCode, taskClassName);
+		if (null == entity) {
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		} else {
+			try {
+				entity.setStatus(SchedulerStatus.DELETED.getStatus());
+				springJobRepo.save(entity);
+			} catch (Exception ex) {
+				logger.error(ex.getMessage());
+				throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+			}
+		}
+	}
+
+	private SpringBaseJob getClass(String classname) throws Exception {
+		Class<?> class1 = Class.forName(classname);
+		return (SpringBaseJob) class1.newInstance();
+	}
+
+	@Override
+	@Transactional
+	public void resumeTask(String taskClassName, String taskGroupCode) {
+		try {
+			scheduler.resumeJob(JobKey.jobKey(taskClassName, taskGroupCode));
+		} catch (SchedulerException ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.RESUME_TASK_FAIL);
+		}
+		SpringJob entity = springJobRepo.findByGroupCodeAndTaskClassTitle(taskGroupCode, taskClassName);
+		if (null == entity) {
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		} else {
+			try {
+				entity.setStatus(SchedulerStatus.RESUME.getStatus());
+				springJobRepo.save(entity);
+			} catch (Exception ex) {
+				logger.error(ex.getMessage());
+				throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+			}
+		}
 	}
 }

@@ -51,7 +51,12 @@ public class Constant {
 	public static final String LOGIN_SUCCESSED = "登录成功";
 
 	public static final String LOGOUT_SUCCESSED = "注销成功";
-	
+
 	public static final String DATA_EXIST = "插入数据已经存在";
+	public static final String ADD_TASK_FAIL = "添加任务失败";
+	public static final String UPDATE_TASK_FAIL = "更新任务失败";
+	public static final String PAUSE_TASK_FAIL = "暂停任务失败";
+	public static final String DELETE_TASK_FAIL = "删除任务失败";
+	public static final String RESUME_TASK_FAIL = "唤醒任务失败";
 
 }

@@ -94,7 +94,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.successHandler(loginSuccessHandler()).and().logout().logoutUrl("/Logout")
 				.logoutSuccessUrl("/SpringUser/Invalidate").permitAll().logoutSuccessHandler(logoutSuccessHandler())
 				.deleteCookies("JSESSIONID", "SESSION").and().sessionManagement()
-				.invalidSessionUrl("/BaseBuser/Invalidate").sessionFixation().changeSessionId().maximumSessions(1)
+				.invalidSessionUrl("/SpringUser/Invalidate").sessionFixation().changeSessionId().maximumSessions(1)
 				.maxSessionsPreventsLogin(false)// false之后登录踢掉之前登录,true则不允许之后登录
 				.expiredSessionStrategy(sessionInformationExpiredStrategy());// 登录被踢掉时的自定义操作;
 		http.headers().frameOptions().disable();

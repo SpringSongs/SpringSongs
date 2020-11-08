@@ -23,5 +23,15 @@ public interface ISpringJobService {
 	void setDeleted(List<String> ids);
 	
 	void batchSaveExcel(List<String[]> list);
+	
+	void addTask(SpringJobDTO record);
+	
+	void updateTask(SpringJobDTO record);
+	
+	void pauseTask(String taskClassName, String groupCode);
+	
+	void resumeTask(String taskClassName, String taskGroupCode);
+	
+	void deleteTask(String taskClassName, String groupCode);
 
 }

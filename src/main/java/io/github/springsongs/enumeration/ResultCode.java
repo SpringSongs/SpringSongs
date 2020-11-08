@@ -31,7 +31,12 @@ public enum ResultCode {
 	LOGIN_FAIL(HttpServletResponse.SC_BAD_REQUEST, Constant.LOGIN_FAIL),
 	LOGIN_SUCCESSED(HttpServletResponse.SC_OK, Constant.LOGIN_SUCCESSED),
 	LOGOUT_SUCCESSED(HttpServletResponse.SC_OK, Constant.LOGOUT_SUCCESSED), 
-	DATA_EXIST(HttpServletResponse.SC_BAD_REQUEST, Constant.DATA_EXIST), ;
+	DATA_EXIST(HttpServletResponse.SC_BAD_REQUEST, Constant.DATA_EXIST), 
+	ADD_TASK_FAIL(HttpServletResponse.SC_BAD_REQUEST, Constant.ADD_TASK_FAIL), 
+	UPDATE_TASK_FAIL(HttpServletResponse.SC_BAD_REQUEST, Constant.UPDATE_TASK_FAIL), 
+	PAUSE_TASK_FAIL(HttpServletResponse.SC_BAD_REQUEST, Constant.PAUSE_TASK_FAIL),
+	DELETE_TASK_FAIL(HttpServletResponse.SC_BAD_REQUEST, Constant.DELETE_TASK_FAIL), 
+	RESUME_TASK_FAIL(HttpServletResponse.SC_BAD_REQUEST, Constant.RESUME_TASK_FAIL), ;
 	final int code;
 	final String message;
 
