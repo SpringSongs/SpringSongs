@@ -11,10 +11,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import io.github.springsongs.modules.job.domain.SpringJobGroup;
 import io.github.springsongs.modules.job.dto.SpringJobGroupDTO;
 
+@Repository
 public interface SpringJobGroupRepo  extends JpaRepository <SpringJobGroup, String>{ 
 	
 	/**

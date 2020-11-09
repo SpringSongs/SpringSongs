@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @ComponentScan
-@EnableAutoConfiguration(exclude = {
+@EnableAutoConfiguration(exclude = { org.activiti.spring.boot.SecurityAutoConfiguration.class,
 		org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class })
 public class AuthorityApplication {
 
