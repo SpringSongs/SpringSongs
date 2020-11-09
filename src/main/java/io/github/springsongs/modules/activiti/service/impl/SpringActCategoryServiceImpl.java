@@ -15,7 +15,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -29,8 +28,6 @@ import io.github.springsongs.modules.activiti.dto.SpringActCategoryDTO;
 import io.github.springsongs.modules.activiti.query.SpringActCategoryQuery;
 import io.github.springsongs.modules.activiti.repo.SpringActCategoryRepo;
 import io.github.springsongs.modules.activiti.service.ISpringActCategoryService;
-import io.github.springsongs.modules.job.domain.SpringJobGroup;
-import io.github.springsongs.modules.job.dto.SpringJobGroupDTO;
 
 @Service
 public class SpringActCategoryServiceImpl implements ISpringActCategoryService {
@@ -75,10 +72,10 @@ public class SpringActCategoryServiceImpl implements ISpringActCategoryService {
 		if (null != springActCategory) {
 			throw new SpringSongsException(ResultCode.DATA_EXIST);
 		}
-		SpringActCategoryDTO addSpringActCategoryDTO = new SpringActCategoryDTO();
-		BeanUtils.copyProperties(springActCategory, addSpringActCategoryDTO);
+		SpringActCategory addSpringActCategory = new SpringActCategory();
+		BeanUtils.copyProperties(springActCategoryDTO, addSpringActCategory);
 		try {
-			springActCategoryRepo.save(addSpringActCategoryDTO);
+			springActCategoryRepo.save(addSpringActCategory);
 		} catch (Exception ex) {
 			logger.error(ex.getMessage());
 			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
@@ -151,13 +148,13 @@ public class SpringActCategoryServiceImpl implements ISpringActCategoryService {
 			public Predicate toPredicate(Root<SpringActCategory> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				List<Predicate> predicates = new ArrayList<>();
 				if (!StringUtils.isEmpty(record.getCategoryCode())) {
-					Predicate categoryCode = cb.equal(root.get("categoryCode").as(String.class),
-							record.getCategoryCode());
+					Predicate categoryCode = cb.like(root.get("categoryCode").as(String.class),
+							"%"+record.getCategoryCode());
 					predicates.add(categoryCode);
 				}
 				if (!StringUtils.isEmpty(record.getCategoryTitle())) {
-					Predicate categoryTitle = cb.equal(root.get("categoryTitle").as(String.class),
-							record.getCategoryTitle());
+					Predicate categoryTitle = cb.like(root.get("categoryTitle").as(String.class),
+							"%"+record.getCategoryTitle());
 					predicates.add(categoryTitle);
 				}
 				Predicate deletionStateCode = cb.equal(root.get("deletedStatus").as(Boolean.class), false);

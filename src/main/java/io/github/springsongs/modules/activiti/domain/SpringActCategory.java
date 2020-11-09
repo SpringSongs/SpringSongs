@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.DynamicInsert;
@@ -35,6 +36,7 @@ public class SpringActCategory extends SpringBase {
 		this.id = id;
 	}
 
+	@Pattern(regexp = "^[A-Za-z]+$", message = "组别ID请填写字母")
 	@NotBlank(message = "请填写类目编码")
 	@Size(max = 45, min = 1)
 	@Description(title = "类目编码")
@@ -62,14 +64,16 @@ public class SpringActCategory extends SpringBase {
 	public void setCategoryTitle(String categoryTitle) {
 		this.categoryTitle = categoryTitle;
 	}
-	
-	@Description(title ="允许删除0不允许1允许")
-    @Column(name="deleted_status")
-    private boolean deletedStatus;
-    public boolean getDeletedStatus(){
-        return  this.deletedStatus;
-    }
-    public void setDeletedStatus(boolean deletedStatus){
-        this.deletedStatus=deletedStatus;
-    }
+
+	@Description(title = "允许删除0不允许1允许")
+	@Column(name = "deleted_status")
+	private boolean deletedStatus;
+
+	public boolean getDeletedStatus() {
+		return this.deletedStatus;
+	}
+
+	public void setDeletedStatus(boolean deletedStatus) {
+		this.deletedStatus = deletedStatus;
+	}
 }
