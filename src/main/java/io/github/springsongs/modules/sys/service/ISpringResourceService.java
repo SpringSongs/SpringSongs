@@ -30,7 +30,7 @@ public interface ISpringResourceService {
 
 	List<MenuDTO> ListModuleByUserId(String userId);
 	
-	public List<ResourceRoleDTO> listAllRoleModules();
+	public List<ResourceRoleDTO> listAllRoleModules(List<String> roleCode);
 
 	void delete(List<String> ids);
 

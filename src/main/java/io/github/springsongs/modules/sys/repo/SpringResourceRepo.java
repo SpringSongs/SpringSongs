@@ -106,6 +106,6 @@ public interface SpringResourceRepo extends JpaRepository<SpringResource, String
 	
 	@Query(value = "SELECT DISTINCT new io.github.springsongs.modules.sys.dto.ResourceRoleDTO(bm.vueUrl,br.title) FROM  SpringRole br" 
 	+ "        LEFT JOIN SpringResourceRole bp ON br.id = bp.roleId "
-	+ "        LEFT JOIN SpringResource bm ON bm.id = bp.moduleId")
-	public List<ResourceRoleDTO> listAllRoleModules();
+	+ "        LEFT JOIN SpringResource bm ON bm.id = bp.moduleId where br.title in (:title)")
+	public List<ResourceRoleDTO> listAllRoleModules(@Param(value = "title") List<String> title);
 }

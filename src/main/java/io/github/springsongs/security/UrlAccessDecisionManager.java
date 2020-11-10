@@ -26,6 +26,11 @@ public class UrlAccessDecisionManager implements AccessDecisionManager {
 		AntPathRequestMatcher matcher;
 		HttpServletRequest request = ((FilterInvocation) object).getHttpRequest();
 		while (it.hasNext()) {
+			
+			if (authentication == null) {
+                throw new AccessDeniedException("当前访问没有权限");
+            }
+			
 			ConfigAttribute ca = it.next();
 			if ("ROLE_LOGIN".equalsIgnoreCase(ca.getAttribute())) {
 				if (authentication instanceof AnonymousAuthenticationToken) {

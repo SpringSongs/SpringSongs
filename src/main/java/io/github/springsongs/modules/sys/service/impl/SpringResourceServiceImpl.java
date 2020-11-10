@@ -373,7 +373,7 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 	}
 
 	@Override
-	public List<ResourceRoleDTO> listAllRoleModules() {
-		return springResourceDao.listAllRoleModules();
+	public List<ResourceRoleDTO> listAllRoleModules(List<String> roleCode) {
+		return springResourceDao.listAllRoleModules(roleCode);
 	}
 }

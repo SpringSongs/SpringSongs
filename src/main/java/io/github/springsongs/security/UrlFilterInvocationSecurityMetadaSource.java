@@ -17,6 +17,7 @@ import com.vip.vjtools.vjkit.collection.CollectionUtil;
 
 import io.github.springsongs.modules.sys.dto.ResourceRoleDTO;
 import io.github.springsongs.modules.sys.service.ISpringResourceService;
+import io.github.springsongs.security.util.SecurityUtils;
 
 @Component
 public class UrlFilterInvocationSecurityMetadaSource implements FilterInvocationSecurityMetadataSource {
@@ -30,14 +31,14 @@ public class UrlFilterInvocationSecurityMetadaSource implements FilterInvocation
 	@Override
 	public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
 		requestUrl= ((FilterInvocation) object).getRequestUrl();
-		List<ResourceRoleDTO> mpoduleRoleList = baseModuleService.listAllRoleModules();
+		List<ResourceRoleDTO> mpoduleRoleList = baseModuleService.listAllRoleModules(SecurityUtils.getAuth());
 		List<String> roles = new ArrayList<String>();
 		
 		mpoduleRoleList.stream().forEach(moduleRoleDto -> {
 			if (null==moduleRoleDto.getNavigateUrl()) {
 				moduleRoleDto.setNavigateUrl("");
 			}
-			if (requestUrl.contains(moduleRoleDto.getNavigateUrl())
+			if (!StringUtils.isEmpty(moduleRoleDto.getNavigateUrl())&&requestUrl.contains(moduleRoleDto.getNavigateUrl())
 					&& !StringUtils.isEmpty(moduleRoleDto.getCode())) {
 				roles.add(moduleRoleDto.getCode());
 			}

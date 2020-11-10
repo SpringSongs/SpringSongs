@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.DynamicInsert;
@@ -45,6 +46,7 @@ public class SpringRole extends SpringBase implements Serializable {
 	}
 
 	@NotBlank(message = "请填写名称")
+	@Pattern(regexp = "^[A-Za-z]+$", message = "名称请填写字母")
 	@Size(max = 45, min = 1)
 	@Description(title = "名称")
 	@Column(name = "title")
