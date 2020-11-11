@@ -75,7 +75,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	 */
 	@Override
 	public void configure(WebSecurity web) {
-		web.ignoring().antMatchers("/js/**", "/img/**", "/css/**", "/images/**", "fav.ico","/service/*","/service/model/*/json");
+		web.ignoring().antMatchers("/SpringUser/Invalidate", "/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html**",
+				"/css/**", "/img/**", "/js/**");
 	}
 
 	@Override
@@ -88,8 +89,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				o.setAccessDecisionManager(urlAccessDecisionManager);
 				return o;
 			}
-		}).antMatchers("/SpringUser/Invalidate", "/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html**",
-				"/css/**", "/img/**", "/js/**").permitAll().anyRequest().authenticated().and().formLogin()
+		}).anyRequest().authenticated().and().formLogin()
 				.loginPage("/Login").permitAll().failureHandler(loginFailureHandler())
 				.successHandler(loginSuccessHandler()).and().logout().logoutUrl("/Logout")
 				.logoutSuccessUrl("/SpringUser/Invalidate").permitAll().logoutSuccessHandler(logoutSuccessHandler())

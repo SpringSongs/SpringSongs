@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,10 +27,12 @@ import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.modules.sys.domain.SpringResource;
 import io.github.springsongs.modules.sys.dto.ElementUiTreeDTO;
 import io.github.springsongs.modules.sys.dto.MenuDTO;
+import io.github.springsongs.modules.sys.dto.MenuRouterDTO;
 import io.github.springsongs.modules.sys.dto.SpringParameterDTO;
 import io.github.springsongs.modules.sys.dto.SpringResourceDTO;
 import io.github.springsongs.modules.sys.dto.query.SpringResourceQuery;
 import io.github.springsongs.modules.sys.service.ISpringResourceService;
+import io.github.springsongs.security.util.SecurityUtils;
 import io.github.springsongs.util.IpKit;
 
 @RestController
@@ -87,6 +89,12 @@ public class SpringResourceController extends BaseController {
 	public ResponseDTO<MenuDTO> getMenus() {
 		List<MenuDTO> menuList = springResourceService.ListModuleByUserId(this.getUser().getId());
 		return ResponseDTO.successed(menuList, ResultCode.SELECT_SUCCESSED);
+	}
+
+	@GetMapping(value = "/GetRouters")
+	public ResponseDTO<List<MenuRouterDTO>> getRouters() {
+		List<MenuRouterDTO> menuRouterDTOs = springResourceService.listResourceByUserId(this.getUser().getId());
+		return ResponseDTO.successed(menuRouterDTOs, ResultCode.SELECT_SUCCESSED);
 	}
 
 	@PostMapping(value = "/GetMenusByParent")

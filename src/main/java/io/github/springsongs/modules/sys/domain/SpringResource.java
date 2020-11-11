@@ -86,7 +86,8 @@ public class SpringResource extends SpringBase   implements Serializable {
 		this.menuFlag = menuFlag;
 	}
 
-	@Size(max = 45, min = 0)
+	@Size(max = 200, min = 0)
+	@NotBlank(message = "请填写vue链接")
 	@Description(title = "链接")
 	@Column(name = "vue_url")
 	private String vueUrl;

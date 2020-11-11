@@ -102,11 +102,10 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.activiti</groupId>
-			<artifactId>activiti-spring-boot-starter-rest-api</artifactId>
-			<version>6.0.0</version>
-			
-		</dependency>
+    <groupId>org.activiti</groupId>
+    <artifactId>activiti-common-rest</artifactId>
+    <version>6.0.0</version>
+</dependency>
 
 		<dependency>
 			<groupId>org.activiti</groupId>

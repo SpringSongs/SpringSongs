@@ -34,7 +34,7 @@ public class UrlAccessDecisionManager implements AccessDecisionManager {
 			ConfigAttribute ca = it.next();
 			if ("ROLE_LOGIN".equalsIgnoreCase(ca.getAttribute())) {
 				if (authentication instanceof AnonymousAuthenticationToken) {
-					matcher = new AntPathRequestMatcher("/BaseBuser/Invalidate", "/Login");
+					matcher = new AntPathRequestMatcher("/SpringUser/Invalidate", "Login");
 					if (matcher.matches(request)) {
 						return;
 					}

@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import io.github.springsongs.modules.sys.domain.SpringResourceRole;
 import io.github.springsongs.modules.sys.dto.ElementUiTreeDTO;
 import io.github.springsongs.modules.sys.dto.MenuDTO;
+import io.github.springsongs.modules.sys.dto.MenuRouterDTO;
 import io.github.springsongs.modules.sys.dto.ResourceRoleDTO;
 import io.github.springsongs.modules.sys.dto.SpringResourceDTO;
 import io.github.springsongs.modules.sys.dto.query.SpringResourceQuery;
@@ -43,5 +44,7 @@ public interface ISpringResourceService {
 	void saveModuleToRole(List<SpringResourceRole> baseModuleRoleEntityList, String roleId);
 	
 	public List<SpringResourceRole>  listModulesByRoleId(String roleId);
+	
+	public List<MenuRouterDTO> listResourceByUserId(String userId);
 
 }

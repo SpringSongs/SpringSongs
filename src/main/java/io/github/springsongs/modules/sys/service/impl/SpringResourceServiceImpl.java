@@ -33,6 +33,9 @@ import io.github.springsongs.modules.sys.domain.SpringResource;
 import io.github.springsongs.modules.sys.domain.SpringResourceRole;
 import io.github.springsongs.modules.sys.dto.ElementUiTreeDTO;
 import io.github.springsongs.modules.sys.dto.MenuDTO;
+import io.github.springsongs.modules.sys.dto.MenuRouterDTO;
+import io.github.springsongs.modules.sys.dto.MenuRouterDTO.Meta;
+import io.github.springsongs.modules.sys.dto.MenuRouterTreeDTO;
 import io.github.springsongs.modules.sys.dto.ResourceRoleDTO;
 import io.github.springsongs.modules.sys.dto.SpringResourceDTO;
 import io.github.springsongs.modules.sys.dto.query.SpringResourceQuery;
@@ -160,11 +163,11 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 	 */
 	@Override
 	public Page<SpringResourceDTO> getAllRecordByPage(SpringResourceQuery springResourceQuery, Pageable pageable) {
-		
-		if (pageable.getPageSize()>Constant.MAX_PAGE_SIZE) {
+
+		if (pageable.getPageSize() > Constant.MAX_PAGE_SIZE) {
 			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
 		}
-		
+
 		Specification<SpringResource> specification = new Specification<SpringResource>() {
 			@Override
 			public Predicate toPredicate(Root<SpringResource> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
@@ -241,7 +244,7 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 	 */
 	@Override
 	public void batchSaveExcel(List<String[]> list) {
-		
+
 	}
 
 	@Override
@@ -375,5 +378,29 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 	@Override
 	public List<ResourceRoleDTO> listAllRoleModules(List<String> roleCode) {
 		return springResourceDao.listAllRoleModules(roleCode);
+	}
+
+	@Override
+	public List<MenuRouterDTO> listResourceByUserId(String userId) {
+		// List<MenuRouterTreeDTO> menuRouterTreeDTOList=new ArrayList<>();
+		List<SpringResource> springResourceList = springResourceDao.listModuleByUserId(userId);
+		final List<MenuRouterDTO> menuRouterDTOList = new ArrayList<>();
+		springResourceList.stream().forEach(springResource -> {
+			MenuRouterDTO node = new MenuRouterDTO();
+			node.setId(springResource.getId());
+			node.setParentId(springResource.getParentId());
+			Meta metaTitle = new Meta();
+			metaTitle.setTitle(springResource.getTitle());
+			node.setMeta(metaTitle);
+			node.setPath(springResource.getCode());
+			node.setName(springResource.getCode());
+			node.setComponent(springResource.getVueUrl());
+			node.setRedirect("");
+			menuRouterDTOList.add(node);
+		});
+		MenuRouterTreeDTO menuRouterTreeDTO = new MenuRouterTreeDTO(menuRouterDTOList);
+		List<MenuRouterDTO> menuRouterDTOListTree = new ArrayList<>();
+		menuRouterDTOListTree = menuRouterTreeDTO.builTree();
+		return menuRouterDTOListTree;
 	}
 }

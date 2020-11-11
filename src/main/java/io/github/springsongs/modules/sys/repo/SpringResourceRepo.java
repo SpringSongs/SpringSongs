@@ -108,4 +108,6 @@ public interface SpringResourceRepo extends JpaRepository<SpringResource, String
 	+ "        LEFT JOIN SpringResourceRole bp ON br.id = bp.roleId "
 	+ "        LEFT JOIN SpringResource bm ON bm.id = bp.moduleId where br.title in (:title)")
 	public List<ResourceRoleDTO> listAllRoleModules(@Param(value = "title") List<String> title);
+	
+	
 }
