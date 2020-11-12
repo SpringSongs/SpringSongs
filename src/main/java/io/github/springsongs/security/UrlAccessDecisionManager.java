@@ -16,6 +16,8 @@ import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 
+import io.github.springsongs.util.Constant;
+
 @Component
 public class UrlAccessDecisionManager implements AccessDecisionManager {
 
@@ -26,22 +28,23 @@ public class UrlAccessDecisionManager implements AccessDecisionManager {
 		AntPathRequestMatcher matcher;
 		HttpServletRequest request = ((FilterInvocation) object).getHttpRequest();
 		while (it.hasNext()) {
-			
+
 			if (authentication == null) {
-                throw new AccessDeniedException("当前访问没有权限");
-            }
-			
+				throw new AccessDeniedException(Constant.URL_ACCESS_DECISION);
+			}
+
 			ConfigAttribute ca = it.next();
 			if ("ROLE_LOGIN".equalsIgnoreCase(ca.getAttribute())) {
-				if (authentication instanceof AnonymousAuthenticationToken) {
-					matcher = new AntPathRequestMatcher("/SpringUser/Invalidate", "Login");
-					if (matcher.matches(request)) {
-						return;
-					}
-				} else {
-					//return;
-					throw new AccessDeniedException("权限不足!");
-				}
+//				if (authentication instanceof AnonymousAuthenticationToken) {
+//					matcher = new AntPathRequestMatcher("/SpringUser/Invalidate", "Login");
+//					if (matcher.matches(request)) {
+//						return;
+//					}
+//				} else {
+//					//return;
+//					throw new AccessDeniedException("权限不足!");
+//				}
+				throw new AccessDeniedException(Constant.URL_ACCESS_DECISION);
 			}
 			Collection<? extends GrantedAuthority> authorties = authentication.getAuthorities();
 			for (GrantedAuthority item : authorties) {
@@ -51,7 +54,7 @@ public class UrlAccessDecisionManager implements AccessDecisionManager {
 				}
 			}
 		}
-		throw new AccessDeniedException("权限不足!");
+		throw new AccessDeniedException(Constant.URL_ACCESS_DECISION);
 	}
 
 	@Override

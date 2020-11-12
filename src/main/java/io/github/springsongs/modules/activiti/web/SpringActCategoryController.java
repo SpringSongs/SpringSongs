@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,10 +28,12 @@ import io.github.springsongs.modules.activiti.dto.SpringActCategoryDTO;
 import io.github.springsongs.modules.activiti.query.SpringActCategoryQuery;
 import io.github.springsongs.modules.activiti.service.ISpringActCategoryService;
 import io.github.springsongs.modules.job.web.SpringJobGroupController;
+import io.github.springsongs.util.Constant;
 import io.github.springsongs.util.IpKit;
 
 @RestController
 @RequestMapping(value = "/SpringActCategory")
+@Validated
 public class SpringActCategoryController extends BaseController{
 	private static final Logger logger = LoggerFactory.getLogger(SpringJobGroupController.class);
 
@@ -68,17 +71,17 @@ public class SpringActCategoryController extends BaseController{
 		viewEntity.setUpdatedBy(this.getUser().getUserName());
 		viewEntity.setUpdatedIp(IpKit.getRealIp(request));
 		springActCategoryService.updateByPrimaryKey(viewEntity);
-		return ResponseDTO.successed(null, ResultCode.SAVE_SUCCESSED);
+		return ResponseDTO.successed(null, ResultCode.UPDATE_SUCCESSED);
 	}
 
 	@PostMapping(value = "/SetDeleted")
-	public ResponseDTO<String> setDeleted(@RequestParam(value = "ids", required = true) List<String> ids) {
+	public ResponseDTO<String> setDeleted(@RequestParam(value = "ids", required = true) @Valid @NotEmpty(message = Constant.PARAMETER_NOT_NULL_ERROR) List<String> ids) {
 		springActCategoryService.setDeleted(ids);
 		return ResponseDTO.successed(null, ResultCode.DELETE_SUCCESSED);
 	}
 
 	@PostMapping(value = "/Deleted")
-	public ResponseDTO<String> deleted(@RequestParam(value = "ids", required = true) List<String> ids) {
+	public ResponseDTO<String> deleted(@RequestParam(value = "ids", required = true) @Valid @NotEmpty(message = Constant.PARAMETER_NOT_NULL_ERROR) List<String> ids) {
 		springActCategoryService.setDeleted(ids);
 		return ResponseDTO.successed(null, ResultCode.DELETE_SUCCESSED);
 	}

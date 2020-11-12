@@ -2,6 +2,9 @@ package io.github.springsongs.modules.activiti.service;
 
 import java.io.UnsupportedEncodingException;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+
 import org.activiti.editor.constants.ModelDataJsonConstants;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.repository.Model;
@@ -80,5 +83,17 @@ public class SpringActModelService {
 		Page<Model> pages = new PageImpl(modelQuery.listPage(pageable.getPageNumber(), pageable.getPageSize()),
 				pageable, modelQuery.count());
 		return pages;
+	}
+
+	@Transactional
+	public void update(SpringActModelDTO viewEntity, String id) {
+		Model modelData = repositoryService.getModel(id);
+		modelData.setCategory(viewEntity.getCategoryCode());
+		repositoryService.saveModel(modelData);
+	}
+
+	@Transactional
+	public void delete(String id) {
+		repositoryService.deleteModel(id);
 	}
 }
