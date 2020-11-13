@@ -26,4 +26,6 @@ public interface ISpringOrganizationService {
 	List<SpringOrganizationDTO> listOrganizationsByParent(String parentId);
 
 	List<SpringOrganizationDTO> listAll();
+	
+	List<SpringOrganizationDTO> ListAllToTree();
 }

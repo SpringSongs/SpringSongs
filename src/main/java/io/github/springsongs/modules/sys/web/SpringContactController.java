@@ -29,7 +29,7 @@ import io.github.springsongs.modules.sys.service.ISpringContactService;
 import io.github.springsongs.util.IpKit;
 
 @RestController
-@RequestMapping(value = "/SpringBusinessCard")
+@RequestMapping(value = "/SpringContact")
 public class SpringContactController extends BaseController {
 
 	private static final Logger logger = LoggerFactory.getLogger(SpringContactController.class);

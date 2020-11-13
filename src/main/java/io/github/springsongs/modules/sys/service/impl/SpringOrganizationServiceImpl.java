@@ -8,7 +8,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +25,7 @@ import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.exception.SpringSongsException;
 import io.github.springsongs.modules.sys.domain.SpringOrganization;
 import io.github.springsongs.modules.sys.dto.SpringOrganizationDTO;
+import io.github.springsongs.modules.sys.dto.SpringOrganizationTreeDTO;
 import io.github.springsongs.modules.sys.repo.SpringOrganizationRepo;
 import io.github.springsongs.modules.sys.service.ISpringOrganizationService;
 import io.github.springsongs.util.Constant;
@@ -141,10 +141,10 @@ public class SpringOrganizationServiceImpl implements ISpringOrganizationService
 	 */
 	@Override
 	public Page<SpringOrganizationDTO> getAllRecordByPage(SpringOrganization record, Pageable pageable) {
-		if (pageable.getPageSize()>Constant.MAX_PAGE_SIZE) {
+		if (pageable.getPageSize() > Constant.MAX_PAGE_SIZE) {
 			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
 		}
-		
+
 		Specification<SpringOrganization> specification = new Specification<SpringOrganization>() {
 
 			@Override
@@ -221,7 +221,7 @@ public class SpringOrganizationServiceImpl implements ISpringOrganizationService
 	 */
 	@Override
 	public void batchSaveExcel(List<String[]> list) {
-		
+
 	}
 
 	/**
@@ -254,6 +254,20 @@ public class SpringOrganizationServiceImpl implements ISpringOrganizationService
 			springOrganizationDTOs.add(springOrganizationDTO);
 		});
 		return springOrganizationDTOs;
+	}
+
+	@Override
+	public List<SpringOrganizationDTO> ListAllToTree() {
+		List<SpringOrganization> springOrganizations = springOrganizationRepo.listAllRecord();
+		final List<SpringOrganizationDTO> springOrganizationDTOs = new ArrayList<>();
+		springOrganizations.stream().forEach(springOrganization -> {
+			SpringOrganizationDTO springOrganizationDTO = new SpringOrganizationDTO();
+			BeanUtils.copyProperties(springOrganization, springOrganizationDTO);
+			springOrganizationDTOs.add(springOrganizationDTO);
+		});
+		SpringOrganizationTreeDTO springOrganizationTreeDTO = new SpringOrganizationTreeDTO(springOrganizationDTOs);
+		List<SpringOrganizationDTO> springOrganizationTreeDTOs = springOrganizationTreeDTO.builTree();
+		return springOrganizationTreeDTOs;
 	}
 
 }

@@ -14,9 +14,9 @@ public class MenuRouterTreeDTO {
 	// 建立树形结构
 	public List<MenuRouterDTO> builTree() {
 		List<MenuRouterDTO> treeMenuRouterDTOs = new ArrayList<MenuRouterDTO>();
-		for (MenuRouterDTO MenuRouterDTONode : getRootNode()) {
-			MenuRouterDTONode = buildChilTree(MenuRouterDTONode);
-			treeMenuRouterDTOs.add(MenuRouterDTONode);
+		for (MenuRouterDTO menuRouterDTONode : getRootNode()) {
+			menuRouterDTONode = buildChilTree(menuRouterDTONode);
+			treeMenuRouterDTOs.add(menuRouterDTONode);
 		}
 		return treeMenuRouterDTOs;
 	}

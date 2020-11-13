@@ -72,7 +72,7 @@ public class SpringContactServiceImpl implements ISpringContactService {
 		SpringContact springContact = new SpringContact();
 		BeanUtils.copyProperties(record, springContact);
 		try {
-			springContactRepo.save(record);
+			springContactRepo.save(springContact);
 		} catch (Exception ex) {
 			logger.error(ex.getMessage());
 			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);

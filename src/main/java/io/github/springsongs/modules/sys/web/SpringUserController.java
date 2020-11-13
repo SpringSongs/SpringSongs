@@ -121,7 +121,7 @@ public class SpringUserController extends BaseController {
 		viewEntity.setUpdatedBy(this.getUser().getUserName());
 		viewEntity.setUpdatedIp(IpKit.getRealIp(request));
 		springUserService.updateByPrimaryKey(viewEntity);
-		return ResponseDTO.successed(null, ResultCode.SAVE_SUCCESSED);
+		return ResponseDTO.successed(null, ResultCode.UPDATE_SUCCESSED);
 	}
 
 	@PostMapping(value = "/SetDeleted")
@@ -145,7 +145,6 @@ public class SpringUserController extends BaseController {
 		} else if (StringUtils.isEmpty(viewEntity.getPwd())) {
 			return ResponseDTO.successed(null, ResultCode.PASSWORD_CAN_NOT_EMPTY);
 		} else {
-
 			viewEntity.setCreatedBy(this.getUser().getUserName());
 			viewEntity.setCreatedUserId(this.getUser().getId());
 			viewEntity.setCreatedIp(IpKit.getRealIp(request));
