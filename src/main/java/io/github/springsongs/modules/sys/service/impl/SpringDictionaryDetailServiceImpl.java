@@ -132,7 +132,7 @@ public class SpringDictionaryDetailServiceImpl implements ISpringDictionaryDetai
 				springDictionaryDetailRepo.save(entity);
 			} catch (Exception ex) {
 				logger.error(ex.getMessage());
-				throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+				throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
 			}
 		}
 	}

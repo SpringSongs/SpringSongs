@@ -82,7 +82,7 @@ public class SpringArticleCategoryController extends BaseController {
 		
 		List<ElementUiTreeDTO> elementUiTreeDtoList = springArticleCategoryService.getCategoryByParentId(parentId);
 
-		return ResponseDTO.successed(elementUiTreeDtoList, ResultCode.DELETE_SUCCESSED);
+		return ResponseDTO.successed(elementUiTreeDtoList, ResultCode.SELECT_SUCCESSED);
 	}
 
 	@PostMapping(value = "/listAllRecord")

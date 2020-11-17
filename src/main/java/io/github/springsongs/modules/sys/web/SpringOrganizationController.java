@@ -83,17 +83,17 @@ public class SpringOrganizationController extends BaseController {
 			@RequestParam(value = "parentId", required = true) @Valid @NotEmpty(message = "id不能为空") String parentId) {
 		List<SpringOrganizationDTO> elementUiTreeDtoList = springOrganizationService
 				.listOrganizationsByParent(parentId);
-		return ResponseDTO.successed(elementUiTreeDtoList, ResultCode.DELETE_SUCCESSED);
+		return ResponseDTO.successed(elementUiTreeDtoList, ResultCode.SELECT_SUCCESSED);
 	}
 
 	@GetMapping(value = "/listAllRecord")
 	public ResponseDTO<SpringOrganizationDTO> listAllRecord() {
 		List<SpringOrganizationDTO> entitys = springOrganizationService.listAll();
-		return ResponseDTO.successed(entitys, ResultCode.DELETE_SUCCESSED);
+		return ResponseDTO.successed(entitys, ResultCode.SELECT_SUCCESSED);
 	}
 	@GetMapping(value = "/ListAllToTree")
 	public ResponseDTO<SpringOrganizationDTO> ListAllToTree() {
 		List<SpringOrganizationDTO> entitys = springOrganizationService.ListAllToTree();
-		return ResponseDTO.successed(entitys, ResultCode.DELETE_SUCCESSED);
+		return ResponseDTO.successed(entitys, ResultCode.SELECT_SUCCESSED);
 	}
 }

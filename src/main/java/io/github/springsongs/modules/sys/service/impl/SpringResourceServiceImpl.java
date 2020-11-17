@@ -232,7 +232,7 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 			springResourceDao.setDelete(ids);
 		} catch (Exception ex) {
 			logger.error(ex.getMessage());
-			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
 		}
 	}
 
@@ -312,7 +312,7 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 			springResourceDao.setDelete(ids);
 		} catch (Exception ex) {
 			logger.error(ex.getMessage());
-			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
 		}
 	}
 

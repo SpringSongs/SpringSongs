@@ -73,7 +73,7 @@ public class SpringDictionaryDetailController extends BaseController {
 		viewEntity.setUpdatedBy(this.getUser().getUserName());
 		viewEntity.setUpdatedIp(IpKit.getRealIp(request));
 		springDictionaryDetailService.updateByPrimaryKey(viewEntity);
-		return ResponseDTO.successed(null, ResultCode.SAVE_SUCCESSED);
+		return ResponseDTO.successed(null, ResultCode.UPDATE_SUCCESSED);
 	}
 
 	@PostMapping(value = "/SetDeleted")
