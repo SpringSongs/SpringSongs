@@ -138,17 +138,19 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 			entity.setTitle(springResourceDTO.getTitle());
 			entity.setMenuFlag(springResourceDTO.getMenuFlag());
 			entity.setVueUrl(springResourceDTO.getVueUrl());
+			entity.setVueIcon(springResourceDTO.getVueIcon());
 			entity.setAngularUrl(springResourceDTO.getAngularUrl());
 			entity.setParentId(springResourceDTO.getParentId());
 			entity.setParentName(springResourceDTO.getParentName());
 			entity.setSortCode(springResourceDTO.getSortCode());
+			entity.setShowStatus(springResourceDTO.getShowStatus());
 			entity.setEnableEdit(springResourceDTO.getEnableEdit());
 			entity.setEnableDelete(springResourceDTO.getEnableDelete());
 			try {
 				springResourceDao.save(entity);
 			} catch (Exception ex) {
 				logger.error(ex.getMessage());
-				throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+				throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
 			}
 		}
 	}
@@ -392,11 +394,13 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 			node.setParentId(springResource.getParentId());
 			Meta metaTitle = new Meta();
 			metaTitle.setTitle(springResource.getTitle());
+			metaTitle.setIcon(springResource.getVueIcon());
 			node.setMeta(metaTitle);
 			node.setPath(springResource.getCode());
 			node.setName(springResource.getCode());
 			node.setComponent(springResource.getVueUrl());
 			node.setRedirect("");
+			node.setHidden(springResource.getShowStatus());
 			menuRouterDTOList.add(node);
 		});
 		MenuRouterTreeDTO menuRouterTreeDTO = new MenuRouterTreeDTO(menuRouterDTOList);

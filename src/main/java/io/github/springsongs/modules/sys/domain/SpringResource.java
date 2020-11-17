@@ -8,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.DynamicInsert;
@@ -25,7 +24,7 @@ import io.github.springsongs.common.base.SpringBase;
 @DynamicUpdate(true)
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 @Table(name = "spring_resource", schema = "base_system")
-public class SpringResource extends SpringBase   implements Serializable {
+public class SpringResource extends SpringBase implements Serializable {
 	/**
 	 * 
 	 */
@@ -46,7 +45,7 @@ public class SpringResource extends SpringBase   implements Serializable {
 	}
 
 	@NotBlank(message = "请填写编码")
-	//@Pattern(regexp = "^[A-Za-z]+$", message = "编码请填写字母")
+	// @Pattern(regexp = "^[A-Za-z]+$", message = "编码请填写字母")
 	@Size(max = 45, min = 1)
 	@Description(title = "编码")
 	@Column(name = "code")
@@ -99,6 +98,18 @@ public class SpringResource extends SpringBase   implements Serializable {
 	public void setVueUrl(String vueUrl) {
 		this.vueUrl = vueUrl;
 	}
+	
+	@Size(max=45, min=0)
+    @Description(title ="Icon")
+    @Column(name="vue_icon")
+    private String vueIcon;
+    public String getVueIcon(){
+        return  this.vueIcon;
+    }
+    public void setVueIcon(String vueIcon){
+        this.vueIcon=vueIcon;
+    }
+    
 
 	@Size(max = 45, min = 0)
 	@Description(title = "链接")
@@ -111,6 +122,29 @@ public class SpringResource extends SpringBase   implements Serializable {
 
 	public void setAngularUrl(String angularUrl) {
 		this.angularUrl = angularUrl;
+	}
+
+	@Size(max=45, min=0)
+    @Description(title ="Icon")
+    @Column(name="angular_icon")
+    private String angularIcon;
+    public String getAngularIcon(){
+        return  this.angularIcon;
+    }
+    public void setAngularIcon(String angularIcon){
+        this.angularIcon=angularIcon;
+    }
+    
+	@Description(title = "是否显示0不显示，1显示")
+	@Column(name = "show_status")
+	private boolean showStatus;
+
+	public boolean getShowStatus() {
+		return this.showStatus;
+	}
+
+	public void setShowStatus(boolean showStatus) {
+		this.showStatus = showStatus;
 	}
 
 	@Description(title = "上级")
@@ -200,5 +234,4 @@ public class SpringResource extends SpringBase   implements Serializable {
 		this.systemId = systemId;
 	}
 
-	
 }

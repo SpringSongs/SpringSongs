@@ -15,6 +15,7 @@ public class MenuRouterDTO {
 	private String redirect;
 	private String name;
 	private Meta meta;
+	private boolean hidden;
 	
 	private List<MenuRouterDTO> children=new ArrayList<>();
 
@@ -86,6 +87,7 @@ public class MenuRouterDTO {
 
 	public static class Meta {
 		private String title;
+		private String icon;
 
 		public String getTitle() {
 			return title;
@@ -95,5 +97,25 @@ public class MenuRouterDTO {
 			this.title = title;
 		}
 
+		public String getIcon() {
+			return icon;
+		}
+
+		public void setIcon(String icon) {
+			this.icon = icon;
+		}
+
 	}
+
+
+
+	public boolean isHidden() {
+		return hidden;
+	}
+
+	public void setHidden(boolean hidden) {
+		this.hidden = hidden;
+	}
+	
+	
 }
