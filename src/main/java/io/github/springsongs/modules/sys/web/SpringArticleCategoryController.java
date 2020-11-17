@@ -88,6 +88,6 @@ public class SpringArticleCategoryController extends BaseController {
 	@PostMapping(value = "/listAllRecord")
 	public ResponseDTO<SpringArticleCategoryDTO> listAllRecord() {
 		List<SpringArticleCategoryDTO> entitys = springArticleCategoryService.listAll();
-		return ResponseDTO.successed(entitys, ResultCode.DELETE_SUCCESSED);
+		return ResponseDTO.successed(entitys, ResultCode.SELECT_SUCCESSED);
 	}
 }

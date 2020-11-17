@@ -129,10 +129,10 @@ public class SpringDictionaryServiceImpl implements ISpringDictionaryService {
 			entity.setSortCode(springDictionaryDTO.getSortCode());
 			entity.setEnableEdit(springDictionaryDTO.getEnableEdit());
 			try {
-				springDictionaryRepo.save(springDictionaryDTO);
+				springDictionaryRepo.save(entity);
 			} catch (Exception ex) {
 				logger.error(ex.getMessage());
-				throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+				throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
 			}
 		}
 	}

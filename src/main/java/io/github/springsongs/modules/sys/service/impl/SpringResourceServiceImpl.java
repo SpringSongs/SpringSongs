@@ -38,6 +38,7 @@ import io.github.springsongs.modules.sys.dto.MenuRouterDTO.Meta;
 import io.github.springsongs.modules.sys.dto.MenuRouterTreeDTO;
 import io.github.springsongs.modules.sys.dto.ResourceRoleDTO;
 import io.github.springsongs.modules.sys.dto.SpringResourceDTO;
+import io.github.springsongs.modules.sys.dto.SpringResourceTreeDTO;
 import io.github.springsongs.modules.sys.dto.query.SpringResourceQuery;
 import io.github.springsongs.modules.sys.repo.SpringResourceRepo;
 import io.github.springsongs.modules.sys.repo.SpringResourceRoleRepo;
@@ -402,5 +403,20 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 		List<MenuRouterDTO> menuRouterDTOListTree = new ArrayList<>();
 		menuRouterDTOListTree = menuRouterTreeDTO.builTree();
 		return menuRouterDTOListTree;
+	}
+
+	@Override
+	public List<SpringResourceDTO> ListAllToTree(String systemCode) {
+		List<SpringResource> springResourceList = springResourceDao.listAllResources(systemCode);
+		final List<SpringResourceDTO> springResourceDTOList = new ArrayList<>();
+		springResourceList.stream().forEach(springResource -> {
+			SpringResourceDTO springResourceDTO = new SpringResourceDTO();
+			BeanUtils.copyProperties(springResource, springResourceDTO);
+			springResourceDTOList.add(springResourceDTO);
+		});
+		SpringResourceTreeDTO springResourceTreeDTO = new SpringResourceTreeDTO(springResourceDTOList);
+		List<SpringResourceDTO> springResourceDTOTreeList = new ArrayList<>();
+		springResourceDTOTreeList = springResourceTreeDTO.builTree();
+		return springResourceDTOTreeList;
 	}
 }

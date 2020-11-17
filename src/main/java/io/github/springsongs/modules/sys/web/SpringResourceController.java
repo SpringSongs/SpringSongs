@@ -28,6 +28,7 @@ import io.github.springsongs.modules.sys.domain.SpringResource;
 import io.github.springsongs.modules.sys.dto.ElementUiTreeDTO;
 import io.github.springsongs.modules.sys.dto.MenuDTO;
 import io.github.springsongs.modules.sys.dto.MenuRouterDTO;
+import io.github.springsongs.modules.sys.dto.SpringOrganizationDTO;
 import io.github.springsongs.modules.sys.dto.SpringParameterDTO;
 import io.github.springsongs.modules.sys.dto.SpringResourceDTO;
 import io.github.springsongs.modules.sys.dto.query.SpringResourceQuery;
@@ -76,7 +77,7 @@ public class SpringResourceController extends BaseController {
 		viewEntity.setUpdatedBy(this.getUser().getUserName());
 		viewEntity.setUpdatedIp(IpKit.getRealIp(request));
 		springResourceService.updateByPrimaryKey(viewEntity);
-		return ResponseDTO.successed(null, ResultCode.SAVE_SUCCESSED);
+		return ResponseDTO.successed(null, ResultCode.UPDATE_SUCCESSED);
 	}
 
 	@PostMapping(value = "/SetDeleted")
@@ -103,6 +104,13 @@ public class SpringResourceController extends BaseController {
 			@RequestParam(value = "systemId", required = true) String systemId) {
 		List<ElementUiTreeDTO> elementUiTreeDtoList = springResourceService.getModulesByParentId(parentId, systemId);
 		return ResponseDTO.successed(elementUiTreeDtoList, ResultCode.SELECT_SUCCESSED);
+	}
+
+	@GetMapping(value = "/ListAllToTree")
+	public ResponseDTO<SpringResourceDTO> ListAllToTree(
+			@RequestParam(value = "systemId", required = true) String systemId) {
+		List<SpringResourceDTO> entitys = springResourceService.ListAllToTree(systemId);
+		return ResponseDTO.successed(entitys, ResultCode.SELECT_SUCCESSED);
 	}
 
 }

@@ -86,7 +86,7 @@ public class SpringRoleController extends BaseController {
 		viewEntity.setUpdatedBy(this.getUser().getUserName());
 		viewEntity.setUpdatedIp(IpKit.getRealIp(request));
 		springRoleService.updateByPrimaryKey(viewEntity);
-		return ResponseDTO.successed(null, ResultCode.SAVE_SUCCESSED);
+		return ResponseDTO.successed(null, ResultCode.UPDATE_SUCCESSED);
 	}
 
 	@PostMapping(value = "/SetDeleted")

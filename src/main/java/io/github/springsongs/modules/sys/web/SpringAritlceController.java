@@ -32,7 +32,7 @@ import io.github.springsongs.util.Constant;
 import io.github.springsongs.util.IpKit;
 
 @RestController
-@RequestMapping(value = "/SpringAritlce")
+@RequestMapping(value = "/SpringArticle")
 public class SpringAritlceController extends BaseController {
 
 	private static final Logger logger = LoggerFactory.getLogger(SpringAritlceController.class);

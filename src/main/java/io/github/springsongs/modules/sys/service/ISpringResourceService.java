@@ -46,5 +46,8 @@ public interface ISpringResourceService {
 	public List<SpringResourceRole>  listModulesByRoleId(String roleId);
 	
 	public List<MenuRouterDTO> listResourceByUserId(String userId);
+	
+	List<SpringResourceDTO> ListAllToTree(String systemCode);
+	
 
 }

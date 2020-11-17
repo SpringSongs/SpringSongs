@@ -84,6 +84,6 @@ public class SpringSystemController extends BaseController {
 	@PostMapping(value = "/ListAll")
 	public ResponseDTO<SpringSystemDTO> listAll() {
 		List<SpringSystemDTO> springSystemList = springSystemService.ListAll();
-		return ResponseDTO.successed(springSystemList, ResultCode.DELETE_SUCCESSED);
+		return ResponseDTO.successed(springSystemList, ResultCode.SELECT_SUCCESSED);
 	}
 }

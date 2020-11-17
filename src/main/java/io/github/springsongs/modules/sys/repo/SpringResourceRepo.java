@@ -109,5 +109,6 @@ public interface SpringResourceRepo extends JpaRepository<SpringResource, String
 	+ "        LEFT JOIN SpringResource bm ON bm.id = bp.moduleId where br.title in (:title)")
 	public List<ResourceRoleDTO> listAllRoleModules(@Param(value = "title") List<String> title);
 	
-	
+	@Query(value = "from SpringResource where deletedStatus=0 and systemId=:systemCode")
+	public List<SpringResource> listAllResources(@Param(value = "systemCode")String systemCode);
 }
