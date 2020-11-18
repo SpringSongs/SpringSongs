@@ -24,4 +24,6 @@ public class SpringOrganizationDTO extends SpringOrganization{
 		this.children = children;
 	}
 	
+	
+	
 }
