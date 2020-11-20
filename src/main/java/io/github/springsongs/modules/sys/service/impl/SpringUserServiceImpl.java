@@ -83,10 +83,14 @@ public class SpringUserServiceImpl implements ISpringUserService {
 	 */
 	@Override
 	public void insert(SpringUserDTO record) {
+		SpringUser springUserDo = springUserRepo.getByUserName(record.getUserName());
+		if (null!=springUserDo) {
+			throw new SpringSongsException(ResultCode.ACCOUNT_HAS_REGISTER);
+		}
 		SpringUser springUser = new SpringUser();
 		BeanUtils.copyProperties(record, springUser);
 		try {
-			springUserRepo.save(record);
+			springUserRepo.save(springUser);
 		} catch (Exception ex) {
 			logger.error(ex.getMessage());
 			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
@@ -279,8 +283,8 @@ public class SpringUserServiceImpl implements ISpringUserService {
 	@Override
 	public SpringUserDTO getByUserName(String username) {
 		SpringUser springUser = springUserRepo.getByUserName(username);
-		if (null == springUser) {
-			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		if (null!=springUser) {
+			throw new SpringSongsException(ResultCode.ACCOUNT_HAS_REGISTER);
 		}
 		SpringUserDTO springUserDTO = new SpringUserDTO();
 		BeanUtils.copyProperties(springUser, springUserDTO);
@@ -341,7 +345,7 @@ public class SpringUserServiceImpl implements ISpringUserService {
 		List<SpringUserDTO> springUserDTOs = new ArrayList<>();
 		springUsers.stream().forEach(springUser -> {
 			SpringUserDTO springUserDTO = new SpringUserDTO();
-			BeanUtils.copyProperties(springUsers, springUserDTO);
+			BeanUtils.copyProperties(springUser, springUserDTO);
 			springUserDTOs.add(springUserDTO);
 		});
 		Page<SpringUserDTO> pages = new PageImpl(springUserDTOs, pageable, springUsers.getTotalElements());

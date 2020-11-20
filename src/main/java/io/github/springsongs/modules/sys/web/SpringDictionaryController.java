@@ -41,7 +41,7 @@ public class SpringDictionaryController extends BaseController {
 	@PostMapping(value = "ListByPage")
 	public ReponseResultPageDTO<SpringDictionaryDTO> listByPage(
 			@RequestBody SpringDictionaryQuery springDictionaryQuery,
-			@PageableDefault(page = 1, size = 20) Pageable pageable) {
+			@PageableDefault(page = 0, size = 20) Pageable pageable) {
 
 		Page<SpringDictionaryDTO> lists = springDictionaryService.getAllRecordByPage(springDictionaryQuery, pageable);
 		return ReponseResultPageDTO.successed(lists.getContent(), lists.getTotalElements(),

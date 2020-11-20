@@ -49,7 +49,7 @@ public class SpringUserController extends BaseController {
 
 	@Autowired
 	private ISpringUserService springUserService;
-	
+
 	@Autowired
 	private ISpringResourceService springResourceService;
 
@@ -66,10 +66,10 @@ public class SpringUserController extends BaseController {
 		}
 		return ResponseDTO.successed(null, ResultCode.SESSION_HAS_GONE);
 	}
-	
+
 	@GetMapping(value = "/GetUserInfo")
-	public ResponseDTO<UserInfoDTO> getUserInfo(){
-		UserInfoDTO userInfoDTO=new UserInfoDTO();
+	public ResponseDTO<UserInfoDTO> getUserInfo() {
+		UserInfoDTO userInfoDTO = new UserInfoDTO();
 		userInfoDTO.setRoles(this.getAuth());
 		List<MenuDTO> menuList = springResourceService.ListModuleByUserId(this.getUser().getId());
 		userInfoDTO.setMenuDTOs(menuList);
@@ -101,17 +101,12 @@ public class SpringUserController extends BaseController {
 
 	@PostMapping(value = "/Create")
 	public ResponseDTO<String> save(@RequestBody @Valid SpringUserDTO viewEntity, HttpServletRequest request) {
-		SpringUserDTO entity = springUserService.getByUserName(viewEntity.getUserName().trim());
-		if (null != entity) {
-			return ResponseDTO.successed(entity, ResultCode.ACCOUNT_HAS_REGISTER);
-		} else {
-			viewEntity.setCreatedBy(this.getUser().getUserName());
-			viewEntity.setCreatedUserId(this.getUser().getId());
-			viewEntity.setCreatedIp(IpKit.getRealIp(request));
-			viewEntity.setCreatedOn(new Date());
-			springUserService.insert(viewEntity);
-			return ResponseDTO.successed(entity, ResultCode.SAVE_SUCCESSED);
-		}
+		viewEntity.setCreatedBy(this.getUser().getUserName());
+		viewEntity.setCreatedUserId(this.getUser().getId());
+		viewEntity.setCreatedIp(IpKit.getRealIp(request));
+		viewEntity.setCreatedOn(new Date());
+		springUserService.insert(viewEntity);
+		return ResponseDTO.successed(null, ResultCode.SAVE_SUCCESSED);
 	}
 
 	@PostMapping(value = "/Edit")
@@ -139,7 +134,7 @@ public class SpringUserController extends BaseController {
 
 	@PostMapping(value = "/SetPwd")
 	public ResponseDTO<String> SetPwd(@RequestBody SpringUserSecurity viewEntity, HttpServletRequest request) {
-		
+
 		if (StringUtils.isEmpty(viewEntity.getUserId())) {
 			return ResponseDTO.successed(null, ResultCode.PARAMETER_NOT_NULL_ERROR);
 		} else if (StringUtils.isEmpty(viewEntity.getPwd())) {
