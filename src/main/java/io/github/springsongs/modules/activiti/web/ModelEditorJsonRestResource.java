@@ -14,11 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-/**
- * 获取model的节点信息，编辑器根据返回的json进行绘图
- * liuzhize 2019年3月7日下午3:29:15
- */
 @RestController
 @RequestMapping("service")
 public class ModelEditorJsonRestResource implements ModelDataJsonConstants {

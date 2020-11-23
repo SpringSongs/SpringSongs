@@ -19,10 +19,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
-/**
- * 流程信息入库
- * liuzhize 2019年3月7日下午3:32:32
- */
 @RestController
 @RequestMapping("service")
 public class ModelSaveRestResource implements ModelDataJsonConstants {

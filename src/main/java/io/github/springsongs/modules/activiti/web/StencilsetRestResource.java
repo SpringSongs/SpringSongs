@@ -9,10 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.InputStream;
 
-/**
- * 获取编辑器组件及配置项信息
- * liuzhize 2019年3月7日下午3:33:28
- */
 @RestController
 @RequestMapping("service")
 public class StencilsetRestResource {
