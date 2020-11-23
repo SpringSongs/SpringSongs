@@ -11,6 +11,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,7 +35,7 @@ public class SpringActModelController {
 
 	@PostMapping(value = "/ListByPage")
 	public ReponseResultPageDTO<Model> listByPage(@RequestBody SpringActModelQuery springActModelQuery,
-			@PageableDefault(page = 1, size = 20) Pageable pageable) {
+			@PageableDefault(page = 0, size = 20) Pageable pageable) {
 		Page<Model> lists = springActModelService.getAllRecordByPage(springActModelQuery, pageable);
 		return ReponseResultPageDTO.successed(lists.getContent(), lists.getTotalElements(),
 				ResultCode.SELECT_SUCCESSED);
@@ -59,4 +60,10 @@ public class SpringActModelController {
 		springActModelService.delete(id);
 		return ResponseDTO.successed(null, ResultCode.DELETE_SUCCESSED);
 	}
+	
+	@PutMapping("/Deploy/{id}")
+    public ResponseDTO<String>deploy(@PathVariable(value = "id", required = true)  @Valid @NotEmpty(message = Constant.PARAMETER_NOT_NULL_ERROR)  String id) {
+		springActModelService.deploy(id);
+		return ResponseDTO.successed(null, ResultCode.SAVE_SUCCESSED);
+    }
 }

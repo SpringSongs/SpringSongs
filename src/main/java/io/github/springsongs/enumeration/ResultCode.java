@@ -36,7 +36,8 @@ public enum ResultCode {
 	UPDATE_TASK_FAIL(HttpServletResponse.SC_BAD_REQUEST, Constant.UPDATE_TASK_FAIL), 
 	PAUSE_TASK_FAIL(HttpServletResponse.SC_BAD_REQUEST, Constant.PAUSE_TASK_FAIL),
 	DELETE_TASK_FAIL(HttpServletResponse.SC_BAD_REQUEST, Constant.DELETE_TASK_FAIL), 
-	RESUME_TASK_FAIL(HttpServletResponse.SC_BAD_REQUEST, Constant.RESUME_TASK_FAIL), ;
+	RESUME_TASK_FAIL(HttpServletResponse.SC_BAD_REQUEST, Constant.RESUME_TASK_FAIL), 
+	MODEL_NOT_EXIST(HttpServletResponse.SC_BAD_REQUEST, Constant.MODEL_NOT_EXIST), ;
 	final int code;
 	final String message;
 

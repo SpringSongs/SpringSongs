@@ -1,19 +1,19 @@
 package io.github.springsongs.modules.activiti.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.activiti.engine.identity.Group;
-import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
-import org.activiti.engine.impl.persistence.entity.GroupEntity;
-import org.activiti.engine.impl.persistence.entity.GroupEntityImpl;
-import org.activiti.engine.impl.persistence.entity.GroupEntityManagerImpl;
-import org.activiti.engine.impl.persistence.entity.data.GroupDataManager;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import io.github.springsongs.modules.sys.dto.RoleCodeDTO;
-import io.github.springsongs.modules.sys.repo.SpringRoleRepo;
+//import java.util.ArrayList;
+//import java.util.List;
+//
+//import org.activiti.engine.identity.Group;
+//import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
+//import org.activiti.engine.impl.persistence.entity.GroupEntity;
+//import org.activiti.engine.impl.persistence.entity.GroupEntityImpl;
+//import org.activiti.engine.impl.persistence.entity.GroupEntityManagerImpl;
+//import org.activiti.engine.impl.persistence.entity.data.GroupDataManager;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.stereotype.Component;
+//
+//import io.github.springsongs.modules.sys.dto.RoleCodeDTO;
+//import io.github.springsongs.modules.sys.repo.SpringRoleRepo;
 
 //@Component
 //public class CustomGroupService extends GroupEntityManagerImpl {

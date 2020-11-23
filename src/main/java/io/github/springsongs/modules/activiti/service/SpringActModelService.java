@@ -1,14 +1,17 @@
 package io.github.springsongs.modules.activiti.service;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
-
+import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.editor.constants.ModelDataJsonConstants;
+import org.activiti.editor.language.json.converter.BpmnJsonConverter;
 import org.activiti.engine.RepositoryService;
+import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.Model;
 import org.activiti.engine.repository.ModelQuery;
+import org.activiti.engine.repository.ProcessDefinition;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +27,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.exception.SpringSongsException;
-import io.github.springsongs.modules.activiti.dto.SpringActCategoryDTO;
 import io.github.springsongs.modules.activiti.dto.SpringActModelDTO;
 import io.github.springsongs.modules.activiti.query.SpringActModelQuery;
 
@@ -95,5 +97,32 @@ public class SpringActModelService {
 	@Transactional
 	public void delete(String id) {
 		repositoryService.deleteModel(id);
+	}
+
+	@Transactional
+	public void deploy(String id) {
+		try {
+			Model modelData = repositoryService.getModel(id);
+			ObjectNode modelNode = (ObjectNode) new ObjectMapper()
+					.readTree(repositoryService.getModelEditorSource(modelData.getId()));
+			BpmnModel bpmnModel = new BpmnJsonConverter().convertToBpmnModel(modelNode);
+			String processName = modelData.getName();
+			if (!StringUtils.endsWith(processName, ".bpmn20.xml")) {
+				processName += ".bpmn20.xml";
+			}
+			Deployment deployment = repositoryService.createDeployment().name(modelData.getName())
+                  .addBpmnModel(processName, bpmnModel)
+                  .deploy();
+			List<ProcessDefinition> list = repositoryService.createProcessDefinitionQuery().deploymentId(deployment.getId()).list();
+            if (list.size() == 0){
+                throw new SpringSongsException(ResultCode.MODEL_NOT_EXIST);
+            }
+            list.stream().forEach(processDefinition -> {
+                        repositoryService.setProcessDefinitionCategory(processDefinition.getId(), modelData.getCategory());
+            });
+		} catch (IOException e) {
+			logger.error(e.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 	}
 }

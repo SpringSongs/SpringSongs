@@ -13,9 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,8 +49,8 @@ public class SpringAritlceController extends BaseController {
 				ResultCode.SELECT_SUCCESSED);
 	}
 
-	@PostMapping(value = "/Detail")
-	public ResponseDTO<SpringAritlceDTO> get(@NotEmpty(message = "id不能为空") String id) {
+	@GetMapping(value = "/Detail/{id}")
+	public ResponseDTO<SpringAritlceDTO> get(@PathVariable(value = "id", required = true)  @Valid  @NotEmpty(message = "id不能为空") String id) {
 		SpringAritlceDTO entity = springAritlceService.selectByPrimaryKey(id);
 		return ResponseDTO.successed(entity, ResultCode.SELECT_SUCCESSED);
 	}
@@ -86,28 +87,28 @@ public class SpringAritlceController extends BaseController {
 		return ResponseDTO.successed(null, ResultCode.DELETE_SUCCESSED);
 	}
 
-	@PostMapping(value = "/Audit/{id}")
+	@PutMapping(value = "/Audit/{id}")
 	public ResponseDTO<String> audit(
 			@PathVariable(value = "id", required = true) @Valid @NotEmpty(message = Constant.PARAMETER_NOT_NULL_ERROR) String id) {
 		springAritlceService.audit(id);
 		return ResponseDTO.successed(null, ResultCode.SAVE_SUCCESSED);
 	}
 
-	@PostMapping(value = "/HotStatus/{id}")
+	@PutMapping(value = "/HotStatus/{id}")
 	public ResponseDTO<String> hotStatus(
 			@PathVariable(value = "id", required = true) @Valid @NotEmpty(message = Constant.PARAMETER_NOT_NULL_ERROR) String id) {
 		springAritlceService.hotStatus(id);
 		return ResponseDTO.successed(null, ResultCode.SAVE_SUCCESSED);
 	}
 
-	@PostMapping(value = "/TopStatus/{id}")
+	@PutMapping(value = "/TopStatus/{id}")
 	public ResponseDTO<String> topStatus(
 			@PathVariable(value = "id", required = true) @Valid @NotEmpty(message = Constant.PARAMETER_NOT_NULL_ERROR) String id) {
 		springAritlceService.topStatus(id);
 		return ResponseDTO.successed(null, ResultCode.SAVE_SUCCESSED);
 	}
 
-	@PostMapping(value = "/Featured/{id}")
+	@PutMapping(value = "/Featured/{id}")
 	public ResponseDTO<String> featured(
 			@PathVariable(value = "id", required = true) @Valid @NotEmpty(message = Constant.PARAMETER_NOT_NULL_ERROR) String id) {
 		springAritlceService.featured(id);

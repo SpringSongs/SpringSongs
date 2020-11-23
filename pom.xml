@@ -92,7 +92,7 @@
 		<dependency>
 			<groupId>org.activiti</groupId>
 			<artifactId>activiti-spring-boot-starter-basic</artifactId>
-			<version>6.0.0</version>
+			<version>5.22.0</version>
 			<exclusions>
 				<exclusion>
 					<groupId>javax.persistence</groupId>
@@ -102,15 +102,36 @@
 		</dependency>
 
 		<dependency>
-    <groupId>org.activiti</groupId>
-    <artifactId>activiti-common-rest</artifactId>
-    <version>6.0.0</version>
-</dependency>
+			<groupId>org.activiti</groupId>
+			<artifactId>activiti-json-converter</artifactId>
+			<version>5.22.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.activiti</groupId>
+					<artifactId>activiti-bpmn-model</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 
 		<dependency>
-			<groupId>org.activiti</groupId>
-			<artifactId>activiti-spring-boot-starter-actuator</artifactId>
-			<version>6.0.0</version>
+			<groupId>org.apache.xmlgraphics</groupId>
+			<artifactId>batik-codec</artifactId>
+			<version>1.7</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.xmlgraphics</groupId>
+			<artifactId>batik-css</artifactId>
+			<version>1.7</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.xmlgraphics</groupId>
+			<artifactId>batik-svg-dom</artifactId>
+			<version>1.7</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.xmlgraphics</groupId>
+			<artifactId>batik-svggen</artifactId>
+			<version>1.7</version>
 		</dependency>
 
 		<dependency>
