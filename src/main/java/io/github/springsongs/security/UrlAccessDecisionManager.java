@@ -36,20 +36,18 @@ public class UrlAccessDecisionManager implements AccessDecisionManager {
 			ConfigAttribute ca = it.next();
 			if ("ROLE_LOGIN".equalsIgnoreCase(ca.getAttribute())) {
 //				if (authentication instanceof AnonymousAuthenticationToken) {
-//					matcher = new AntPathRequestMatcher("/SpringUser/Invalidate", "Login");
+//					matcher = new AntPathRequestMatcher(request.getRequestURI(), "/Login");
 //					if (matcher.matches(request)) {
 //						return;
 //					}
 //				} else {
-//					//return;
-//					throw new AccessDeniedException("权限不足!");
+//					throw new AccessDeniedException(Constant.URL_ACCESS_DECISION);
 //				}
 				throw new AccessDeniedException(Constant.URL_ACCESS_DECISION);
 			}
 			Collection<? extends GrantedAuthority> authorties = authentication.getAuthorities();
 			for (GrantedAuthority item : authorties) {
-				if (item.getAuthority().equalsIgnoreCase("ROLE_Administrators")
-						|| item.getAuthority().equalsIgnoreCase(ca.getAttribute())) {
+				if (item.getAuthority().equalsIgnoreCase(ca.getAttribute())) {
 					return;
 				}
 			}

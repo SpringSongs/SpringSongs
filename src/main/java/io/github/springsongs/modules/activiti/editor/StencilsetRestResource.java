@@ -1,4 +1,4 @@
-package io.github.springsongs.modules.activiti.web;
+package io.github.springsongs.modules.activiti.editor;
 
 import org.activiti.engine.ActivitiException;
 import org.apache.commons.io.IOUtils;

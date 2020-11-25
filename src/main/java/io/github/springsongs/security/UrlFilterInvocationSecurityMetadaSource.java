@@ -42,6 +42,9 @@ public class UrlFilterInvocationSecurityMetadaSource implements FilterInvocation
 					&& !StringUtils.isEmpty(moduleRoleDto.getCode())) {
 				roles.add(moduleRoleDto.getCode());
 			}
+//			if (requestUrl.contains("/SpringUser/Invalidate")||requestUrl.contains("/Login")) {
+//				roles.add(moduleRoleDto.getCode());
+//			}
 //			if (antPathMatchc.match(requestUrl, moduleRoleDto.getNavigateUrl())
 //					&& !StringUtils.isEmpty(moduleRoleDto.getCode())) {
 //				roles.add(moduleRoleDto.getCode());

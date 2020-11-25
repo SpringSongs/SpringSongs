@@ -1,4 +1,4 @@
-package io.github.springsongs.modules.activiti.web;
+package io.github.springsongs.modules.activiti.editor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
