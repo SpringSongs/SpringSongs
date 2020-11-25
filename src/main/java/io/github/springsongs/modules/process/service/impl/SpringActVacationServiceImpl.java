@@ -13,8 +13,12 @@ import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
 import org.activiti.engine.IdentityService;
+import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
+import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -27,6 +31,8 @@ import org.springframework.stereotype.Service;
 
 import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.exception.SpringSongsException;
+import io.github.springsongs.modules.activiti.domain.SpringActUseTask;
+import io.github.springsongs.modules.activiti.repo.SpringActUseTaskRepo;
 import io.github.springsongs.modules.job.service.impl.SpringJobServiceImpl;
 import io.github.springsongs.modules.process.domain.SpringActVacation;
 import io.github.springsongs.modules.process.dto.SpringActVacationDTO;
@@ -49,6 +55,15 @@ public class SpringActVacationServiceImpl implements ISpringActVacationService {
 
 	@Autowired
 	protected RuntimeService runtimeService;
+
+	@Autowired
+	private TaskService taskService;
+
+	@Autowired
+	private RepositoryService repositoryService;
+
+	@Autowired
+	private SpringActUseTaskRepo springActUseTaskRepo;
 
 	@Override
 	public void deleteByPrimaryKey(String id) {
@@ -143,6 +158,15 @@ public class SpringActVacationServiceImpl implements ISpringActVacationService {
 		this.springActVacationRepo.save(vacation);
 		logger.info("processInstanceId: " + processInstanceId);
 		this.identityService.setAuthenticatedUserId(null);
+		ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
+				.processDefinitionKey(vacation.getProcDefKey()).latestVersion().singleResult();
+		Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
+		task.setCategory(processDefinition.getCategory());
+		SpringActUseTask springActUseTask = springActUseTaskRepo.findUserTaskByTaskDefKey(task.getTaskDefinitionKey());
+		taskService.saveTask(task);
+		if ("assignee".equals(springActUseTask.getTaskYpe())) {
+			taskService.setAssignee(task.getId(), springActUseTask.getCandidateIds());
+		}
 		return processInstanceId;
 	}
 }

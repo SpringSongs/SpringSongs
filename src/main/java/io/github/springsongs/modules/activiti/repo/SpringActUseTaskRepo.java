@@ -83,4 +83,12 @@ public interface SpringActUseTaskRepo extends JpaRepository<SpringActUseTask, St
 	 */
 	@Query(value = "from SpringActUseTask where procDefKey=:procDefKey")
 	public List<SpringActUseTask> listUserTaskByProcDefKey(@Param(value = "procDefKey") String procDefKey);
+	
+	/**
+	 * taskDefKey查询
+	 * @param taskDefKey
+	 * @return
+	 */
+	@Query(value = "from SpringActUseTask where taskDefKey=:taskDefKey")
+	public SpringActUseTask findUserTaskByTaskDefKey(@Param(value = "taskDefKey") String taskDefKey);
 }
