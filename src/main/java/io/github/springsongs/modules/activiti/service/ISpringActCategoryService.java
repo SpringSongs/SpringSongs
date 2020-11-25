@@ -13,6 +13,8 @@ public interface ISpringActCategoryService {
 	void deleteByPrimaryKey(String id);
 
 	void insert(SpringActCategoryDTO record);
+	
+
 
 	SpringActCategoryDTO selectByPrimaryKey(String id);
 

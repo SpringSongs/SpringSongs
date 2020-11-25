@@ -45,7 +45,7 @@ public class SpringArticleCategoryController extends BaseController {
 	}
 
 	@PostMapping(value = "/Detail")
-	public ResponseDTO<String> get(String id) {
+	public ResponseDTO<String> get(@RequestParam(value = "id", required = true) String id) {
 		SpringArticleCategoryDTO entity = springArticleCategoryService.selectByPrimaryKey(id);
 		return ResponseDTO.successed(entity, ResultCode.SELECT_SUCCESSED);
 	}
