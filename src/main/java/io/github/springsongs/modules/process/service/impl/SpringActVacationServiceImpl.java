@@ -28,15 +28,21 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.exception.SpringSongsException;
+import io.github.springsongs.modules.activiti.domain.SpringActProcessRouter;
 import io.github.springsongs.modules.activiti.domain.SpringActUseTask;
+import io.github.springsongs.modules.activiti.domain.SpringStartTask;
 import io.github.springsongs.modules.activiti.repo.SpringActUseTaskRepo;
+import io.github.springsongs.modules.activiti.service.ISpringActProcessRouterService;
 import io.github.springsongs.modules.job.service.impl.SpringJobServiceImpl;
 import io.github.springsongs.modules.process.domain.SpringActVacation;
 import io.github.springsongs.modules.process.dto.SpringActVacationDTO;
 import io.github.springsongs.modules.process.repo.SpringActVacationRepo;
+import io.github.springsongs.modules.process.service.ISpringActVacationApproveService;
 import io.github.springsongs.modules.process.service.ISpringActVacationService;
 
 @Service
@@ -49,6 +55,9 @@ public class SpringActVacationServiceImpl implements ISpringActVacationService {
 
 	@Autowired
 	private ISpringActVacationService springActVacationService;
+
+	@Autowired
+	private ISpringActVacationApproveService springActVacationApproveService;
 
 	@Autowired
 	protected IdentityService identityService;
@@ -65,6 +74,9 @@ public class SpringActVacationServiceImpl implements ISpringActVacationService {
 	@Autowired
 	private SpringActUseTaskRepo springActUseTaskRepo;
 
+	@Autowired
+	private ISpringActProcessRouterService springActProcessRouterService;
+
 	@Override
 	public void deleteByPrimaryKey(String id) {
 		springActVacationRepo.deleteById(id);
@@ -77,7 +89,7 @@ public class SpringActVacationServiceImpl implements ISpringActVacationService {
 		BeanUtils.copyProperties(record, springActVacation);
 		try {
 			springActVacationRepo.save(springActVacation);
-			springActVacationService.startSpringActVacation(springActVacation);
+			// springActVacationService.startSpringActVacation(springActVacation);
 		} catch (Exception ex) {
 			logger.error(ex.getMessage());
 			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
@@ -87,10 +99,8 @@ public class SpringActVacationServiceImpl implements ISpringActVacationService {
 	@Override
 	public SpringActVacationDTO selectByPrimaryKey(String id) {
 		SpringActVacation springActVacation = null;
-		try {
-			springActVacation = springActVacationRepo.getOne(id);
-		} catch (Exception ex) {
-			logger.error(ex.getMessage());
+		springActVacation = springActVacationRepo.getOne(id);
+		if (null == springActVacation) {
 			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
 		}
 		SpringActVacationDTO springActVacationDTO = new SpringActVacationDTO();
@@ -111,9 +121,13 @@ public class SpringActVacationServiceImpl implements ISpringActVacationService {
 			@Override
 			public Predicate toPredicate(Root<SpringActVacation> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				List<Predicate> predicates = new ArrayList<>();
-
-//				Predicate deletionStateCode = cb.equal(root.get("deletedFlag").as(Boolean.class), false);
-//				predicates.add(deletionStateCode);
+				if (!StringUtils.isEmpty(record.getCreatedUserId())) {
+					Predicate createdUserId = cb.equal(root.get("createdUserId").as(String.class),
+							record.getCreatedUserId());
+					predicates.add(createdUserId);
+				}
+				Predicate deletionStateCode = cb.equal(root.get("deletedStatus").as(Boolean.class), false);
+				predicates.add(deletionStateCode);
 				query.where(predicates.toArray(new Predicate[0]));
 				query.orderBy(cb.desc(root.get("createdOn").as(Date.class)));
 				return query.getRestriction();
@@ -136,8 +150,23 @@ public class SpringActVacationServiceImpl implements ISpringActVacationService {
 
 	@Override
 	public void setDeleted(List<String> ids) {
-		// TODO Auto-generated method stub
-
+		if (CollectionUtils.isEmpty(ids)) {
+			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
+		} else if (ids.size() > 1000) {
+			throw new SpringSongsException(ResultCode.PARAMETER_MORE_1000);
+		}
+		for (String id : ids) {
+			SpringActVacation springActVacation = springActVacationRepo.getOne(id);
+			if (!StringUtils.isEmpty(springActVacation.getProcDefKey())) {
+				throw new SpringSongsException(ResultCode.INFO_CAN_NOT_DELETE);
+			}
+		}
+		try {
+			springActVacationRepo.setDelete(ids);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 	}
 
 	@Override
@@ -146,17 +175,29 @@ public class SpringActVacationServiceImpl implements ISpringActVacationService {
 
 	}
 
-	public String startSpringActVacation(SpringActVacation vacation) throws Exception {
+	@Transactional
+	public String submitSpringActVacation(SpringActVacationDTO vacation) throws Exception {
+		if (!StringUtils.isEmpty(vacation.getProcessInstanceId())) {
+			throw new SpringSongsException(ResultCode.TASK_HADED_SUBMIT);
+		}
 		// 用来设置启动流程的人员ID，引擎会自动把用户ID保存到activiti:initiator中
 		identityService.setAuthenticatedUserId(vacation.getUserId().toString());
+		SpringActProcessRouter springActProcessRouter = springActProcessRouterService
+				.findSpringActProcessRouterByProcDefKey(vacation.getProcDefKey());
+		SpringStartTask springStartTask = new SpringStartTask();
+		springStartTask.setBusinessId(vacation.getId());
+		springStartTask.setRouter(springActProcessRouter.getRouter());
+		springStartTask.setStartUserName(vacation.getTrueName());
+		springStartTask.setTitle(vacation.getTitle());
+		springStartTask.setSubmitTime(vacation.getSubmittime());
 		Map<String, Object> variables = new HashMap<String, Object>();
-		variables.put("entity", vacation);
+		variables.put("entity", springStartTask);
 		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(vacation.getProcDefKey(),
-				vacation.getId(), variables);
+				springStartTask.getBusinessId(), variables);
 		String processInstanceId = processInstance.getId();
-		vacation.setProcessInstanceId(processInstanceId);
-		this.springActVacationRepo.save(vacation);
-		logger.info("processInstanceId: " + processInstanceId);
+		SpringActVacation springActVacationDO = this.springActVacationRepo.getOne(vacation.getId());
+		springActVacationDO.setProcessInstanceId(processInstanceId);
+		this.springActVacationRepo.save(springActVacationDO);
 		this.identityService.setAuthenticatedUserId(null);
 		ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
 				.processDefinitionKey(vacation.getProcDefKey()).latestVersion().singleResult();
@@ -169,4 +210,7 @@ public class SpringActVacationServiceImpl implements ISpringActVacationService {
 		}
 		return processInstanceId;
 	}
+
+	
+
 }

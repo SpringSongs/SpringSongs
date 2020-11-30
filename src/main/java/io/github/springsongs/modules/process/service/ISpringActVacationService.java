@@ -22,6 +22,8 @@ public interface ISpringActVacationService {
 	void setDeleted(List<String> ids);
 
 	void batchSaveExcel(List<String[]> list);
-	
-	public String startSpringActVacation(SpringActVacation vacation) throws Exception;
+
+	public String submitSpringActVacation(SpringActVacationDTO vacation) throws Exception;
+
+
 }

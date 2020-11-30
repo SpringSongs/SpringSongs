@@ -1,108 +1,152 @@
 package io.github.springsongs.modules.activiti.dto;
 
+import java.util.Date;
+
 public class SpringTaskDTO {
 
-    private String applicant;
-    private String taskId;
-    private String taskName;
-    private String title;
-    private String pdName;
-    private String version;
-    private Long time;
-    private String processInstanceId;
-    private String status;
-    private String nodeKey;
-    private String processDefKey;
+	private String applicant;
+	private String taskId;
+	private String taskName;
+	private String title;
+	private String pdName;
+	private String version;
+	private Long time;
+	private String processInstanceId;
+	private String status;
+	private String nodeKey;
+	private String processDefKey;
+	private String startUserName;
+	private String startTitle;
+	private Date submitTime;
+	public Date getSubmitTime() {
+		return submitTime;
+	}
 
-    public String getProcessDefKey() {
-        return processDefKey;
-    }
+	public void setSubmitTime(Date submitTime) {
+		this.submitTime = submitTime;
+	}
 
-    public void setProcessDefKey(String processDefKey) {
-        this.processDefKey = processDefKey;
-    }
+	public String getStartUserName() {
+		return startUserName;
+	}
 
-    public String getNodeKey() {
-        return nodeKey;
-    }
+	public void setStartUserName(String startUserName) {
+		this.startUserName = startUserName;
+	}
 
-    public void setNodeKey(String nodeKey) {
-        this.nodeKey = nodeKey;
-    }
+	public String getStartTitle() {
+		return startTitle;
+	}
 
-    public String getApplicant() {
-        return applicant;
-    }
+	public void setStartTitle(String startTitle) {
+		this.startTitle = startTitle;
+	}
 
-    public void setApplicant(String applicant) {
-        this.applicant = applicant;
-    }
+	public String getRouter() {
+		return router;
+	}
 
-   
+	public void setRouter(String router) {
+		this.router = router;
+	}
 
-    public String getTaskId() {
-        return taskId;
-    }
+	public String getBusinessId() {
+		return businessId;
+	}
 
-    public void setTaskId(String taskId) {
-        this.taskId = taskId;
-    }
+	public void setBusinessId(String businessId) {
+		this.businessId = businessId;
+	}
 
-    public String getTaskName() {
-        return taskName;
-    }
+	private String router;
+	private String businessId;
 
-    public void setTaskName(String taskName) {
-        this.taskName = taskName;
-    }
+	public String getProcessDefKey() {
+		return processDefKey;
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	public void setProcessDefKey(String processDefKey) {
+		this.processDefKey = processDefKey;
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public String getNodeKey() {
+		return nodeKey;
+	}
 
-    public String getPdName() {
-        return pdName;
-    }
+	public void setNodeKey(String nodeKey) {
+		this.nodeKey = nodeKey;
+	}
 
-    public void setPdName(String pdName) {
-        this.pdName = pdName;
-    }
+	public String getApplicant() {
+		return applicant;
+	}
 
-    public String getVersion() {
-        return version;
-    }
+	public void setApplicant(String applicant) {
+		this.applicant = applicant;
+	}
 
-    public void setVersion(String version) {
-        this.version = version;
-    }
+	public String getTaskId() {
+		return taskId;
+	}
 
-    public Long getTime() {
-        return time;
-    }
+	public void setTaskId(String taskId) {
+		this.taskId = taskId;
+	}
 
-    public void setTime(Long time) {
-        this.time = time;
-    }
+	public String getTaskName() {
+		return taskName;
+	}
 
-    public String getProcessInstanceId() {
-        return processInstanceId;
-    }
+	public void setTaskName(String taskName) {
+		this.taskName = taskName;
+	}
 
-    public void setProcessInstanceId(String processInstanceId) {
-        this.processInstanceId = processInstanceId;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public String getStatus() {
-        return status;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+	public String getPdName() {
+		return pdName;
+	}
 
-   
+	public void setPdName(String pdName) {
+		this.pdName = pdName;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	public Long getTime() {
+		return time;
+	}
+
+	public void setTime(Long time) {
+		this.time = time;
+	}
+
+	public String getProcessInstanceId() {
+		return processInstanceId;
+	}
+
+	public void setProcessInstanceId(String processInstanceId) {
+		this.processInstanceId = processInstanceId;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 }

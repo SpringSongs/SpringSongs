@@ -28,7 +28,9 @@ import io.github.springsongs.modules.sys.domain.SpringOrganization;
 import io.github.springsongs.modules.sys.dto.SpringOrganizationDTO;
 import io.github.springsongs.modules.sys.service.ISpringOrganizationService;
 import io.github.springsongs.util.IpKit;
+import io.swagger.annotations.Api;
 
+@Api(tags = "组织机构管理")
 @RestController
 @RequestMapping(value = "/SpringOrganization")
 public class SpringOrganizationController extends BaseController {

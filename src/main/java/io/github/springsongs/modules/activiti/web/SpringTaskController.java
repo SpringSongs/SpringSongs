@@ -14,7 +14,9 @@ import io.github.springsongs.common.web.BaseController;
 import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.modules.activiti.dto.SpringTaskDTO;
 import io.github.springsongs.modules.activiti.service.impl.SpringTaskService;
+import io.swagger.annotations.Api;
 
+@Api(tags = "工作流任务管理")
 @RestController
 @RequestMapping(value = "/SpringTask")
 @Validated

@@ -29,7 +29,9 @@ import io.github.springsongs.modules.sys.dto.SpringDictionaryDTO;
 import io.github.springsongs.modules.sys.dto.query.SpringDictionaryQuery;
 import io.github.springsongs.modules.sys.service.ISpringDictionaryService;
 import io.github.springsongs.util.IpKit;
+import io.swagger.annotations.Api;
 
+@Api(tags = "字典管理")
 @RestController
 @RequestMapping(value = "/SpringDictionary")
 public class SpringDictionaryController extends BaseController {

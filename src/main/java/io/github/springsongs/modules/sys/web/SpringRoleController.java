@@ -33,7 +33,9 @@ import io.github.springsongs.modules.sys.dto.query.SpringRoleQuery;
 import io.github.springsongs.modules.sys.service.ISpringResourceService;
 import io.github.springsongs.modules.sys.service.ISpringRoleService;
 import io.github.springsongs.util.IpKit;
+import io.swagger.annotations.Api;
 
+@Api(tags = "角色管理")
 @RestController
 @RequestMapping(value = "/SpringRole")
 public class SpringRoleController extends BaseController {

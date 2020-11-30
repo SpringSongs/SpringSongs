@@ -27,7 +27,9 @@ import io.github.springsongs.modules.job.dto.SpringJobGroupDTO;
 import io.github.springsongs.modules.job.query.SpringJobGroupQuery;
 import io.github.springsongs.modules.job.service.ISpringJobGroupService;
 import io.github.springsongs.util.IpKit;
+import io.swagger.annotations.Api;
 
+@Api(tags = "定时任务组管理")
 @RestController
 @RequestMapping(value = "/SpringJobGroup")
 public class SpringJobGroupController extends BaseController {

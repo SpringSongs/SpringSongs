@@ -35,7 +35,9 @@ import io.github.springsongs.modules.sys.dto.query.SpringResourceQuery;
 import io.github.springsongs.modules.sys.service.ISpringResourceService;
 import io.github.springsongs.security.util.SecurityUtils;
 import io.github.springsongs.util.IpKit;
+import io.swagger.annotations.Api;
 
+@Api(tags = "资源管理")
 @RestController
 @RequestMapping(value = "/SpringResource")
 public class SpringResourceController extends BaseController {

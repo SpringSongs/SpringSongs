@@ -17,7 +17,9 @@ import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.modules.sys.dto.SpringLoginLogDTO;
 import io.github.springsongs.modules.sys.dto.query.SpringLoginLogQuery;
 import io.github.springsongs.modules.sys.service.ISpringLoginLogService;
+import io.swagger.annotations.Api;
 
+@Api(tags = "定时登录日志管理")
 @RestController
 @RequestMapping(value = "/SpringLoginLog")
 public class SpringLoginLogController extends BaseController {

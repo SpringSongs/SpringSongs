@@ -28,7 +28,9 @@ import io.github.springsongs.modules.sys.dto.SpringParameterDTO;
 import io.github.springsongs.modules.sys.dto.query.SpringParameterQuery;
 import io.github.springsongs.modules.sys.service.ISpringParameterService;
 import io.github.springsongs.util.IpKit;
+import io.swagger.annotations.Api;
 
+@Api(tags = "参数管理")
 @RestController
 @RequestMapping(value = "/SpringParameter")
 public class SpringParameterController extends BaseController {

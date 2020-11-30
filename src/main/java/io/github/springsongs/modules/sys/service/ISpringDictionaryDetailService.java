@@ -18,7 +18,8 @@ public interface ISpringDictionaryDetailService {
 
 	void updateByPrimaryKey(SpringDictionaryDetailDTO record);
 
-	Page<SpringDictionaryDetailDTO> getAllRecordByPage(SpringDictionaryDetailQuery springDictionaryDetailQuery,Pageable pageable);
+	Page<SpringDictionaryDetailDTO> getAllRecordByPage(SpringDictionaryDetailQuery springDictionaryDetailQuery,
+			Pageable pageable);
 
 	void setDeleted(List<String> ids);
 
@@ -27,4 +28,6 @@ public interface ISpringDictionaryDetailService {
 	void delete(List<String> ids);
 
 	public void setDeleteByCode(String code);
+
+	List<SpringDictionaryDetailDTO> listSpringDictionaryDetailByDictionaryCode(String dictionaryCode);
 }

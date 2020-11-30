@@ -11,11 +11,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import io.github.springsongs.modules.sys.domain.SpringAritlce;
 import io.github.springsongs.modules.sys.domain.SpringArticleCategory;
 import io.github.springsongs.modules.sys.domain.SpringResource;
 
+@Repository
 public interface SpringArticleCategoryRepo extends JpaRepository<SpringArticleCategory, String> {
 
 	/**

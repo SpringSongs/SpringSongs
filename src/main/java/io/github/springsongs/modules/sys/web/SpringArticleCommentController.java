@@ -29,7 +29,9 @@ import io.github.springsongs.modules.sys.dto.SpringArticleCommentDTO;
 import io.github.springsongs.modules.sys.dto.query.SpringArticleCommentQuery;
 import io.github.springsongs.modules.sys.service.ISpringArticleCommentService;
 import io.github.springsongs.util.IpKit;
+import io.swagger.annotations.Api;
 
+@Api(tags = "内容评论管理")
 @RestController
 @RequestMapping(value = "/SpringArticleComment")
 public class SpringArticleCommentController extends BaseController {

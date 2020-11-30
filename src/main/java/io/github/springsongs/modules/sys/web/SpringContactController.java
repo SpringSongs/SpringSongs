@@ -27,7 +27,9 @@ import io.github.springsongs.modules.sys.dto.SpringContactDTO;
 import io.github.springsongs.modules.sys.dto.query.SpringContactQuery;
 import io.github.springsongs.modules.sys.service.ISpringContactService;
 import io.github.springsongs.util.IpKit;
+import io.swagger.annotations.Api;
 
+@Api(tags = "名片管理")
 @RestController
 @RequestMapping(value = "/SpringContact")
 public class SpringContactController extends BaseController {

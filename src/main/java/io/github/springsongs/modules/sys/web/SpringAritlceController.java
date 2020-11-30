@@ -31,7 +31,9 @@ import io.github.springsongs.modules.sys.dto.query.SpringAritlceQuery;
 import io.github.springsongs.modules.sys.service.ISpringAritlceService;
 import io.github.springsongs.util.Constant;
 import io.github.springsongs.util.IpKit;
+import io.swagger.annotations.Api;
 
+@Api(tags = "内容管理")
 @RestController
 @RequestMapping(value = "/SpringArticle")
 public class SpringAritlceController extends BaseController {

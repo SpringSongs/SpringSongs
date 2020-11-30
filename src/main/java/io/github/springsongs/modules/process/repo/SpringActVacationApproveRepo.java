@@ -10,12 +10,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import io.github.springsongs.modules.process.domain.SpringActVacation;
 import io.github.springsongs.modules.process.domain.SpringActVacationApprove;
 
 @Repository
 public interface SpringActVacationApproveRepo extends JpaRepository<SpringActVacationApprove, String> {
 
+	
 	/**
 	 * 分页查询
 	 * 
@@ -23,7 +23,7 @@ public interface SpringActVacationApproveRepo extends JpaRepository<SpringActVac
 	 * @param pageable
 	 * @return
 	 */
-	Page<SpringActVacation> findAll(Specification<SpringActVacation> spec, Pageable pageable);
+	Page<SpringActVacationApprove> findAll(Specification<SpringActVacationApprove> spec, Pageable pageable);
 
 	/**
 	 *

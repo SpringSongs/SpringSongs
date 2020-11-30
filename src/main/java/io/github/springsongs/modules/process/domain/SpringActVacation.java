@@ -87,6 +87,31 @@ public class SpringActVacation extends SpringBase {
 		this.trueName = trueName;
 	}
 
+	@NotBlank(message="请填写标题")
+    @Size(max=45, min=1)
+    @Description(title ="标题")
+    @Column(name="title")
+    private String title;
+    public String getTitle(){
+        return  this.title;
+    }
+    public void setTitle(String title){
+        this.title=title;
+    }
+
+    @NotBlank(message="请填写假期类型")
+    @Size(max=45, min=1)
+    @Description(title ="假期类型")
+    @Column(name="vacation_type")
+    private String vacationType;
+    public String getVacationType(){
+        return  this.vacationType;
+    }
+    public void setVacationType(String vacationType){
+        this.vacationType=vacationType;
+    }
+
+    
 	@NotBlank(message = "请填写请假申请原因")
 	@Size(max = 45, min = 1)
 	@Description(title = "请假申请原因")
@@ -149,6 +174,7 @@ public class SpringActVacation extends SpringBase {
 		this.processStatus = processStatus;
 	}
 
+	
 	@Description(title = "submitTime")
 	@Column(name = "submitTime")
 	private java.util.Date submittime;
@@ -161,4 +187,13 @@ public class SpringActVacation extends SpringBase {
 		this.submittime = submittime;
 	}
 
+	@Description(title ="0未删1已删")
+    @Column(name="deleted_status")
+    private boolean deletedStatus;
+    public boolean getDeletedStatus(){
+        return  this.deletedStatus;
+    }
+    public void setDeletedStatus(boolean deletedStatus){
+        this.deletedStatus=deletedStatus;
+    }
 }

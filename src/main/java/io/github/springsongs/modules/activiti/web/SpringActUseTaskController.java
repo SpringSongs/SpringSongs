@@ -17,7 +17,9 @@ import io.github.springsongs.common.web.BaseController;
 import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.modules.activiti.dto.SpringActUseTaskDTO;
 import io.github.springsongs.modules.activiti.service.ISpringActUseTaskService;
+import io.swagger.annotations.Api;
 
+@Api(tags = "人员审批管理")
 @RestController
 @RequestMapping(value = "/SpringActUseTask")
 @Validated

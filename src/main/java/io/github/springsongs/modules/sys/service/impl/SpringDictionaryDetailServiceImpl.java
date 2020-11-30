@@ -72,7 +72,7 @@ public class SpringDictionaryDetailServiceImpl implements ISpringDictionaryDetai
 		SpringDictionaryDetail springDictionaryDetail = new SpringDictionaryDetail();
 		BeanUtils.copyProperties(record, springDictionaryDetail);
 		try {
-			springDictionaryDetailRepo.save(record);
+			springDictionaryDetailRepo.save(springDictionaryDetail);
 		} catch (Exception ex) {
 			logger.error(ex.getMessage());
 			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
@@ -186,7 +186,7 @@ public class SpringDictionaryDetailServiceImpl implements ISpringDictionaryDetai
 		Page<SpringDictionaryDetail> springDictionaryDetails = springDictionaryDetailRepo.findAll(specification,
 				pageable);
 		List<SpringDictionaryDetailDTO> springDictionaryDetailDTOs = new ArrayList<>();
-		springDictionaryDetails.stream().forEach(springDictionaryDetail -> {
+		springDictionaryDetails.getContent().stream().forEach(springDictionaryDetail -> {
 			SpringDictionaryDetailDTO springDictionaryDetailDTO = new SpringDictionaryDetailDTO();
 			BeanUtils.copyProperties(springDictionaryDetail, springDictionaryDetailDTO);
 			springDictionaryDetailDTOs.add(springDictionaryDetailDTO);
@@ -257,5 +257,17 @@ public class SpringDictionaryDetailServiceImpl implements ISpringDictionaryDetai
 			logger.error(ex.getMessage());
 			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
 		}
+	}
+
+	@Override
+	public List<SpringDictionaryDetailDTO> listSpringDictionaryDetailByDictionaryCode(String dictionaryCode) {
+		List<SpringDictionaryDetailDTO> springDictionaryDetailDTOList=new ArrayList<>();
+		List<SpringDictionaryDetail> springDictionaryDetailList=springDictionaryDetailRepo.listSpringDictionaryDetailByDictionaryCode(dictionaryCode);
+		springDictionaryDetailList.stream().forEach(springDictionaryDetail->{
+			SpringDictionaryDetailDTO springDictionaryDetailDTO=new SpringDictionaryDetailDTO();
+			BeanUtils.copyProperties(springDictionaryDetail, springDictionaryDetailDTO);
+			springDictionaryDetailDTOList.add(springDictionaryDetailDTO);
+		});
+		return springDictionaryDetailDTOList;
 	}
 }

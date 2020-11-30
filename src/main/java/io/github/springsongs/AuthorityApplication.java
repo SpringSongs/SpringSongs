@@ -6,6 +6,9 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
+import com.spring4all.swagger.EnableSwagger2Doc;
+
+@EnableSwagger2Doc
 @SpringBootApplication
 @ComponentScan
 @EnableAutoConfiguration(exclude = { SecurityAutoConfiguration.class,

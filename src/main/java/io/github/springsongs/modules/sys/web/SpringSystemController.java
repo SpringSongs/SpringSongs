@@ -27,7 +27,9 @@ import io.github.springsongs.modules.sys.dto.SpringSystemDTO;
 import io.github.springsongs.modules.sys.dto.query.SpringSystemQuery;
 import io.github.springsongs.modules.sys.service.ISpringSystemService;
 import io.github.springsongs.util.IpKit;
+import io.swagger.annotations.Api;
 
+@Api(tags = "子系统管理")
 @RestController
 @RequestMapping(value = "/SpringSystem")
 public class SpringSystemController extends BaseController {

@@ -79,7 +79,7 @@ public class SpringActModelService {
 		if (StringUtils.isNotBlank(springActModelQuery.getKey())) {
 			modelQuery.modelKey(springActModelQuery.getKey());
 		}
-		if (StringUtils.isNotBlank(springActModelQuery.getKey())) {
+		if (StringUtils.isNotBlank(springActModelQuery.getName())) {
 			modelQuery.modelName(springActModelQuery.getName());
 		}
 		Page<Model> pages = new PageImpl(modelQuery.listPage(pageable.getPageNumber(), pageable.getPageSize()),
@@ -95,8 +95,10 @@ public class SpringActModelService {
 	}
 
 	@Transactional
-	public void delete(String id) {
-		repositoryService.deleteModel(id);
+	public void delete(List<String> ids) {
+		for (String id : ids) {
+			repositoryService.deleteModel(id);
+		}
 	}
 
 	@Transactional
@@ -111,15 +113,15 @@ public class SpringActModelService {
 				processName += ".bpmn20.xml";
 			}
 			Deployment deployment = repositoryService.createDeployment().name(modelData.getName())
-                  .addBpmnModel(processName, bpmnModel)
-                  .deploy();
-			List<ProcessDefinition> list = repositoryService.createProcessDefinitionQuery().deploymentId(deployment.getId()).list();
-            if (list.size() == 0){
-                throw new SpringSongsException(ResultCode.MODEL_NOT_EXIST);
-            }
-            list.stream().forEach(processDefinition -> {
-                        repositoryService.setProcessDefinitionCategory(processDefinition.getId(), modelData.getCategory());
-            });
+					.addBpmnModel(processName, bpmnModel).deploy();
+			List<ProcessDefinition> list = repositoryService.createProcessDefinitionQuery()
+					.deploymentId(deployment.getId()).list();
+			if (list.size() == 0) {
+				throw new SpringSongsException(ResultCode.MODEL_NOT_EXIST);
+			}
+			list.stream().forEach(processDefinition -> {
+				repositoryService.setProcessDefinitionCategory(processDefinition.getId(), modelData.getCategory());
+			});
 		} catch (IOException e) {
 			logger.error(e.getMessage());
 			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);

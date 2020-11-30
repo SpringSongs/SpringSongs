@@ -22,4 +22,8 @@ public interface ISpringActVacationApproveService {
 	void setDeleted(List<String> ids);
 	
 	void batchSaveExcel(List<String[]> list);
+	
+	public void completeSpringActVacationApprove(SpringActVacationApproveDTO record,String taskId);
+	
+	public void completeTask(String taskId, String auditStr);
 }

@@ -40,7 +40,9 @@ import io.github.springsongs.modules.sys.service.ISpringResourceService;
 import io.github.springsongs.modules.sys.service.ISpringUserService;
 import io.github.springsongs.util.HttpUtils;
 import io.github.springsongs.util.IpKit;
+import io.swagger.annotations.Api;
 
+@Api(tags = "用户管理")
 @RestController
 @RequestMapping(value = "/SpringUser")
 public class SpringUserController extends BaseController {

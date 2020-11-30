@@ -1,11 +1,14 @@
 package io.github.springsongs.modules.activiti.util;
 
+import java.util.Map;
+
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.TaskInfo;
 
 import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.exception.SpringSongsException;
+import io.github.springsongs.modules.activiti.domain.SpringStartTask;
 import io.github.springsongs.modules.activiti.dto.SpringProcessDTO;
 import io.github.springsongs.modules.activiti.dto.SpringTaskDTO;
 
@@ -38,15 +41,20 @@ public class ActivitiUtils {
 		return dto;
 	}
 
-	
-
 	public static SpringTaskDTO toTaskDTO(TaskInfo task, String status, ProcessDefinition processDefinition,
 			Deployment deployment) {
 		SpringTaskDTO dto = new SpringTaskDTO();
 		dto.setTaskId(task.getId());
 		dto.setTaskName(task.getName());
+		Map<String, Object> pvar = task.getProcessVariables();
+		SpringStartTask springStartTask = (SpringStartTask) pvar.get("entity");
+		dto.setStartTitle(springStartTask.getTitle());
+		dto.setStartUserName(springStartTask.getStartUserName());
+		dto.setRouter(springStartTask.getRouter());
+		dto.setSubmitTime(springStartTask.getSubmitTime());
+		dto.setBusinessId(springStartTask.getBusinessId());
+		// Map<String,Object> tvar=task.getTaskLocalVariables();
 		// dto.setTime(historyService.createHistoricProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult().getStartTime().getTime());
-		// dto.setVariable(task.getTaskLocalVariables());
 		dto.setPdName(deployment.getName());
 		dto.setVersion("V:" + processDefinition.getVersion());
 		dto.setProcessInstanceId(task.getProcessInstanceId());

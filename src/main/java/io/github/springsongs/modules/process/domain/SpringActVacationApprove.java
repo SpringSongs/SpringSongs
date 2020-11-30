@@ -35,7 +35,7 @@ public class SpringActVacationApprove extends SpringBase {
 		this.id = id;
 	}
 
-	@NotBlank(message = "请填写流程实例id")
+	
 	@Size(max = 45, min = 1)
 	@Description(title = "流程实例id")
 	@Column(name = "process_instance_id")
@@ -49,7 +49,7 @@ public class SpringActVacationApprove extends SpringBase {
 		this.processInstanceId = processInstanceId;
 	}
 
-	@NotBlank(message = "请填写Activti任务id")
+	
 	@Size(max = 45, min = 1)
 	@Description(title = "Activti任务id")
 	@Column(name = "task_id")
@@ -63,7 +63,7 @@ public class SpringActVacationApprove extends SpringBase {
 		this.taskId = taskId;
 	}
 
-	@NotBlank(message = "请填写审批人用户id")
+	
 	@Size(max = 36, min = 1)
 	@Description(title = "审批人用户id")
 	@Column(name = "user_id")
@@ -103,7 +103,7 @@ public class SpringActVacationApprove extends SpringBase {
 		this.remark = remark;
 	}
 
-	@NotBlank(message = "请填写审批人姓名")
+	
 	@Size(max = 45, min = 1)
 	@Description(title = "审批人姓名")
 	@Column(name = "true_name")

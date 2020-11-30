@@ -3,6 +3,7 @@ package io.github.springsongs.security;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
@@ -27,19 +28,23 @@ public class UrlFilterInvocationSecurityMetadaSource implements FilterInvocation
 
 	private AntPathMatcher antPathMatchc = new AntPathMatcher();
 
-	String requestUrl="";
+	String requestUrl = "";
+
 	@Override
 	public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
-		requestUrl= ((FilterInvocation) object).getRequestUrl();
+		requestUrl = ((FilterInvocation) object).getRequestUrl();
 		List<ResourceRoleDTO> mpoduleRoleList = baseModuleService.listAllRoleModules(SecurityUtils.getAuth());
 		List<String> roles = new ArrayList<String>();
-		
+
 		mpoduleRoleList.stream().forEach(moduleRoleDto -> {
-			if (null==moduleRoleDto.getNavigateUrl()) {
+			if (null == moduleRoleDto.getNavigateUrl()) {
 				moduleRoleDto.setNavigateUrl("");
 			}
-			if (!StringUtils.isEmpty(moduleRoleDto.getNavigateUrl())&&requestUrl.contains(moduleRoleDto.getNavigateUrl())
-					&& !StringUtils.isEmpty(moduleRoleDto.getCode())) {
+			if (!StringUtils.isEmpty(moduleRoleDto.getNavigateUrl())
+					&& requestUrl.contains(moduleRoleDto.getNavigateUrl())) {
+				roles.add(moduleRoleDto.getCode());
+			}
+			if (requestUrl.equals("/error") || requestUrl.equals("/") || requestUrl.equals("")||requestUrl.contains("/csrf")) {
 				roles.add(moduleRoleDto.getCode());
 			}
 //			if (requestUrl.contains("/SpringUser/Invalidate")||requestUrl.contains("/Login")) {
@@ -50,12 +55,13 @@ public class UrlFilterInvocationSecurityMetadaSource implements FilterInvocation
 //				roles.add(moduleRoleDto.getCode());
 //			}	
 		});
-		
-		
-		if (!CollectionUtil.isEmpty(roles)) {
-			String[] str=new String[roles.size()];
-			for (int i = 0; i < roles.toArray().length; i++) {
-				str[i]="ROLE_" + roles.get(i);
+
+
+		List<String> resourceRoleDTOList = roles.stream().distinct().collect(Collectors.toList());
+		if (!CollectionUtil.isEmpty(resourceRoleDTOList)) {
+			String[] str = new String[resourceRoleDTOList.size()];
+			for (int i = 0; i < resourceRoleDTOList.size(); i++) {
+				str[i] = "ROLE_" + roles.get(i);
 			}
 			return SecurityConfig.createList(str);
 		}

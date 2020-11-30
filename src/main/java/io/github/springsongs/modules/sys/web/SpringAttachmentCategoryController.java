@@ -27,7 +27,9 @@ import io.github.springsongs.modules.sys.domain.SpringAttachmentCategory;
 import io.github.springsongs.modules.sys.dto.SpringAttachmentCategoryDTO;
 import io.github.springsongs.modules.sys.service.ISpringAttachmentCategoryService;
 import io.github.springsongs.util.IpKit;
+import io.swagger.annotations.Api;
 
+@Api(tags = "附件分类管理")
 @RestController
 @RequestMapping(value = "/SpringAttachmentCategory")
 public class SpringAttachmentCategoryController extends BaseController {

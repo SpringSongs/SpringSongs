@@ -20,7 +20,9 @@ import io.github.springsongs.modules.job.domain.SpringJobHistory;
 import io.github.springsongs.modules.job.dto.SpringJobDTO;
 import io.github.springsongs.modules.job.dto.SpringJobHistoryDTO;
 import io.github.springsongs.modules.job.service.ISpringJobHistoryService;
+import io.swagger.annotations.Api;
 
+@Api(tags = "定时任务运行历史管理")
 @RestController
 @RequestMapping(value = "/SpringJobHistory")
 public class SpringJobHistoryController extends BaseController {

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +29,9 @@ import io.github.springsongs.modules.sys.dto.SpringDictionaryDetailDTO;
 import io.github.springsongs.modules.sys.dto.query.SpringDictionaryDetailQuery;
 import io.github.springsongs.modules.sys.service.ISpringDictionaryDetailService;
 import io.github.springsongs.util.IpKit;
+import io.swagger.annotations.Api;
 
+@Api(tags = "字典明细管理")
 @RestController
 @RequestMapping(value = "/SpringDictionaryDetail")
 public class SpringDictionaryDetailController extends BaseController {
@@ -41,7 +44,7 @@ public class SpringDictionaryDetailController extends BaseController {
 	@PostMapping(value = "ListByPage")
 	public ReponseResultPageDTO<SpringDictionaryDetailDTO> listByPage(
 			@RequestBody SpringDictionaryDetailQuery springDictionaryDetailQuery,
-			@PageableDefault(page = 1, size = 20) Pageable pageable) {
+			@PageableDefault(page = 0, size = 20) Pageable pageable) {
 		Page<SpringDictionaryDetailDTO> lists = springDictionaryDetailService
 				.getAllRecordByPage(springDictionaryDetailQuery, pageable);
 		return ReponseResultPageDTO.successed(lists.getContent(), lists.getTotalElements(),
@@ -85,5 +88,13 @@ public class SpringDictionaryDetailController extends BaseController {
 	@PostMapping(value = "/Deleted")
 	public ResponseDTO<String> deleted(@RequestParam(value = "ids", required = true) List<String> ids) {
 		return ResponseDTO.successed(null, ResultCode.DELETE_SUCCESSED);
+	}
+
+	@GetMapping(value = "/ListSpringDictionaryDetailByDictionaryCode")
+	public ResponseDTO<List<SpringDictionaryDetailDTO>> listSpringDictionaryDetailByDictionaryCode(
+			@RequestParam(value = "dictionaryCode", required = true) String dictionaryCode) {
+		List<SpringDictionaryDetailDTO> springDictionaryDetailDTOList = springDictionaryDetailService
+				.listSpringDictionaryDetailByDictionaryCode(dictionaryCode);
+		return ResponseDTO.successed(springDictionaryDetailDTOList, ResultCode.SELECT_SUCCESSED);
 	}
 }

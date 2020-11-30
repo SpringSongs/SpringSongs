@@ -26,7 +26,9 @@ import io.github.springsongs.modules.sys.dto.SpringArticleCategoryDTO;
 import io.github.springsongs.modules.sys.dto.query.SpringArticleCategoryQuery;
 import io.github.springsongs.modules.sys.service.ISpringArticleCategoryService;
 import io.github.springsongs.util.IpKit;
+import io.swagger.annotations.Api;
 
+@Api(tags = "内容分类管理")
 @RestController
 @RequestMapping(value = "/SpringArticleCategory")
 public class SpringArticleCategoryController extends BaseController {

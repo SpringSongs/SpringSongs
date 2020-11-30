@@ -46,7 +46,7 @@ public class SpringDictionaryDetail extends SpringBase implements Serializable {
 		this.id = id;
 	}
 
-	@NotBlank(message = "请填写字典主表编码")
+	@Pattern(regexp = "^[A-Za-z]+$", message = "编码请填写字母")
 	@Size(max = 45, min = 1)
 	@Description(title = "字典主表编码")
 	@Column(name = "dictionary_code")

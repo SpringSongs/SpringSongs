@@ -33,7 +33,9 @@ import io.github.springsongs.modules.sys.domain.SpringAttachment;
 import io.github.springsongs.modules.sys.dto.SpringAttachmentDTO;
 import io.github.springsongs.modules.sys.service.ISpringAttachmentService;
 import io.github.springsongs.util.IpKit;
+import io.swagger.annotations.Api;
 
+@Api(tags = "附件管理")
 @RestController
 @RequestMapping(value = "/SpringAttachment")
 public class SpringAttachmentController extends BaseController {

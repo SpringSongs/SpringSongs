@@ -60,5 +60,8 @@ public class Constant {
 	public static final String DELETE_TASK_FAIL = "删除任务失败";
 	public static final String RESUME_TASK_FAIL = "唤醒任务失败";
 	public static final String MODEL_NOT_EXIST = "模型没有存在";
+	public static final String EXPORT_SUCCESSED = "导出成功";
+	public static final String TASK_HADED_SUBMIT = "任务已经提交了";
+	public static final String TASK_HADED_CONFIG = "任务已经处理";
 
 }

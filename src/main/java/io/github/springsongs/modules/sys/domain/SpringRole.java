@@ -46,7 +46,7 @@ public class SpringRole extends SpringBase implements Serializable {
 	}
 
 	@NotBlank(message = "请填写名称")
-	@Pattern(regexp = "^[A-Za-z]+$", message = "名称请填写字母")
+	@Pattern(regexp = "^[A-Z_]+$", message = "名称请填写ROLE下划线与大字母组合")
 	@Size(max = 45, min = 1)
 	@Description(title = "名称")
 	@Column(name = "title")

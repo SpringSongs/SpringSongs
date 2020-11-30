@@ -38,8 +38,6 @@ public interface SpringDictionaryDetailRepo extends JpaRepository<SpringDictiona
 	@Transactional
 	@Query(value = "from SpringDictionaryDetail where id in (:ids)")
 	public List<SpringDictionaryDetail> findInIds(@Param(value = "ids") List<String> ids);
-	
-
 
 	/**
 	 *
@@ -71,6 +69,7 @@ public interface SpringDictionaryDetailRepo extends JpaRepository<SpringDictiona
 
 	/**
 	 * 逻辑批量删除
+	 * 
 	 * @param code
 	 */
 	@Modifying
@@ -96,13 +95,24 @@ public interface SpringDictionaryDetailRepo extends JpaRepository<SpringDictiona
 	@Modifying
 	@Query(value = "delete from SpringDictionaryDetail where dictionaryCode=:code")
 	public void deleteByDictionCode(@Param(value = "code") String code);
-	
+
 	/**
 	 * 逻辑删除
+	 * 
 	 * @param code
 	 */
 	@Transactional
 	@Modifying
 	@Query(value = "update SpringDictionaryDetail set deletedStatus=1  where dictionaryCode in (:codes)")
 	public void setDeleteByDictionCode(@Param(value = "codes") List<String> codes);
+
+	/**
+	 * 根据dictionaryCode查询
+	 * 
+	 * @param dictionaryCode
+	 * @return
+	 */
+	@Query(value = "from SpringDictionaryDetail where deletedStatus=0  and dictionaryCode=:dictionaryCode")
+	public List<SpringDictionaryDetail> listSpringDictionaryDetailByDictionaryCode(
+			@Param(value = "dictionaryCode") String dictionaryCode);
 }
