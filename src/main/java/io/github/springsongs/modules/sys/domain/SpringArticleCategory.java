@@ -13,7 +13,9 @@ import org.hibernate.annotations.GenericGenerator;
 
 import io.github.springsongs.annotation.Description;
 import io.github.springsongs.common.base.SpringBase;
-
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+@ApiModel(description="内容分类实体")
 @Entity
 @DynamicInsert(true)
 @DynamicUpdate(true)
@@ -24,6 +26,7 @@ public class SpringArticleCategory extends SpringBase {
 	@GenericGenerator(name = "paymentableGenerator", strategy = "uuid")
 	@Description(title = "主键")
 	@Column(name = "id")
+	@ApiModelProperty("主键")
 	private String id;
 
 	public String getId() {
@@ -37,6 +40,7 @@ public class SpringArticleCategory extends SpringBase {
 	@Size(max = 45, min = 0)
 	@Description(title = "上级主键")
 	@Column(name = "parent_id")
+	@ApiModelProperty("上级主键")
 	private String parentId;
 
 	public String getParentId() {
@@ -50,6 +54,7 @@ public class SpringArticleCategory extends SpringBase {
 	@Size(max = 45, min = 0)
 	@Description(title = "编码")
 	@Column(name = "code")
+	@ApiModelProperty("编码")
 	private String code;
 
 	public String getCode() {
@@ -63,6 +68,7 @@ public class SpringArticleCategory extends SpringBase {
 	@Size(max = 45, min = 0)
 	@Description(title = "标题")
 	@Column(name = "title")
+	@ApiModelProperty("标题")
 	private String title;
 
 	public String getTitle() {
@@ -76,6 +82,7 @@ public class SpringArticleCategory extends SpringBase {
 	@Size(max = 45, min = 0)
 	@Description(title = "关键词")
 	@Column(name = "keywords")
+	@ApiModelProperty("关键词")
 	private String keywords;
 
 	public String getKeywords() {
@@ -89,6 +96,7 @@ public class SpringArticleCategory extends SpringBase {
 	@Size(max = 45, min = 0)
 	@Description(title = "描述")
 	@Column(name = "description")
+	@ApiModelProperty("描述")
 	private String description;
 
 	public String getDescription() {
@@ -102,6 +110,7 @@ public class SpringArticleCategory extends SpringBase {
 	@Size(max = 45, min = 0)
 	@Description(title = "排序")
 	@Column(name = "sort_order")
+	@ApiModelProperty("排序")
 	private String sortOrder;
 
 	public String getSortOrder() {
@@ -114,6 +123,7 @@ public class SpringArticleCategory extends SpringBase {
 
 	@Description(title = "逻辑删除")
 	@Column(name = "deleted_status")
+	@ApiModelProperty("逻辑删除")
 	private boolean deletedStatus;
 
 	public boolean getDeletedStatus() {
@@ -126,6 +136,7 @@ public class SpringArticleCategory extends SpringBase {
 
 	@Description(title = "版本号")
 	@Column(name = "version")
+	@ApiModelProperty("版本号")
 	private int version;
 
 	public int getVersion() {

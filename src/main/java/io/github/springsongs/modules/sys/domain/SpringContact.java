@@ -21,7 +21,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import io.github.springsongs.annotation.Description;
 import io.github.springsongs.common.base.SpringBase;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
+@ApiModel(description = "名片实体")
 @Entity
 @DynamicInsert(true)
 @DynamicUpdate(true)
@@ -37,6 +40,7 @@ public class SpringContact extends SpringBase implements Serializable {
 	@GenericGenerator(name = "paymentableGenerator", strategy = "uuid")
 	@Description(title = "主键")
 	@Column(name = "id")
+	@ApiModelProperty("主键")
 	private String id;
 
 	public String getId() {
@@ -51,6 +55,7 @@ public class SpringContact extends SpringBase implements Serializable {
 	@Size(max = 45, min = 1)
 	@Description(title = "公司")
 	@Column(name = "company")
+	@ApiModelProperty("公司")
 	private String company;
 
 	public String getCompany() {
@@ -65,6 +70,7 @@ public class SpringContact extends SpringBase implements Serializable {
 	@Size(max = 45, min = 1)
 	@Description(title = "职称")
 	@Column(name = "title")
+	@ApiModelProperty("职称")
 	private String title;
 
 	public String getTitle() {
@@ -79,6 +85,7 @@ public class SpringContact extends SpringBase implements Serializable {
 	@Size(max = 45, min = 1)
 	@Description(title = "名称")
 	@Column(name = "username")
+	@ApiModelProperty("名称")
 	private String username;
 
 	public String getUsername() {
@@ -94,6 +101,7 @@ public class SpringContact extends SpringBase implements Serializable {
 	@Size(max = 45, min = 1)
 	@Description(title = "邮箱")
 	@Column(name = "email")
+	@ApiModelProperty("邮箱")
 	private String email;
 
 	public String getEmail() {
@@ -107,6 +115,7 @@ public class SpringContact extends SpringBase implements Serializable {
 	@Size(max = 45, min = 0)
 	@Description(title = "网址")
 	@Column(name = "web")
+	@ApiModelProperty("网址")
 	private String web;
 
 	public String getWeb() {
@@ -120,6 +129,7 @@ public class SpringContact extends SpringBase implements Serializable {
 	@Size(max = 45, min = 0)
 	@Description(title = "传真")
 	@Column(name = "fax")
+	@ApiModelProperty("传真")
 	private String fax;
 
 	public String getFax() {
@@ -133,6 +143,7 @@ public class SpringContact extends SpringBase implements Serializable {
 	@Size(max = 45, min = 0)
 	@Description(title = "QQ")
 	@Column(name = "qq")
+	@ApiModelProperty("QQ")
 	private String qq;
 
 	public String getQq() {
@@ -146,6 +157,7 @@ public class SpringContact extends SpringBase implements Serializable {
 	@Size(max = 45, min = 0)
 	@Description(title = "微信")
 	@Column(name = "webchat")
+	@ApiModelProperty("微信")
 	private String webchat;
 
 	public String getWebchat() {
@@ -160,6 +172,7 @@ public class SpringContact extends SpringBase implements Serializable {
 	@Size(max = 45, min = 1)
 	@Description(title = "手机")
 	@Column(name = "mobile")
+	@ApiModelProperty("手机")
 	private String mobile;
 
 	public String getMobile() {
@@ -173,6 +186,7 @@ public class SpringContact extends SpringBase implements Serializable {
 	@Size(max = 45, min = 0)
 	@Description(title = "电话")
 	@Column(name = "tel")
+	@ApiModelProperty("电话")
 	private String tel;
 
 	public String getTel() {
@@ -185,6 +199,7 @@ public class SpringContact extends SpringBase implements Serializable {
 
 	@Description(title = "排序")
 	@Column(name = "sort_code")
+	@ApiModelProperty("排序")
 	private int sortCode;
 
 	public int getSortCode() {
@@ -197,6 +212,7 @@ public class SpringContact extends SpringBase implements Serializable {
 
 	@Description(title = "0未删1已删")
 	@Column(name = "deleted_status")
+	@ApiModelProperty("0未删1已删")
 	private boolean deletedStatus;
 
 	public boolean getDeletedStatus() {

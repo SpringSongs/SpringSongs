@@ -18,8 +18,11 @@ import io.github.springsongs.modules.sys.dto.SpringLoginLogDTO;
 import io.github.springsongs.modules.sys.dto.query.SpringLoginLogQuery;
 import io.github.springsongs.modules.sys.service.ISpringLoginLogService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 
-@Api(tags = "定时登录日志管理")
+@Api(tags = "登录日志管理")
 @RestController
 @RequestMapping(value = "/SpringLoginLog")
 public class SpringLoginLogController extends BaseController {
@@ -29,6 +32,10 @@ public class SpringLoginLogController extends BaseController {
 	@Autowired
 	private ISpringLoginLogService springLoginLogService;
 
+	@ApiOperation(value = "获取登录日志分页列表", response = ReponseResultPageDTO.class)
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "springLoginLogQuery", dataType = "SpringLoginLogQuery"),
+			@ApiImplicitParam(name = "pageable", dataType = "Pageable"), })
 	@PostMapping(value = "ListByPage")
 	public ReponseResultPageDTO<SpringLoginLogDTO> listByPage(@RequestBody SpringLoginLogQuery springLoginLogQuery,
 			@PageableDefault(page = 1, size = 20) Pageable pageable) {

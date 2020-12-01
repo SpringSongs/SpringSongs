@@ -204,7 +204,7 @@ public class SpringActUseTaskServiceImpl implements ISpringActUseTaskService {
 			String ids = request.getParameter(taskDefKey + "_id");
 			String names = request.getParameter(taskDefKey + "_name");
 			String taskType = request.getParameter(taskDefKey + "_taskType");
-			userTask.setTaskYpe(taskType);
+			userTask.setTaskType(taskType);
 			userTask.setCandidateName(names);
 			userTask.setCandidateIds(ids);
 			this.springActUseTaskRepo.save(userTask);

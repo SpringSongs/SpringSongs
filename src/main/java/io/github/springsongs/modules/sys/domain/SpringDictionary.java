@@ -19,7 +19,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import io.github.springsongs.annotation.Description;
 import io.github.springsongs.common.base.SpringBase;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
+@ApiModel(description = "字典实体")
 @Entity
 @DynamicInsert(true)
 @DynamicUpdate(true)
@@ -35,6 +38,7 @@ public class SpringDictionary extends SpringBase implements Serializable {
 	@GenericGenerator(name = "paymentableGenerator", strategy = "uuid")
 	@Description(title = "主键")
 	@Column(name = "id")
+	@ApiModelProperty("主键")
 	private String id;
 
 	public String getId() {
@@ -49,6 +53,7 @@ public class SpringDictionary extends SpringBase implements Serializable {
 	@Size(max = 45, min = 1)
 	@Description(title = "编码")
 	@Column(name = "code")
+	@ApiModelProperty("编码")
 	private String code;
 
 	public String getCode() {
@@ -63,6 +68,7 @@ public class SpringDictionary extends SpringBase implements Serializable {
 	@Size(max = 45, min = 1)
 	@Description(title = "标题")
 	@Column(name = "title")
+	@ApiModelProperty("标题")
 	private String title;
 
 	public String getTitle() {
@@ -77,6 +83,7 @@ public class SpringDictionary extends SpringBase implements Serializable {
 	@Size(max = 200, min = 1)
 	@Description(title = "说明")
 	@Column(name = "description")
+	@ApiModelProperty("说明")
 	private String description;
 
 	public String getDescription() {
@@ -89,6 +96,7 @@ public class SpringDictionary extends SpringBase implements Serializable {
 
 	@Description(title = "排序")
 	@Column(name = "sort_code")
+	@ApiModelProperty("排序")
 	private int sortCode;
 
 	public int getSortCode() {
@@ -101,6 +109,7 @@ public class SpringDictionary extends SpringBase implements Serializable {
 
 	@Description(title = "允许编辑0不允许1允许")
 	@Column(name = "enable_edit")
+	@ApiModelProperty("允许编辑0不允许1允许")
 	private boolean enableEdit;
 
 	public boolean getEnableEdit() {
@@ -113,6 +122,7 @@ public class SpringDictionary extends SpringBase implements Serializable {
 
 	@Description(title = "允许删除0不允许1允许")
 	@Column(name = "enable_delete")
+	@ApiModelProperty("允许删除0不允许1允许")
 	private boolean enableDelete;
 
 	public boolean getEnableDelete() {
@@ -124,6 +134,7 @@ public class SpringDictionary extends SpringBase implements Serializable {
 	}
 
 	@Description(title = "0未删1已删")
+	@ApiModelProperty("0未删1已删")
 	@Column(name = "deleted_status")
 	private boolean deletedStatus;
 

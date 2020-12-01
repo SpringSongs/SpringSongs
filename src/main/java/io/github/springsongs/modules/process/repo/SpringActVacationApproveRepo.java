@@ -36,4 +36,6 @@ public interface SpringActVacationApproveRepo extends JpaRepository<SpringActVac
 	 */
 	@Query(value = "from SpringActVacationApprove where id in (:ids)")
 	public List<SpringActVacationApprove> findInIds(@Param(value = "ids") List<String> ids);
+	
+	
 }

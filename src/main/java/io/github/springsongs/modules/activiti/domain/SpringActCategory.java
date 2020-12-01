@@ -45,6 +45,7 @@ public class SpringActCategory extends SpringBase {
 	@Size(max = 45, min = 1)
 	@Description(title = "类目编码")
 	@Column(name = "category_code")
+	@ApiModelProperty("类目编码")
 	private String categoryCode;
 
 	public String getCategoryCode() {
@@ -59,6 +60,7 @@ public class SpringActCategory extends SpringBase {
 	@Size(max = 45, min = 1)
 	@Description(title = "类目名称")
 	@Column(name = "category_title")
+	@ApiModelProperty("类目名称")
 	private String categoryTitle;
 
 	public String getCategoryTitle() {
@@ -69,8 +71,9 @@ public class SpringActCategory extends SpringBase {
 		this.categoryTitle = categoryTitle;
 	}
 
-	@Description(title = "允许删除0不允许1允许")
+	@Description(title = "删除0不允许1允许")
 	@Column(name = "deleted_status")
+	@ApiModelProperty("删除0不允许1允许")
 	private boolean deletedStatus;
 
 	public boolean getDeletedStatus() {

@@ -17,7 +17,10 @@ import org.hibernate.annotations.GenericGenerator;
 
 import io.github.springsongs.annotation.Description;
 import io.github.springsongs.common.base.SpringBase;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
+@ApiModel(description="定时任务组实体")
 @Entity
 @DynamicInsert(true)
 @DynamicUpdate(true)
@@ -32,6 +35,7 @@ public class SpringJobGroup extends SpringBase implements Serializable {
     @GenericGenerator(name = "paymentableGenerator", strategy = "uuid")
     @Description(title ="主键")
     @Column(name="id")
+	@ApiModelProperty("主键")
     private String id;
     public String getId(){
         return  this.id;
@@ -43,6 +47,7 @@ public class SpringJobGroup extends SpringBase implements Serializable {
     @Pattern(regexp = "^[A-Za-z]+$", message = "组别ID请填写字母")
     @Description(title ="组别ID")
     @Column(name="code")
+    @ApiModelProperty("组别ID")
     private String code;
     public String getCode(){
         return  this.code;
@@ -56,6 +61,7 @@ public class SpringJobGroup extends SpringBase implements Serializable {
     @Size(max=45, min=1)
     @Description(title ="任务组")
     @Column(name="title")
+    @ApiModelProperty("任务组")
     private String title;
     public String getTitle(){
         return  this.title;
@@ -64,8 +70,9 @@ public class SpringJobGroup extends SpringBase implements Serializable {
         this.title=title;
     }
 
-    @Description(title ="允许删除0不允许1允许")
+    @Description(title ="删除0不允许1允许")
     @Column(name="deleted_status")
+    @ApiModelProperty("删除0不允许1允许")
     private boolean deletedStatus;
     public boolean getDeletedStatus(){
         return  this.deletedStatus;

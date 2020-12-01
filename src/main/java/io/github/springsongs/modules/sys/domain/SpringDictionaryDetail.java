@@ -20,7 +20,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import io.github.springsongs.annotation.Description;
 import io.github.springsongs.common.base.SpringBase;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
+@ApiModel(description = "字典明细")
 @Entity
 @DynamicInsert(true)
 @DynamicUpdate(true)
@@ -36,6 +39,7 @@ public class SpringDictionaryDetail extends SpringBase implements Serializable {
 	@GenericGenerator(name = "paymentableGenerator", strategy = "uuid")
 	@Description(title = "主键")
 	@Column(name = "id")
+	@ApiModelProperty("主键")
 	private String id;
 
 	public String getId() {
@@ -50,6 +54,7 @@ public class SpringDictionaryDetail extends SpringBase implements Serializable {
 	@Size(max = 45, min = 1)
 	@Description(title = "字典主表编码")
 	@Column(name = "dictionary_code")
+	@ApiModelProperty("字典主表编码")
 	private String dictionaryCode;
 
 	public String getDictionaryCode() {
@@ -63,6 +68,7 @@ public class SpringDictionaryDetail extends SpringBase implements Serializable {
 	@Size(max = 36, min = 0)
 	@Description(title = "上级")
 	@Column(name = "parent_id")
+	@ApiModelProperty("上级")
 	private String parentId;
 
 	public String getParentId() {
@@ -78,6 +84,7 @@ public class SpringDictionaryDetail extends SpringBase implements Serializable {
 	@Size(max = 45, min = 1)
 	@Description(title = "编码")
 	@Column(name = "detail_code")
+	@ApiModelProperty("编码")
 	private String detailCode;
 
 	public String getDetailCode() {
@@ -92,6 +99,7 @@ public class SpringDictionaryDetail extends SpringBase implements Serializable {
 	@Size(max = 45, min = 1)
 	@Description(title = "名称")
 	@Column(name = "detail_name")
+	@ApiModelProperty("名称")
 	private String detailName;
 
 	public String getDetailName() {
@@ -106,6 +114,7 @@ public class SpringDictionaryDetail extends SpringBase implements Serializable {
 	@Size(max = 45, min = 1)
 	@Description(title = "值")
 	@Column(name = "detail_value")
+	@ApiModelProperty("值")
 	private String detailValue;
 
 	public String getDetailValue() {
@@ -120,6 +129,7 @@ public class SpringDictionaryDetail extends SpringBase implements Serializable {
 	@Size(max = 200, min = 1)
 	@Description(title = "说明")
 	@Column(name = "description")
+	@ApiModelProperty("说明")
 	private String description;
 
 	public String getDescription() {
@@ -134,6 +144,7 @@ public class SpringDictionaryDetail extends SpringBase implements Serializable {
 	@Lob
 	@Description(title = "下级")
 	@Column(name = "child_ids")
+	@ApiModelProperty("下级")
 	private String childIds;
 
 	public String getChildIds() {
@@ -146,6 +157,7 @@ public class SpringDictionaryDetail extends SpringBase implements Serializable {
 
 	@Description(title = "排序")
 	@Column(name = "sort_code")
+	@ApiModelProperty("排序")
 	private int sortCode;
 
 	public int getSortCode() {
@@ -158,6 +170,7 @@ public class SpringDictionaryDetail extends SpringBase implements Serializable {
 
 	@Description(title = "允许编辑0不允许1允许")
 	@Column(name = "enable_edit")
+	@ApiModelProperty("允许编辑0不允许1允许")
 	private boolean enableEdit;
 
 	public boolean getEnableEdit() {
@@ -170,6 +183,7 @@ public class SpringDictionaryDetail extends SpringBase implements Serializable {
 
 	@Description(title = "允许删除0不允许1允许")
 	@Column(name = "enable_delete")
+	@ApiModelProperty("允许删除0不允许1允许")
 	private boolean enableDelete;
 
 	public boolean getEnableDelete() {
@@ -182,6 +196,7 @@ public class SpringDictionaryDetail extends SpringBase implements Serializable {
 
 	@Description(title = "0未删1已删")
 	@Column(name = "deleted_status")
+	@ApiModelProperty("0未删1已删")
 	private boolean deletedStatus;
 
 	public boolean getDeletedStatus() {

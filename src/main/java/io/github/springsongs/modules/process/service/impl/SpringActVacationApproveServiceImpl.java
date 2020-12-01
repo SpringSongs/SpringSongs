@@ -173,7 +173,8 @@ public class SpringActVacationApproveServiceImpl implements ISpringActVacationAp
 		}
 
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("audit", "1".equals(auditStr) ? false : true);
+		map.put("audit", auditStr);
+		taskService.setVariables(taskId, map);
 		taskService.complete(taskId, map);
 
 		if (null != taskDefinition) {
@@ -187,16 +188,18 @@ public class SpringActVacationApproveServiceImpl implements ISpringActVacationAp
 				}
 			}
 			if (null != springActUseTask) {
-				if ("assignee".equals(springActUseTask.getTaskYpe())) {
+				if ("assignee".equals(springActUseTask.getTaskType())) {
 					taskService.setAssignee(nextTaskId, springActUseTask.getCandidateIds());
 				}
 			}
-			if (null == springActUseTask) {
-				SpringActVacation springActVacation = springActVacationRepo.findByProcessInstanceId(procInstanceId);
-				springActVacation.setProcessStatus(Short.valueOf(auditStr));
-				springActVacationRepo.save(springActVacation);
-			}
 		}
+
+		if (null == taskDefinition) {
+			SpringActVacation springActVacation = springActVacationRepo.findByProcessInstanceId(procInstanceId);
+			springActVacation.setProcessStatus(Short.valueOf(auditStr));
+			springActVacationRepo.save(springActVacation);
+		}
+		//springActVacationApproveService.updateByPrimaryKey(record);
 //		String excId = task.getExecutionId();
 //		ExecutionEntity execution = (ExecutionEntity) runtimeService.createExecutionQuery().executionId(excId).singleResult();
 //		String activitiId = execution.getProcessDefinitionKey();
@@ -208,7 +211,7 @@ public class SpringActVacationApproveServiceImpl implements ISpringActVacationAp
 	public void completeSpringActVacationApprove(SpringActVacationApproveDTO record, String taskId) {
 		springActVacationApproveService.insert(record);
 		springActVacationApproveService.completeTask(taskId, String.valueOf(record.getResult()));
-		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+		//Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
 		// record.setProcessInstanceId(task.getProcessInstanceId());
 		// record.setTaskId(task.getId());
 		// springActVacationApproveService.updateByPrimaryKey(record);

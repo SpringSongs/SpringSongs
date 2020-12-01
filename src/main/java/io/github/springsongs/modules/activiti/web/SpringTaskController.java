@@ -15,6 +15,9 @@ import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.modules.activiti.dto.SpringTaskDTO;
 import io.github.springsongs.modules.activiti.service.impl.SpringTaskService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 
 @Api(tags = "工作流任务管理")
 @RestController
@@ -25,6 +28,10 @@ public class SpringTaskController extends BaseController {
 	@Autowired
 	private SpringTaskService springTaskService;
 
+	@ApiOperation(value = "获取待办分页列表", response = ReponseResultPageDTO.class)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "title", dataType = "String"),
+			@ApiImplicitParam(name = "category", dataType = "String"),
+			@ApiImplicitParam(name = "pageable", dataType = "Pageable"), })
 	@GetMapping(value = "/GetTodoTasks")
 	public ReponseResultPageDTO<SpringTaskDTO> getTodoTasks(String title, String category,
 			@PageableDefault(page = 1, size = 20) Pageable pageable) {
@@ -33,6 +40,10 @@ public class SpringTaskController extends BaseController {
 				ResultCode.SELECT_SUCCESSED);
 	}
 
+	@ApiOperation(value = "获取我的申请分页列表", response = ReponseResultPageDTO.class)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "title", dataType = "String"),
+			@ApiImplicitParam(name = "category", dataType = "String"),
+			@ApiImplicitParam(name = "pageable", dataType = "Pageable"), })
 	@GetMapping(value = "/GetTasksByStarter")
 	public ReponseResultPageDTO<SpringTaskDTO> getTasksByStarter(String title, String category,
 			@PageableDefault(page = 1, size = 20) Pageable pageable) {
@@ -42,6 +53,10 @@ public class SpringTaskController extends BaseController {
 				ResultCode.SELECT_SUCCESSED);
 	}
 
+	@ApiOperation(value = "获取已办分页列表", response = ReponseResultPageDTO.class)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "title", dataType = "String"),
+			@ApiImplicitParam(name = "category", dataType = "String"),
+			@ApiImplicitParam(name = "pageable", dataType = "Pageable"), })
 	@GetMapping(value = "/GetFinishTasks")
 	public ReponseResultPageDTO<SpringTaskDTO> getFinishTasks(String title, String category,
 			@PageableDefault(page = 1, size = 20) Pageable pageable) {

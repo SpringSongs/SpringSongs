@@ -110,8 +110,18 @@ public class SpringActVacationServiceImpl implements ISpringActVacationService {
 
 	@Override
 	public void updateByPrimaryKey(SpringActVacationDTO record) {
-		// TODO Auto-generated method stub
-
+		SpringActVacation springActVacation = springActVacationRepo.getOne(record.getId());
+		if (null == springActVacation) {
+			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		}
+		SpringActVacation springActVacationDO = new SpringActVacation();
+		BeanUtils.copyProperties(record, springActVacationDO);
+		try {
+			springActVacationRepo.save(springActVacationDO);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 	}
 
 	@Override
@@ -205,12 +215,10 @@ public class SpringActVacationServiceImpl implements ISpringActVacationService {
 		task.setCategory(processDefinition.getCategory());
 		SpringActUseTask springActUseTask = springActUseTaskRepo.findUserTaskByTaskDefKey(task.getTaskDefinitionKey());
 		taskService.saveTask(task);
-		if ("assignee".equals(springActUseTask.getTaskYpe())) {
+		if ("assignee".equals(springActUseTask.getTaskType())) {
 			taskService.setAssignee(task.getId(), springActUseTask.getCandidateIds());
 		}
 		return processInstanceId;
 	}
-
-	
 
 }

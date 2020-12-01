@@ -14,7 +14,10 @@ import org.hibernate.annotations.GenericGenerator;
 
 import io.github.springsongs.annotation.Description;
 import io.github.springsongs.common.base.SpringBase;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
+@ApiModel(description = "请假单审批实体")
 @Entity
 @DynamicInsert(true)
 @DynamicUpdate(true)
@@ -25,6 +28,7 @@ public class SpringActVacationApprove extends SpringBase {
 	@GenericGenerator(name = "paymentableGenerator", strategy = "uuid")
 	@Description(title = "主键")
 	@Column(name = "id")
+	@ApiModelProperty("主键")
 	private String id;
 
 	public String getId() {
@@ -39,6 +43,7 @@ public class SpringActVacationApprove extends SpringBase {
 	@Size(max = 45, min = 1)
 	@Description(title = "流程实例id")
 	@Column(name = "process_instance_id")
+	@ApiModelProperty("流程实例id")
 	private String processInstanceId;
 
 	public String getProcessInstanceId() {
@@ -53,6 +58,7 @@ public class SpringActVacationApprove extends SpringBase {
 	@Size(max = 45, min = 1)
 	@Description(title = "Activti任务id")
 	@Column(name = "task_id")
+	@ApiModelProperty("Activti任务id")
 	private String taskId;
 
 	public String getTaskId() {
@@ -63,10 +69,25 @@ public class SpringActVacationApprove extends SpringBase {
 		this.taskId = taskId;
 	}
 
+	@NotBlank(message="请假单id")
+	@Size(max = 36, min = 1)
+	@Description(title = "请假单id")
+	@Column(name = "vacation_Id")
+	@ApiModelProperty("请假单id")
+	private String vacationId;
+	
+	public String getVacationId() {
+		return vacationId;
+	}
+
+	public void setVacationId(String vacationId) {
+		this.vacationId = vacationId;
+	}
 	
 	@Size(max = 36, min = 1)
 	@Description(title = "审批人用户id")
 	@Column(name = "user_id")
+	@ApiModelProperty("审批人用户id")
 	private String userId;
 
 	public String getUserId() {
@@ -77,8 +98,9 @@ public class SpringActVacationApprove extends SpringBase {
 		this.userId = userId;
 	}
 
-	@Description(title = "审批结果（0：不通过；1：通过）")
+	@Description(title = "审批结果（3：不通过；2：通过）")
 	@Column(name = "result")
+	@ApiModelProperty("审批结果（3：不通过；2：通过）")
 	private short result;
 
 	public short getResult() {
@@ -93,6 +115,7 @@ public class SpringActVacationApprove extends SpringBase {
 	@Size(max = 200, min = 1)
 	@Description(title = "备注")
 	@Column(name = "remark")
+	@ApiModelProperty("备注")
 	private String remark;
 
 	public String getRemark() {
@@ -107,6 +130,7 @@ public class SpringActVacationApprove extends SpringBase {
 	@Size(max = 45, min = 1)
 	@Description(title = "审批人姓名")
 	@Column(name = "true_name")
+	@ApiModelProperty("审批人姓名")
 	private String trueName;
 
 	public String getTrueName() {

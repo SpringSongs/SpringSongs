@@ -24,7 +24,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.github.springsongs.annotation.Description;
 import io.github.springsongs.common.base.SpringBase;
 import io.github.springsongs.modules.sys.dto.RoleCodeDTO;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
+@ApiModel(description = "用户实体")
 @Entity
 @DynamicInsert(true)
 @DynamicUpdate(true)
@@ -40,6 +43,7 @@ public class SpringUser extends SpringBase implements Serializable {
     @GenericGenerator(name = "paymentableGenerator", strategy = "uuid")
     @Description(title ="id")
     @Column(name="id")
+	@ApiModelProperty("主键")
     private String id;
     public String getId(){
         return  this.id;
@@ -53,6 +57,7 @@ public class SpringUser extends SpringBase implements Serializable {
     @Size(max=45, min=1)
     @Description(title ="邮箱")
     @Column(name="email")
+    @ApiModelProperty("邮箱")
     private String email;
     public String getEmail(){
         return  this.email;
@@ -65,6 +70,7 @@ public class SpringUser extends SpringBase implements Serializable {
     @Size(max=45, min=1)
     @Description(title ="手机")
     @Column(name="mobile")
+    @ApiModelProperty("手机")
     private String mobile;
     public String getMobile(){
         return  this.mobile;
@@ -76,6 +82,7 @@ public class SpringUser extends SpringBase implements Serializable {
     @Size(max=45, min=0)
     @Description(title ="头像")
     @Column(name="portrait")
+    @ApiModelProperty("头像")
     private String portrait;
     public String getPortrait(){
         return  this.portrait;
@@ -88,6 +95,7 @@ public class SpringUser extends SpringBase implements Serializable {
     @Size(max=45, min=1)
     @Description(title ="用户名")
     @Column(name="user_name")
+    @ApiModelProperty("用户名")
     private String userName;
     public String getUserName(){
         return  this.userName;
@@ -100,6 +108,7 @@ public class SpringUser extends SpringBase implements Serializable {
     @Description(title ="真实姓名")
     @NotBlank(message="请填写真实姓名")
     @Column(name="true_name")
+    @ApiModelProperty("真实姓名")
     private String trueName;
     public String getTrueName(){
         return  this.trueName;
@@ -111,6 +120,7 @@ public class SpringUser extends SpringBase implements Serializable {
     @Size(max=45, min=0)
     @Description(title ="签名")
     @Column(name="resume")
+    @ApiModelProperty("签名")
     private String resume;
     public String getResume(){
         return  this.resume;
@@ -122,6 +132,7 @@ public class SpringUser extends SpringBase implements Serializable {
     
     @Description(title ="组织机构主键")
     @Column(name="organization_id")
+    @ApiModelProperty("组织机构主键")
     private String organizationId;
     public String getOrganizationId(){
         return  this.organizationId;
@@ -133,6 +144,7 @@ public class SpringUser extends SpringBase implements Serializable {
    
     @Description(title ="组织机构名称")
     @Column(name="organization_name")
+    @ApiModelProperty("组织机构名称")
     private String organizationName;
     public String getOrganizationName(){
         return  this.organizationName;
@@ -144,6 +156,7 @@ public class SpringUser extends SpringBase implements Serializable {
     
     @Description(title ="职称主键")
     @Column(name="title_id")
+    @ApiModelProperty("职称主键")
     private String titleId;
     public String getTitleId(){
         return  this.titleId;
@@ -155,6 +168,7 @@ public class SpringUser extends SpringBase implements Serializable {
    
     @Description(title ="职称名称")
     @Column(name="title_name")
+    @ApiModelProperty("职称名称")
     private String titleName;
     public String getTitleName(){
         return  this.titleName;
@@ -165,6 +179,7 @@ public class SpringUser extends SpringBase implements Serializable {
 
     @Description(title ="登录次数")
     @Column(name="login_count")
+    @ApiModelProperty("登录次数")
     private int loginCount;
     public int getLoginCount(){
         return  this.loginCount;
@@ -175,6 +190,7 @@ public class SpringUser extends SpringBase implements Serializable {
 
     @Description(title ="注册时间")
     @Column(name="register_time")
+    @ApiModelProperty("注册时间")
     private java.util.Date registerTime;
     public java.util.Date getRegisterTime(){
         return  this.registerTime;
@@ -186,6 +202,7 @@ public class SpringUser extends SpringBase implements Serializable {
     @Size(max=45, min=0)
     @Description(title ="注册IP")
     @Column(name="regsiter_ip")
+    @ApiModelProperty("注册IP")
     private String regsiterIp;
     public String getRegsiterIp(){
         return  this.regsiterIp;
@@ -196,6 +213,7 @@ public class SpringUser extends SpringBase implements Serializable {
 
     @Description(title ="最后一次登录时间")
     @Column(name="last_login_time")
+    @ApiModelProperty("最后一次登录时间")
     private java.util.Date lastLoginTime;
     public java.util.Date getLastLoginTime(){
         return  this.lastLoginTime;
@@ -206,6 +224,7 @@ public class SpringUser extends SpringBase implements Serializable {
 
     @Description(title ="状态")
     @Column(name="status")
+    @ApiModelProperty("状态")
     private boolean status;
     public boolean getStatus(){
         return  this.status;
@@ -216,6 +235,7 @@ public class SpringUser extends SpringBase implements Serializable {
 
     @Description(title ="锁定状态")
     @Column(name="lock_status")
+    @ApiModelProperty("锁定状态")
     private boolean lockStatus;
     public boolean getLockStatus(){
         return  this.lockStatus;
@@ -226,6 +246,7 @@ public class SpringUser extends SpringBase implements Serializable {
 
     @Description(title ="排序")
     @Column(name="sort_order")
+    @ApiModelProperty("排序")
     private int sortOrder;
     public int getSortOrder(){
         return  this.sortOrder;
@@ -236,6 +257,7 @@ public class SpringUser extends SpringBase implements Serializable {
 
     @Description(title ="允许编辑0不允许1允许")
     @Column(name="enable_edit")
+    @ApiModelProperty("允许编辑0不允许1允许")
     private boolean enableEdit;
     public boolean getEnableEdit(){
         return  this.enableEdit;
@@ -246,6 +268,7 @@ public class SpringUser extends SpringBase implements Serializable {
 
     @Description(title ="允许删除0不允许1允许")
     @Column(name="enable_delete")
+    @ApiModelProperty("允许删除0不允许1允许")
     private boolean enableDelete;
     public boolean getEnableDelete(){
         return  this.enableDelete;
@@ -256,6 +279,7 @@ public class SpringUser extends SpringBase implements Serializable {
 
     @Description(title = "0未删1已删")
    	@Column(name = "deleted_status")
+    @ApiModelProperty("0未删1已删")
    	private boolean deletedStatus;
 
    	public boolean getDeletedStatus() {

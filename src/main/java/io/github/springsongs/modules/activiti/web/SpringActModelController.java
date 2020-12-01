@@ -42,6 +42,9 @@ import io.github.springsongs.modules.activiti.service.SpringActModelService;
 import io.github.springsongs.modules.job.web.SpringJobGroupController;
 import io.github.springsongs.util.Constant;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 
 @Api(tags = "工作流模型管理")
 @RestController
@@ -57,6 +60,9 @@ public class SpringActModelController extends BaseController {
 	@Autowired
 	private SpringActModelService springActModelService;
 
+	@ApiOperation(value = "获取工作流模型分页列表", response = ReponseResultPageDTO.class)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "springActModelQuery", dataType = "SpringActModelQuery"),
+			@ApiImplicitParam(name = "pageable", dataType = "Pageable"), })
 	@PostMapping(value = "/ListByPage")
 	public ReponseResultPageDTO<Model> listByPage(@RequestBody SpringActModelQuery springActModelQuery,
 			@PageableDefault(page = 0, size = 20) Pageable pageable) {
@@ -65,19 +71,27 @@ public class SpringActModelController extends BaseController {
 				ResultCode.SELECT_SUCCESSED);
 	}
 
+	@ApiOperation(value = "创建工作流模型", notes = "根据SpringActModelDTO对象创建工作流模型", response = ResponseDTO.class)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "viewEntity", dataType = "SpringActModelDTO"),
+			@ApiImplicitParam(name = "request", dataType = "HttpServletRequest"), })
 	@PostMapping(value = "/Create")
 	public ResponseDTO<String> save(@RequestBody @Valid SpringActModelDTO viewEntity) {
 		Model model = springActModelService.save(viewEntity);
 		return ResponseDTO.successed(null, ResultCode.SAVE_SUCCESSED);
 	}
 
-	@PostMapping(value = "/Edit/{id}")
+	@ApiOperation(value = "修改工作流模型", notes = "根据SpringActModelDTO对象修改工作流模型", response = ResponseDTO.class)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "viewEntity", dataType = "SpringActModelDTO"),
+			@ApiImplicitParam(name = "request", dataType = "HttpServletRequest"), })
+	@PutMapping(value = "/Edit/{id}")
 	public ResponseDTO<String> edit(@RequestBody @Valid SpringActModelDTO viewEntity,
 			@PathVariable(value = "id", required = true) @Valid @NotEmpty(message = Constant.PARAMETER_NOT_NULL_ERROR) String id) {
 		springActModelService.update(viewEntity, id);
 		return ResponseDTO.successed(null, ResultCode.UPDATE_SUCCESSED);
 	}
 
+	@ApiOperation(value = "删除工作流模型", notes = "根据List<String>对象删除工作流模型", response = ResponseDTO.class)
+	@ApiImplicitParam(dataType = "String", name = "id", value = "工作流模型编号", required = true)
 	@PostMapping(value = "/SetDeleted/{id}")
 	public ResponseDTO<String> delete(
 			@PathVariable(value = "ids", required = true) @Valid @NotEmpty(message = Constant.PARAMETER_NOT_NULL_ERROR) List<String> ids) {
@@ -85,6 +99,8 @@ public class SpringActModelController extends BaseController {
 		return ResponseDTO.successed(null, ResultCode.DELETE_SUCCESSED);
 	}
 
+	@ApiOperation(value = "发布工作流模型", notes = "根据id对象发布工作流模型", response = ResponseDTO.class)
+	@ApiImplicitParam(dataType = "String", name = "id", value = "工作流模型编号", required = true)
 	@PutMapping("/Deploy/{id}")
 	public ResponseDTO<String> deploy(
 			@PathVariable(value = "id", required = true) @Valid @NotEmpty(message = Constant.PARAMETER_NOT_NULL_ERROR) String id) {
@@ -92,6 +108,9 @@ public class SpringActModelController extends BaseController {
 		return ResponseDTO.successed(null, ResultCode.SAVE_SUCCESSED);
 	}
 
+	@ApiOperation(value = "导出工作流模型XML", notes = "根据modelId对象导出工作流模型XML")
+	@ApiImplicitParams({ @ApiImplicitParam(name = "modelId", dataType = "String"),
+			@ApiImplicitParam(name = "response", dataType = "HttpServletResponse"), })
 	@GetMapping(value = "Export/{modelId}")
 	public void export(@PathVariable("modelId") String modelId, HttpServletResponse response) {
 		try {
@@ -112,6 +131,6 @@ public class SpringActModelController extends BaseController {
 			logger.error("导出model的xml文件失败：modelId={}" + modelId, e);
 			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
 		}
-		//return ResponseDTO.successed(null, ResultCode.SAVE_SUCCESSED);
+		// return ResponseDTO.successed(null, ResultCode.SAVE_SUCCESSED);
 	}
 }

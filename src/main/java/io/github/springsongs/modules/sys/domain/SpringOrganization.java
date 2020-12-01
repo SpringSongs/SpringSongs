@@ -16,7 +16,10 @@ import org.hibernate.annotations.GenericGenerator;
 
 import io.github.springsongs.annotation.Description;
 import io.github.springsongs.common.base.SpringBase;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
+@ApiModel(description = "组织机构实体")
 @Entity
 @DynamicInsert(true)
 @DynamicUpdate(true)
@@ -31,6 +34,7 @@ public class SpringOrganization extends SpringBase  implements Serializable {
 	@GenericGenerator(name = "paymentableGenerator", strategy = "uuid")
 	@Description(title = "主键")
 	@Column(name = "id")
+	@ApiModelProperty("主键")
 	private String id;
 
 	public String getId() {
@@ -44,6 +48,7 @@ public class SpringOrganization extends SpringBase  implements Serializable {
 	@Size(max = 45, min = 0)
 	@Description(title = "上级主键")
 	@Column(name = "parent_id")
+	@ApiModelProperty("上级主键")
 	private String parentId;
 
 	public String getParentId() {
@@ -58,6 +63,7 @@ public class SpringOrganization extends SpringBase  implements Serializable {
 	@Size(max = 45, min = 1)
 	@Description(title = "编码")
 	@Column(name = "code")
+	@ApiModelProperty("编码")
 	private String code;
 
 	public String getCode() {
@@ -72,6 +78,7 @@ public class SpringOrganization extends SpringBase  implements Serializable {
 	@Size(max = 45, min = 1)
 	@Description(title = "名称")
 	@Column(name = "title")
+	@ApiModelProperty("名称")
 	private String title;
 
 	public String getTitle() {
@@ -84,6 +91,7 @@ public class SpringOrganization extends SpringBase  implements Serializable {
 
 	@Description(title = "0未删1已删")
 	@Column(name = "deleted_status")
+	@ApiModelProperty("0未删1已删")
 	private boolean deletedStatus;
 
 	public boolean getDeletedStatus() {

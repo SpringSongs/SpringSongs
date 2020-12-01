@@ -18,7 +18,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import io.github.springsongs.annotation.Description;
 import io.github.springsongs.common.base.SpringBase;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
+@ApiModel(description="附件分类实体")
 @Entity
 @DynamicInsert(true)
 @DynamicUpdate(true)
@@ -34,6 +37,7 @@ public class SpringAttachmentCategory  extends SpringBase   implements Serializa
 	@GenericGenerator(name = "paymentableGenerator", strategy = "uuid")
 	@Description(title = "id")
 	@Column(name = "id")
+	@ApiModelProperty("主键")
 	private String id;
 
 	public String getId() {
@@ -48,6 +52,7 @@ public class SpringAttachmentCategory  extends SpringBase   implements Serializa
 	@Size(max = 45, min = 1)
 	@Description(title = "文件夾名称")
 	@Column(name = "title")
+	@ApiModelProperty("主键")
 	private String title;
 
 	public String getTitle() {
@@ -62,6 +67,7 @@ public class SpringAttachmentCategory  extends SpringBase   implements Serializa
 	@Size(max = 45, min = 1)
 	@Description(title = "说明")
 	@Column(name = "description")
+	@ApiModelProperty("说明")
 	private String description;
 
 	public String getDescription() {
@@ -75,6 +81,7 @@ public class SpringAttachmentCategory  extends SpringBase   implements Serializa
 	@Size(max = 45, min = 0)
 	@Description(title = "分类名称")
 	@Column(name = "dictionary_code")
+	@ApiModelProperty("分类名称")
 	private String dictionaryCode;
 
 	public String getDictionaryCode() {
@@ -88,6 +95,7 @@ public class SpringAttachmentCategory  extends SpringBase   implements Serializa
 	@Size(max = 45, min = 0)
 	@Description(title = "分类名称")
 	@Column(name = "dictionary_name")
+	@ApiModelProperty("分类名称")
 	private String dictionaryName;
 
 	public String getDictionaryName() {
@@ -100,6 +108,7 @@ public class SpringAttachmentCategory  extends SpringBase   implements Serializa
 
 	@Description(title ="0未删1已删")
     @Column(name="deleted_status")
+	@ApiModelProperty("0未删1已删")
     private boolean deletedStatus;
     public boolean getDeletedStatus(){
         return  this.deletedStatus;

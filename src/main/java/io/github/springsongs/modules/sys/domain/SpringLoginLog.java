@@ -15,7 +15,10 @@ import org.hibernate.annotations.GenericGenerator;
 
 import io.github.springsongs.annotation.Description;
 import io.github.springsongs.common.base.SpringBase;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
+@ApiModel(description = "登录日志实体")
 @Entity
 @DynamicInsert(true)
 @DynamicUpdate(true)
@@ -30,6 +33,7 @@ public class SpringLoginLog extends SpringBase implements Serializable {
 	@GenericGenerator(name = "paymentableGenerator", strategy = "uuid")
 	@Description(title = "主键")
 	@Column(name = "id")
+	@ApiModelProperty("主键")
 	private String id;
 
 	public String getId() {
@@ -43,6 +47,7 @@ public class SpringLoginLog extends SpringBase implements Serializable {
 	@Size(max = 45, min = 0)
 	@Description(title = "description")
 	@Column(name = "description")
+	@ApiModelProperty("说明")
 	private String description;
 
 	public String getDescription() {

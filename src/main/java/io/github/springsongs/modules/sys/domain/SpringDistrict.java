@@ -14,7 +14,10 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import io.github.springsongs.annotation.Description;
 import io.github.springsongs.common.base.SpringBase;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
+@ApiModel(description = "行政区域实体")
 @Entity
 @DynamicInsert(true)
 @DynamicUpdate(true)
@@ -24,6 +27,7 @@ public class SpringDistrict extends SpringBase {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Description(title = "主键")
 	@Column(name = "id")
+	@ApiModelProperty("主键")
 	private long id;
 
 	public long getId() {
@@ -38,6 +42,7 @@ public class SpringDistrict extends SpringBase {
 	@Size(max = 255, min = 1)
 	@Description(title = "名称")
 	@Column(name = "name")
+	@ApiModelProperty("请填写名称")
 	private String name;
 
 	public String getName() {
@@ -50,6 +55,7 @@ public class SpringDistrict extends SpringBase {
 
 	@Description(title = "级别")
 	@Column(name = "level")
+	@ApiModelProperty("级别")
 	private int level;
 
 	public int getLevel() {
@@ -62,6 +68,7 @@ public class SpringDistrict extends SpringBase {
 
 	@Description(title = "上级主键")
 	@Column(name = "parent_id")
+	@ApiModelProperty("上级主键")
 	private long parentId;
 
 	public long getParentId() {
@@ -74,6 +81,7 @@ public class SpringDistrict extends SpringBase {
 
 	@Description(title = "sort_order")
 	@Column(name = "sort_order")
+	@ApiModelProperty("排序")
 	private short sortOrder;
 
 	public short getSortOrder() {

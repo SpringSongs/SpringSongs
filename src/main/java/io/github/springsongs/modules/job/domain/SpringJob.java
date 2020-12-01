@@ -15,7 +15,10 @@ import org.hibernate.annotations.GenericGenerator;
 
 import io.github.springsongs.annotation.Description;
 import io.github.springsongs.common.base.SpringBase;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
+@ApiModel(description="定时任务实体")
 @Entity
 @DynamicInsert(true)
 @DynamicUpdate(true)
@@ -26,6 +29,7 @@ public class SpringJob extends SpringBase {
     @GenericGenerator(name = "paymentableGenerator", strategy = "uuid")
     @Description(title ="主键")
     @Column(name="id")
+	@ApiModelProperty("主键")
     private String id;
     public String getId(){
         return  this.id;
@@ -39,6 +43,7 @@ public class SpringJob extends SpringBase {
     @Size(max=45, min=1)
     @Description(title ="组别编码")
     @Column(name="group_code")
+    @ApiModelProperty("组别编码")
     private String groupCode;
     public String getGroupCode(){
         return  this.groupCode;
@@ -51,6 +56,7 @@ public class SpringJob extends SpringBase {
     @Size(max=45, min=1)
     @Description(title ="组别名称")
     @Column(name="group_title")
+    @ApiModelProperty("组别名称")
     private String groupTitle;
     public String getGroupTitle(){
         return  this.groupTitle;
@@ -63,6 +69,7 @@ public class SpringJob extends SpringBase {
     @Size(max=45, min=1)
     @Description(title ="任务名称")
     @Column(name="task_title")
+    @ApiModelProperty("任务名称")
     private String taskTitle;
     public String getTaskTitle(){
         return  this.taskTitle;
@@ -75,6 +82,7 @@ public class SpringJob extends SpringBase {
     @Size(max=100, min=1)
     @Description(title ="任务类")
     @Column(name="task_class_title")
+    @ApiModelProperty("任务类")
     private String taskClassTitle;
     public String getTaskClassTitle(){
         return  this.taskClassTitle;
@@ -87,6 +95,7 @@ public class SpringJob extends SpringBase {
     @Size(max=45, min=1)
     @Description(title ="时间表达式")
     @Column(name="cron_Expression")
+    @ApiModelProperty("时间表达式")
     private String cronExpression;
     public String getCronExpression(){
         return  this.cronExpression;
@@ -96,6 +105,7 @@ public class SpringJob extends SpringBase {
     }
 
     @Description(title ="状态0创建1暂停2恢复3删除")
+    @ApiModelProperty("状态0创建1暂停2恢复3删除")
     @Column(name="status")
     private int status;
     public int getStatus(){
@@ -109,6 +119,7 @@ public class SpringJob extends SpringBase {
     @Size(max=500, min=1)
     @Description(title ="备注")
     @Column(name="remark")
+    @ApiModelProperty("备注")
     private String remark;
     public String getRemark(){
         return  this.remark;

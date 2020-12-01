@@ -18,7 +18,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import io.github.springsongs.annotation.Description;
 import io.github.springsongs.common.base.SpringBase;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
+@ApiModel(description="附件实体")
 @Entity
 @DynamicInsert(true)
 @DynamicUpdate(true)
@@ -34,6 +37,7 @@ public class SpringAttachment  extends SpringBase  implements Serializable {
 	@GenericGenerator(name = "paymentableGenerator", strategy = "uuid")
 	@Description(title = "主键")
 	@Column(name = "id")
+	@ApiModelProperty("主键")
 	private String id;
 
 	public String getId() {
@@ -48,6 +52,7 @@ public class SpringAttachment  extends SpringBase  implements Serializable {
 	@Size(max = 36, min = 1)
 	@Description(title = "文件夾主键")
 	@Column(name = "folder_id")
+	@ApiModelProperty("文件夾主键")
 	private String folderId;
 
 	public String getFolderId() {
@@ -62,6 +67,7 @@ public class SpringAttachment  extends SpringBase  implements Serializable {
 	@Size(max = 45, min = 1)
 	@Description(title = "文件夹名称")
 	@Column(name = "folder_name")
+	@ApiModelProperty("文件夹名称")
 	private String folderName;
 
 	public String getFolderName() {
@@ -76,6 +82,7 @@ public class SpringAttachment  extends SpringBase  implements Serializable {
 	@Size(max = 45, min = 1)
 	@Description(title = "说明")
 	@Column(name = "description")
+	@ApiModelProperty("说明")
 	private String description;
 
 	public String getDescription() {
@@ -90,6 +97,7 @@ public class SpringAttachment  extends SpringBase  implements Serializable {
 	@Size(max = 300, min = 1)
 	@Description(title = "文件路径")
 	@Column(name = "path")
+	@ApiModelProperty("文件路径")
 	private String path;
 
 	public String getPath() {
@@ -102,6 +110,7 @@ public class SpringAttachment  extends SpringBase  implements Serializable {
 
 	@Description(title ="0未删1已删")
     @Column(name="deleted_status")
+	@ApiModelProperty("0未删1已删")
     private boolean deletedStatus;
     public boolean getDeletedStatus(){
         return  this.deletedStatus;

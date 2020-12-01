@@ -2,9 +2,11 @@ package io.github.springsongs.modules.activiti.util;
 
 import java.util.Map;
 
+import org.activiti.engine.TaskService;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.TaskInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.exception.SpringSongsException;
@@ -13,6 +15,9 @@ import io.github.springsongs.modules.activiti.dto.SpringProcessDTO;
 import io.github.springsongs.modules.activiti.dto.SpringTaskDTO;
 
 public class ActivitiUtils {
+
+	@Autowired
+	private TaskService taskService;
 
 	/**
 	 * 抽取流程实例需要返回的内容
@@ -48,12 +53,15 @@ public class ActivitiUtils {
 		dto.setTaskName(task.getName());
 		Map<String, Object> pvar = task.getProcessVariables();
 		SpringStartTask springStartTask = (SpringStartTask) pvar.get("entity");
+		if (pvar.containsKey("audit")) {
+			String auditStr = (String) pvar.get("audit");
+			dto.setAuditStr(auditStr);
+		}
 		dto.setStartTitle(springStartTask.getTitle());
 		dto.setStartUserName(springStartTask.getStartUserName());
 		dto.setRouter(springStartTask.getRouter());
 		dto.setSubmitTime(springStartTask.getSubmitTime());
 		dto.setBusinessId(springStartTask.getBusinessId());
-		// Map<String,Object> tvar=task.getTaskLocalVariables();
 		// dto.setTime(historyService.createHistoricProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult().getStartTime().getTime());
 		dto.setPdName(deployment.getName());
 		dto.setVersion("V:" + processDefinition.getVersion());

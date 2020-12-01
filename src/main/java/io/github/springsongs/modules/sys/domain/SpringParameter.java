@@ -19,7 +19,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import io.github.springsongs.annotation.Description;
 import io.github.springsongs.common.base.SpringBase;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
+@ApiModel(description = "系统参数实体")
 @Entity
 @DynamicInsert(true)
 @DynamicUpdate(true)
@@ -35,6 +38,7 @@ public class SpringParameter extends SpringBase   implements Serializable {
     @GenericGenerator(name = "paymentableGenerator", strategy = "uuid")
     @Description(title ="主键")
     @Column(name="id")
+	@ApiModelProperty("主键")
     private String id;
     public String getId(){
         return  this.id;
@@ -48,6 +52,7 @@ public class SpringParameter extends SpringBase   implements Serializable {
     @Size(max=45, min=1)
     @Description(title ="编码")
     @Column(name="code")
+    @ApiModelProperty("编码")
     private String code;
     public String getCode(){
         return  this.code;
@@ -60,6 +65,7 @@ public class SpringParameter extends SpringBase   implements Serializable {
     @Size(max=45, min=1)
     @Description(title ="名称")
     @Column(name="k")
+    @ApiModelProperty("名称")
     private String k;
     public String getK(){
         return  this.k;
@@ -72,6 +78,7 @@ public class SpringParameter extends SpringBase   implements Serializable {
     @Size(max=45, min=1)
     @Description(title ="值")
     @Column(name="v")
+    @ApiModelProperty("值")
     private String v;
     public String getV(){
         return  this.v;
@@ -82,6 +89,7 @@ public class SpringParameter extends SpringBase   implements Serializable {
 
     @Description(title ="排序")
     @Column(name="sort_code")
+    @ApiModelProperty("排序")
     private int sortCode;
     public int getSortCode(){
         return  this.sortCode;
@@ -92,6 +100,7 @@ public class SpringParameter extends SpringBase   implements Serializable {
 
     @Description(title ="允许编辑0不允许1允许")
     @Column(name="enable_edit")
+    @ApiModelProperty("允许编辑0不允许1允许")
     private boolean enableEdit;
     public boolean getEnableEdit(){
         return  this.enableEdit;
@@ -102,6 +111,7 @@ public class SpringParameter extends SpringBase   implements Serializable {
 
     @Description(title ="允许删除0不允许1允许")
     @Column(name="enable_delete")
+    @ApiModelProperty("允许删除0不允许1允许")
     private boolean enableDelete;
     public boolean getEnableDelete(){
         return  this.enableDelete;
@@ -112,6 +122,7 @@ public class SpringParameter extends SpringBase   implements Serializable {
 
     @Description(title = "0未删1已删")
    	@Column(name = "deleted_status")
+    @ApiModelProperty("0未删1已删")
    	private boolean deletedStatus;
 
    	public boolean getDeletedStatus() {
@@ -121,7 +132,5 @@ public class SpringParameter extends SpringBase   implements Serializable {
    	public void setDeletedStatus(boolean deletedStatus) {
    		this.deletedStatus = deletedStatus;
    	}
-
-  
 
 }

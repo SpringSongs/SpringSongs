@@ -17,7 +17,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,6 +36,9 @@ import io.github.springsongs.modules.sys.dto.SpringAttachmentDTO;
 import io.github.springsongs.modules.sys.service.ISpringAttachmentService;
 import io.github.springsongs.util.IpKit;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 
 @Api(tags = "附件管理")
 @RestController
@@ -48,6 +53,9 @@ public class SpringAttachmentController extends BaseController {
 	@Value("${web.upload.path}")
 	private String uploadPath;
 
+	@ApiOperation(value = "获取附件分页列表", response = ReponseResultPageDTO.class)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "viewEntity", dataType = "SpringAttachment"),
+			@ApiImplicitParam(name = "pageable", dataType = "Pageable"), })
 	@PostMapping(value = "ListByPage")
 	public ReponseResultPageDTO<SpringAttachmentDTO> listByPage(@RequestBody SpringAttachment viewEntity,
 			@PageableDefault(page = 1, size = 20) Pageable pageable) {
@@ -57,12 +65,17 @@ public class SpringAttachmentController extends BaseController {
 				ResultCode.SELECT_SUCCESSED);
 	}
 
-	@PostMapping(value = "/Detail")
+	@ApiOperation(value = "获取附件", response = ResponseDTO.class)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "id", dataType = "String") })
+	@GetMapping(value = "/Detail")
 	public ResponseDTO<String> get(@NotEmpty(message = "id不能为空") String id) {
 		SpringAttachment entity = springAttachmentService.selectByPrimaryKey(id);
 		return ResponseDTO.successed(entity, ResultCode.SELECT_SUCCESSED);
 	}
 
+	@ApiOperation(value = "创建附件", notes = "根据SpringAttachmentDTO附件", response = ResponseDTO.class)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "viewEntity", dataType = "SpringAttachmentDTO"),
+			@ApiImplicitParam(name = "request", dataType = "HttpServletRequest"), })
 	@PostMapping(value = "/Create")
 	public ResponseDTO<String> save(@RequestBody @Valid SpringAttachmentDTO viewEntity, HttpServletRequest request) {
 		viewEntity.setCreatedBy(this.getUser().getUserName());
@@ -73,7 +86,10 @@ public class SpringAttachmentController extends BaseController {
 		return ResponseDTO.successed(null, ResultCode.SAVE_SUCCESSED);
 	}
 
-	@PostMapping(value = "/Edit")
+	@ApiOperation(value = "修改附件", notes = "根据SpringAttachmentDTO修改附件", response = ResponseDTO.class)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "viewEntity", dataType = "SpringAttachmentDTO"),
+			@ApiImplicitParam(name = "request", dataType = "HttpServletRequest"), })
+	@PutMapping(value = "/Edit")
 	public ResponseDTO<String> update(@RequestBody @Valid SpringAttachmentDTO viewEntity, HttpServletRequest request) {
 		viewEntity.setUpdatedOn(new Date());
 		viewEntity.setUpdatedUserId(this.getUser().getId());
@@ -84,21 +100,28 @@ public class SpringAttachmentController extends BaseController {
 
 	}
 
+	@ApiOperation(value = "删除附件", notes = "根据List<String>对象删除附件", response = ResponseDTO.class)
+	@ApiImplicitParam(dataType = "List<String>", name = "ids", value = "附件编号", required = true)
 	@PostMapping(value = "/SetDeleted")
 	public ResponseDTO<String> setDeleted(@RequestParam(value = "ids", required = true) List<String> ids) {
 		springAttachmentService.setDeleted(ids);
 		return ResponseDTO.successed(null, ResultCode.DELETE_SUCCESSED);
 	}
 
+	@ApiOperation(value = "删除附件", notes = "根据List<String>对象删除附件", response = ResponseDTO.class)
+	@ApiImplicitParam(dataType = "List<String>", name = "ids", value = "附件编号", required = true)
 	@PostMapping(value = "/Deleted")
 	public ResponseDTO<String> deleted(@RequestParam(value = "ids", required = true) List<String> ids) {
 		springAttachmentService.delete(ids);
 		return ResponseDTO.successed(null, ResultCode.DELETE_SUCCESSED);
 	}
 
+	@ApiOperation(value = "上传附件", notes = "根据MultipartFile上传附件", response = ResponseDTO.class)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "file", dataType = "MultipartFile"),
+			@ApiImplicitParam(name = "request", dataType = "HttpServletRequest"), })
 	@PostMapping(value = "/Upload")
 	public ResponseDTO<String> upload(MultipartFile file, HttpServletRequest request) {
-		
+
 		String originalFileName = file.getOriginalFilename();
 		String fileName = UUID.randomUUID().toString()
 				+ originalFileName.substring(originalFileName.lastIndexOf("."), originalFileName.length());

@@ -15,7 +15,10 @@ import org.hibernate.annotations.GenericGenerator;
 
 import io.github.springsongs.annotation.Description;
 import io.github.springsongs.common.base.SpringBase;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
+@ApiModel(description = "用户与角色映射实体")
 @Entity
 @DynamicInsert(true)
 @DynamicUpdate(true)
@@ -30,6 +33,7 @@ public class SpringUserRole extends SpringBase  implements Serializable {
 	@GenericGenerator(name = "paymentableGenerator", strategy = "uuid")
 	@Description(title = "主键")
 	@Column(name = "id")
+	@ApiModelProperty("主键")
 	private String id;
 
 	public String getId() {
@@ -43,6 +47,7 @@ public class SpringUserRole extends SpringBase  implements Serializable {
 	@Size(max = 36, min = 0)
 	@Description(title = "用户主键")
 	@Column(name = "user_id")
+	@ApiModelProperty("用户主键")
 	private String userId;
 
 	public String getUserId() {
@@ -56,6 +61,7 @@ public class SpringUserRole extends SpringBase  implements Serializable {
 	@Size(max = 36, min = 0)
 	@Description(title = "角色主键")
 	@Column(name = "role_id")
+	@ApiModelProperty("角色主键")
 	private String roleId;
 
 	public String getRoleId() {

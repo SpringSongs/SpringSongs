@@ -18,6 +18,16 @@ public class SpringTaskDTO {
 	private String startUserName;
 	private String startTitle;
 	private Date submitTime;
+	private String auditStr;
+
+	public String getAuditStr() {
+		return auditStr;
+	}
+
+	public void setAuditStr(String auditStr) {
+		this.auditStr = auditStr;
+	}
+
 	public Date getSubmitTime() {
 		return submitTime;
 	}

@@ -13,7 +13,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +30,9 @@ import io.github.springsongs.modules.sys.dto.query.SpringSystemQuery;
 import io.github.springsongs.modules.sys.service.ISpringSystemService;
 import io.github.springsongs.util.IpKit;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 
 @Api(tags = "子系统管理")
 @RestController
@@ -39,6 +44,9 @@ public class SpringSystemController extends BaseController {
 	@Autowired
 	private ISpringSystemService springSystemService;
 
+	@ApiOperation(value = "获取子系统分页列表", response = ReponseResultPageDTO.class)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "springParameterQuery", dataType = "SpringParameterQuery"),
+			@ApiImplicitParam(name = "pageable", dataType = "Pageable"), })
 	@PostMapping(value = "/ListByPage")
 	public ReponseResultPageDTO<SpringSystemDTO> getPage(@RequestBody SpringSystemQuery springSystemQuery,
 			@PageableDefault(page = 1, size = 20) Pageable pageable) {
@@ -48,12 +56,17 @@ public class SpringSystemController extends BaseController {
 				ResultCode.SELECT_SUCCESSED);
 	}
 
-	@PostMapping(value = "/Detail")
+	@ApiOperation(value = "获取子系统", response = ResponseDTO.class)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "id", dataType = "String") })
+	@GetMapping(value = "/Detail")
 	public ResponseDTO<SpringSystemDTO> get(@NotEmpty(message = "id不能为空") String id) {
 		SpringSystemDTO entity = springSystemService.selectByPrimaryKey(id);
 		return ResponseDTO.successed(entity, ResultCode.SELECT_SUCCESSED);
 	}
 
+	@ApiOperation(value = "创建子系统", notes = "根据SpringSystemDTO子系统", response = ResponseDTO.class)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "viewEntity", dataType = "SpringSystemDTO"),
+			@ApiImplicitParam(name = "request", dataType = "HttpServletRequest"), })
 	@PostMapping(value = "/Create")
 	public ResponseDTO<String> save(@RequestBody SpringSystemDTO viewEntity, HttpServletRequest request) {
 		viewEntity.setCreatedBy(this.getUser().getUserName());
@@ -64,7 +77,10 @@ public class SpringSystemController extends BaseController {
 		return ResponseDTO.successed(null, ResultCode.SAVE_SUCCESSED);
 	}
 
-	@PostMapping(value = "/Edit")
+	@ApiOperation(value = "修改子系统", notes = "根据SpringSystemDTO修改子系统", response = ResponseDTO.class)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "viewEntity", dataType = "SpringSystemDTO"),
+			@ApiImplicitParam(name = "request", dataType = "HttpServletRequest"), })
+	@PutMapping(value = "/Edit")
 	public ResponseDTO<String> update(@RequestBody SpringSystemDTO viewEntity, HttpServletRequest request) {
 		viewEntity.setUpdatedOn(new Date());
 		viewEntity.setUpdatedUserId(this.getUser().getId());
@@ -74,6 +90,8 @@ public class SpringSystemController extends BaseController {
 		return ResponseDTO.successed(null, ResultCode.UPDATE_SUCCESSED);
 	}
 
+	@ApiOperation(value = "删除子系统", notes = "根据List<String>对象删除子系统", response = ResponseDTO.class)
+	@ApiImplicitParam(dataType = "List<String>", name = "ids", value = "子系统编号", required = true)
 	@PostMapping(value = "/SetDeleted")
 	public ResponseDTO<String> setDeleted(@RequestParam(value = "ids", required = true) List<String> ids) {
 		if (CollectionUtils.isEmpty(ids)) {
@@ -83,7 +101,8 @@ public class SpringSystemController extends BaseController {
 		return ResponseDTO.successed(null, ResultCode.DELETE_SUCCESSED);
 	}
 
-	@PostMapping(value = "/ListAll")
+	@ApiOperation(value = "查询全部子系统", notes = "查询全部子系统", response = ResponseDTO.class)
+	@GetMapping(value = "/ListAll")
 	public ResponseDTO<SpringSystemDTO> listAll() {
 		List<SpringSystemDTO> springSystemList = springSystemService.ListAll();
 		return ResponseDTO.successed(springSystemList, ResultCode.SELECT_SUCCESSED);

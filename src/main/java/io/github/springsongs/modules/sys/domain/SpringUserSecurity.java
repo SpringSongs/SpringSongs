@@ -16,7 +16,10 @@ import org.hibernate.annotations.GenericGenerator;
 
 import io.github.springsongs.annotation.Description;
 import io.github.springsongs.common.base.SpringBase;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
+@ApiModel(description = "用户密码实体")
 @Entity
 @DynamicInsert(true)
 @DynamicUpdate(true)
@@ -31,6 +34,7 @@ public class SpringUserSecurity  extends SpringBase  implements Serializable {
 	@GenericGenerator(name = "paymentableGenerator", strategy = "uuid")
 	@Description(title = "主键")
 	@Column(name = "id")
+	@ApiModelProperty("主键")
 	private String id;
 
 	public String getId() {
@@ -45,6 +49,7 @@ public class SpringUserSecurity  extends SpringBase  implements Serializable {
 	@Size(max = 45, min = 1)
 	@Description(title = "用户主键")
 	@Column(name = "user_id")
+	@ApiModelProperty("用户主键")
 	private String userId;
 
 	public String getUserId() {
@@ -59,6 +64,7 @@ public class SpringUserSecurity  extends SpringBase  implements Serializable {
 	@Size(max = 100, min = 1)
 	@Description(title = "密码")
 	@Column(name = "pwd")
+	@ApiModelProperty("密码")
 	private String pwd;
 
 	public String getPwd() {

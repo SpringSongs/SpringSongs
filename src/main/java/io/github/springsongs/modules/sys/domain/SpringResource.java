@@ -18,7 +18,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import io.github.springsongs.annotation.Description;
 import io.github.springsongs.common.base.SpringBase;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
+@ApiModel(description = "菜单资源实体")
 @Entity
 @DynamicInsert(true)
 @DynamicUpdate(true)
@@ -34,6 +37,7 @@ public class SpringResource extends SpringBase implements Serializable {
 	@GenericGenerator(name = "paymentableGenerator", strategy = "uuid")
 	@Description(title = "id")
 	@Column(name = "id")
+	@ApiModelProperty("主键")
 	private String id;
 
 	public String getId() {
@@ -49,6 +53,7 @@ public class SpringResource extends SpringBase implements Serializable {
 	@Size(max = 200, min = 0)
 	@Description(title = "编码")
 	@Column(name = "code")
+	@ApiModelProperty("编码")
 	private String code;
 
 	public String getCode() {
@@ -63,6 +68,7 @@ public class SpringResource extends SpringBase implements Serializable {
 	@Size(max = 45, min = 1)
 	@Description(title = "名称")
 	@Column(name = "title")
+	@ApiModelProperty("名称")
 	private String title;
 
 	public String getTitle() {
@@ -75,6 +81,7 @@ public class SpringResource extends SpringBase implements Serializable {
 
 	@Description(title = "是否菜单0不是1是")
 	@Column(name = "menu_flag")
+	@ApiModelProperty("是否菜单0不是1是")
 	private boolean menuFlag;
 
 	public boolean getMenuFlag() {
@@ -89,6 +96,7 @@ public class SpringResource extends SpringBase implements Serializable {
 	@NotBlank(message = "请填写vue链接")
 	@Description(title = "链接")
 	@Column(name = "vue_url")
+	@ApiModelProperty("链接")
 	private String vueUrl;
 
 	public String getVueUrl() {
@@ -102,6 +110,7 @@ public class SpringResource extends SpringBase implements Serializable {
 	@Size(max=45, min=0)
     @Description(title ="Icon")
     @Column(name="vue_icon")
+	@ApiModelProperty("Icon")
     private String vueIcon;
     public String getVueIcon(){
         return  this.vueIcon;
@@ -114,6 +123,7 @@ public class SpringResource extends SpringBase implements Serializable {
 	@Size(max = 45, min = 0)
 	@Description(title = "链接")
 	@Column(name = "angular_url")
+	@ApiModelProperty("链接")
 	private String angularUrl;
 
 	public String getAngularUrl() {
@@ -127,6 +137,7 @@ public class SpringResource extends SpringBase implements Serializable {
 	@Size(max=45, min=0)
     @Description(title ="Icon")
     @Column(name="angular_icon")
+	@ApiModelProperty("Icon")
     private String angularIcon;
     public String getAngularIcon(){
         return  this.angularIcon;
@@ -137,6 +148,7 @@ public class SpringResource extends SpringBase implements Serializable {
     
 	@Description(title = "是否显示0不显示，1显示")
 	@Column(name = "show_status")
+	@ApiModelProperty("是否显示0不显示，1显示")
 	private boolean showStatus;
 
 	public boolean getShowStatus() {
@@ -149,6 +161,7 @@ public class SpringResource extends SpringBase implements Serializable {
 
 	@Description(title = "上级")
 	@Column(name = "parent_id")
+	@ApiModelProperty("上级")
 	private String parentId;
 
 	public String getParentId() {
@@ -162,6 +175,7 @@ public class SpringResource extends SpringBase implements Serializable {
 	@Size(max = 45, min = 0)
 	@Description(title = "上级")
 	@Column(name = "parent_name")
+	@ApiModelProperty("上级")
 	private String parentName;
 
 	public String getParentName() {
@@ -174,6 +188,7 @@ public class SpringResource extends SpringBase implements Serializable {
 
 	@Description(title = "排序")
 	@Column(name = "sort_code")
+	@ApiModelProperty("排序")
 	private int sortCode;
 
 	public int getSortCode() {
@@ -186,6 +201,7 @@ public class SpringResource extends SpringBase implements Serializable {
 
 	@Description(title = "允许编辑0不允许1允许")
 	@Column(name = "enable_edit")
+	@ApiModelProperty("允许编辑0不允许1允许")
 	private boolean enableEdit;
 
 	public boolean getEnableEdit() {
@@ -198,6 +214,7 @@ public class SpringResource extends SpringBase implements Serializable {
 
 	@Description(title = "允许删除0不允许1允许")
 	@Column(name = "enable_delete")
+	@ApiModelProperty("允许删除0不允许1允许")
 	private boolean enableDelete;
 
 	public boolean getEnableDelete() {
@@ -210,6 +227,7 @@ public class SpringResource extends SpringBase implements Serializable {
 
 	@Description(title = "0未删1已删")
 	@Column(name = "deleted_status")
+	@ApiModelProperty("0未删1已删")
 	private boolean deletedStatus;
 
 	public boolean getDeletedStatus() {
@@ -224,6 +242,7 @@ public class SpringResource extends SpringBase implements Serializable {
 	@Size(max = 36, min = 1)
 	@Description(title = "系统主键")
 	@Column(name = "system_id")
+	@ApiModelProperty("系统主键")
 	private String systemId;
 
 	public String getSystemId() {

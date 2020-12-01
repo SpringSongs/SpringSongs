@@ -14,7 +14,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,6 +31,9 @@ import io.github.springsongs.modules.sys.dto.query.SpringParameterQuery;
 import io.github.springsongs.modules.sys.service.ISpringParameterService;
 import io.github.springsongs.util.IpKit;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 
 @Api(tags = "参数管理")
 @RestController
@@ -40,6 +45,9 @@ public class SpringParameterController extends BaseController {
 	@Autowired
 	private ISpringParameterService springParameterService;
 
+	@ApiOperation(value = "获取参数分页列表", response = ReponseResultPageDTO.class)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "springParameterQuery", dataType = "SpringParameterQuery"),
+			@ApiImplicitParam(name = "pageable", dataType = "Pageable"), })
 	@PostMapping(value = "ListByPage")
 	public ReponseResultPageDTO<SpringParameterDTO> listByPage(@RequestBody SpringParameterQuery springParameterQuery,
 			@PageableDefault(page = 1, size = 20) Pageable pageable) {
@@ -48,12 +56,17 @@ public class SpringParameterController extends BaseController {
 				ResultCode.SELECT_SUCCESSED);
 	}
 
-	@PostMapping(value = "/Detail")
+	@ApiOperation(value = "获取参数", response = ResponseDTO.class)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "id", dataType = "String") })
+	@GetMapping(value = "/Detail")
 	public ResponseDTO<SpringParameterDTO> get(@NotEmpty(message = "id不能为空") String id) {
 		SpringParameterDTO entity = springParameterService.selectByPrimaryKey(id);
 		return ResponseDTO.successed(entity, ResultCode.SELECT_SUCCESSED);
 	}
 
+	@ApiOperation(value = "创建参数", notes = "根据SpringParameterDTO创建参数", response = ResponseDTO.class)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "viewEntity", dataType = "SpringAttachmentDTO"),
+			@ApiImplicitParam(name = "request", dataType = "HttpServletRequest"), })
 	@PostMapping(value = "/Create")
 	public ResponseDTO<String> save(@RequestBody @Valid SpringParameterDTO viewEntity, HttpServletRequest request) {
 		viewEntity.setCreatedBy(this.getUser().getUserName());
@@ -64,7 +77,10 @@ public class SpringParameterController extends BaseController {
 		return ResponseDTO.successed(null, ResultCode.SAVE_SUCCESSED);
 	}
 
-	@PostMapping(value = "/Edit")
+	@ApiOperation(value = "修改参数", notes = "根据SpringParameterDTO修改参数", response = ResponseDTO.class)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "viewEntity", dataType = "SpringAttachmentDTO"),
+			@ApiImplicitParam(name = "request", dataType = "HttpServletRequest"), })
+	@PutMapping(value = "/Edit")
 	public ResponseDTO<String> update(@RequestBody @Valid SpringParameterDTO viewEntity, HttpServletRequest request) {
 		viewEntity.setUpdatedOn(new Date());
 		viewEntity.setUpdatedUserId(this.getUser().getId());
@@ -74,12 +90,16 @@ public class SpringParameterController extends BaseController {
 		return ResponseDTO.successed(null, ResultCode.UPDATE_SUCCESSED);
 	}
 
+	@ApiOperation(value = "删除参数", notes = "根据List<String>对象删除参数", response = ResponseDTO.class)
+	@ApiImplicitParam(dataType = "List<String>", name = "ids", value = "参数编号", required = true)
 	@PostMapping(value = "/SetDeleted")
 	public ResponseDTO<String> setDeleted(@RequestParam(value = "ids", required = true) List<String> ids) {
 		springParameterService.setDeleted(ids);
 		return ResponseDTO.successed(null, ResultCode.DELETE_SUCCESSED);
 	}
 
+	@ApiOperation(value = "删除参数", notes = "根据List<String>对象删除参数", response = ResponseDTO.class)
+	@ApiImplicitParam(dataType = "List<String>", name = "ids", value = "参数编号", required = true)
 	@PostMapping(value = "/Deleted")
 	public ResponseDTO<String> deleted(@RequestParam(value = "ids", required = true) List<String> ids) {
 		springParameterService.delete(ids);

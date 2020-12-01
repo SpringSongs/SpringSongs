@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,6 +30,9 @@ import io.github.springsongs.modules.sys.dto.SpringOrganizationDTO;
 import io.github.springsongs.modules.sys.service.ISpringOrganizationService;
 import io.github.springsongs.util.IpKit;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 
 @Api(tags = "组织机构管理")
 @RestController
@@ -40,6 +44,9 @@ public class SpringOrganizationController extends BaseController {
 	@Autowired
 	private ISpringOrganizationService springOrganizationService;
 
+	@ApiOperation(value = "获取组织机构分页列表", response = ReponseResultPageDTO.class)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "viewEntity", dataType = "SpringOrganization"),
+			@ApiImplicitParam(name = "pageable", dataType = "Pageable"), })
 	@PostMapping(value = "ListByPage")
 	public ReponseResultPageDTO<SpringOrganizationDTO> getPage(@RequestBody SpringOrganization viewEntity,
 			@PageableDefault(page = 1, size = 20) Pageable pageable) {
@@ -48,12 +55,17 @@ public class SpringOrganizationController extends BaseController {
 				ResultCode.SELECT_SUCCESSED);
 	}
 
-	@PostMapping(value = "/Detail")
+	@ApiOperation(value = "获取组织机构", response = ResponseDTO.class)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "id", dataType = "String") })
+	@GetMapping(value = "/Detail")
 	public ResponseDTO<String> get(@NotEmpty(message = "id不能为空") String id) {
 		SpringOrganization entity = springOrganizationService.selectByPrimaryKey(id);
 		return ResponseDTO.successed(entity, ResultCode.SELECT_SUCCESSED);
 	}
 
+	@ApiOperation(value = "创建组织机构", notes = "根据SpringOrganizationDTO创建组织机构", response = ResponseDTO.class)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "viewEntity", dataType = "SpringOrganizationDTO"),
+			@ApiImplicitParam(name = "request", dataType = "HttpServletRequest"), })
 	@PostMapping(value = "/Create")
 	public ResponseDTO<String> save(@RequestBody @Valid SpringOrganizationDTO viewEntity, HttpServletRequest request) {
 		viewEntity.setCreatedBy(this.getUser().getUserName());
@@ -63,7 +75,10 @@ public class SpringOrganizationController extends BaseController {
 		return ResponseDTO.successed(null, ResultCode.SAVE_SUCCESSED);
 	}
 
-	@PostMapping(value = "/Edit")
+	@ApiOperation(value = "修改组织机构", notes = "根据SpringOrganizationDTO修改组织机构", response = ResponseDTO.class)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "viewEntity", dataType = "SpringOrganizationDTO"),
+			@ApiImplicitParam(name = "request", dataType = "HttpServletRequest"), })
+	@PutMapping(value = "/Edit")
 	public ResponseDTO<String> update(@RequestBody @Valid SpringOrganizationDTO viewEntity,
 			HttpServletRequest request) {
 		viewEntity.setUpdatedOn(new Date());
@@ -74,12 +89,16 @@ public class SpringOrganizationController extends BaseController {
 		return ResponseDTO.successed(null, ResultCode.UPDATE_SUCCESSED);
 	}
 
+	@ApiOperation(value = "删除组织机构", notes = "根据List<String>对象删除组织机构", response = ResponseDTO.class)
+	@ApiImplicitParam(dataType = "List<String>", name = "ids", value = "组织机构编号", required = true)
 	@PostMapping(value = "/SetDeleted")
 	public ResponseDTO<String> setDeleted(@RequestParam(value = "ids", required = true) List<String> ids) {
 		springOrganizationService.setDeleted(ids);
 		return ResponseDTO.successed(null, ResultCode.DELETE_SUCCESSED);
 	}
 
+	@ApiOperation(value = "根据上级查询组织机构", notes = "根据上级查询组织机构", response = ResponseDTO.class)
+	@ApiImplicitParam(dataType = "String", name = "parentId", value = "组织机构编号", required = true)
 	@GetMapping(value = "/listOrganizationsByParent")
 	public ResponseDTO<SpringOrganizationDTO> getOrganizationsByParent(
 			@RequestParam(value = "parentId", required = true) @Valid @NotEmpty(message = "id不能为空") String parentId) {
@@ -88,11 +107,14 @@ public class SpringOrganizationController extends BaseController {
 		return ResponseDTO.successed(elementUiTreeDtoList, ResultCode.SELECT_SUCCESSED);
 	}
 
+	@ApiOperation(value = "查询全部组织机构", notes = "查询全部组织机构", response = ResponseDTO.class)
 	@GetMapping(value = "/listAllRecord")
 	public ResponseDTO<SpringOrganizationDTO> listAllRecord() {
 		List<SpringOrganizationDTO> entitys = springOrganizationService.listAll();
 		return ResponseDTO.successed(entitys, ResultCode.SELECT_SUCCESSED);
 	}
+
+	@ApiOperation(value = "查询全部组织机构树", notes = "查询全部组织机构树", response = ResponseDTO.class)
 	@GetMapping(value = "/ListAllToTree")
 	public ResponseDTO<SpringOrganizationDTO> ListAllToTree() {
 		List<SpringOrganizationDTO> entitys = springOrganizationService.ListAllToTree();

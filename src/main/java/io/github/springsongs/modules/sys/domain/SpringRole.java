@@ -19,7 +19,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import io.github.springsongs.annotation.Description;
 import io.github.springsongs.common.base.SpringBase;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
+@ApiModel(description = "角色实体")
 @Entity
 @DynamicInsert(true)
 @DynamicUpdate(true)
@@ -35,6 +38,7 @@ public class SpringRole extends SpringBase implements Serializable {
 	@GenericGenerator(name = "paymentableGenerator", strategy = "uuid")
 	@Description(title = "id")
 	@Column(name = "id")
+	@ApiModelProperty("主键")
 	private String id;
 
 	public String getId() {
@@ -50,6 +54,7 @@ public class SpringRole extends SpringBase implements Serializable {
 	@Size(max = 45, min = 1)
 	@Description(title = "名称")
 	@Column(name = "title")
+	@ApiModelProperty("名称")
 	private String title;
 
 	public String getTitle() {
@@ -64,6 +69,7 @@ public class SpringRole extends SpringBase implements Serializable {
 	@Size(max = 45, min = 1)
 	@Description(title = "说明")
 	@Column(name = "description")
+	@ApiModelProperty("说明")
 	private String desc;
 
 	public String getDesc() {
@@ -76,6 +82,7 @@ public class SpringRole extends SpringBase implements Serializable {
 
 	@Description(title = "允许编辑0不允许1允许")
 	@Column(name = "enable_edit")
+	@ApiModelProperty("允许编辑0不允许1允许")
 	private boolean enableEdit;
 
 	public boolean getEnableEdit() {

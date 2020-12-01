@@ -18,7 +18,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import io.github.springsongs.annotation.Description;
 import io.github.springsongs.common.base.SpringBase;
-
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+@ApiModel(description="内容评论实体")
 @Entity
 @DynamicInsert(true)
 @DynamicUpdate(true)
@@ -34,6 +36,7 @@ public class SpringArticleComment  extends SpringBase implements Serializable {
 	@GenericGenerator(name = "paymentableGenerator", strategy = "uuid")
 	@Description(title = "id")
 	@Column(name = "id")
+	@ApiModelProperty("主键")
 	private String id;
 
 	public String getId() {
@@ -48,6 +51,7 @@ public class SpringArticleComment  extends SpringBase implements Serializable {
     @Size(max=2000, min=1)
     @Description(title ="评论内容")
     @Column(name="content")
+	@ApiModelProperty("评论内容")
     private String content;
     public String getContent(){
         return  this.content;
@@ -60,6 +64,7 @@ public class SpringArticleComment  extends SpringBase implements Serializable {
     @Size(max=36, min=1)
     @Description(title ="主题主键")
     @Column(name="article_id")
+    @ApiModelProperty("主题主键")
     private String articleId;
     public String getArticleId(){
         return  this.articleId;
@@ -70,6 +75,7 @@ public class SpringArticleComment  extends SpringBase implements Serializable {
 
     @Description(title ="0未审1已审")
     @Column(name="audit_flag")
+    @ApiModelProperty("0未审1已审")
     private boolean auditFlag;
     public boolean getAuditFlag(){
         return  this.auditFlag;
@@ -80,6 +86,7 @@ public class SpringArticleComment  extends SpringBase implements Serializable {
 
     @Description(title ="排序")
     @Column(name="sort_code")
+    @ApiModelProperty("排序")
     private int sortCode;
     public int getSortCode(){
         return  this.sortCode;
@@ -90,6 +97,7 @@ public class SpringArticleComment  extends SpringBase implements Serializable {
 
     @Description(title ="0未删1已删")
     @Column(name="deleted_status")
+    @ApiModelProperty("0未删1已删")
     private boolean deletedStatus;
     public boolean getDeletedStatus(){
         return  this.deletedStatus;

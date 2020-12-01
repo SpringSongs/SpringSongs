@@ -17,6 +17,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 import io.github.springsongs.annotation.Description;
 import io.github.springsongs.common.base.SpringBase;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * System
@@ -31,6 +33,7 @@ import io.github.springsongs.common.base.SpringBase;
  * @author I love you
  * @date Sun Dec 16 21:55:57 CST 2018
  */
+@ApiModel(description = "子系统实体")
 @Entity
 @DynamicInsert(true)
 @DynamicUpdate(true)
@@ -46,6 +49,7 @@ public class SpringSystem extends SpringBase  implements Serializable {
     @GenericGenerator(name = "paymentableGenerator", strategy = "uuid")
     @Description(title ="主键")
     @Column(name="id")
+	@ApiModelProperty("主键")
     private String id;
     public String getId(){
         return  this.id;
@@ -59,6 +63,7 @@ public class SpringSystem extends SpringBase  implements Serializable {
     @Size(max=45, min=1)
     @Description(title ="编码")
     @Column(name="code")
+    @ApiModelProperty("编码")
     private String code;
     public String getCode(){
         return  this.code;
@@ -71,6 +76,7 @@ public class SpringSystem extends SpringBase  implements Serializable {
     @Size(max=45, min=1)
     @Description(title ="系统名称")
     @Column(name="title")
+    @ApiModelProperty("系统名称")
     private String title;
     public String getTitle(){
         return  this.title;
@@ -82,6 +88,7 @@ public class SpringSystem extends SpringBase  implements Serializable {
     @Size(max=255, min=0)
     @Description(title ="系统说明")
     @Column(name="description")
+    @ApiModelProperty("系统说明")
     private String description;
     public String getDescription(){
         return  this.description;
@@ -92,6 +99,7 @@ public class SpringSystem extends SpringBase  implements Serializable {
 
     @Description(title ="允许删除0不允许1允许")
     @Column(name="enable_delete")
+    @ApiModelProperty("允许删除0不允许1允许")
     private boolean enableDelete;
     public boolean getEnableDelete(){
         return  this.enableDelete;
@@ -102,6 +110,7 @@ public class SpringSystem extends SpringBase  implements Serializable {
 
     @Description(title ="允许编辑0不允许1允许")
     @Column(name="enable_edit")
+    @ApiModelProperty("允许编辑0不允许1允许")
     private boolean enableEdit;
     public boolean getEnableEdit(){
         return  this.enableEdit;
@@ -112,6 +121,7 @@ public class SpringSystem extends SpringBase  implements Serializable {
 
     @Description(title ="0未删1已删")
     @Column(name="deleted_status")
+    @ApiModelProperty("0未删1已删")
     private boolean deletedStatus;
     public boolean getDeletedStatus(){
         return  this.deletedStatus;
