@@ -39,7 +39,7 @@ public class MyUserPrincipal implements UserDetails {
 		List<SimpleGrantedAuthority> auths = new ArrayList<>();
 		List<RoleCodeDTO> roles = baseEntityUser.getRoleList();
 		roles.stream().forEach(role -> {
-			auths.add(new SimpleGrantedAuthority("ROLE_" + role.getCode()));
+			auths.add(new SimpleGrantedAuthority(role.getCode()));
 		});
 		return auths;
 	}

@@ -126,6 +126,7 @@ public class SpringRoleServiceImpl implements ISpringRoleService {
 		} else if (!entity.getEnableEdit()) {
 			throw new SpringSongsException(ResultCode.INFO_CAN_NOT_EDIT);
 		} else {
+			entity.setTitle(springRoleDTO.getTitle());
 			entity.setDesc(springRoleDTO.getDesc());
 			entity.setEnableEdit(springRoleDTO.getEnableEdit());
 			entity.setEnableDelete(springRoleDTO.getEnableDelete());

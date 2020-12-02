@@ -61,7 +61,7 @@ public class UrlFilterInvocationSecurityMetadaSource implements FilterInvocation
 		if (!CollectionUtil.isEmpty(resourceRoleDTOList)) {
 			String[] str = new String[resourceRoleDTOList.size()];
 			for (int i = 0; i < resourceRoleDTOList.size(); i++) {
-				str[i] = "ROLE_" + roles.get(i);
+				str[i] =roles.get(i);
 			}
 			return SecurityConfig.createList(str);
 		}
