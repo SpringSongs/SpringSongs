@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.exception.SpringSongsException;
@@ -97,6 +98,10 @@ public class SpringSiteMessageServiceImpl implements ISpringSiteMessageService {
 			@Override
 			public Predicate toPredicate(Root<SpringSiteMessage> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				List<Predicate> predicates = new ArrayList<>();
+				if (!StringUtils.isEmpty(record.getToUserId())) {
+					Predicate toUserId = cb.equal(root.get("toUserId").as(String.class), record.getToUserId());
+					predicates.add(toUserId);
+				}
 				Predicate deletedStatus = cb.equal(root.get("deletedStatus").as(Boolean.class), false);
 				predicates.add(deletedStatus);
 				Predicate[] pre = new Predicate[predicates.size()];

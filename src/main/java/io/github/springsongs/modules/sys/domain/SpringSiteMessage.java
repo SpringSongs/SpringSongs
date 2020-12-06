@@ -89,6 +89,19 @@ public class SpringSiteMessage extends SpringBase implements Serializable {
 		this.toUserId = toUserId;
 	}
 
+	 @Size(max=45, min=0)
+     @Description(title ="用户名")
+     @Column(name="to_user_name")
+	 @ApiModelProperty("用户名")
+     private String toUserName;
+     public String getToUserName(){
+         return  this.toUserName;
+     }
+     public void setToUserName(String toUserName){
+         this.toUserName=toUserName;
+     }
+
+     
 	@Size(max = 500, min = 0)
 	@Description(title = "消息内容")
 	@Column(name = "content")
@@ -115,4 +128,15 @@ public class SpringSiteMessage extends SpringBase implements Serializable {
 	public void setStatus(short status) {
 		this.status = status;
 	}
+	
+	@Description(title ="0未删1已删")
+    @Column(name="deleted_status")
+	@ApiModelProperty("0未删1已删")
+    private boolean deletedStatus;
+    public boolean getDeletedStatus(){
+        return  this.deletedStatus;
+    }
+    public void setDeletedStatus(boolean deletedStatus){
+        this.deletedStatus=deletedStatus;
+    }
 }

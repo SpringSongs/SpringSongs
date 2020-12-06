@@ -51,7 +51,7 @@ public class SpringSiteMessageController extends BaseController {
 	@PostMapping(value = "ListByPage")
 	public ReponseResultPageDTO<SpringSiteMessageDTO> listByPage(@RequestBody SpringSiteMessage SpringSiteMessageQuery,
 			@PageableDefault(page = 0, size = 20) Pageable pageable) {
-
+		SpringSiteMessageQuery.setToUserId(this.getUser().getId());
 		Page<SpringSiteMessageDTO> lists = SpringSiteMessageService.getAllRecordByPage(SpringSiteMessageQuery, pageable);
 		return ReponseResultPageDTO.successed(lists.getContent(), lists.getTotalElements(),
 				ResultCode.SELECT_SUCCESSED);
