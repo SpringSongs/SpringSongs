@@ -23,24 +23,24 @@ import org.springframework.util.StringUtils;
 
 import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.exception.SpringSongsException;
-import io.github.springsongs.modules.sys.domain.SpringDistrict;
-import io.github.springsongs.modules.sys.dto.SpringDistrictDTO;
-import io.github.springsongs.modules.sys.repo.SpringDistrictRepo;
-import io.github.springsongs.modules.sys.service.ISpringDistrictService;
+import io.github.springsongs.modules.sys.domain.SpringSiteNotice;
+import io.github.springsongs.modules.sys.dto.SpringSiteNoticeDTO;
+import io.github.springsongs.modules.sys.repo.SpringSiteNoticeRepo;
+import io.github.springsongs.modules.sys.service.ISpringSiteNoticeService;
 import io.github.springsongs.util.Constant;
 
 @Service
-public class SpringDistrictServiceImpl implements ISpringDistrictService {
+public class SpringSiteNoticeServiceImpl implements ISpringSiteNoticeService {
 
-	static Logger logger = LoggerFactory.getLogger(SpringDistrictServiceImpl.class);
+	static Logger logger = LoggerFactory.getLogger(SpringSiteNoticeServiceImpl.class);
 
 	@Autowired
-	private SpringDistrictRepo springDistrictRepo;
+	private SpringSiteNoticeRepo springSiteNoticeRepo;
 
 	@Override
-	public void deleteByPrimaryKey(Long id) {
+	public void deleteByPrimaryKey(String id) {
 		try {
-			springDistrictRepo.deleteById(id);
+			springSiteNoticeRepo.deleteById(id);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
@@ -48,11 +48,11 @@ public class SpringDistrictServiceImpl implements ISpringDistrictService {
 	}
 
 	@Override
-	public void insert(SpringDistrictDTO record) {
-		SpringDistrict springDistrict = new SpringDistrict();
-		BeanUtils.copyProperties(record, springDistrict);
+	public void insert(SpringSiteNoticeDTO record) {
+		SpringSiteNotice springSiteNotice = new SpringSiteNotice();
+		BeanUtils.copyProperties(record, springSiteNotice);
 		try {
-			springDistrictRepo.save(springDistrict);
+			springSiteNoticeRepo.save(springSiteNotice);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
@@ -60,27 +60,27 @@ public class SpringDistrictServiceImpl implements ISpringDistrictService {
 	}
 
 	@Override
-	public SpringDistrictDTO selectByPrimaryKey(Long id) {
-		SpringDistrict springDistrict = null;
-		springDistrict = springDistrictRepo.getOne(id);
-		if (null == springDistrict) {
+	public SpringSiteNoticeDTO selectByPrimaryKey(String id) {
+		SpringSiteNotice springSiteNotice = null;
+		springSiteNotice = springSiteNoticeRepo.getOne(id);
+		if (null == springSiteNotice) {
 			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
 		}
-		SpringDistrictDTO springDistrictDTO = new SpringDistrictDTO();
-		BeanUtils.copyProperties(springDistrict, springDistrictDTO);
-		return springDistrictDTO;
+		SpringSiteNoticeDTO springSiteNoticeDTO = new SpringSiteNoticeDTO();
+		BeanUtils.copyProperties(springSiteNotice, springSiteNoticeDTO);
+		return springSiteNoticeDTO;
 	}
 
 	@Override
-	public void updateByPrimaryKey(SpringDistrictDTO record) {
-		SpringDistrict springDistrict = springDistrictRepo.getOne(record.getId());
-		if (null == springDistrict) {
+	public void updateByPrimaryKey(SpringSiteNoticeDTO record) {
+		SpringSiteNotice springSiteNotice = springSiteNoticeRepo.getOne(record.getId());
+		if (null == springSiteNotice) {
 			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
 		}
-		SpringDistrict springDistrictDO = new SpringDistrict();
-		BeanUtils.copyProperties(record, springDistrictDO);
+		SpringSiteNotice SpringSiteNoticeDO = new SpringSiteNotice();
+		BeanUtils.copyProperties(record, SpringSiteNoticeDO);
 		try {
-			springDistrictRepo.save(springDistrictDO);
+			springSiteNoticeRepo.save(SpringSiteNoticeDO);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
@@ -88,19 +88,19 @@ public class SpringDistrictServiceImpl implements ISpringDistrictService {
 	}
 
 	@Override
-	public Page<SpringDistrictDTO> getAllRecordByPage(SpringDistrict record, Pageable pageable) {
+	public Page<SpringSiteNoticeDTO> getAllRecordByPage(SpringSiteNotice record, Pageable pageable) {
 		if (pageable.getPageSize() > Constant.MAX_PAGE_SIZE) {
 			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
 		}
 
-		Specification<SpringDistrict> specification = new Specification<SpringDistrict>() {
+		Specification<SpringSiteNotice> specification = new Specification<SpringSiteNotice>() {
 
 			@Override
-			public Predicate toPredicate(Root<SpringDistrict> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+			public Predicate toPredicate(Root<SpringSiteNotice> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				List<Predicate> predicates = new ArrayList<>();
-				if (!StringUtils.isEmpty(record.getParentId())) {
-					Predicate parentId = cb.equal(root.get("parentId").as(String.class), record.getParentId());
-					predicates.add(parentId);
+				if (!StringUtils.isEmpty(record.getTitle())) {
+					Predicate title = cb.equal(root.get("title").as(String.class), record.getTitle());
+					predicates.add(title);
 				}
 				Predicate deletedStatus = cb.equal(root.get("deletedStatus").as(Boolean.class), false);
 				predicates.add(deletedStatus);
@@ -110,32 +110,32 @@ public class SpringDistrictServiceImpl implements ISpringDistrictService {
 				return query.getRestriction();
 			}
 		};
-		
-		Page<SpringDistrict> springDistricts = springDistrictRepo.findAll(specification, pageable);
-		List<SpringDistrictDTO> pringDictionaryDTOs = new ArrayList<>();
-		springDistricts.getContent().stream().forEach(springDistrict -> {
-			SpringDistrictDTO springDistrictDTO = new SpringDistrictDTO();
-			BeanUtils.copyProperties(springDistrict, springDistrictDTO);
-			pringDictionaryDTOs.add(springDistrictDTO);
+
+		Page<SpringSiteNotice> springSiteNotices = springSiteNoticeRepo.findAll(specification, pageable);
+		List<SpringSiteNoticeDTO> springSiteNoticeDTOs = new ArrayList<>();
+		springSiteNotices.getContent().stream().forEach(springSiteNotice -> {
+			SpringSiteNoticeDTO springSiteNoticeDTO = new SpringSiteNoticeDTO();
+			BeanUtils.copyProperties(springSiteNotice, springSiteNoticeDTO);
+			springSiteNoticeDTOs.add(springSiteNoticeDTO);
 		});
-		Page<SpringDistrictDTO> pages = new PageImpl(pringDictionaryDTOs, pageable, springDistricts.getTotalElements());
+		Page<SpringSiteNoticeDTO> pages = new PageImpl(springSiteNoticeDTOs, pageable,
+				springSiteNotices.getTotalElements());
 		return pages;
 	}
 
 	@Override
-	public void setDeleted(List<Long> ids) {
+	public void setDeleted(List<String> ids) {
 		if (CollectionUtils.isEmpty(ids)) {
 			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
 		} else if (ids.size() > 1000) {
 			throw new SpringSongsException(ResultCode.PARAMETER_MORE_1000);
 		}
 		try {
-			springDistrictRepo.setDelete(ids);
+			springSiteNoticeRepo.setDelete(ids);
 		} catch (Exception ex) {
 			logger.error(ex.getMessage());
 			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
 		}
-
 	}
 
 	@Override

@@ -23,24 +23,24 @@ import org.springframework.util.StringUtils;
 
 import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.exception.SpringSongsException;
-import io.github.springsongs.modules.sys.domain.SpringDistrict;
-import io.github.springsongs.modules.sys.dto.SpringDistrictDTO;
-import io.github.springsongs.modules.sys.repo.SpringDistrictRepo;
-import io.github.springsongs.modules.sys.service.ISpringDistrictService;
+import io.github.springsongs.modules.sys.domain.SpringSiteInfo;
+import io.github.springsongs.modules.sys.dto.SpringSiteInfoDTO;
+import io.github.springsongs.modules.sys.repo.SpringSiteInfoRepo;
+import io.github.springsongs.modules.sys.service.ISpringSiteInfoService;
 import io.github.springsongs.util.Constant;
 
 @Service
-public class SpringDistrictServiceImpl implements ISpringDistrictService {
+public class SpringSiteInfoServiceImpl implements ISpringSiteInfoService {
 
-	static Logger logger = LoggerFactory.getLogger(SpringDistrictServiceImpl.class);
+	static Logger logger = LoggerFactory.getLogger(SpringFriendLinkServiceImpl.class);
 
 	@Autowired
-	private SpringDistrictRepo springDistrictRepo;
+	private SpringSiteInfoRepo springSiteInfoRepo;
 
 	@Override
-	public void deleteByPrimaryKey(Long id) {
+	public void deleteByPrimaryKey(String id) {
 		try {
-			springDistrictRepo.deleteById(id);
+			springSiteInfoRepo.deleteById(id);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
@@ -48,11 +48,11 @@ public class SpringDistrictServiceImpl implements ISpringDistrictService {
 	}
 
 	@Override
-	public void insert(SpringDistrictDTO record) {
-		SpringDistrict springDistrict = new SpringDistrict();
-		BeanUtils.copyProperties(record, springDistrict);
+	public void insert(SpringSiteInfoDTO record) {
+		SpringSiteInfo springSiteInfo = new SpringSiteInfo();
+		BeanUtils.copyProperties(record, springSiteInfo);
 		try {
-			springDistrictRepo.save(springDistrict);
+			springSiteInfoRepo.save(springSiteInfo);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
@@ -60,27 +60,27 @@ public class SpringDistrictServiceImpl implements ISpringDistrictService {
 	}
 
 	@Override
-	public SpringDistrictDTO selectByPrimaryKey(Long id) {
-		SpringDistrict springDistrict = null;
-		springDistrict = springDistrictRepo.getOne(id);
-		if (null == springDistrict) {
+	public SpringSiteInfoDTO selectByPrimaryKey(String id) {
+		SpringSiteInfo springSiteInfo = null;
+		springSiteInfo = springSiteInfoRepo.getOne(id);
+		if (null == springSiteInfo) {
 			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
 		}
-		SpringDistrictDTO springDistrictDTO = new SpringDistrictDTO();
-		BeanUtils.copyProperties(springDistrict, springDistrictDTO);
-		return springDistrictDTO;
+		SpringSiteInfoDTO springSiteInfoDTO = new SpringSiteInfoDTO();
+		BeanUtils.copyProperties(springSiteInfo, springSiteInfoDTO);
+		return springSiteInfoDTO;
 	}
 
 	@Override
-	public void updateByPrimaryKey(SpringDistrictDTO record) {
-		SpringDistrict springDistrict = springDistrictRepo.getOne(record.getId());
-		if (null == springDistrict) {
+	public void updateByPrimaryKey(SpringSiteInfoDTO record) {
+		SpringSiteInfo springSiteInfo = springSiteInfoRepo.getOne(record.getId());
+		if (null == springSiteInfo) {
 			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
 		}
-		SpringDistrict springDistrictDO = new SpringDistrict();
-		BeanUtils.copyProperties(record, springDistrictDO);
+		SpringSiteInfo springSiteInfoDO = new SpringSiteInfo();
+		BeanUtils.copyProperties(record, springSiteInfoDO);
 		try {
-			springDistrictRepo.save(springDistrictDO);
+			springSiteInfoRepo.save(springSiteInfoDO);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
@@ -88,19 +88,19 @@ public class SpringDistrictServiceImpl implements ISpringDistrictService {
 	}
 
 	@Override
-	public Page<SpringDistrictDTO> getAllRecordByPage(SpringDistrict record, Pageable pageable) {
+	public Page<SpringSiteInfoDTO> getAllRecordByPage(SpringSiteInfo record, Pageable pageable) {
 		if (pageable.getPageSize() > Constant.MAX_PAGE_SIZE) {
 			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
 		}
 
-		Specification<SpringDistrict> specification = new Specification<SpringDistrict>() {
+		Specification<SpringSiteInfo> specification = new Specification<SpringSiteInfo>() {
 
 			@Override
-			public Predicate toPredicate(Root<SpringDistrict> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+			public Predicate toPredicate(Root<SpringSiteInfo> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				List<Predicate> predicates = new ArrayList<>();
-				if (!StringUtils.isEmpty(record.getParentId())) {
-					Predicate parentId = cb.equal(root.get("parentId").as(String.class), record.getParentId());
-					predicates.add(parentId);
+				if (!StringUtils.isEmpty(record.getTitle())) {
+					Predicate title = cb.equal(root.get("title").as(String.class), record.getTitle());
+					predicates.add(title);
 				}
 				Predicate deletedStatus = cb.equal(root.get("deletedStatus").as(Boolean.class), false);
 				predicates.add(deletedStatus);
@@ -110,36 +110,36 @@ public class SpringDistrictServiceImpl implements ISpringDistrictService {
 				return query.getRestriction();
 			}
 		};
-		
-		Page<SpringDistrict> springDistricts = springDistrictRepo.findAll(specification, pageable);
-		List<SpringDistrictDTO> pringDictionaryDTOs = new ArrayList<>();
-		springDistricts.getContent().stream().forEach(springDistrict -> {
-			SpringDistrictDTO springDistrictDTO = new SpringDistrictDTO();
-			BeanUtils.copyProperties(springDistrict, springDistrictDTO);
-			pringDictionaryDTOs.add(springDistrictDTO);
+
+		Page<SpringSiteInfo> springSiteInfos = springSiteInfoRepo.findAll(specification, pageable);
+		List<SpringSiteInfoDTO> springSiteInfoDTOs = new ArrayList<>();
+		springSiteInfos.getContent().stream().forEach(springSiteInfo -> {
+			SpringSiteInfoDTO springSiteInfoDTO = new SpringSiteInfoDTO();
+			BeanUtils.copyProperties(springSiteInfo, springSiteInfoDTO);
+			springSiteInfoDTOs.add(springSiteInfoDTO);
 		});
-		Page<SpringDistrictDTO> pages = new PageImpl(pringDictionaryDTOs, pageable, springDistricts.getTotalElements());
+		Page<SpringSiteInfoDTO> pages = new PageImpl(springSiteInfoDTOs, pageable, springSiteInfos.getTotalElements());
 		return pages;
 	}
 
 	@Override
-	public void setDeleted(List<Long> ids) {
+	public void setDeleted(List<String> ids) {
 		if (CollectionUtils.isEmpty(ids)) {
 			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
 		} else if (ids.size() > 1000) {
 			throw new SpringSongsException(ResultCode.PARAMETER_MORE_1000);
 		}
 		try {
-			springDistrictRepo.setDelete(ids);
+			springSiteInfoRepo.setDelete(ids);
 		} catch (Exception ex) {
 			logger.error(ex.getMessage());
 			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
 		}
-
 	}
 
 	@Override
 	public void batchSaveExcel(List<String[]> list) {
+		// TODO Auto-generated method stub
 
 	}
 

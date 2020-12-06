@@ -3,22 +3,23 @@ package io.github.springsongs.modules.sys.service;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import io.github.springsongs.modules.sys.domain.SpringDistrict;
 import io.github.springsongs.modules.sys.dto.SpringDistrictDTO;
 
 public interface ISpringDistrictService {
-	void deleteByPrimaryKey(String id);
+	void deleteByPrimaryKey(Long id);
 
 	void insert(SpringDistrictDTO record);
 
-	SpringDistrictDTO selectByPrimaryKey(String id);
+	SpringDistrictDTO selectByPrimaryKey(Long id);
 
 	void updateByPrimaryKey(SpringDistrictDTO record);
 
-	Page<SpringDistrictDTO> getAllRecordByPage(SpringDistrict record, int currPage,int size);
+	Page<SpringDistrictDTO> getAllRecordByPage(SpringDistrict record, Pageable pageable);
 
-	void setDeleted(List<String> ids);
-	
+	void setDeleted(List<Long> ids);
+
 	void batchSaveExcel(List<String[]> list);
 }
