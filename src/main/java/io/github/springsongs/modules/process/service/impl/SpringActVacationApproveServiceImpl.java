@@ -38,6 +38,7 @@ import io.github.springsongs.modules.process.repo.SpringActVacationApproveRepo;
 import io.github.springsongs.modules.process.repo.SpringActVacationRepo;
 import io.github.springsongs.modules.process.service.ISpringActVacationApproveService;
 import io.github.springsongs.modules.sys.service.impl.SpringAritlceServiceImpl;
+import io.github.springsongs.util.ActivitiConstants;
 import io.github.springsongs.util.Constant;
 
 @Service
@@ -188,8 +189,18 @@ public class SpringActVacationApproveServiceImpl implements ISpringActVacationAp
 				}
 			}
 			if (null != springActUseTask) {
-				if ("assignee".equals(springActUseTask.getTaskType())) {
+				if (ActivitiConstants.ASSIGNEE.equals(springActUseTask.getTaskType())) {
 					taskService.setAssignee(nextTaskId, springActUseTask.getCandidateIds());
+				} else if (ActivitiConstants.CANDIDATE_USER.equals(springActUseTask.getTaskType())) {
+					String[] candidateUsers = springActUseTask.getCandidateIds().split(",");
+					for (String candidateUser : candidateUsers) {
+						taskService.addCandidateUser(nextTaskId, candidateUser);
+					}
+				} else if (ActivitiConstants.CANDIDATE_GROUP.equals(springActUseTask.getTaskType())) {
+					String[] candidateUsers = springActUseTask.getCandidateIds().split(",");
+					for (String candidateUser : candidateUsers) {
+						taskService.addCandidateGroup(nextTaskId, candidateUser);
+					}
 				}
 			}
 		}
@@ -199,7 +210,7 @@ public class SpringActVacationApproveServiceImpl implements ISpringActVacationAp
 			springActVacation.setProcessStatus(Short.valueOf(auditStr));
 			springActVacationRepo.save(springActVacation);
 		}
-		//springActVacationApproveService.updateByPrimaryKey(record);
+		// springActVacationApproveService.updateByPrimaryKey(record);
 //		String excId = task.getExecutionId();
 //		ExecutionEntity execution = (ExecutionEntity) runtimeService.createExecutionQuery().executionId(excId).singleResult();
 //		String activitiId = execution.getProcessDefinitionKey();
@@ -211,7 +222,7 @@ public class SpringActVacationApproveServiceImpl implements ISpringActVacationAp
 	public void completeSpringActVacationApprove(SpringActVacationApproveDTO record, String taskId) {
 		springActVacationApproveService.insert(record);
 		springActVacationApproveService.completeTask(taskId, String.valueOf(record.getResult()));
-		//Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+		// Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
 		// record.setProcessInstanceId(task.getProcessInstanceId());
 		// record.setTaskId(task.getId());
 		// springActVacationApproveService.updateByPrimaryKey(record);

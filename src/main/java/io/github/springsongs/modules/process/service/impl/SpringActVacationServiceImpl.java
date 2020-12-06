@@ -44,6 +44,7 @@ import io.github.springsongs.modules.process.dto.SpringActVacationDTO;
 import io.github.springsongs.modules.process.repo.SpringActVacationRepo;
 import io.github.springsongs.modules.process.service.ISpringActVacationApproveService;
 import io.github.springsongs.modules.process.service.ISpringActVacationService;
+import io.github.springsongs.util.ActivitiConstants;
 
 @Service
 public class SpringActVacationServiceImpl implements ISpringActVacationService {
@@ -215,8 +216,18 @@ public class SpringActVacationServiceImpl implements ISpringActVacationService {
 		task.setCategory(processDefinition.getCategory());
 		SpringActUseTask springActUseTask = springActUseTaskRepo.findUserTaskByTaskDefKey(task.getTaskDefinitionKey());
 		taskService.saveTask(task);
-		if ("assignee".equals(springActUseTask.getTaskType())) {
+		if (ActivitiConstants.ASSIGNEE.equals(springActUseTask.getTaskType())) {
 			taskService.setAssignee(task.getId(), springActUseTask.getCandidateIds());
+		} else if (ActivitiConstants.CANDIDATE_USER.equals(springActUseTask.getTaskType())) {
+			String[] candidateUsers = springActUseTask.getCandidateIds().split(",");
+			for (String candidateUser : candidateUsers) {
+				taskService.addCandidateUser(task.getId(), candidateUser);
+			}
+		} else if (ActivitiConstants.CANDIDATE_GROUP.equals(springActUseTask.getTaskType())) {
+			String[] candidateUsers = springActUseTask.getCandidateIds().split(",");
+			for (String candidateUser : candidateUsers) {
+				taskService.addCandidateGroup(task.getId(), candidateUser);
+			}
 		}
 		return processInstanceId;
 	}

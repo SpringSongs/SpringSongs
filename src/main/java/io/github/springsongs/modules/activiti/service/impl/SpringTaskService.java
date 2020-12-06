@@ -87,7 +87,6 @@ public class SpringTaskService {
 		tasks.addAll(taskDTOS);
 		Page<SpringTaskDTO> pages = new PageImpl(tasks, pageable, taskQuery.count());
 		return pages;
-
 	}
 
 	public Page<SpringTaskDTO> getFinishTasks(String userId, String title, String category, Pageable pageable) {

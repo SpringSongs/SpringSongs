@@ -10,4 +10,8 @@ public class ActivitiConstants {
     
     public static final String PROCESS_INSTANCE_ING = "审批中";
     public static final String PROCESS_INSTANCE_DONE = "已结束";
+    
+    public static final String ASSIGNEE="assignee";
+    public static final String CANDIDATE_USER="candidateUser";
+    public static final String CANDIDATE_GROUP="candidateGroup";
 }
