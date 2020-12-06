@@ -50,7 +50,7 @@ public interface SpringDistrictRepo extends JpaRepository<SpringDistrict, Long> 
 	 */
 	@Transactional
 	@Modifying
-	@Query(value = "update SpringDistrict set deletedFlag=1 where id=:id")
+	@Query(value = "update SpringDistrict set deletedStatus=1 where id=:id")
 	public void setDelete(@Param(value = "id") Long id);
 
 	/**
@@ -64,6 +64,15 @@ public interface SpringDistrictRepo extends JpaRepository<SpringDistrict, Long> 
 	 */
 	@Transactional
 	@Modifying
-	@Query(value = "update SpringDistrict set deletedFlag=1 where id in (:ids)")
+	@Query(value = "update SpringDistrict set deletedStatus=1 where id in (:ids)")
 	public void setDelete(@Param(value = "ids") List<Long> ids);
+
+	/**
+	 * 根据上级节点查找
+	 * 
+	 * @param parentId
+	 * @return
+	 */
+	@Query(value = "from SpringDistrict where deletedStatus=0 and parentId=:parentId")
+	public List<SpringDistrict> listSpringDistrictByParentId(@Param(value = "parentId") Long parentId);
 }

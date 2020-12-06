@@ -105,4 +105,13 @@ public class SpringDistrictController extends BaseController {
 		SpringDistrictService.setDeleted(ids);
 		return ResponseDTO.successed(null, ResultCode.DELETE_SUCCESSED);
 	}
+
+	@ApiOperation(value = "根据上级节点查找", notes = "根据上级parentId节点查找", response = ResponseDTO.class)
+	@ApiImplicitParam(dataType = "Long", name = "parentId", value = "行政区域编号", required = true)
+	@GetMapping(value = "/ListSpringDistrictByParentId")
+	public ResponseDTO<List<SpringDistrictDTO>> listSpringDistrictByParentId(
+			@RequestParam(value = "parentId", required = true) Long parentId) {
+		List<SpringDistrictDTO> springDistrictDTOList = SpringDistrictService.listSpringDistrictByParentId(parentId);
+		return ResponseDTO.successed(springDistrictDTOList, ResultCode.SELECT_SUCCESSED);
+	}
 }

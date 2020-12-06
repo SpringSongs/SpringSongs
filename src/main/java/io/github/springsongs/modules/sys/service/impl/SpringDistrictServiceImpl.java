@@ -143,4 +143,16 @@ public class SpringDistrictServiceImpl implements ISpringDistrictService {
 
 	}
 
+	@Override
+	public List<SpringDistrictDTO> listSpringDistrictByParentId(Long parentId) {
+		List<SpringDistrict> springDistrictList=springDistrictRepo.listSpringDistrictByParentId(parentId);
+		List<SpringDistrictDTO> springDistrictDTOList=new ArrayList<>();
+		springDistrictList.stream().forEach(springDistrict->{
+			SpringDistrictDTO springDistrictDTO=new SpringDistrictDTO();
+			BeanUtils.copyProperties(springDistrict,springDistrictDTO);
+			springDistrictDTOList.add(springDistrictDTO);
+		});
+		return springDistrictDTOList;
+	}
+
 }

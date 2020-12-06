@@ -91,4 +91,15 @@ public class SpringDistrict extends SpringBase {
 	public void setSortOrder(short sortOrder) {
 		this.sortOrder = sortOrder;
 	}
+	
+	@Description(title ="0未删1已删")
+    @Column(name="deleted_status")
+	@ApiModelProperty("0未删1已删")
+    private boolean deletedStatus;
+    public boolean getDeletedStatus(){
+        return  this.deletedStatus;
+    }
+    public void setDeletedStatus(boolean deletedStatus){
+        this.deletedStatus=deletedStatus;
+    }
 }

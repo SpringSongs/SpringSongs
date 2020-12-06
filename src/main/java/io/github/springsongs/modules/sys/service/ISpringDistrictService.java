@@ -22,4 +22,6 @@ public interface ISpringDistrictService {
 	void setDeleted(List<Long> ids);
 
 	void batchSaveExcel(List<String[]> list);
+	
+	List<SpringDistrictDTO> listSpringDistrictByParentId(Long parentId);
 }
