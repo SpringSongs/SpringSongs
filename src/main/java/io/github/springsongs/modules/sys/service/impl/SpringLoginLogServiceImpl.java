@@ -10,6 +10,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +19,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import io.github.springsongs.enumeration.ResultCode;
@@ -30,6 +33,10 @@ import io.github.springsongs.util.Constant;
 
 @Service
 public class SpringLoginLogServiceImpl implements ISpringLoginLogService {
+	
+	static Logger logger = LoggerFactory.getLogger(SpringDictionaryServiceImpl.class);
+	
+	
 	@Autowired
 	private SpringLoginLogRepo springLoginLogRepo;
 
@@ -161,7 +168,19 @@ public class SpringLoginLogServiceImpl implements ISpringLoginLogService {
 
 	@Override
 	public void delete(List<String> ids) {
-		springLoginLogRepo.delete(ids);
+		
+		if (CollectionUtils.isEmpty(ids)) {
+			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
+		} else if (ids.size() > Constant.MAX_ITEM_SIZE) {
+			throw new SpringSongsException(ResultCode.PARAMETER_MORE_1000);
+		}
+		try {
+			springLoginLogRepo.delete(ids);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
+		
 
 	}
 }

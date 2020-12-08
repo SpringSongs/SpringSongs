@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -47,6 +48,7 @@ public class SpringSiteMessageServiceImpl implements ISpringSiteMessageService {
 		}
 	}
 
+	@Async
 	@Override
 	public void insert(SpringSiteMessageDTO record) {
 		SpringSiteMessage springSiteMessage = new SpringSiteMessage();
@@ -65,6 +67,10 @@ public class SpringSiteMessageServiceImpl implements ISpringSiteMessageService {
 		springSiteMessage = springSiteMessageRepo.getOne(id);
 		if (null == springSiteMessage) {
 			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
+		}
+		if (springSiteMessage.getStatus() != 1) {
+			springSiteMessage.setStatus((short) 1);
+			springSiteMessageRepo.save(springSiteMessage);
 		}
 		SpringSiteMessageDTO springSiteMessageDTO = new SpringSiteMessageDTO();
 		BeanUtils.copyProperties(springSiteMessage, springSiteMessageDTO);
@@ -127,7 +133,7 @@ public class SpringSiteMessageServiceImpl implements ISpringSiteMessageService {
 	public void setDeleted(List<String> ids) {
 		if (CollectionUtils.isEmpty(ids)) {
 			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
-		} else if (ids.size() > 1000) {
+		} else if (ids.size() > Constant.MAX_ITEM_SIZE) {
 			throw new SpringSongsException(ResultCode.PARAMETER_MORE_1000);
 		}
 		try {

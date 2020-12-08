@@ -127,7 +127,7 @@ public class SpringFriendLinkServiceImpl implements ISpringFriendLinkService {
 	public void setDeleted(List<String> ids) {
 		if (CollectionUtils.isEmpty(ids)) {
 			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
-		} else if (ids.size() > 1000) {
+		} else if (ids.size() > Constant.MAX_ITEM_SIZE) {
 			throw new SpringSongsException(ResultCode.PARAMETER_MORE_1000);
 		}
 		try {

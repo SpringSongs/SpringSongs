@@ -73,6 +73,6 @@ public interface SpringSiteMessageRepo extends JpaRepository<SpringSiteMessage, 
 	 * @param toUserId
 	 * @return
 	 */
-	@Query(value = "select count(*) from SpringSiteMessage where deletedStatus=0 and toUserId=:toUserId")
+	@Query(value = "select count(*) from SpringSiteMessage where deletedStatus=0 and status=0 and toUserId=:toUserId")
 	public int countNotReadMessageByUserId(@Param(value = "toUserId") String toUserId);
 }
