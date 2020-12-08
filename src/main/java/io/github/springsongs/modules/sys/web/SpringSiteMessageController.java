@@ -40,7 +40,6 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping(value = "/SpringSiteMessage")
 public class SpringSiteMessageController extends BaseController {
 
-
 	private static final Logger logger = LoggerFactory.getLogger(SpringSiteMessageController.class);
 	@Autowired
 	private ISpringSiteMessageService SpringSiteMessageService;
@@ -52,7 +51,8 @@ public class SpringSiteMessageController extends BaseController {
 	public ReponseResultPageDTO<SpringSiteMessageDTO> listByPage(@RequestBody SpringSiteMessage SpringSiteMessageQuery,
 			@PageableDefault(page = 0, size = 20) Pageable pageable) {
 		SpringSiteMessageQuery.setToUserId(this.getUser().getId());
-		Page<SpringSiteMessageDTO> lists = SpringSiteMessageService.getAllRecordByPage(SpringSiteMessageQuery, pageable);
+		Page<SpringSiteMessageDTO> lists = SpringSiteMessageService.getAllRecordByPage(SpringSiteMessageQuery,
+				pageable);
 		return ReponseResultPageDTO.successed(lists.getContent(), lists.getTotalElements(),
 				ResultCode.SELECT_SUCCESSED);
 	}
@@ -105,5 +105,12 @@ public class SpringSiteMessageController extends BaseController {
 	public ResponseDTO<String> deleted(@RequestParam(value = "ids", required = true) List<String> ids) {
 		SpringSiteMessageService.setDeleted(ids);
 		return ResponseDTO.successed(null, ResultCode.DELETE_SUCCESSED);
+	}
+
+	@ApiOperation(value = "查询未读消息", notes = "根据toUserId对象删除站内消息", response = ResponseDTO.class)
+	@GetMapping(value = "/CountNotReadMessageByUserId")
+	public ResponseDTO<Integer> countNotReadMessageByUserId() {
+		Integer numbers = SpringSiteMessageService.countNotReadMessageByUserId(this.getUser().getId());
+		return ResponseDTO.successed(numbers, ResultCode.SELECT_SUCCESSED);
 	}
 }

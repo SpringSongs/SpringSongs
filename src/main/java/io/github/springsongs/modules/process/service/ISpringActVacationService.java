@@ -23,7 +23,7 @@ public interface ISpringActVacationService {
 
 	void batchSaveExcel(List<String[]> list);
 
-	public String submitSpringActVacation(SpringActVacationDTO vacation) throws Exception;
+	public String submitSpringActVacation(SpringActVacationDTO vacation);
 
 
 }

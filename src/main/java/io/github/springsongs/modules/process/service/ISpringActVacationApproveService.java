@@ -26,4 +26,6 @@ public interface ISpringActVacationApproveService {
 	public void completeSpringActVacationApprove(SpringActVacationApproveDTO record,String taskId);
 	
 	public void completeTask(String taskId, String auditStr);
+	
+	public List<SpringActVacationApproveDTO> findByVacationId(String vacationId);
 }

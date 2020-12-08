@@ -228,4 +228,16 @@ public class SpringActVacationApproveServiceImpl implements ISpringActVacationAp
 		// springActVacationApproveService.updateByPrimaryKey(record);
 	}
 
+	@Override
+	public List<SpringActVacationApproveDTO> findByVacationId(String vacationId) {
+		List<SpringActVacationApprove> springActVacationApproveList=springActVacationApproveRepo.findByVacationId(vacationId);
+		List<SpringActVacationApproveDTO> springActVacationApproveDTOs=new ArrayList<>();
+		springActVacationApproveList.stream().forEach(springActVacationApprove->{
+			SpringActVacationApproveDTO springActVacationApproveDTO=new SpringActVacationApproveDTO();
+			BeanUtils.copyProperties(springActVacationApprove, springActVacationApproveDTO);
+			springActVacationApproveDTOs.add(springActVacationApproveDTO);
+		});
+		return springActVacationApproveDTOs;
+	}
+
 }

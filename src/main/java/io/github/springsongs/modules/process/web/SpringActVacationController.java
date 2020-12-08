@@ -82,7 +82,7 @@ public class SpringActVacationController extends BaseController {
 		return ResponseDTO.successed(null, ResultCode.SAVE_SUCCESSED);
 	}
 
-	@ApiOperation(value = "修改内容管理", notes = "根据SpringJobDTO对象修改内容管理")
+	@ApiOperation(value = "修改请假管理", notes = "根据SpringJobDTO对象修改请假管理")
 	@ApiImplicitParams({ @ApiImplicitParam(name = "viewEntity", dataType = "SpringAritlceDTO"),
 			@ApiImplicitParam(name = "request", dataType = "HttpServletRequest"), })
 	@PutMapping(value = "/Edit")

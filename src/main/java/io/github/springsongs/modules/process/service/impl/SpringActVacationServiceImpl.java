@@ -115,6 +115,9 @@ public class SpringActVacationServiceImpl implements ISpringActVacationService {
 		if (null == springActVacation) {
 			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
 		}
+		if (!StringUtils.isEmpty(springActVacation.getProcessInstanceId())) {
+			throw new SpringSongsException(ResultCode.TASK_HADED_SUBMIT);
+		}
 		SpringActVacation springActVacationDO = new SpringActVacation();
 		BeanUtils.copyProperties(record, springActVacationDO);
 		try {
@@ -187,7 +190,7 @@ public class SpringActVacationServiceImpl implements ISpringActVacationService {
 	}
 
 	@Transactional
-	public String submitSpringActVacation(SpringActVacationDTO vacation) throws Exception {
+	public String submitSpringActVacation(SpringActVacationDTO vacation){
 		if (!StringUtils.isEmpty(vacation.getProcessInstanceId())) {
 			throw new SpringSongsException(ResultCode.TASK_HADED_SUBMIT);
 		}

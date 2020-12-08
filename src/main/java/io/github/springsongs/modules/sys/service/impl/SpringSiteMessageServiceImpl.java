@@ -144,4 +144,9 @@ public class SpringSiteMessageServiceImpl implements ISpringSiteMessageService {
 
 	}
 
+	@Override
+	public int countNotReadMessageByUserId(String toUserId) {
+		return springSiteMessageRepo.countNotReadMessageByUserId(toUserId);
+	}
+
 }

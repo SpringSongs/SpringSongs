@@ -45,63 +45,67 @@ public class SpringSiteMessage extends SpringBase implements Serializable {
 		this.id = id;
 	}
 
-	@NotBlank(message = "请填写来自自用户Id")
-	@Size(max = 36, min = 1)
-	@Description(title = "来自自用户Id")
-	@Column(name = "from_user_id")
-	@ApiModelProperty("来自自用户Id")
-	private String fromUserId;
+	@NotBlank(message="请填写来自自用户Id")
+    @Size(max=36, min=1)
+    @Description(title ="来自自用户Id")
+    @Column(name="from_user_id")
+    private String fromUserId;
+    public String getFromUserId(){
+        return  this.fromUserId;
+    }
+    public void setFromUserId(String fromUserId){
+        this.fromUserId=fromUserId;
+    }
 
-	public String getFromUserId() {
-		return this.fromUserId;
-	}
+    @NotBlank(message="请填写来自用户名称")
+    @Size(max=45, min=1)
+    @Description(title ="来自用户名称")
+    @Column(name="from_user_name")
+    private String fromUserName;
+    public String getFromUserName(){
+        return  this.fromUserName;
+    }
+    public void setFromUserName(String fromUserName){
+        this.fromUserName=fromUserName;
+    }
 
-	public void setFromUserId(String fromUserId) {
-		this.fromUserId = fromUserId;
-	}
+    @NotBlank(message="请填写收消息用户Id")
+    @Size(max=36, min=1)
+    @Description(title ="收消息用户Id")
+    @Column(name="to_user_id")
+    private String toUserId;
+    public String getToUserId(){
+        return  this.toUserId;
+    }
+    public void setToUserId(String toUserId){
+        this.toUserId=toUserId;
+    }
 
-	@Size(max = 45, min = 0)
-	@Description(title = "来自用户名称")
-	@ApiModelProperty("来自用户名称")
-	@Column(name = "from_user_name")
-	private String fromUserName;
+    @NotBlank(message="请填写用户名")
+    @Size(max=45, min=1)
+    @Description(title ="用户名")
+    @Column(name="to_user_name")
+    private String toUserName;
+    public String getToUserName(){
+        return  this.toUserName;
+    }
+    public void setToUserName(String toUserName){
+        this.toUserName=toUserName;
+    }
 
-	public String getFromUserName() {
-		return this.fromUserName;
-	}
+    @NotBlank(message="请填写标题")
+    @Size(max=255, min=1)
+    @Description(title ="标题")
+    @Column(name="title")
+    private String title;
+    public String getTitle(){
+        return  this.title;
+    }
+    public void setTitle(String title){
+        this.title=title;
+    }
 
-	public void setFromUserName(String fromUserName) {
-		this.fromUserName = fromUserName;
-	}
-
-	@NotBlank(message = "请填写收消息用户Id")
-	@Size(max = 36, min = 1)
-	@Description(title = "收消息用户Id")
-	@ApiModelProperty("收消息用户Id")
-	@Column(name = "to_user_id")
-	private String toUserId;
-
-	public String getToUserId() {
-		return this.toUserId;
-	}
-
-	public void setToUserId(String toUserId) {
-		this.toUserId = toUserId;
-	}
-
-	 @Size(max=45, min=0)
-     @Description(title ="用户名")
-     @Column(name="to_user_name")
-	 @ApiModelProperty("用户名")
-     private String toUserName;
-     public String getToUserName(){
-         return  this.toUserName;
-     }
-     public void setToUserName(String toUserName){
-         this.toUserName=toUserName;
-     }
-
-     
+    @NotBlank(message="请填写消息内容")
 	@Size(max = 500, min = 0)
 	@Description(title = "消息内容")
 	@Column(name = "content")

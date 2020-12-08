@@ -20,6 +20,8 @@ public interface ISpringSiteMessageService {
 	Page<SpringSiteMessageDTO> getAllRecordByPage(SpringSiteMessage record, Pageable pageable);
 
 	void setDeleted(List<String> ids);
-	
+
 	void batchSaveExcel(List<String[]> list);
+
+	int countNotReadMessageByUserId(String toUserId);
 }

@@ -38,4 +38,11 @@ public interface SpringActVacationApproveRepo extends JpaRepository<SpringActVac
 	public List<SpringActVacationApprove> findInIds(@Param(value = "ids") List<String> ids);
 	
 	
+	/**
+	 * 根据VacationId查询
+	 * @param VacationId
+	 * @return
+	 */
+	public List<SpringActVacationApprove> findByVacationId(String vacationId);
+	
 }
