@@ -223,7 +223,7 @@ public class SpringAritlceServiceImpl implements ISpringAritlceService {
 				predicates.add(deletionStateCode);
 				Predicate[] pre = new Predicate[predicates.size()];
 				query.where(predicates.toArray(pre));
-				query.orderBy(cb.desc(root.get("createdOn").as(Date.class)));
+				query.orderBy(cb.asc(root.get("sortOrder").as(Integer.class)),cb.desc(root.get("createdOn").as(Date.class)));
 				return query.getRestriction();
 			}
 		};

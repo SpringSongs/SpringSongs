@@ -101,7 +101,7 @@ public interface SpringResourceRepo extends JpaRepository<SpringResource, String
 			+ "    LEFT JOIN spring_role br ON bur.role_id = br.id" 
 			+ "    LEFT JOIN spring_resource_role bp ON bp.role_id = br.id" 
 			+ "    LEFT JOIN spring_resource bue ON bue.id = bp.module_id " 
-			+ "    WHERE bue.deleted_status=0 and bue.menu_flag=1 and bur.user_id = ?")
+			+ "    WHERE bue.deleted_status=0 and bue.menu_flag=1 and bur.user_id = ? order by bue.sort_code asc")
 	public List<SpringResource> listModuleByUserId(String userId);
 	
 	@Query(value = "SELECT DISTINCT new io.github.springsongs.modules.sys.dto.ResourceRoleDTO(bm.vueUrl,br.title) FROM  SpringRole br" 

@@ -178,7 +178,7 @@ public class SpringDictionaryDetailServiceImpl implements ISpringDictionaryDetai
 				predicates.add(deletedStatus);
 				Predicate[] pre = new Predicate[predicates.size()];
 				query.where(predicates.toArray(pre));
-				query.orderBy(cb.desc(root.get("createdOn").as(Date.class)));
+				query.orderBy(cb.asc(root.get("sortCode").as(Integer.class)),cb.desc(root.get("createdOn").as(Date.class)));
 				return query.getRestriction();
 			}
 		};
