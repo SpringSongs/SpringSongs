@@ -53,6 +53,9 @@ public class SpringUserServiceImpl implements ISpringUserService {
 	@Autowired
 	private SpringUserRoleRepo springUserRoleRepo;
 
+	@Autowired
+	private ISpringUserService springUserService;
+
 	/**
 	 *
 	 * 物理删除
@@ -81,16 +84,25 @@ public class SpringUserServiceImpl implements ISpringUserService {
 	 * @see [相关类/方法]（可选）
 	 * @since [产品/模块版本] （可选）
 	 */
+	@Transactional
 	@Override
 	public void insert(SpringUserDTO record) {
 		SpringUser springUserDo = springUserRepo.getByUserName(record.getUserName());
-		if (null!=springUserDo) {
+		if (null != springUserDo) {
 			throw new SpringSongsException(ResultCode.ACCOUNT_HAS_REGISTER);
 		}
 		SpringUser springUser = new SpringUser();
 		BeanUtils.copyProperties(record, springUser);
 		try {
 			springUserRepo.save(springUser);
+			SpringUserSecurity springUserSecurity = new SpringUserSecurity();
+			springUserSecurity.setUserId(springUser.getId());
+			springUserSecurity.setPwd(record.getPassword());
+			springUserSecurity.setCreatedBy(record.getUserName());
+			springUserSecurity.setCreatedUserId(record.getId());
+			springUserSecurity.setCreatedIp(record.getCreatedIp());
+			springUserSecurity.setCreatedOn(record.getCreatedOn());
+			springUserService.setPwd(springUserSecurity);
 		} catch (Exception ex) {
 			logger.error(ex.getMessage());
 			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
@@ -164,7 +176,7 @@ public class SpringUserServiceImpl implements ISpringUserService {
 	 */
 	@Override
 	public Page<SpringUserDTO> getAllRecordByPage(SpringUserQuery springUserQuery, Pageable pageable) {
-		if (pageable.getPageSize()>Constant.MAX_PAGE_SIZE) {
+		if (pageable.getPageSize() > Constant.MAX_PAGE_SIZE) {
 			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
 		}
 		Specification<SpringUser> specification = new Specification<SpringUser>() {
@@ -206,7 +218,8 @@ public class SpringUserServiceImpl implements ISpringUserService {
 				predicates.add(deletedStatus);
 				Predicate[] pre = new Predicate[predicates.size()];
 				query.where(predicates.toArray(pre));
-				query.orderBy(cb.asc(root.get("sortOrder").as(Integer.class)),cb.desc(root.get("createdOn").as(Date.class)));
+				query.orderBy(cb.asc(root.get("sortOrder").as(Integer.class)),
+						cb.desc(root.get("createdOn").as(Date.class)));
 				return query.getRestriction();
 			}
 		};
@@ -265,7 +278,7 @@ public class SpringUserServiceImpl implements ISpringUserService {
 	 */
 	@Override
 	public void batchSaveExcel(List<String[]> list) {
-		
+
 	}
 
 	@Override
@@ -283,7 +296,7 @@ public class SpringUserServiceImpl implements ISpringUserService {
 	@Override
 	public SpringUserDTO getByUserName(String username) {
 		SpringUser springUser = springUserRepo.getByUserName(username);
-		if (null!=springUser) {
+		if (null != springUser) {
 			throw new SpringSongsException(ResultCode.ACCOUNT_HAS_REGISTER);
 		}
 		SpringUserDTO springUserDTO = new SpringUserDTO();

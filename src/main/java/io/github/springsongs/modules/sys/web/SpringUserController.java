@@ -173,10 +173,6 @@ public class SpringUserController extends BaseController {
 			viewEntity.setCreatedUserId(this.getUser().getId());
 			viewEntity.setCreatedIp(IpKit.getRealIp(request));
 			viewEntity.setCreatedOn(new Date());
-			viewEntity.setUpdatedOn(new Date());
-			viewEntity.setUpdatedUserId(this.getUser().getId());
-			viewEntity.setUpdatedBy(this.getUser().getUserName());
-			viewEntity.setUpdatedIp(IpKit.getRealIp(request));
 			springUserService.setPwd(viewEntity);
 			return ResponseDTO.successed(null, ResultCode.SAVE_SUCCESSED);
 		}

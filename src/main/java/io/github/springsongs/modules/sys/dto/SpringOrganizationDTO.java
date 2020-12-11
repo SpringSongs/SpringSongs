@@ -13,6 +13,15 @@ public class SpringOrganizationDTO extends SpringOrganization{
 	 * 
 	 */
 	private static final long serialVersionUID = -4354528935779911864L;
+	
+	@Transient
+	private String text;
+	
+	public String getText() {
+		return this.getTitle();
+	}
+
+
 	@Transient
 	private List<SpringOrganizationDTO> children=new ArrayList<>();
 
