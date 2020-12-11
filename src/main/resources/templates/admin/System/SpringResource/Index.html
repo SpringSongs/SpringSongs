@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="common/header :: head"></head>
+	<body>
+		<div id='tb'>
+			<div id='p' class='easyui-panel' title='查询' style='padding: 10px'>
+				<form id='searchForm' method='post'>
+					<div id='toolbar'>
+						<input id="system" name="systemId" value="" class="easyui-combobox" data-options="label:'子系统:'" style="width:300px;">
+					</div>
+				</form>
+			</div>
+			<table id='grid' title='SpringResource' class="easyui-treegrid" data-options="iconCls:'icon-add'" style="margin-top: 20px"></table>
+
+			<div id='DivAdd' class='easyui-dialog' style='width: 80%; height: 350px; padding: 10px 20px;' closed='true'
+			 resizable='true' modal='true' data-options="iconCls:'icon-add'">
+				<form id='AddForm' method='post'>
+					<div style='margin-bottom: 20px'>
+						<input type="hidden" name='parentId' id='parentId'>
+						<input class='easyui-textbox' name='parentName' id='parentName' data-options="label:'父级:',required:true" readonly="readonly" style="width:100%">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input id="system1" name="systemId" value="" class="easyui-combobox" data-options="label:'子系统:'" style="width:100%">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='code' id='code' style='width: 100%' data-options="label:'编码:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='title' id='title' style='width: 100%' data-options="label:'名称:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<select class="easyui-combobox" name="menuFlag" id='menuFlag' label="是否菜单:" labelPosition="left" style="width:100%;"
+						 data-options="required:true">
+							<option value="true">是</option>
+							<option value="false">否</option>
+						</select>
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='vueIcon' id='vueIcon' style='width: 100%' data-options="label:'Icon:',required:false">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='vueUrl' id='vueUrl' style='width: 100%' data-options="label:'链接:',required:false">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='angularIcon' id='angularIcon' style='width: 100%' data-options="label:'Icon:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='angularUrl' id='angularUrl' style='width: 100%' data-options="label:'链接:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-numberspinner' name='sortCode' id='sortCode' style='width: 100%' data-options="label:'排序:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<select class="easyui-combobox" name="enableEdit" id='enableEdit' label="允许编辑:" labelPosition="left" style="width:100%;">
+							<option value="true">允许</option>
+							<option value="false">不允许</option>
+						</select>
+					</div>
+					<div style='margin-bottom: 20px'>
+						<select class="easyui-combobox" name="enableDelete" id='enableDelete' label="允许编辑:" labelPosition="left" style="width:100%;">
+							<option value="true">允许</option>
+							<option value="false">不允许</option>
+						</select>
+					</div>
+					<div style='margin-bottom: 20px'>
+						<select class="easyui-combobox" name="showStatus" id='showStatus' label="是否显示:" labelPosition="left" style="width:100%;"
+						 data-options="required:true">
+							<option value="true">是</option>
+							<option value="false">否</option>
+						</select>
+					</div>
+				</form>
+				<div style='text-align: center; padding: 5px 0'>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick='SpringResource.Save();' style='width: 80px'>保存</a>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript: $('#AddForm').form('clear');" style='width: 80px'>清除</a>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript:$('#DivAdd').dialog('close');" style='width: 80px'>关闭</a>
+				</div>
+			</div>
+			<div id='DivEdit' class='easyui-dialog' style='width: 80%; height: 350px; padding: 10px 20px;' closed='true'
+			 resizable='true' modal='true' data-options="iconCls:'icon-add'">
+				<form id='EditForm' method='post'>
+					<div style='margin-bottom: 20px'>
+						<input id="system2" name="systemId" value="" class="easyui-textbox" data-options="label:'子系统:'" style="width:100%"
+						 readonly="readonly">
+					</div>
+					<input type="hidden" name='parentId' id='parentId1'>
+					<input type="hidden" name='parentName' id='parentName1'>
+					<input type="hidden" name='id' id='id1' style='width: 100%' data-options="label:'id:',required:false">
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='code' id='code1' style='width: 100%' data-options="label:'编码:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='title' id='title1' style='width: 100%' data-options="label:'名称:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<select class="easyui-combobox" name="menuFlag" id='menuFlag1' label="是否菜单:" labelPosition="left" style="width:100%;"
+						 data-options="required:true">
+							<option value="true">是</option>
+							<option value="false">否</option>
+						</select>
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='vueIcon' id='vueIcon1' style='width: 100%' data-options="label:'Icon:',required:true"
+						 readonly="readonly">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='vueUrl' id='vueUrl1' style='width: 100%' data-options="label:'链接:',required:true"
+						 readonly="readonly">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='angularIcon' id='angularIcon1' style='width: 100%' data-options="label:'Icon:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='angularUrl' id='angularUrl1' style='width: 100%' data-options="label:'链接:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-numberspinner' name='sortCode' id='sortCode1' style='width: 100%' data-options="label:'排序:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<select class="easyui-combobox" name="enableEdit" id='enableEdit1' label="允许编辑:" labelPosition="left" style="width:100%;">
+							<option value="true">允许</option>
+							<option value="false">不允许</option>
+						</select>
+					</div>
+					<div style='margin-bottom: 20px'>
+						<select class="easyui-combobox" name="enableDelete" id='enableDelete1' label="允许编辑:" labelPosition="left" style="width:100%;">
+							<option value="true">允许</option>
+							<option value="false">不允许</option>
+						</select>
+					</div>
+					<div style='margin-bottom: 20px'>
+						<select class="easyui-combobox" name="showStatus" id='showStatus1' label="是否显示:" labelPosition="left" style="width:100%;"
+						 data-options="required:true">
+							<option value="true">是</option>
+							<option value="false">否</option>
+						</select>
+					</div>
+					<input type="hidden" name='deletedStatus' id='deletedStatus1'>
+				</form>
+				<div style='text-align: center; padding: 5px 0'>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick='SpringResource.Update();' style='width: 80px'>保存</a>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript: $('#EditForm').form('clear');" style='width: 80px'>清除</a>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript:$('#DivEdit').dialog('close');" style='width: 80px'>关闭</a>
+				</div>
+			</div>
+
+		</div>
+	</body>
+</html>
+<script type='text/javascript'>
+	var SpringResource = {
+
+		//初始化表格
+		InitGrid: function(queryData) {
+			$('#grid').treegrid({
+				data: '',
+				loader: function(param, success, error) {
+					$.ajax({
+						type: "get",
+						url: '/SpringResource/ListAllToTree',
+						dataType: 'json',
+						async: true,
+						//contentType: 'application/json;charset=utf-8', // 设置请求头信息
+						data: param,
+						success: function(result) {
+							success(result.data);
+						}
+					});
+				},
+				title: '资源菜单',
+				iconCls: 'icon-view',
+				width: function() {
+					return document.body.clientWidth * 0.9
+				},
+				idField: 'id',
+				treeField: 'title',
+				queryParams: queryData,
+				columns: [
+					[{
+						field: 'ck',
+						checkbox: true
+					}, {
+						title: '名称',
+						field: 'title',
+						width: 200,
+						sortable: true
+					}, {
+						title: '编码',
+						field: 'code',
+						width: 200,
+						sortable: true
+					}, {
+						title: '是否菜单',
+						field: 'menuFlag',
+						width: 200,
+						sortable: true
+					}, {
+						title: 'Icon',
+						field: 'angularIcon',
+						width: 200,
+						sortable: true
+					}, {
+						title: '链接',
+						field: 'angularUrl',
+						width: 200,
+						sortable: true
+					}, {
+						title: '排序',
+						field: 'sortCode',
+						width: 200,
+						sortable: true
+					}, {
+						title: '允许编辑',
+						field: 'enableEdit',
+						width: 200,
+						sortable: true
+					}, {
+						title: '允许删除',
+						field: 'enableDelete',
+						width: 200,
+						sortable: true
+					}, {
+						title: '是否显示',
+						field: 'showStatus',
+						width: 200,
+						sortable: true
+					}]
+				],
+				toolbar: [{
+					id: 'btnSearch',
+					text: '查询',
+					iconCls: 'icon-search',
+					handler: function() {
+						SpringResource.Search();
+					}
+				}, '-', {
+					id: 'btnAdd',
+					text: '添加',
+					iconCls: 'icon-add',
+					handler: function() {
+						SpringResource.ShowAddDialog();
+					}
+				}, '-', {
+					id: 'btnAddChild',
+					text: '添加子节点',
+					iconCls: 'icon-add',
+					handler: function() {
+						SpringResource.ShowAddChildDialog();
+					}
+				}, '-', {
+					id: 'btnEdit',
+					text: '修改',
+					iconCls: 'icon-edit',
+					handler: function() {
+						SpringResource.ShowEditOrViewDialog();
+					}
+				}, '-', {
+					id: 'btnDelete',
+					text: '删除',
+					iconCls: 'icon-remove',
+					handler: function() {
+						SpringResource.Delete();
+					}
+				}],
+				onDblClickRow: function(rowIndex, rowData) {
+					//$('#grid').datagrid('uncheckAll');
+					//$('#grid').treegrid('checkRow', rowIndex);
+					SpringResource.ShowEditOrViewDialog();
+				}
+			});
+			var heightMargin = $('#toolbar').height() + 80;
+			var widthMargin = $(document).width() - $('#tb').width();
+			//$('#grid').resizeDataGrid(heightMargin,widthMargin,0,0);
+			//$(window).resize(function(){$('#grid').resizeDataGrid(heightMargin,widthMargin,0,0)})
+		},
+		//查询
+		Search: function() {
+			//得到用户输入的参数
+			//$('#id').textbox('getValue');
+			//$('#id').combobox('getValue'),
+			//$('#id').datebox('getValue'),
+			//$('#id').val(),
+			//$('#id').combotree('getValue'),
+			//$('#id').numberbox('getValue'),
+			var queryData = $('#searchForm').serializeArray();
+			var obj = {};
+			$.each(queryData, function(i, v) {
+				obj[v.name] = v.value;
+			});
+			$('#grid').treegrid('load', obj);
+			exportCondition = obj;
+			return false;
+		},
+		//实现删除数据的方法
+		Delete: function() {
+			var rows = $('#grid').treegrid('getSelections');
+			if (rows.length >= 1) {
+				var ids = ''; //1,2,3,4,5
+				for (var i = 0; i < rows.length; i++) {
+					ids += rows[i].id + ',';
+				}
+				ids = ids.substring(0, ids.length - 1);
+				var postData = {
+					ids: ids
+				};
+				$.messager.confirm('确认删除', '确认删除', function(action) {
+					if (action) {
+						$.ajax({
+							type: 'POST',
+							url: '/SpringResource/SetDeleted',
+							dataType: 'json',
+							data: postData,
+							success: function(data) {
+								if (data.code == 200) {
+									$.messager.alert('OK', '删除成功！');
+									$('#grid').treegrid('reload');
+									//清除选中信息
+									rows.length = ''; //第一种方法      
+									$('#grid').treegrid('clearSelections'); //第二种方法
+								} else {
+									$.messager.alert('Fail', data.msg);
+								}
+							}
+						});
+					}
+				});
+			} else {
+				$.messager.alert('提示', '请选择数据', 'error');
+			}
+		},
+		//弹出新增窗口
+		ShowAddDialog: function() {
+			$('#AddForm').form('clear');
+			$("#parentId").val("0");
+			$("#parentName").textbox('setValue',"顶级");
+			$('#DivAdd').dialog('open').dialog('setTitle', '添加信息');
+		},
+		ShowAddChildDialog: function() {
+			$('#AddForm').form('clear');
+			var rows = $('#grid').treegrid('getSelections');
+			if (rows.length == 0) {
+				$.messager.alert('提示', '请选择数据', 'error');
+				return;
+			} else if (rows.length > 1) {
+				$.messager.alert('提示', '只能选择一项数据', 'error');
+				return;
+			}
+			//console.log(rows);
+			$("#parentId").val(rows[0].id);
+			$("#parentName").textbox('setValue',rows[0].title);
+			$('#DivAdd').dialog('open').dialog('setTitle', '添加信息');
+		},
+		//弹出修改或者查看窗口
+		ShowEditOrViewDialog: function(view) {
+			var rows = $('#grid').treegrid('getSelections');
+			if (rows.length == 0) {
+				$.messager.alert('提示', '请选择数据', 'error');
+				return;
+			} else if (rows.length > 1) {
+				$.messager.alert('提示', '只能选择一项数据', 'error');
+				return;
+			}
+			id = $('#grid').treegrid('getSelections')[0].id; //获取到了用用户选择的ID
+			if (view == null) {
+				$('#DivEdit').dialog('open').dialog('setTitle', '编辑信息');
+				this.Edit(id);
+			} else {
+				$('#DivView').dialog('open').dialog('setTitle', '查看信息');
+				this.View(id);
+			}
+		},
+		//绑定添加按钮的事件
+		Save: function() {
+			var validate = $('#AddForm').form('validate');
+			if (validate == false) {
+				return false;
+			}
+			var postData = $('#AddForm').serializeArray();
+			var obj = {};
+			$.each(postData, function(i, v) {
+				obj[v.name] = v.value;
+			});
+			$
+				.ajax({
+					type: "post",
+					url: '/SpringResource/Create',
+					dataType: 'json',
+					//async: true,
+					contentType: 'application/json;charset=utf-8', // 设置请求头信息
+					data: JSON.stringify(obj),
+					success: function(result) {
+						if (result.code == 200) {
+							//添加成功  1.关闭弹出层，2.刷新DataGird
+							$.messager.alert('提示', '保存成功');
+							$('#DivAdd').dialog('close');
+							$('#grid').treegrid('reload');
+							$('#AddForm').form('clear');
+						} else {
+							$.messager.alert('提示', result.msg);
+						}
+					}
+				});
+		},
+		//更新方法
+		Update: function() {
+			var validate = $('#EditForm').form('validate');
+			if (validate == false) {
+				return false;
+			}
+			var postData = $('#EditForm').serializeArray();
+			var obj = {};
+			$.each(postData, function(i, v) {
+				obj[v.name] = v.value;
+			});
+			$
+				.ajax({
+					type: "put",
+					url: '/SpringResource/Edit',
+					dataType: 'json',
+					//async: true,
+					contentType: 'application/json;charset=utf-8', // 设置请求头信息
+					data: JSON.stringify(obj),
+					success: function(result) {
+						if (result.code == 200) {
+							//添加成功  1.关闭弹出层，2.刷新DataGird
+							//showTips('保存成功');
+							$.messager.alert('提示', '保存成功');
+							$('#DivEdit').dialog('close');
+							$('#grid').treegrid('reload');
+							$('#EditForm').form('clear');
+						} else {
+							$.messager.alert('提示', result.msg);
+						}
+					}
+				});
+		},
+		//查询数据
+		Edit: function(ID) {
+			//使用同步方式，使得联动的控件正常显示
+			$.ajaxSettings.async = false;
+			$.getJSON('/SpringResource/Detail/?id=' + ID, function(data) {
+				if (data.code == 200) {
+					$('#EditForm').form('clear');
+					$('#id1').val(data.data.id);
+					$('#code1').textbox('setValue', data.data.code);
+					$('#title1').textbox('setValue', data.data.title);
+					$('#menuFlag1').combobox('setValue', data.data.menuFlag);
+					$('#vueIcon1').textbox('setValue', data.data.vueIcon);
+					$('#vueUrl1').textbox('setValue', data.data.vueUrl);
+					$('#angularIcon1').textbox('setValue', data.data.angularIcon);
+					$('#angularUrl1').textbox('setValue', data.data.angularUrl);
+					$('#parentId1').val(data.data.parentId);
+					$('#parentName1').val(data.data.parentName);
+					$('#sortCode1').numberspinner('setValue', data.data.sortCode);
+					$('#enableEdit1').combobox('setValue', data.data.enableEdit);
+					$('#enableDelete1').combobox('setValue', data.data.enableDelete);
+					$('#deletedStatus1').val(data.data.deletedStatus);
+					$('#showStatus1').textbox('setValue', data.data.showStatus);
+					$('#system2').textbox('setValue', data.data.systemId);
+				} else {
+					$.messager.alert('提示', data.msg);
+				}
+			});
+		},
+		ListSystem: function() {
+			$('#system').combobox({
+				loader: function(param, success, error) {
+					$.ajax({
+						type: "get",
+						url: '/SpringSystem/ListAll',
+						dataType: 'json',
+						success: function(result) {
+							success(result.data);
+						}
+					});
+				},
+				valueField: 'code',
+				textField: 'title',
+			});
+			$('#system1').combobox({
+				loader: function(param, success, error) {
+					$.ajax({
+						type: "get",
+						url: '/SpringSystem/ListAll',
+						dataType: 'json',
+						success: function(result) {
+							success(result.data);
+						}
+					});
+				},
+				valueField: 'code',
+				textField: 'title',
+			});
+		}
+	};
+	var queryData = {
+		systemId: "Base"
+	}; //可添加一些预设条件
+	SpringResource.InitGrid(queryData); //初始化Datagrid表格数据
+	SpringResource.ListSystem();
+</script>

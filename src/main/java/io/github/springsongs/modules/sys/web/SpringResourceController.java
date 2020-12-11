@@ -26,15 +26,14 @@ import io.github.springsongs.common.dto.ResponseDTO;
 import io.github.springsongs.common.web.BaseController;
 import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.modules.sys.domain.SpringResource;
+import io.github.springsongs.modules.sys.dto.EasyUiMenuDTO;
 import io.github.springsongs.modules.sys.dto.ElementUiTreeDTO;
 import io.github.springsongs.modules.sys.dto.MenuDTO;
 import io.github.springsongs.modules.sys.dto.MenuRouterDTO;
-import io.github.springsongs.modules.sys.dto.SpringOrganizationDTO;
 import io.github.springsongs.modules.sys.dto.SpringParameterDTO;
 import io.github.springsongs.modules.sys.dto.SpringResourceDTO;
 import io.github.springsongs.modules.sys.dto.query.SpringResourceQuery;
 import io.github.springsongs.modules.sys.service.ISpringResourceService;
-import io.github.springsongs.security.util.SecurityUtils;
 import io.github.springsongs.util.IpKit;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -117,6 +116,13 @@ public class SpringResourceController extends BaseController {
 	public ResponseDTO<List<MenuRouterDTO>> getRouters() {
 		List<MenuRouterDTO> menuRouterDTOs = springResourceService.listResourceByUserId(this.getUser().getId());
 		return ResponseDTO.successed(menuRouterDTOs, ResultCode.SELECT_SUCCESSED);
+	}
+
+	@ApiOperation(value = "获取EASYUI菜单", notes = "获取EASYUI菜单", response = ResponseDTO.class)
+	@PostMapping(value = "/GetEasyUIMenu")
+	public ResponseDTO<List<EasyUiMenuDTO>> getEasyUIMenu() {
+		List<EasyUiMenuDTO> easyUiMenuDTO = springResourceService.listEasyUiResourceByUserId(this.getUser().getId());
+		return ResponseDTO.successed(easyUiMenuDTO, ResultCode.SELECT_SUCCESSED);
 	}
 
 	@ApiOperation(value = "根据上级查询资源", notes = "根据上级查询资源", response = ResponseDTO.class)

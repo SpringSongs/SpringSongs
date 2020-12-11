@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/header :: head"></head>
+<body>
+	<div id='tb'>
+		<div id='p' class='easyui-panel' title='查询' style='padding: 10px'>
+			<form id='serachForm' method='post'>
+				<div id='toolbar'>
+					<input class='easyui-textbox' name='keyWork' label='关键字:'
+						style='width: 300px' /> <input class='easyui-datebox'
+						name='startDate' label='开始日期:' style='width: 300px' /> <input
+						class='easyui-datebox' name='endDate' label='结束日期:'
+						style='width: 300px' />
+				</div>
+			</form>
+		</div>
+		<table id='grid' title='SpringAttachment'
+			data-options="iconCls:'icon-add'" style="margin-top: 20px"></table>
+		<div id='DivAdd' class='easyui-dialog'
+			style='width: 80%; height: 500px; padding: 10px 20px;' closed='true'
+			resizable='true' modal='true' data-options="iconCls:'icon-add'">
+			<form id='AddForm' method='post'>
+				<div style='margin-bottom: 20px'>
+					<input class='easyui-textbox' name='springAttachmentEntity.id'
+						id='id' style='width: 100%'
+						data-options="label:'主键:',required:false">
+				</div>
+				<div style='margin-bottom: 20px'>
+					<input class='easyui-textbox'
+						name='springAttachmentEntity.folder_id' id='folderId'
+						style='width: 100%' data-options="label:'文件夾主键:',required:false">
+				</div>
+				<div style='margin-bottom: 20px'>
+					<input class='easyui-textbox'
+						name='springAttachmentEntity.folder_name' id='folderName'
+						style='width: 100%' data-options="label:'文件夹名称:',required:false">
+				</div>
+				<div style='margin-bottom: 20px'>
+					<input class='easyui-textbox' name='springAttachmentEntity.path'
+						id='path' style='width: 100%'
+						data-options="label:'文件路径:',required:false">
+				</div>
+				<div style='margin-bottom: 20px'>
+					<input class='easyui-textbox'
+						name='springAttachmentEntity.description' id='description'
+						style='width: 100%' data-options="label:'说明:',required:true">
+				</div>
+				<div style='margin-bottom: 20px'>
+					<input class='easyui-textbox'
+						name='springAttachmentEntity.deleted_status' id='deletedStatus'
+						style='width: 100%' data-options="label:'0未删1已删:',required:true">
+				</div>
+			</form>
+			<div style='text-align: center; padding: 5px 0'>
+				<a href='javascript:void(0)' class='easyui-linkbutton'
+					onclick='SpringAttachment.Save();' style='width: 80px'>保存</a> <a
+					href='javascript:void(0)' class='easyui-linkbutton'
+					onclick="javascript: $('#AddForm').form('clear');"
+					style='width: 80px'>清除</a> <a href='javascript:void(0)'
+					class='easyui-linkbutton'
+					onclick="javascript:$('#DivAdd').dialog('close');"
+					style='width: 80px'>关闭</a>
+			</div>
+		</div>
+		<div id='DivEdit' class='easyui-dialog'
+			style='width: 80%; height: 80%; padding: 10px 20px;' closed='true'
+			resizable='true' modal='true' data-options="iconCls:'icon-add'">
+			<form id='EditForm' method='post'>
+				<div style='margin-bottom: 20px'>
+					<input class='easyui-textbox' name='springAttachmentEntity.id'
+						id='id1' style='width: 100%'
+						data-options="label:'主键:',required:false">
+				</div>
+				<div style='margin-bottom: 20px'>
+					<input class='easyui-textbox'
+						name='springAttachmentEntity.folder_id' id='folderId1'
+						style='width: 100%' data-options="label:'文件夾主键:',required:false">
+				</div>
+				<div style='margin-bottom: 20px'>
+					<input class='easyui-textbox'
+						name='springAttachmentEntity.folder_name' id='folderName1'
+						style='width: 100%' data-options="label:'文件夹名称:',required:false">
+				</div>
+				<div style='margin-bottom: 20px'>
+					<input class='easyui-textbox' name='springAttachmentEntity.path'
+						id='path1' style='width: 100%'
+						data-options="label:'文件路径:',required:false">
+				</div>
+				<div style='margin-bottom: 20px'>
+					<input class='easyui-textbox'
+						name='springAttachmentEntity.description' id='description1'
+						style='width: 100%' data-options="label:'说明:',required:true">
+				</div>
+				<div style='margin-bottom: 20px'>
+					<input class='easyui-textbox'
+						name='springAttachmentEntity.deleted_status' id='deletedStatus1'
+						style='width: 100%' data-options="label:'0未删1已删:',required:true">
+				</div>
+			</form>
+			<div style='text-align: center; padding: 5px 0'>
+				<a href='javascript:void(0)' class='easyui-linkbutton'
+					onclick='SpringAttachment.Update();' style='width: 80px'>保存</a> <a
+					href='javascript:void(0)' class='easyui-linkbutton'
+					onclick="javascript: $('#EditForm').form('clear');"
+					style='width: 80px'>清除</a> <a href='javascript:void(0)'
+					class='easyui-linkbutton'
+					onclick="javascript:$('#DivEdit').dialog('close');"
+					style='width: 80px'>关闭</a>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+<script type='text/javascript'>
+	var SpringAttachment = {
+		//初始化表格
+		InitGrid : function(queryData) {
+			$('#grid')
+					.datagrid(
+							{
+								data:'',
+								loader : function(param, success, error) {
+					                $.ajax({
+					                    type : "post",
+					                    url : '/SpringAttachment/ListByPage',
+					                    dataType : 'json',
+					                    async: true,
+					                    contentType : 'application/json;charset=utf-8', // 设置请求头信息
+					                    data : JSON.stringify(param),
+					                    success : function(result) {       
+					                            success(result);                
+					                    }
+					                });
+					            },
+								title : '我的文件',
+								iconCls : 'icon-view',
+								height : 500,
+								width : function() {
+									return document.body.clientWidth * 0.9
+								},
+								nowrap : true,
+								autoRowHeight : true,
+								striped : true,
+								fit : false,
+								collapsible : true,
+								pagination : true,
+								pageSize : 50,
+								singleSelect : false,
+								pageList : [ 50, 100, 200 ],
+								pageNumber : 1,
+								sortOrder : 'asc',
+								rownumbers : true,
+								remoteSort : false,
+								idField : 'id',
+								queryParams : queryData,
+								columns : [ [ {
+									field : 'ck',
+									checkbox : true
+								}, {
+									title : '主键',
+									field : 'id',
+									width : 200,
+									sortable : true
+								}, {
+									title : '文件夾主键',
+									field : 'folderId',
+									width : 200,
+									sortable : true
+								}, {
+									title : '文件夹名称',
+									field : 'folderName',
+									width : 200,
+									sortable : true
+								}, {
+									title : '文件路径',
+									field : 'path',
+									width : 200,
+									sortable : true
+								}, {
+									title : '说明',
+									field : 'description',
+									width : 200,
+									sortable : true
+								}, {
+									title : '0未删1已删',
+									field : 'deletedStatus',
+									width : 200,
+									sortable : true
+								}, ] ],
+								toolbar : [
+										{
+											id : 'btnReload',
+											text : '刷新',
+											iconCls : 'icon-reload',
+											handler : function() {
+												$('#grid').datagrid('reload',
+														{});
+												$('#grid').datagrid(
+														'clearSelections');
+											}
+										},
+										'-',
+										{
+											id : 'btnSearch',
+											text : '查询',
+											iconCls : 'icon-search',
+											handler : function() {
+												SpringAttachment.Search();
+											}
+										},
+										'-',
+										{
+											id : 'btnAdd',
+											text : '添加',
+											iconCls : 'icon-add',
+											handler : function() {
+												SpringAttachment.ShowAddDialog();
+											}
+										},
+										'-',
+										{
+											id : 'btnEdit',
+											text : '修改',
+											iconCls : 'icon-edit',
+											handler : function() {
+												SpringAttachment.ShowEditOrViewDialog();
+											}
+										},
+										'-',
+										{
+											id : 'btnDelete',
+											text : '删除',
+											iconCls : 'icon-remove',
+											handler : function() {
+												SpringAttachment.Delete();
+											}
+										},
+										],
+								onDblClickRow : function(rowIndex, rowData) {
+									//$('#grid').datagrid('uncheckAll');
+									$('#grid').datagrid('checkRow', rowIndex);
+									SpringAttachment.ShowEditOrViewDialog();
+								}
+							});
+			var heightMargin = $('#toolbar').height() + 80;
+			var widthMargin = $(document).width() - $('#tb').width();
+			//$('#grid').resizeDataGrid(heightMargin,widthMargin,0,0);
+			//$(window).resize(function(){$('#grid').resizeDataGrid(heightMargin,widthMargin,0,0)})
+		},
+		//查询
+		Search : function() {
+			//得到用户输入的参数
+			//$('#id').textbox('getValue');
+			//$('#id').combobox('getValue'),
+			//$('#id').datebox('getValue'),
+			//$('#id').val(),
+			//$('#id').combotree('getValue'),
+			//$('#id').numberbox('getValue'),
+			var queryData = $('#serachForm').serializeArray();
+			var obj = {};
+			$.each(queryData, function(i, v) {
+				obj[v.name] = v.value;
+			});
+			$('#grid').datagrid('load', obj);
+			exportCondition = obj;
+			return false;
+		},
+		//实现删除数据的方法
+		Delete : function() {
+			var rows = $('#grid').datagrid('getSelections');
+			if (rows.length >= 1) {
+				var ids = ''; //1,2,3,4,5
+				for (var i = 0; i < rows.length; i++) {
+					ids += rows[i].id + ',';
+				}
+				ids = ids.substring(0, ids.length - 1);
+				var postData = {
+					ids : ids
+				};
+				$.messager.confirm('确认删除', '确认删除', function(action) {
+					if (action) {
+						$.ajax({
+							type : 'POST',
+							url : '/SpringAttachment/SetDeleted',
+							dataType : 'json',
+							data : postData,
+							success : function(data) {
+								if (data.state == 'ok') {
+									$.messager.alert('OK', '删除成功！');
+									$('#grid').datagrid('reload');
+									//清除选中信息
+									rows.length = '';//第一种方法      
+									$('#grid').datagrid('clearSelections');//第二种方法
+								} else {
+									$.messager.alert('Fail', data.mFailsg);
+								}
+							}
+						});
+					}
+				});
+			} else {
+				$.messager.alert('提示', '请选择数据', 'error');
+			}
+		},
+		//弹出新增窗口
+		ShowAddDialog : function() {
+			$('#AddForm').form('clear');
+			$('#DivAdd').dialog('open').dialog('setTitle', '添加信息');
+		},
+		//弹出修改或者查看窗口
+		ShowEditOrViewDialog : function(view) {
+			var rows = $('#grid').datagrid('getSelections');
+			if (rows.length == 0) {
+				$.messager.alert('提示', '请选择数据', 'error');
+				return;
+			} else if (rows.length > 1) {
+				$.messager.alert('提示', '只能选择一项数据', 'error');
+				return;
+			}
+			id = $('#grid').datagrid('getSelections')[0].id; //获取到了用用户选择的ID
+			if (view == null) {
+				$('#DivEdit').dialog('open').dialog('setTitle', '编辑信息');
+				this.Edit(id);
+			} else {
+				$('#DivView').dialog('open').dialog('setTitle', '查看信息');
+				this.View(id);
+			}
+		},
+		//绑定添加按钮的事件
+		Save : function() {
+			var validate = $('#AddForm').form('validate');
+			if (validate == false) {
+				return false;
+			}
+			var postData = $('#AddForm').serializeArray();
+			var obj = {};
+			$.each(postData, function(i, v) {
+				obj[v.name] = v.value;
+			});
+			$.ajax({ 
+					type:'post',
+					url:'/SpringAttachment/Create',
+					contentType:"application/json",
+					dataType:"json", 
+					data:JSON.stringify(obj), 
+					success:function(data) {
+						if (data.data.code == 200) {
+							//添加成功  1.关闭弹出层，2.刷新DataGird
+							$.messager.alert('提示', '保存成功');
+							$('#DivAdd').dialog('close');
+							$('#grid').datagrid('reload');
+							$('#AddForm').form('clear');
+						} else {
+							$.messager.alert('提示', data.msg);
+						}
+					}
+			});
+		},
+		//更新方法
+		Update : function() {
+			var validate = $('#EditForm').form('validate');
+			if (validate == false) {
+				return false;
+			}
+			var postData = $('#EditForm').serializeArray();
+			var obj = {};
+			$.each(postData, function(i, v) {
+				obj[v.name] = v.value;
+			});
+			$.ajax({ 
+					type:'post',
+					url:'/SpringAttachment/Edit',
+					contentType:"application/json",
+					dataType:"json", 
+					data:JSON.stringify(obj), 
+					success:function(data) {
+						if (data.data.code == 200) {
+							//添加成功  1.关闭弹出层，2.刷新DataGird
+							//showTips('保存成功');
+							$.messager.alert('提示', '保存成功');
+							$('#DivEdit').dialog('close');
+							$('#grid').datagrid('reload');
+							$('#EditForm').form('clear');
+						} else {
+							$.messager.alert('提示', data.msg);
+						}
+					}
+			});
+		},
+		//查询数据
+		Edit : function(ID) {
+			//使用同步方式，使得联动的控件正常显示
+			$.ajaxSettings.async = false;
+			$.getJSON('/SpringAttachment/Detail/?id=' + ID, function(data) {
+				$('#EditForm').form('clear');
+				$('#id1').val(data.id);
+				$('#folderId1').textbox('setValue', data.folderId);
+				$('#folderName1').textbox('setValue', data.folderName);
+				$('#path1').textbox('setValue', data.path);
+				$('#description1').textbox('setValue', data.description);
+				$('#deletedStatus1').textbox('setValue', data.deletedStatus);
+			});
+		},
+		//查询数据
+		View : function(ID) {
+			$.getJSON('/SpringAttachment/Detail/?id=' + ID, function(data) {
+				$('#id2').val(data.id);
+				$('#folderId2').textbox('setValue', data.folderId);
+				$('#folderName2').textbox('setValue', data.folderName);
+				$('#path2').textbox('setValue', data.path);
+				$('#description2').textbox('setValue', data.description);
+				$('#deletedStatus2').textbox('setValue', data.deletedStatus);
+			});
+		},
+	};
+	var queryData = {};//可添加一些预设条件
+	SpringAttachment.InitGrid(queryData);//初始化Datagrid表格数据
+</script>

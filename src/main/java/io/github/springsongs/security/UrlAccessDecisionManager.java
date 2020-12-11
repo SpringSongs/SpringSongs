@@ -35,14 +35,15 @@ public class UrlAccessDecisionManager implements AccessDecisionManager {
 
 			ConfigAttribute ca = it.next();
 			if ("ROLE_LOGIN".equalsIgnoreCase(ca.getAttribute())) {
-//				if (authentication instanceof AnonymousAuthenticationToken) {
-//					matcher = new AntPathRequestMatcher(request.getRequestURI(), "/Login");
-//					if (matcher.matches(request)) {
-//						return;
-//					}
-//				} else {
-//					throw new AccessDeniedException(Constant.URL_ACCESS_DECISION);
-//				}
+				if (authentication instanceof AnonymousAuthenticationToken) {
+					//matcher = new AntPathRequestMatcher(request.getRequestURI(), "/Login");
+					if (request.getRequestURI().contains("Login")) {
+					//if (matcher.matches(request)) {
+						return;
+					}
+				} else {
+					throw new AccessDeniedException(Constant.URL_ACCESS_DECISION);
+				}
 				throw new AccessDeniedException(Constant.URL_ACCESS_DECISION);
 			}
 			Collection<? extends GrantedAuthority> authorties = authentication.getAuthorities();

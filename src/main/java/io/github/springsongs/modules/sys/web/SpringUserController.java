@@ -59,13 +59,13 @@ public class SpringUserController extends BaseController {
 	@Autowired
 	private ISpringResourceService springResourceService;
 
-	@PostMapping(value = "Invalidate")
+	@GetMapping(value = "Invalidate")
 	public ResponseDTO<String> invalidateSession(HttpServletRequest reqeust, HttpServletResponse response) {
 		if (HttpUtils.isAjaxRequest(reqeust)) {
 			return ResponseDTO.successed(null, ResultCode.SESSION_HAS_GONE);
 		} else {
 			try {
-				response.sendRedirect("/login");
+				response.sendRedirect("/Login");
 			} catch (IOException e) {
 				logger.error(e.getMessage());
 			}

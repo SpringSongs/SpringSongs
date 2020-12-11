@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="common/header :: head"></head>
+	<body>
+		<div id='tb'>
+			<div id='p' class='easyui-panel' title='查询' style='padding: 10px'>
+				<form id='serachForm' method='post'>
+					<div id='toolbar'>
+						<input class='easyui-textbox' name='keyWork' label='关键字:' style='width: 300px' /> <input class='easyui-datebox'
+						 name='startDate' label='开始日期:' style='width: 300px' /> <input class='easyui-datebox' name='endDate' label='结束日期:'
+						 style='width: 300px' />
+					</div>
+				</form>
+			</div>
+			<table id='grid' title='SpringUser' data-options="iconCls:'icon-add'" style="margin-top: 20px"></table>
+
+			<div id='DivAdd' class='easyui-dialog' style='width: 80%; height: 500px; padding: 10px 20px;' closed='true'
+			 resizable='true' modal='true' data-options="iconCls:'icon-add'">
+				<form id='AddForm' method='post'>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.id' id='id' style='width: 100%' data-options="label:'id:',required:false">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.email' id='email' style='width: 100%' data-options="label:'邮箱:',required:false">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.mobile' id='mobile' style='width: 100%' data-options="label:'手机:',required:false">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.portrait' id='portrait' style='width: 100%' data-options="label:'头像:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.user_name' id='userName' style='width: 100%' data-options="label:'用户名:',required:false">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.true_name' id='trueName' style='width: 100%' data-options="label:'真实姓名:',required:false">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.resume' id='resume' style='width: 100%' data-options="label:'签名:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.organization_id' id='organizationId' style='width: 100%'
+						 data-options="label:'组织机构主键:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.organization_name' id='organizationName' style='width: 100%'
+						 data-options="label:'组织机构名称:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.title_id' id='titleId' style='width: 100%' data-options="label:'职称主键:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.title_name' id='titleName' style='width: 100%' data-options="label:'职称名称:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.login_count' id='loginCount' style='width: 100%'
+						 data-options="label:'登录次数:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.register_time' id='registerTime' style='width: 100%'
+						 data-options="label:'注册时间:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.regsiter_ip' id='regsiterIp' style='width: 100%'
+						 data-options="label:'注册IP:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.last_login_time' id='lastLoginTime' style='width: 100%'
+						 data-options="label:'最后一次登录时间:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.status' id='status' style='width: 100%' data-options="label:'状态:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.lock_status' id='lockStatus' style='width: 100%'
+						 data-options="label:'锁定状态:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.sort_order' id='sortOrder' style='width: 100%' data-options="label:'排序:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.enable_edit' id='enableEdit' style='width: 100%'
+						 data-options="label:'允许编辑0不允许1允许:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.enable_delete' id='enableDelete' style='width: 100%'
+						 data-options="label:'允许删除0不允许1允许:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.deleted_status' id='deletedStatus' style='width: 100%'
+						 data-options="label:'0未删1已删:',required:true">
+					</div>
+				</form>
+				<div style='text-align: center; padding: 5px 0'>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick='SpringUser.Save();' style='width: 80px'>保存</a> <a
+					 href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript: $('#AddForm').form('clear');" style='width: 80px'>清除</a>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript:$('#DivAdd').dialog('close');" style='width: 80px'>关闭</a>
+				</div>
+			</div>
+			<div id='DivEdit' class='easyui-dialog' style='width: 80%; height: 500px; padding: 10px 20px;' closed='true'
+			 resizable='true' modal='true' data-options="iconCls:'icon-add'">
+				<form id='EditForm' method='post'>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.id' id='id1' style='width: 100%' data-options="label:'id:',required:false">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.email' id='email1' style='width: 100%' data-options="label:'邮箱:',required:false">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.mobile' id='mobile1' style='width: 100%' data-options="label:'手机:',required:false">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.portrait' id='portrait1' style='width: 100%' data-options="label:'头像:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.user_name' id='userName1' style='width: 100%' data-options="label:'用户名:',required:false">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.true_name' id='trueName1' style='width: 100%' data-options="label:'真实姓名:',required:false">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.resume' id='resume1' style='width: 100%' data-options="label:'签名:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.organization_id' id='organizationId1' style='width: 100%'
+						 data-options="label:'组织机构主键:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.organization_name' id='organizationName1' style='width: 100%'
+						 data-options="label:'组织机构名称:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.title_id' id='titleId1' style='width: 100%' data-options="label:'职称主键:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.title_name' id='titleName1' style='width: 100%' data-options="label:'职称名称:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.login_count' id='loginCount1' style='width: 100%'
+						 data-options="label:'登录次数:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.register_time' id='registerTime1' style='width: 100%'
+						 data-options="label:'注册时间:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.regsiter_ip' id='regsiterIp1' style='width: 100%'
+						 data-options="label:'注册IP:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.last_login_time' id='lastLoginTime1' style='width: 100%'
+						 data-options="label:'最后一次登录时间:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.status' id='status1' style='width: 100%' data-options="label:'状态:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.lock_status' id='lockStatus1' style='width: 100%'
+						 data-options="label:'锁定状态:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.sort_order' id='sortOrder1' style='width: 100%' data-options="label:'排序:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.enable_edit' id='enableEdit1' style='width: 100%'
+						 data-options="label:'允许编辑0不允许1允许:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.enable_delete' id='enableDelete1' style='width: 100%'
+						 data-options="label:'允许删除0不允许1允许:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springUserEntity.deleted_status' id='deletedStatus1' style='width: 100%'
+						 data-options="label:'0未删1已删:',required:true">
+					</div>
+				</form>
+				<div style='text-align: center; padding: 5px 0'>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick='SpringUser.Update();' style='width: 80px'>保存</a>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript: $('#EditForm').form('clear');" style='width: 80px'>清除</a>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript:$('#DivEdit').dialog('close');" style='width: 80px'>关闭</a>
+				</div>
+			</div>
+
+		</div>
+	</body>
+</html>
+<script type='text/javascript'>
+	var SpringUser = {
+		//初始化表格
+		InitGrid: function(queryData) {
+			$('#grid')
+				.datagrid({
+					data: '',
+					loader: function(param, success, error) {
+						console.log(param);
+						$.ajax({
+							type: "post",
+							url: '/SpringUser/ListByPage?page=' + (param.page - 1) + "&size=" + param.rows,
+							dataType: 'json',
+							async: true,
+							contentType: 'application/json;charset=utf-8', // 设置请求头信息
+							data: JSON.stringify(param),
+							success: function(result) {
+								success(result);
+							}
+						});
+					},
+					title: '用户',
+					iconCls: 'icon-view',
+					height: 500,
+					width: function() {
+						return document.body.clientWidth * 0.9
+					},
+					nowrap: true,
+					autoRowHeight: true,
+					striped: true,
+					fit: false,
+					collapsible: true,
+					pagination: true,
+					pageSize: 50,
+					singleSelect: false,
+					pageList: [50, 100, 200],
+					pageNumber: 1,
+					sortOrder: 'asc',
+					rownumbers: true,
+					remoteSort: false,
+					idField: 'id',
+					queryParams: queryData,
+					columns: [
+						[{
+							field: 'ck',
+							checkbox: true
+						}, {
+							title: '邮箱',
+							field: 'email',
+							width: 200,
+							sortable: true
+						}, {
+							title: '手机',
+							field: 'mobile',
+							width: 200,
+							sortable: true
+						}, {
+							title: '头像',
+							field: 'portrait',
+							width: 200,
+							sortable: true
+						}, {
+							title: '用户名',
+							field: 'userName',
+							width: 200,
+							sortable: true
+						}, {
+							title: '真实姓名',
+							field: 'trueName',
+							width: 200,
+							sortable: true
+						}, {
+							title: '组织机构名称',
+							field: 'organizationName',
+							width: 200,
+							sortable: true
+						}, {
+							title: '职称名称',
+							field: 'titleName',
+							width: 200,
+							sortable: true
+						}, {
+							title: '注册时间',
+							field: 'registerTime',
+							width: 200,
+							sortable: true
+						}, {
+							title: '注册IP',
+							field: 'regsiterIp',
+							width: 200,
+							sortable: true
+						}, {
+							title: '最后一次登录时间',
+							field: 'lastLoginTime',
+							width: 200,
+							sortable: true
+						}]
+					],
+					toolbar: [{
+							id: 'btnReload',
+							text: '刷新',
+							iconCls: 'icon-reload',
+							handler: function() {
+								$('#grid').datagrid('reload', {});
+								$('#grid').datagrid(
+									'clearSelections');
+							}
+						},
+						'-',
+						{
+							id: 'btnSearch',
+							text: '查询',
+							iconCls: 'icon-search',
+							handler: function() {
+								SpringUser.Search();
+							}
+						},
+						'-',
+						{
+							id: 'btnAdd',
+							text: '添加',
+							iconCls: 'icon-add',
+							handler: function() {
+								SpringUser.ShowAddDialog();
+							}
+						},
+						'-',
+						{
+							id: 'btnEdit',
+							text: '修改',
+							iconCls: 'icon-edit',
+							handler: function() {
+								SpringUser
+									.ShowEditOrViewDialog();
+							}
+						},
+						'-',
+						{
+							id: 'btnDelete',
+							text: '删除',
+							iconCls: 'icon-remove',
+							handler: function() {
+								SpringUser.Delete();
+							}
+						},
+					],
+					onDblClickRow: function(rowIndex, rowData) {
+						//$('#grid').datagrid('uncheckAll');
+						$('#grid').datagrid('checkRow', rowIndex);
+						SpringUser.ShowEditOrViewDialog();
+					}
+				});
+			var heightMargin = $('#toolbar').height() + 80;
+			var widthMargin = $(document).width() - $('#tb').width();
+			//$('#grid').resizeDataGrid(heightMargin,widthMargin,0,0);
+			//$(window).resize(function(){$('#grid').resizeDataGrid(heightMargin,widthMargin,0,0)})
+		},
+		//查询
+		Search: function() {
+			//得到用户输入的参数
+			//$('#id').textbox('getValue');
+			//$('#id').combobox('getValue'),
+			//$('#id').datebox('getValue'),
+			//$('#id').val(),
+			//$('#id').combotree('getValue'),
+			//$('#id').numberbox('getValue'),
+			var queryData = $('#serachForm').serializeArray();
+			var obj = {};
+			$.each(queryData, function(i, v) {
+				obj[v.name] = v.value;
+			});
+			$('#grid').datagrid('load', obj);
+			exportCondition = obj;
+			return false;
+		},
+		//实现删除数据的方法
+		Delete: function() {
+			var rows = $('#grid').datagrid('getSelections');
+			if (rows.length >= 1) {
+				var ids = ''; //1,2,3,4,5
+				for (var i = 0; i < rows.length; i++) {
+					ids += rows[i].id + ',';
+				}
+				ids = ids.substring(0, ids.length - 1);
+				var postData = {
+					ids: ids
+				};
+				$.messager.confirm('确认删除', '确认删除', function(action) {
+					if (action) {
+						$.ajax({
+							type: 'POST',
+							url: '/SpringUser/setDeleted',
+							dataType: 'json',
+							data: postData,
+							success: function(data) {
+								if (data.state == 'ok') {
+									$.messager.alert('OK', '删除成功！');
+									$('#grid').datagrid('reload');
+									//清除选中信息
+									rows.length = ''; //第一种方法      
+									$('#grid').datagrid('clearSelections'); //第二种方法
+								} else {
+									$.messager.alert('Fail', data.mFailsg);
+								}
+							}
+						});
+					}
+				});
+			} else {
+				$.messager.alert('提示', '请选择数据', 'error');
+			}
+		},
+		//弹出新增窗口
+		ShowAddDialog: function() {
+			$('#AddForm').form('clear');
+			$('#DivAdd').dialog('open').dialog('setTitle', '添加信息');
+		},
+		//弹出修改或者查看窗口
+		ShowEditOrViewDialog: function(view) {
+			var rows = $('#grid').datagrid('getSelections');
+			if (rows.length == 0) {
+				$.messager.alert('提示', '请选择数据', 'error');
+				return;
+			} else if (rows.length > 1) {
+				$.messager.alert('提示', '只能选择一项数据', 'error');
+				return;
+			}
+			id = $('#grid').datagrid('getSelections')[0].id; //获取到了用用户选择的ID
+			if (view == null) {
+				$('#DivEdit').dialog('open').dialog('setTitle', '编辑信息');
+				this.Edit(id);
+			} else {
+				$('#DivView').dialog('open').dialog('setTitle', '查看信息');
+				this.View(id);
+			}
+		},
+		//绑定添加按钮的事件
+		Save: function() {
+			var validate = $('#AddForm').form('validate');
+			if (validate == false) {
+				return false;
+			}
+			var postData = $('#AddForm').serializeArray();
+			var obj = {};
+			$.each(postData, function(i, v) {
+				obj[v.name] = v.value;
+			});
+			$.post('/SpringUser/save', obj, function(data) {
+				if (data.state == 'ok') {
+					//添加成功  1.关闭弹出层，2.刷新DataGird
+					$.messager.alert('提示', '保存成功');
+					$('#DivAdd').dialog('close');
+					$('#grid').datagrid('reload');
+					$('#AddForm').form('clear');
+				} else {
+					$.messager.alert('提示', data.msg);
+				}
+			}).error(function() {
+				$.messager.alert('提示', '系统错误', 'warning');
+			});
+		},
+		//更新方法
+		Update: function() {
+			var validate = $('#EditForm').form('validate');
+			if (validate == false) {
+				return false;
+			}
+			var postData = $('#EditForm').serializeArray();
+			var obj = {};
+			$.each(postData, function(i, v) {
+				obj[v.name] = v.value;
+			});
+			$.post('/SpringUser/update', obj, function(data) {
+				if (data.state == 'ok') {
+					//添加成功  1.关闭弹出层，2.刷新DataGird
+					//showTips('保存成功');
+					$.messager.alert('提示', '保存成功');
+					$('#DivAdd').dialog('close');
+					$('#grid').datagrid('reload');
+					$('#EditForm').form('clear');
+				} else {
+					$.messager.alert('提示', data.msg);
+				}
+			}).error(function() {
+				$.messager.alert('提示', '系统错误', 'warning');
+			});
+		},
+		//查询数据
+		Edit: function(ID) {
+			//使用同步方式，使得联动的控件正常显示
+			$.ajaxSettings.async = false;
+			$.getJSON('/SpringUser/get/?id=' + ID, function(data) {
+				$('#EditForm').form('clear');
+				$('#id1').val(data.id);
+				$('#email1').textbox('setValue', data.email);
+				$('#mobile1').textbox('setValue', data.mobile);
+				$('#portrait1').textbox('setValue', data.portrait);
+				$('#userName1').textbox('setValue', data.userName);
+				$('#trueName1').textbox('setValue', data.trueName);
+				$('#resume1').textbox('setValue', data.resume);
+				$('#organizationId1').textbox('setValue', data.organizationId);
+				$('#organizationName1').textbox('setValue',
+					data.organizationName);
+				$('#titleId1').textbox('setValue', data.titleId);
+				$('#titleName1').textbox('setValue', data.titleName);
+				$('#loginCount1').textbox('setValue', data.loginCount);
+				$('#registerTime1').textbox('setValue', data.registerTime);
+				$('#regsiterIp1').textbox('setValue', data.regsiterIp);
+				$('#lastLoginTime1').textbox('setValue', data.lastLoginTime);
+				$('#status1').textbox('setValue', data.status);
+				$('#lockStatus1').textbox('setValue', data.lockStatus);
+				$('#sortOrder1').textbox('setValue', data.sortOrder);
+				$('#enableEdit1').textbox('setValue', data.enableEdit);
+				$('#enableDelete1').textbox('setValue', data.enableDelete);
+				$('#deletedStatus1').textbox('setValue', data.deletedStatus);
+			});
+		},
+		//查询数据
+		View: function(ID) {
+			$.getJSON('/SpringUser/get/?id=' + ID, function(data) {
+				$('#id2').val(data.id);
+				$('#email2').textbox('setValue', data.email);
+				$('#mobile2').textbox('setValue', data.mobile);
+				$('#portrait2').textbox('setValue', data.portrait);
+				$('#userName2').textbox('setValue', data.userName);
+				$('#trueName2').textbox('setValue', data.trueName);
+				$('#resume2').textbox('setValue', data.resume);
+				$('#organizationId2').textbox('setValue', data.organizationId);
+				$('#organizationName2').textbox('setValue',
+					data.organizationName);
+				$('#titleId2').textbox('setValue', data.titleId);
+				$('#titleName2').textbox('setValue', data.titleName);
+				$('#loginCount2').textbox('setValue', data.loginCount);
+				$('#registerTime2').textbox('setValue', data.registerTime);
+				$('#regsiterIp2').textbox('setValue', data.regsiterIp);
+				$('#lastLoginTime2').textbox('setValue', data.lastLoginTime);
+				$('#status2').textbox('setValue', data.status);
+				$('#lockStatus2').textbox('setValue', data.lockStatus);
+				$('#sortOrder2').textbox('setValue', data.sortOrder);
+				$('#enableEdit2').textbox('setValue', data.enableEdit);
+				$('#enableDelete2').textbox('setValue', data.enableDelete);
+				$('#deletedStatus2').textbox('setValue', data.deletedStatus);
+			});
+		},
+		Upload: function() {
+			$('#UploadForm').form({
+				success: function(data) {
+					$.messager.alert(data.msg);
+				}
+			});
+		}
+	};
+	var queryData = {}; //可添加一些预设条件
+	SpringUser.InitGrid(queryData); //初始化Datagrid表格数据
+</script>

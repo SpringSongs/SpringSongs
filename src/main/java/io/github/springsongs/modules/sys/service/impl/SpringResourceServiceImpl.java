@@ -31,6 +31,9 @@ import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.exception.SpringSongsException;
 import io.github.springsongs.modules.sys.domain.SpringResource;
 import io.github.springsongs.modules.sys.domain.SpringResourceRole;
+import io.github.springsongs.modules.sys.dto.EasyUiMenuDTO;
+import io.github.springsongs.modules.sys.dto.EasyUiMenuDTO.MenuAttributes;
+import io.github.springsongs.modules.sys.dto.EasyUiTreeMenuDTO;
 import io.github.springsongs.modules.sys.dto.ElementUiTreeDTO;
 import io.github.springsongs.modules.sys.dto.MenuDTO;
 import io.github.springsongs.modules.sys.dto.MenuRouterDTO;
@@ -85,6 +88,9 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 	@Override
 	public void insert(SpringResourceDTO record) {
 		SpringResource springResource = new SpringResource();
+		if (StringUtils.isEmpty(record.getParentId())) {
+			record.setParentId("0");
+		}
 		BeanUtils.copyProperties(record, springResource);
 		try {
 			springResourceDao.save(springResource);
@@ -189,7 +195,8 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 				predicates.add(deletedStatus);
 				Predicate[] pre = new Predicate[predicates.size()];
 				query.where(predicates.toArray(pre));
-				query.orderBy(cb.asc(root.get("sortCode").as(Integer.class)),cb.desc(root.get("createdOn").as(Date.class)));
+				query.orderBy(cb.asc(root.get("sortCode").as(Integer.class)),
+						cb.desc(root.get("createdOn").as(Date.class)));
 				return query.getRestriction();
 			}
 		};
@@ -221,6 +228,10 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
 		} else if (ids.size() > 1000) {
 			throw new SpringSongsException(ResultCode.PARAMETER_MORE_1000);
+		}
+		List<SpringResource> springResourceList= springResourceDao.getInParentId(ids);
+		if (!CollectionUtils.isEmpty(springResourceList)) {
+			throw new SpringSongsException(ResultCode.HASED_CHILD_IDS_CANNOT_DELETE);
 		}
 		List<SpringResource> entityList = springResourceDao.findAllById(ids);
 		for (SpringResource entity : entityList) {
@@ -422,5 +433,27 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 		List<SpringResourceDTO> springResourceDTOTreeList = new ArrayList<>();
 		springResourceDTOTreeList = springResourceTreeDTO.builTree();
 		return springResourceDTOTreeList;
+	}
+
+	@Override
+	public List<EasyUiMenuDTO> listEasyUiResourceByUserId(String userId) {
+		List<SpringResource> springResourceList = springResourceDao.listModuleByUserId(userId);
+		final List<EasyUiMenuDTO> easyUiMenuDTOList = new ArrayList<>();
+		springResourceList.stream().forEach(springResource -> {
+			EasyUiMenuDTO easyUiMenuDTO = new EasyUiMenuDTO();
+			easyUiMenuDTO.setId(springResource.getId());
+			easyUiMenuDTO.setParentId(springResource.getParentId());
+			easyUiMenuDTO.setIconCls(springResource.getAngularIcon());
+			easyUiMenuDTO.setState("open");
+			easyUiMenuDTO.setText(springResource.getTitle());
+			MenuAttributes attributes = new MenuAttributes();
+			attributes.setUrl(springResource.getAngularUrl());
+			easyUiMenuDTO.setAttributes(attributes);
+			easyUiMenuDTOList.add(easyUiMenuDTO);
+		});
+		EasyUiTreeMenuDTO easyUiTreeMenuDTO=new EasyUiTreeMenuDTO(easyUiMenuDTOList);
+		List<EasyUiMenuDTO> easyUiMenuDTOTEMPList = new ArrayList<>();
+		easyUiMenuDTOTEMPList=easyUiTreeMenuDTO.builTree();
+		return easyUiMenuDTOTEMPList;
 	}
 }

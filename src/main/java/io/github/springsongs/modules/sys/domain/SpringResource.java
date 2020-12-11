@@ -120,7 +120,7 @@ public class SpringResource extends SpringBase implements Serializable {
     }
     
 
-	@Size(max = 45, min = 0)
+	@Size(max = 255, min = 0)
 	@Description(title = "链接")
 	@Column(name = "angular_url")
 	@ApiModelProperty("链接")

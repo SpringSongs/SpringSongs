@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="common/header :: head"></head>
+	<body>
+		<div class="container">
+			<div class="row">
+				<div id='p' class='easyui-panel' title='查询' style='padding: 10px'>
+					<form id='searchForm' method='post'>
+						<div id='toolbar'>
+							<input class='easyui-textbox' name='code' label='编码:' style='width: 300px' />
+							<input class='easyui-textbox' name='title' label='标题:' style='width: 300px' />
+						</div>
+					</form>
+				</div>
+				<div class="col-md-6" style="float: left;width:50%">
+					<table id='grid' title='SpringDictionary' data-options="iconCls:'icon-add'" style="margin-top: 20px"></table>
+
+					<div id='DivAdd' class='easyui-dialog' style='width: 80%; height: 350px; padding: 10px 20px;' closed='true'
+					 resizable='true' modal='true' data-options="iconCls:'icon-add'">
+						<form id='AddForm' method='post'>
+							<div style='margin-bottom: 20px'>
+								<input class='easyui-textbox' name='code' id='code' style='width: 100%' data-options="label:'编码:',required:true">
+							</div>
+							<div style='margin-bottom: 20px'>
+								<input class='easyui-textbox' name='title' id='title' style='width: 100%' data-options="label:'标题:',required:true">
+							</div>
+							<div style='margin-bottom: 20px'>
+								<input class='easyui-textbox' name='description' id='description' style='width: 100%' data-options="label:'说明:',required:true">
+							</div>
+							<div style='margin-bottom: 20px'>
+								<input class="easyui-numberspinner" name='sortCode' id='sortCode' style='width: 100%' data-options="label:'排序:',required:true">
+							</div>
+							<div style='margin-bottom: 20px'>
+								<select class="easyui-combobox" name="enableEdit" id='enableEdit' label="允许编辑:" labelPosition="left" style="width:100%;">
+									<option value="true">允许</option>
+									<option value="false">不允许</option>
+								</select>
+							</div>
+							<div style='margin-bottom: 20px'>
+								<select class="easyui-combobox" name="enableDelete" id='enableDelete' label="允许删除:" labelPosition="left" style="width:100%;">
+									<option value="true">允许</option>
+									<option value="false">不允许</option>
+								</select>
+							</div>
+						</form>
+						<div style='text-align: center; padding: 5px 0'>
+							<a href='javascript:void(0)' class='easyui-linkbutton' onclick='SpringDictionary.Save();' style='width: 80px'>保存</a>
+							<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript: $('#AddForm').form('clear');" style='width: 80px'>清除</a>
+							<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript:$('#DivAdd').dialog('close');" style='width: 80px'>关闭</a>
+						</div>
+					</div>
+					<div id='DivEdit' class='easyui-dialog' style='width: 80%; height: 350px; padding: 10px 20px;' closed='true'
+					 resizable='true' modal='true' data-options="iconCls:'icon-add'">
+						<form id='EditForm' method='post'>
+							<div style='margin-bottom: 20px'>
+								<input type="hidden" name='id' id='id1'>
+							</div>
+							<div style='margin-bottom: 20px'>
+								<input class='easyui-textbox' name='code' id='code1' style='width: 100%' data-options="label:'编码:',required:true">
+							</div>
+							<div style='margin-bottom: 20px'>
+								<input class='easyui-textbox' name='title' id='title1' style='width: 100%' data-options="label:'标题:',required:true">
+							</div>
+							<div style='margin-bottom: 20px'>
+								<input class='easyui-textbox' name='description' id='description1' style='width: 100%' data-options="label:'说明:',required:true">
+							</div>
+							<div style='margin-bottom: 20px'>
+								<input class='easyui-numberspinner' name='sortCode' id='sortCode1' style='width: 100%' data-options="label:'排序:',required:true">
+							</div>
+							<div style='margin-bottom: 20px'>
+								<select class="easyui-combobox" name="enableEdit" id='enableEdit1' label="允许编辑:" labelPosition="left" style="width:100%;">
+									<option value="true">允许</option>
+									<option value="false">不允许</option>
+								</select>
+							</div>
+							<div style='margin-bottom: 20px'>
+								<select class="easyui-combobox" name="enableDelete" id='enableDelete1' label="允许删除:" labelPosition="left" style="width:100%;">
+									<option value="true">允许</option>
+									<option value="false">不允许</option>
+								</select>
+							</div>
+							<input type="hidden" name='deletedStatus' id='deletedStatus1'>
+						</form>
+						<div style='text-align: center; padding: 5px 0'>
+							<a href='javascript:void(0)' class='easyui-linkbutton' onclick='SpringDictionary.Update();' style='width: 80px'>保存</a>
+							<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript: $('#EditForm').form('clear');" style='width: 80px'>清除</a>
+							<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript:$('#DivEdit').dialog('close');" style='width: 80px'>关闭</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6" style="float: left;width:50%">
+					<table id='gridDetail' title='SpringDictionaryDetail' data-options="iconCls:'icon-add'" style="margin-top:20px"></table>
+
+					<div id='DivAddDetail' class='easyui-dialog' style='width:80%;height:350px;padding:10px 20px;' closed='true'
+					 resizable='true' modal='true' data-options="iconCls:'icon-add'">
+						<form id='AddFormDetail' method='post'>
+							<div style='margin-bottom:20px'>
+								<input class='easyui-textbox' name='dictionaryCode' id='dictionaryCode2' style='width:100%'
+								 data-options="label:'字典主表编码:',required:true" readonly="readonly">
+							</div>
+							<div style='margin-bottom:20px'>
+								<input class='easyui-textbox' name='detailCode' id='detailCode2' style='width:100%'
+								 data-options="label:'编码:',required:true">
+							</div>
+							<div style='margin-bottom:20px'>
+								<input class='easyui-textbox' name='detailName' id='detailName2' style='width:100%'
+								 data-options="label:'名称:',required:true">
+							</div>
+							<div style='margin-bottom:20px'>
+								<input class='easyui-textbox' name='detailValue' id='detailValue2' style='width:100%'
+								 data-options="label:'值:',required:true">
+							</div>
+							<div style='margin-bottom:20px'>
+								<input class='easyui-textbox' name='description' id='description2' style='width:100%'
+								 data-options="label:'说明:',required:true">
+							</div>
+							<div style='margin-bottom:20px'>
+								<input class='easyui-numberspinner' name='sortCode' id='sortCode2' style='width:100%'
+								 data-options="label:'排序:',required:true">
+							</div>
+							<div style='margin-bottom: 20px'>
+								<select class="easyui-combobox" name="enableEdit" id='enableEdit2' label="允许编辑:" labelPosition="left" style="width:100%;">
+									<option value="true">允许</option>
+									<option value="false">不允许</option>
+								</select>
+							</div>
+							<div style='margin-bottom: 20px'>
+								<select class="easyui-combobox" name="enableDelete" id='enableEdit2' label="允许删除:" labelPosition="left" style="width:100%;">
+									<option value="true">允许</option>
+									<option value="false">不允许</option>
+								</select>
+							</div>
+						</form>
+						<div style='text-align:center;padding:5px 0'>
+							<a href='javascript:void(0)' class='easyui-linkbutton' onclick='SpringDictionaryDetail.Save();' style='width:80px'>保存</a>
+							<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript:$('#DivAddDetail').dialog('close');" style='width:80px'>关闭</a>
+						</div>
+					</div>
+					<div id='DivEditDetail' class='easyui-dialog' style='width:80%;height:350px;padding:10px 20px;' closed='true'
+					 resizable='true' modal='true' data-options="iconCls:'icon-add'">
+						<form id='EditFormDetail' method='post'>
+							<div style='margin-bottom:20px'>
+								<input type="hidden" name='id' id='id3' style='width:100%'>
+							</div>
+							<div style='margin-bottom:20px'>
+								<input class='easyui-textbox' name='dictionaryCode' id='dictionaryCode3' style='width:100%'
+								 data-options="label:'字典主表编码:',required:true">
+							</div>
+							<div style='margin-bottom:20px'>
+								<input class='easyui-textbox' name='detailCode' id='detailCode3' style='width:100%'
+								 data-options="label:'编码:',required:true">
+							</div>
+							<div style='margin-bottom:20px'>
+								<input class='easyui-textbox' name='detailName' id='detailName3' style='width:100%'
+								 data-options="label:'名称:',required:true">
+							</div>
+							<div style='margin-bottom:20px'>
+								<input class='easyui-textbox' name='detailValue' id='detailValue3' style='width:100%'
+								 data-options="label:'值:',required:true">
+							</div>
+							<div style='margin-bottom:20px'>
+								<input class='easyui-textbox' name='description' id='description3' style='width:100%'
+								 data-options="label:'说明:',required:true">
+							</div>
+							<div style='margin-bottom:20px'>
+								<input class='easyui-numberspinner' name='sortCode' id='sortCode3' style='width:100%'
+								 data-options="label:'排序:',required:true">
+							</div>
+							<div style='margin-bottom: 20px'>
+								<select class="easyui-combobox" name="enableEdit" id='enableEdit3' label="允许编辑:" labelPosition="left" style="width:100%;">
+									<option value="true">允许</option>
+									<option value="false">不允许</option>
+								</select>
+							</div>
+							<div style='margin-bottom: 20px'>
+								<select class="easyui-combobox" name="enableDelete" id='enableEdit3' label="允许删除:" labelPosition="left" style="width:100%;">
+									<option value="true">允许</option>
+									<option value="false">不允许</option>
+								</select>
+							</div>
+							<input type="hidden" name='deletedStatus' id='deletedStatus3'>
+						</form>
+						<div style='text-align:center;padding:5px 0'>
+							<a href='javascript:void(0)' class='easyui-linkbutton' onclick='SpringDictionaryDetail.Update();' style='width:80px'>保存</a>
+							<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript:$('#DivEditDetail').dialog('close');" style='width:80px'>关闭</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+
+<script type='text/javascript'>
+	var SpringDictionary = {
+		//初始化表格
+		InitGrid: function(queryData) {
+			$('#grid')
+				.datagrid({
+					data: '',
+					loader: function(param, success, error) {
+						$.ajax({
+							type: "post",
+							url: '/SpringDictionary/ListByPage?page=' + (param.page - 1) + "&size=" + param.rows,
+							dataType: 'json',
+							async: true,
+							contentType: 'application/json;charset=utf-8', // 设置请求头信息
+							data: JSON.stringify(param),
+							success: function(result) {
+								success(result);
+							}
+						});
+					},
+					title: '字典',
+					iconCls: 'icon-view',
+					height: 500,
+					width: function() {
+						return document.body.clientWidth * 0.9
+					},
+					nowrap: true,
+					autoRowHeight: true,
+					striped: true,
+					fit: false,
+					collapsible: true,
+					pagination: true,
+					pageSize: 50,
+					singleSelect: true,
+					pageList: [50, 100, 200],
+					pageNumber: 1,
+					sortOrder: 'asc',
+					rownumbers: true,
+					remoteSort: false,
+					idField: 'id',
+					queryParams: queryData,
+					columns: [
+						[{
+							field: 'ck',
+							checkbox: true
+						}, {
+							title: '编码',
+							field: 'code',
+							width: 200,
+							sortable: true
+						}, {
+							title: '标题',
+							field: 'title',
+							width: 200,
+							sortable: true
+						}, {
+							title: '说明',
+							field: 'description',
+							width: 200,
+							sortable: true
+						}, {
+							title: '排序',
+							field: 'sortCode',
+							width: 200,
+							sortable: true
+						}, {
+							title: '允许编辑',
+							field: 'enableEdit',
+							width: 200,
+							sortable: true
+						}, {
+							title: '允许删除',
+							field: 'enableDelete',
+							width: 200,
+							sortable: true
+						}],
+
+					],
+					toolbar: [{
+							id: 'btnReload',
+							text: '刷新',
+							iconCls: 'icon-reload',
+							handler: function() {
+								$('#searchForm').form('clear');
+								$('#grid').datagrid('reload', {});
+								$('#grid').datagrid(
+									'clearSelections');
+							}
+						},
+						'-',
+						{
+							id: 'btnSearch',
+							text: '查询',
+							iconCls: 'icon-search',
+							handler: function() {
+								SpringDictionary.Search();
+							}
+						},
+						'-',
+						{
+							id: 'btnAdd',
+							text: '添加',
+							iconCls: 'icon-add',
+							handler: function() {
+								SpringDictionary.ShowAddDialog();
+							}
+						},
+						'-',
+						{
+							id: 'btnEdit',
+							text: '修改',
+							iconCls: 'icon-edit',
+							handler: function() {
+								SpringDictionary.ShowEditOrViewDialog();
+							}
+						},
+						'-',
+						{
+							id: 'btnDelete',
+							text: '删除',
+							iconCls: 'icon-remove',
+							handler: function() {
+								SpringDictionary.Delete();
+							}
+						},
+					],
+					onClickRow: function(rowIndex, rowData) {
+						//$('#grid').datagrid('uncheckAll');
+						//console.log(rowData);
+						var query={};
+						query.dictionaryCode=rowData.code;
+						$("#dictionaryCode2").textbox('setValue',rowData.code);
+						$('#gridDetail').datagrid('load', query);
+					}
+				});
+			var heightMargin = $('#toolbar').height() + 80;
+			var widthMargin = $(document).width() - $('#tb').width();
+			//$('#grid').resizeDataGrid(heightMargin,widthMargin,0,0);
+			//$(window).resize(function(){$('#grid').resizeDataGrid(heightMargin,widthMargin,0,0)})
+		},
+		//查询
+		Search: function() {
+			//得到用户输入的参数
+			//$('#id').textbox('getValue');
+			//$('#id').combobox('getValue'),
+			//$('#id').datebox('getValue'),
+			//$('#id').val(),
+			//$('#id').combotree('getValue'),
+			//$('#id').numberbox('getValue'),
+			var queryData = $('#searchForm').serializeArray();
+			var obj = {};
+			$.each(queryData, function(i, v) {
+				obj[v.name] = v.value;
+			});
+			$('#grid').datagrid('load', obj);
+			exportCondition = obj;
+			return false;
+		},
+		//实现删除数据的方法
+		Delete: function() {
+			var rows = $('#grid').datagrid('getSelections');
+			if (rows.length >= 1) {
+				var ids = ''; //1,2,3,4,5
+				for (var i = 0; i < rows.length; i++) {
+					ids += rows[i].id + ',';
+				}
+				ids = ids.substring(0, ids.length - 1);
+				var postData = {
+					ids: ids
+				};
+				$.messager.confirm('确认删除', '确认删除', function(action) {
+					if (action) {
+						$.ajax({
+							type: 'POST',
+							url: '/SpringDictionary/SetDeleted',
+							dataType: 'json',
+							data: postData,
+							success: function(data) {
+								if (data.code == 200) {
+									$.messager.alert('OK', '删除成功！');
+									$('#grid').datagrid('reload');
+									//清除选中信息
+									rows.length = ''; //第一种方法      
+									$('#grid').datagrid('clearSelections'); //第二种方法
+								} else {
+									$.messager.alert('Fail', data.msg);
+								}
+							}
+						});
+					}
+				});
+			} else {
+				$.messager.alert('提示', '请选择数据', 'error');
+			}
+		},
+		//弹出新增窗口
+		ShowAddDialog: function() {
+			$('#AddForm').form('clear');
+			$('#DivAdd').dialog('open').dialog('setTitle', '添加信息');
+		},
+		//弹出修改或者查看窗口
+		ShowEditOrViewDialog: function(view) {
+			var rows = $('#grid').datagrid('getSelections');
+			if (rows.length == 0) {
+				$.messager.alert('提示', '请选择数据', 'error');
+				return;
+			} else if (rows.length > 1) {
+				$.messager.alert('提示', '只能选择一项数据', 'error');
+				return;
+			}
+			id = $('#grid').datagrid('getSelections')[0].id; //获取到了用用户选择的ID
+			if (view == null) {
+				$('#DivEdit').dialog('open').dialog('setTitle', '编辑信息');
+				this.Edit(id);
+			} else {
+				$('#DivView').dialog('open').dialog('setTitle', '查看信息');
+				this.View(id);
+			}
+		},
+		//绑定添加按钮的事件
+		Save: function() {
+			var validate = $('#AddForm').form('validate');
+			if (validate == false) {
+				return false;
+			}
+			var postData = $('#AddForm').serializeArray();
+			var obj = {};
+			$.each(postData, function(i, v) {
+				obj[v.name] = v.value;
+			});
+			$
+				.ajax({
+					type: "post",
+					url: '/SpringDictionary/Create',
+					dataType: 'json',
+					//async: true,
+					contentType: 'application/json;charset=utf-8', // 设置请求头信息
+					data: JSON.stringify(obj),
+					success: function(result) {
+						if (result.code == 200) {
+							//添加成功  1.关闭弹出层，2.刷新DataGird
+							$.messager.alert('提示', '保存成功');
+							$('#DivAdd').dialog('close');
+							$('#grid').datagrid('reload');
+							$('#AddForm').form('clear');
+						} else {
+							$.messager.alert('提示', result.msg);
+						}
+					}
+				});
+		},
+		//更新方法
+		Update: function() {
+			var validate = $('#EditForm').form('validate');
+			if (validate == false) {
+				return false;
+			}
+			var postData = $('#EditForm').serializeArray();
+			var obj = {};
+			$.each(postData, function(i, v) {
+				obj[v.name] = v.value;
+			});
+			$
+				.ajax({
+					type: "put",
+					url: '/SpringDictionary/Edit',
+					dataType: 'json',
+					//async: true,
+					contentType: 'application/json;charset=utf-8', // 设置请求头信息
+					data: JSON.stringify(obj),
+					success: function(result) {
+						if (result.code == 200) {
+							//添加成功  1.关闭弹出层，2.刷新DataGird
+							//showTips('保存成功');
+							$.messager.alert('提示', '保存成功');
+							$('#DivEdit').dialog('close');
+							$('#grid').datagrid('reload');
+							$('#EditForm').form('clear');
+						} else {
+							$.messager.alert('提示', result.msg);
+						}
+					}
+				});
+		},
+		//查询数据
+		Edit: function(ID) {
+			//使用同步方式，使得联动的控件正常显示
+			$.ajaxSettings.async = false;
+			$.getJSON('/SpringDictionary/Detail/?id=' + ID, function(data) {
+				if (data.code == 200) {
+					$('#EditForm').form('clear');
+					$('#id1').val(data.data.id);
+					$('#code1').textbox('setValue', data.data.code);
+					$('#title1').textbox('setValue', data.data.title);
+					$('#description1').textbox('setValue', data.data.description);
+					$('#sortCode1').numberspinner('setValue', data.data.sortCode);
+					$('#enableEdit1').combobox('setValue', data.data.enableEdit);
+					$('#deletedStatus1').val(data.data.deletedStatus);
+					$('#enableDelete1').combobox('setValue', data.data.enableDelete);
+				} else {
+					$.messager.alert('提示', data.msg);
+				}
+			});
+		},
+	};
+	var queryData = {}; //可添加一些预设条件
+	SpringDictionary.InitGrid(queryData); //初始化Datagrid表格数据
+
+	var SpringDictionaryDetail = {
+		//初始化表格
+		InitGrid: function(queryData) {
+			console.log(queryData);
+			$('#gridDetail').datagrid({
+				data: '',
+				loader: function(param, success, error) {
+					$.ajax({
+						type: "post",
+						url: '/SpringDictionaryDetail/ListByPage?page=' + (param.page - 1) + "&size=" + param.rows,
+						dataType: 'json',
+						async: true,
+						contentType: 'application/json;charset=utf-8', // 设置请求头信息
+						data: JSON.stringify(param),
+						success: function(result) {
+							success(result);
+						}
+					});
+				},
+				title: '字典详情',
+				iconCls: 'icon-view',
+				height: 500,
+				width: function() {
+					return document.body.clientWidth * 0.9
+				},
+				nowrap: true,
+				autoRowHeight: true,
+				striped: true,
+				fit: false,
+				collapsible: true,
+				pagination: true,
+				pageSize: 50,
+				singleSelect: false,
+				pageList: [50, 100, 200],
+				pageNumber: 1,
+				sortOrder: 'asc',
+				rownumbers: true,
+				remoteSort: false,
+				idField: 'id',
+				queryParams: queryData,
+				columns: [
+					[{
+							field: 'ck',
+							checkbox: true
+						},
+						{
+							title: '编码',
+							field: 'detailCode',
+							width: 200,
+							sortable: true
+						},
+						{
+							title: '名称',
+							field: 'detailName',
+							width: 200,
+							sortable: true
+						},
+						{
+							title: '值',
+							field: 'detailValue',
+							width: 200,
+							sortable: true
+						},
+						{
+							title: '说明',
+							field: 'description',
+							width: 200,
+							sortable: true
+						},
+						{
+							title: '排序',
+							field: 'sortCode',
+							width: 200,
+							sortable: true
+						},
+						{
+							title: '允许编辑',
+							field: 'enableEdit',
+							width: 200,
+							sortable: true
+						},
+						{
+							title: '允许删除',
+							field: 'enableDelete',
+							width: 200,
+							sortable: true
+						}
+					]
+				],
+				toolbar: [
+					{
+						id: 'btnAdd',
+						text: '添加',
+						iconCls: 'icon-add',
+						handler: function() {
+							SpringDictionaryDetail.ShowAddDialog();
+						}
+					}, '-',
+					{
+						id: 'btnEdit',
+						text: '修改',
+						iconCls: 'icon-edit',
+						handler: function() {
+							SpringDictionaryDetail.ShowEditOrViewDialog();
+						}
+					}, '-',
+					{
+						id: 'btnDelete',
+						text: '删除',
+						iconCls: 'icon-remove',
+						handler: function() {
+							SpringDictionaryDetail.Delete();
+						}
+					}
+				],
+				onDblClickRow: function(rowIndex, rowData) {
+					//$('#grid').datagrid('uncheckAll');
+					$('#gridDetail').datagrid('checkRow', rowIndex);
+					SpringDictionaryDetail.ShowEditOrViewDialog();
+				}
+			});
+			//var heightMargin = $('#toolbar').height() + 80;
+			//var widthMargin = $(document).width() - $('#tb').width();
+			//$('#grid').resizeDataGrid(heightMargin,widthMargin,0,0);
+			//$(window).resize(function(){$('#grid').resizeDataGrid(heightMargin,widthMargin,0,0)})
+		},
+		//查询
+		Search: function() {
+			//得到用户输入的参数
+			//$('#id').textbox('getValue');
+			//$('#id').combobox('getValue'),
+			//$('#id').datebox('getValue'),
+			//$('#id').val(),
+			//$('#id').combotree('getValue'),
+			//$('#id').numberbox('getValue'),
+			var queryData = $('#searchFormDetail').serializeArray();
+			var obj = {};
+			$.each(queryData, function(i, v) {
+				obj[v.name] = v.value;
+			});
+			$('#gridDetail').datagrid('load', obj);
+			exportCondition = obj;
+			return false;
+		},
+		//实现删除数据的方法
+		Delete: function() {
+			var rows = $('#gridDetail').datagrid('getSelections');
+			if (rows.length >= 1) {
+				var ids = ''; //1,2,3,4,5
+				for (var i = 0; i < rows.length; i++) {
+					ids += rows[i].id + ',';
+				}
+				ids = ids.substring(0, ids.length - 1);
+				var postData = {
+					ids: ids
+				};
+				$.messager.confirm('确认删除', '确认删除', function(action) {
+					if (action) {
+						$.ajax({
+							type: 'POST',
+							url: '/SpringDictionaryDetail/SetDeleted',
+							dataType: 'json',
+							data: postData,
+							success: function(data) {
+								if (data.code == 200) {
+									$.messager.alert('OK', '删除成功！');
+									$('#gridDetail').datagrid('reload');
+									//清除选中信息
+									rows.length = ''; //第一种方法      
+									$('#gridDetail').datagrid('clearSelections'); //第二种方法
+								} else {
+									$.messager.alert('Fail', data.msg);
+								}
+							}
+						});
+					}
+				});
+			} else {
+				$.messager.alert('提示', '请选择数据', 'error');
+			}
+		},
+		//弹出新增窗口
+		ShowAddDialog: function() {
+			//$('#AddFormDetail').form('clear');
+			$('#DivAddDetail').dialog('open').dialog('setTitle', '添加信息');
+		},
+		//弹出修改或者查看窗口
+		ShowEditOrViewDialog: function(view) {
+			var rows = $('#gridDetail').datagrid('getSelections');
+			if (rows.length == 0) {
+				$.messager.alert('提示', '请选择数据', 'error');
+				return;
+			} else if (rows.length > 1) {
+				$.messager.alert('提示', '只能选择一项数据', 'error');
+				return;
+			}
+			id = $('#gridDetail').datagrid('getSelections')[0].id; //获取到了用用户选择的ID
+			if (view == null) {
+				$('#DivEditDetail').dialog('open').dialog('setTitle', '编辑信息');
+				this.Edit(id);
+			} else {
+				$('#DivViewDetail').dialog('open').dialog('setTitle', '查看信息');
+				this.View(id);
+			}
+		},
+		//绑定添加按钮的事件
+		Save: function() {
+			var validate = $('#AddFormDetail').form('validate');
+			if (validate == false) {
+				return false;
+			}
+			var postData = $('#AddFormDetail').serializeArray();
+			var obj = {};
+			$.each(postData, function(i, v) {
+				obj[v.name] = v.value;
+			});
+			$
+				.ajax({
+					type: "post",
+					url: '/SpringDictionaryDetail/Create',
+					dataType: 'json',
+					//async: true,
+					contentType: 'application/json;charset=utf-8', // 设置请求头信息
+					data: JSON.stringify(obj),
+					success: function(result) {
+						if (result.code == 200) {
+							//添加成功  1.关闭弹出层，2.刷新DataGird
+							$.messager.alert('提示', '保存成功');
+							$('#DivAddDetail').dialog('close');
+							$('#gridDetail').datagrid('reload');
+							$('#detailCode2').textbox('setValue', '');
+							$('#detailName2').textbox('setValue', '');
+							$('#detailValue2').textbox('setValue', '');
+							$('#description2').textbox('setValue', '');
+							//$('#AddFormDetail').form('clear');
+						} else {
+							$.messager.alert('提示', result.msg);
+						}
+					}
+				});
+		},
+		//更新方法
+		Update: function() {
+			var validate = $('#EditFormDetail').form('validate');
+			if (validate == false) {
+				return false;
+			}
+			var postData = $('#EditFormDetail').serializeArray();
+			var obj = {};
+			$.each(postData, function(i, v) {
+				obj[v.name] = v.value;
+			});
+			$
+				.ajax({
+					type: "put",
+					url: '/SpringDictionaryDetail/Edit',
+					dataType: 'json',
+					//async: true,
+					contentType: 'application/json;charset=utf-8', // 设置请求头信息
+					data: JSON.stringify(obj),
+					success: function(result) {
+						if (result.code == 200) {
+							//添加成功  1.关闭弹出层，2.刷新DataGird
+							//showTips('保存成功');
+							$.messager.alert('提示', '保存成功');
+							$('#DivEdit').dialog('close');
+							$('#grid').datagrid('reload');
+							$('#EditForm').form('clear');
+						} else {
+							$.messager.alert('提示', result.msg);
+						}
+					}
+				});
+		},
+		//查询数据
+		Edit: function(ID) {
+			//使用同步方式，使得联动的控件正常显示
+			$.ajaxSettings.async = false;
+			$.getJSON('/SpringDictionaryDetail/Detail/?id=' + ID, function(data) {
+				$('#EditFormDetail').form('clear');
+				$('#id3').val(data.data.id);
+				$('#dictionaryCode3').textbox('setValue', data.data.dictionaryCode);
+				$('#detailCode3').textbox('setValue', data.data.detailCode);
+				$('#detailName3').textbox('setValue', data.data.detailName);
+				$('#detailValue3').textbox('setValue', data.data.detailValue);
+				$('#description3').textbox('setValue', data.data.description);
+				$('#sortCode3').numberspinner('setValue', data.data.sortCode);
+				$('#enableEdit3').combobox('setValue', data.data.enableEdit);
+				$('#enableDelete3').combobox('setValue', data.data.enableDelete);
+				$('#deletedStatus3').val( data.data.deletedStatus);
+			});
+		}
+	};
+	SpringDictionaryDetail.InitGrid({dictionaryCode:"999999"});
+</script>

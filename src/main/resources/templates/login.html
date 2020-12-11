@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="common/header :: head"></head>
+	<script type="text/javascript">
+		if (self != top) window.top.location.replace(self.location);
+	</script>
+	<body>
+		<div style="margin:200px auto;width: 500px;">
+			<div id="p" class="easyui-panel" title="登录" style="width: 500px; height: 200px; padding: 10px;">
+				<form id="loginForm" th:action="@{/Login}" method="post">
+					<div style="margin-bottom:20px">
+						<input class="easyui-textbox" id="username" name="username" style="width:100%" data-options="label:'帐号:',required:true">
+					</div>
+					<div style="margin-bottom:20px">
+						<input class="easyui-textbox" id="password" name="password" type="password" style="width:100%" data-options="label:'密码:',required:true">
+					</div>
+					<div style="text-align:center;padding:5px 0">
+						<a href="javascript:void(0)" class="easyui-linkbutton" style="width:80px" onclick='login();'>登录</a>
+						<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()" style="width:80px">重置</a>
+					</div>
+				</form>
+				<div th:if="${param.error} and ${session}" th:with="errorMsg=${session['SPRING_SECURITY_LAST_EXCEPTION']}">
+					<div class="alert alert-danger">
+						<span th:text="${errorMsg}"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+<script>
+	function clearForm() {
+		$('#loginForm').form('clear');
+	}
+
+	function login() {
+		var validate = $('#loginForm').form('validate');
+		if (validate == false) {
+			return false;
+		}
+		var userName = $('#username').textbox('getValue');
+		var passWord = $('#password').textbox('getValue');
+		var obj = {};
+		obj.username = userName;
+		obj.password = passWord;
+		$
+			.ajax({
+				type: "post",
+				url: '/Login',
+				dataType: 'json',
+				data: obj,
+				success: function(result) {
+					if (result.code == 200) {
+						window.location.href = "/Admin";
+					} else {
+						$.messager.alert('提示', result.msg);
+						return false;
+					}
+				}
+			});
+	}
+</script>

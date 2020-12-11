@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="common/header :: head"></head>
+	<body>
+		<div id='tb'>
+			<table id='grid' title='SpringOrganization' class="easyui-treegrid" data-options="iconCls:'icon-add'" style="margin-top:20px"></table>
+
+			<div id='DivAdd' class='easyui-dialog' style='width:80%;height:350px;padding:10px 20px;' closed='true' resizable='true'
+			 modal='true' data-options="iconCls:'icon-add'">
+				<form id='AddForm' method='post'>
+					<div style='margin-bottom: 20px'>
+						<input type="hidden" name='parentId' id='parentId'>
+						<input class='easyui-textbox' name='parentName' id='parentName' data-options="label:'父级:',required:true" readonly="readonly"
+						 style="width:100%">
+					</div>
+					<div style='margin-bottom:20px'>
+						<input class='easyui-textbox' name='code' id='code' style='width:100%' data-options="label:'编码:',required:false">
+					</div>
+					<div style='margin-bottom:20px'>
+						<input class='easyui-textbox' name='title' id='title' style='width:100%' data-options="label:'名称:',required:false">
+					</div>
+				</form>
+				<div style='text-align:center;padding:5px 0'>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick='SpringOrganization.Save();' style='width:80px'>保存</a>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript: $('#AddForm').form('clear');" style='width:80px'>清除</a>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript:$('#DivAdd').dialog('close');" style='width:80px'>关闭</a>
+				</div>
+			</div>
+			<div id='DivEdit' class='easyui-dialog' style='width:80%;height:350px;padding:10px 20px;' closed='true' resizable='true'
+			 modal='true' data-options="iconCls:'icon-add'">
+				<form id='EditForm' method='post'>
+					<input type="hidden" name='parentId' id='parentId1'>
+					<input type="hidden" name='id' id='id1'>
+					<div style='margin-bottom:20px'>
+						<input class='easyui-textbox' name='code' id='code1' style='width:100%' data-options="label:'编码:',required:false">
+					</div>
+					<div style='margin-bottom:20px'>
+						<input class='easyui-textbox' name='title' id='title1' style='width:100%' data-options="label:'名称:',required:false">
+					</div>
+					<input type="hidden" name='deletedStatus' id='deletedStatus1'>
+				</form>
+				<div style='text-align:center;padding:5px 0'>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick='SpringOrganization.Update();' style='width:80px'>保存</a>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript: $('#EditForm').form('clear');" style='width:80px'>清除</a>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript:$('#DivEdit').dialog('close');" style='width:80px'>关闭</a>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+<script type='text/javascript'>
+	var SpringOrganization = {
+		//初始化表格
+		InitGrid: function(queryData) {
+			$('#grid').treegrid({
+				data: '',
+				loader: function(param, success, error) {
+					$.ajax({
+						type: "get",
+						url: '/SpringOrganization/ListAllToTree',
+						dataType: 'json',
+						async: true,
+						//contentType: 'application/json;charset=utf-8', // 设置请求头信息
+						data: param,
+						success: function(result) {
+							success(result.data);
+						}
+					});
+				},
+				title: '组织机构',
+				iconCls: 'icon-view',
+				height: 500,
+				width: function() {
+					return document.body.clientWidth * 0.9
+				},
+				singleSelect: true,
+				sortOrder: 'asc',
+				rownumbers: true,
+				idField: 'id',
+				treeField: 'title',
+				queryParams: queryData,
+				columns: [
+					[{
+							field: 'ck',
+							checkbox: true
+						},
+						{
+							title: '名称',
+							field: 'title',
+							width: 200,
+							sortable: true
+						}, {
+							title: '编码',
+							field: 'code',
+							width: 200,
+							sortable: true
+						}
+					]
+				],
+				toolbar: [{
+						id: 'btnSearch',
+						text: '查询',
+						iconCls: 'icon-search',
+						handler: function() {
+							SpringOrganization.Search();
+						}
+					}, '-',
+					{
+						id: 'btnAdd',
+						text: '添加',
+						iconCls: 'icon-add',
+						handler: function() {
+							SpringOrganization.ShowAddDialog();
+						}
+					}, '-', {
+						id: 'btnAddChild',
+						text: '添加子节点',
+						iconCls: 'icon-add',
+						handler: function() {
+							SpringOrganization.ShowAddChildDialog();
+						}
+					}, '-',
+					{
+						id: 'btnEdit',
+						text: '修改',
+						iconCls: 'icon-edit',
+						handler: function() {
+							SpringOrganization.ShowEditOrViewDialog();
+						}
+					}, '-',
+					{
+						id: 'btnDelete',
+						text: '删除',
+						iconCls: 'icon-remove',
+						handler: function() {
+							SpringOrganization.Delete();
+						}
+					}
+				],
+				onDblClickRow: function(rowIndex, rowData) {
+					//$('#grid').datagrid('uncheckAll');
+					//$('#grid').treegrid('checkRow', rowIndex);
+					SpringOrganization.ShowEditOrViewDialog();
+				}
+			});
+			var heightMargin = $('#toolbar').height() + 80;
+			var widthMargin = $(document).width() - $('#tb').width();
+			//$('#grid').resizeDataGrid(heightMargin,widthMargin,0,0);
+			//$(window).resize(function(){$('#grid').resizeDataGrid(heightMargin,widthMargin,0,0)})
+		},
+		//查询
+		Search: function() {
+			//得到用户输入的参数
+			//$('#id').textbox('getValue');
+			//$('#id').combobox('getValue'),
+			//$('#id').datebox('getValue'),
+			//$('#id').val(),
+			//$('#id').combotree('getValue'),
+			//$('#id').numberbox('getValue'),
+			$('#grid').treegrid('load', {});
+			exportCondition = obj;
+			return false;
+		},
+		//实现删除数据的方法
+		Delete: function() {
+			var rows = $('#grid').treegrid('getSelections');
+			if (rows.length >= 1) {
+				var ids = ''; //1,2,3,4,5
+				for (var i = 0; i < rows.length; i++) {
+					ids += rows[i].id + ',';
+				}
+				ids = ids.substring(0, ids.length - 1);
+				var postData = {
+					ids: ids
+				};
+				$.messager.confirm('确认删除', '确认删除', function(action) {
+					if (action) {
+						$.ajax({
+							type: 'POST',
+							url: '/SpringOrganization/SetDeleted',
+							dataType: 'json',
+							data: postData,
+							success: function(data) {
+								if (data.code == 200) {
+									$.messager.alert('OK', '删除成功！');
+									$('#grid').treegrid('reload');
+									//清除选中信息
+									rows.length = ''; //第一种方法      
+									$('#grid').treegrid('clearSelections'); //第二种方法
+								} else {
+									$.messager.alert('Fail', data.msg);
+								}
+							}
+						});
+					}
+				});
+			} else {
+				$.messager.alert('提示', '请选择数据', 'error');
+			}
+		},
+		//弹出新增窗口
+		ShowAddDialog: function() {
+			$('#AddForm').form('clear');
+			$("#parentId").val("0");
+			$("#parentName").textbox('setValue', "顶级");
+			$('#DivAdd').dialog('open').dialog('setTitle', '添加信息');
+		},
+		ShowAddChildDialog: function() {
+			$('#AddForm').form('clear');
+			var rows = $('#grid').treegrid('getSelections');
+			if (rows.length == 0) {
+				$.messager.alert('提示', '请选择数据', 'error');
+				return;
+			} else if (rows.length > 1) {
+				$.messager.alert('提示', '只能选择一项数据', 'error');
+				return;
+			}
+			//console.log(rows);
+			$("#parentId").val(rows[0].id);
+			$("#parentName").textbox('setValue', rows[0].title);
+			$('#DivAdd').dialog('open').dialog('setTitle', '添加信息');
+		},
+		//弹出修改或者查看窗口
+		ShowEditOrViewDialog: function(view) {
+			var rows = $('#grid').treegrid('getSelections');
+			if (rows.length == 0) {
+				$.messager.alert('提示', '请选择数据', 'error');
+				return;
+			} else if (rows.length > 1) {
+				$.messager.alert('提示', '只能选择一项数据', 'error');
+				return;
+			}
+			id = $('#grid').treegrid('getSelections')[0].id; //获取到了用用户选择的ID
+			if (view == null) {
+				$('#DivEdit').dialog('open').dialog('setTitle', '编辑信息');
+				this.Edit(id);
+			} else {
+				$('#DivView').dialog('open').dialog('setTitle', '查看信息');
+				this.View(id);
+			}
+		},
+		//绑定添加按钮的事件
+		Save: function() {
+			var validate = $('#AddForm').form('validate');
+			if (validate == false) {
+				return false;
+			}
+			var postData = $('#AddForm').serializeArray();
+			var obj = {};
+			$.each(postData, function(i, v) {
+				obj[v.name] = v.value;
+			});
+			$
+				.ajax({
+					type: "post",
+					url: '/SpringOrganization/Create',
+					dataType: 'json',
+					//async: true,
+					contentType: 'application/json;charset=utf-8', // 设置请求头信息
+					data: JSON.stringify(obj),
+					success: function(result) {
+						if (result.code == 200) {
+							//添加成功  1.关闭弹出层，2.刷新DataGird
+							$.messager.alert('提示', '保存成功');
+							$('#DivAdd').dialog('close');
+							$('#grid').treegrid('reload');
+							$('#AddForm').form('clear');
+						} else {
+							$.messager.alert('提示', result.msg);
+						}
+					}
+				});
+		},
+		//更新方法
+		Update: function() {
+			var validate = $('#EditForm').form('validate');
+			if (validate == false) {
+				return false;
+			}
+			var postData = $('#EditForm').serializeArray();
+			var obj = {};
+			$.each(postData, function(i, v) {
+				obj[v.name] = v.value;
+			});
+			$
+				.ajax({
+					type: "put",
+					url: '/SpringOrganization/Edit',
+					dataType: 'json',
+					//async: true,
+					contentType: 'application/json;charset=utf-8', // 设置请求头信息
+					data: JSON.stringify(obj),
+					success: function(result) {
+						if (result.code == 200) {
+							//添加成功  1.关闭弹出层，2.刷新DataGird
+							//showTips('保存成功');
+							$.messager.alert('提示', '保存成功');
+							$('#DivEdit').dialog('close');
+							$('#grid').treegrid('reload');
+							$('#EditForm').form('clear');
+						} else {
+							$.messager.alert('提示', result.msg);
+						}
+					}
+				});
+		},
+		//查询数据
+		Edit: function(ID) {
+			//使用同步方式，使得联动的控件正常显示
+			$.ajaxSettings.async = false;
+			$.getJSON('/SpringOrganization/Detail/?id=' + ID, function(data) {
+				if (data.code == 200) {
+					$('#EditForm').form('clear');
+					$('#id1').val(data.data.id);
+					$('#parentId1').val(data.data.parentId);
+					$('#code1').textbox('setValue', data.data.code);
+					$('#title1').textbox('setValue', data.data.title);
+					$('#deletedStatus1').val(data.data.deletedStatus);
+				} else {
+					$.messager.alert('提示', data.msg);
+				}
+			});
+		},
+	};
+	var queryData = {}; //可添加一些预设条件
+	SpringOrganization.InitGrid(queryData); //初始化Datagrid表格数据
+</script>

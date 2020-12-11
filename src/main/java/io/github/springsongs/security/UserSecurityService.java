@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.modules.sys.domain.SpringUser;
 import io.github.springsongs.modules.sys.domain.SpringUserSecurity;
 import io.github.springsongs.modules.sys.dto.RoleCodeDTO;
@@ -33,7 +34,7 @@ public class UserSecurityService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		SpringUser user = userDao.getByUserName(username);
 		if (user == null) {
-			throw new UsernameNotFoundException("用户名没有注册");
+			throw new UsernameNotFoundException(ResultCode.USER_NOT_FOUND.getMessage());
 		}
 		List<RoleCodeDTO> baseRoleLists = baseRoleDao.getRolesByUserId(user.getId());
 		user.setRoleList(baseRoleLists);

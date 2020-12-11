@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="common/header :: head"></head>
+	<body>
+		<div id='tb'>
+			<div id='p' class='easyui-panel' title='查询' style='padding: 10px'>
+				<form id='searchForm' method='post'>
+					<div id='toolbar'>
+						<input class='easyui-textbox' name='createdBy' label='用户:' style='width: 300px' /> <input class='easyui-datebox'
+						 name='startDate' label='开始日期:' style='width: 300px' /> <input class='easyui-datebox' name='endDate' label='结束日期:'
+						 style='width: 300px' />
+					</div>
+				</form>
+			</div>
+			<table id='grid' title='SpringLoginLog' data-options="iconCls:'icon-add'" style="margin-top: 20px"></table>
+
+			<div id='DivAdd' class='easyui-dialog' style='width: 80%; height: 80%; padding: 10px 20px;' closed='true' resizable='true'
+			 modal='true' data-options="iconCls:'icon-add'">
+				<form id='AddForm' method='post'>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springLoginLogEntity.id' id='id' style='width: 100%' data-options="label:'主键:',required:false">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springLoginLogEntity.description' id='description' style='width: 100%'
+						 data-options="label:'Ip:',required:true">
+					</div>
+				</form>
+				<div style='text-align: center; padding: 5px 0'>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick='SpringLoginLog.Save();' style='width: 80px'>保存</a>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript: $('#AddForm').form('clear');" style='width: 80px'>清除</a>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript:$('#DivAdd').dialog('close');" style='width: 80px'>关闭</a>
+				</div>
+			</div>
+			<div id='DivEdit' class='easyui-dialog' style='width: 80%; height: 80%; padding: 10px 20px;' closed='true' resizable='true'
+			 modal='true' data-options="iconCls:'icon-add'">
+				<form id='EditForm' method='post'>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springLoginLogEntity.id' id='id1' style='width: 100%' data-options="label:'主键:',required:false">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springLoginLogEntity.description' id='description1' style='width: 100%'
+						 data-options="label:'Ip:',required:true">
+					</div>
+				</form>
+				<div style='text-align: center; padding: 5px 0'>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick='SpringLoginLog.Update();' style='width: 80px'>保存</a>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript: $('#EditForm').form('clear');" style='width: 80px'>清除</a>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript:$('#DivEdit').dialog('close');" style='width: 80px'>关闭</a>
+				</div>
+			</div>
+
+		</div>
+	</body>
+</html>
+<script type='text/javascript'>
+	var SpringLoginLog = {
+
+		//初始化表格
+		InitGrid: function(queryData) {
+			$('#grid').datagrid({
+				data: '',
+				loader: function(param, success, error) {
+					console.log(param);
+					$.ajax({
+						type: "post",
+						url: '/SpringLoginLog/ListByPage?page=' +
+							(param.page - 1) + "&size=" +
+							param.rows,
+						dataType: 'json',
+						async: true,
+						contentType: 'application/json;charset=utf-8', // 设置请求头信息
+						data: JSON.stringify(param),
+						success: function(result) {
+							success(result);
+						}
+					});
+				},
+				title: '登录日志',
+				iconCls: 'icon-view',
+				height: 500,
+				width: function() {
+					return document.body.clientWidth * 0.9
+				},
+				nowrap: true,
+				autoRowHeight: true,
+				striped: true,
+				fit: false,
+				collapsible: true,
+				pagination: true,
+				pageSize: 50,
+				singleSelect: false,
+				pageList: [50, 100, 200],
+				pageNumber: 1,
+				sortOrder: 'asc',
+				rownumbers: true,
+				remoteSort: false,
+				idField: 'id',
+				queryParams: queryData,
+				columns: [
+					[{
+						field: 'ck',
+						checkbox: true
+					}, {
+						title: '用户',
+						field: 'createdBy',
+						width: 200,
+						sortable: true
+					}, {
+						title: '状态',
+						field: 'description',
+						width: 200,
+						sortable: true
+					}, {
+						title: 'IP',
+						field: 'createdIp',
+						width: 200,
+						sortable: true
+					}]
+				],
+				toolbar: [{
+					id: 'btnReload',
+					text: '刷新',
+					iconCls: 'icon-reload',
+					handler: function() {
+						$('#searchForm').form('clear');
+						$('#grid').datagrid('reload', {});
+						$('#grid').datagrid('clearSelections');
+					}
+				}, '-', {
+					id: 'btnSearch',
+					text: '查询',
+					iconCls: 'icon-search',
+					handler: function() {
+						SpringLoginLog.Search();
+					}
+				}, '-', {
+					id: 'btnDelete',
+					text: '删除',
+					iconCls: 'icon-remove',
+					handler: function() {
+						SpringLoginLog.Delete();
+					}
+				}]
+			});
+			var heightMargin = $('#toolbar').height() + 80;
+			var widthMargin = $(document).width() - $('#tb').width();
+			//$('#grid').resizeDataGrid(heightMargin,widthMargin,0,0);
+			//$(window).resize(function(){$('#grid').resizeDataGrid(heightMargin,widthMargin,0,0)})
+		},
+		//查询
+		Search: function() {
+			//得到用户输入的参数
+			//$('#id').textbox('getValue');
+			//$('#id').combobox('getValue'),
+			//$('#id').datebox('getValue'),
+			//$('#id').val(),
+			//$('#id').combotree('getValue'),
+			//$('#id').numberbox('getValue'),
+			var queryData = $('#searchForm').serializeArray();
+			var obj = {};
+			$.each(queryData, function(i, v) {
+				obj[v.name] = v.value;
+			});
+			$('#grid').datagrid('load', obj);
+			exportCondition = obj;
+			return false;
+		},
+		//实现删除数据的方法
+		Delete: function() {
+			var rows = $('#grid').datagrid('getSelections');
+			if (rows.length >= 1) {
+				var ids = ''; //1,2,3,4,5
+				for (var i = 0; i < rows.length; i++) {
+					ids += rows[i].id + ',';
+				}
+				ids = ids.substring(0, ids.length - 1);
+				var postData = {
+					ids: ids
+				};
+				$.messager.confirm('确认删除', '确认删除', function(action) {
+					if (action) {
+						$.ajax({
+							type: 'POST',
+							url: '/SpringLoginLog/setDeleted',
+							dataType: 'json',
+							data: postData,
+							success: function(data) {
+								if (data.state == 'ok') {
+									$.messager.alert('OK', '删除成功！');
+									$('#grid').datagrid('reload');
+									//清除选中信息
+									rows.length = ''; //第一种方法      
+									$('#grid').datagrid('clearSelections'); //第二种方法
+								} else {
+									$.messager.alert('Fail', data.mFailsg);
+								}
+							}
+						});
+					}
+				});
+			} else {
+				$.messager.alert('提示', '请选择数据', 'error');
+			}
+		},
+		
+	};
+	var queryData = {}; //可添加一些预设条件
+	SpringLoginLog.InitGrid(queryData); //初始化Datagrid表格数据
+</script>

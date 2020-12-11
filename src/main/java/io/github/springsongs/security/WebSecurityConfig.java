@@ -75,8 +75,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	 */
 	@Override
 	public void configure(WebSecurity web) {
-		web.ignoring().antMatchers("/SpringUser/Invalidate", "/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html**",
-				"/css/**", "/img/**", "/js/**","/**.ico","/webjars/**","/swagger-ui.html","/");
+		web.ignoring().antMatchers("/SpringUser/Invalidate", "/v2/api-docs", "/swagger-resources/**", "/css/**",
+				"/img/**", "/js/**", "/**.ico", "/webjars/**", "/", "/jquery-easyui/**", "/error", "/bootstrap/**");
 	}
 
 	@Override
@@ -89,13 +89,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				o.setAccessDecisionManager(urlAccessDecisionManager);
 				return o;
 			}
-		}).anyRequest().authenticated().and().formLogin()
-				.loginPage("/Login").permitAll().failureHandler(loginFailureHandler())
-				.successHandler(loginSuccessHandler()).and().logout().logoutUrl("/Logout")
-				.logoutSuccessUrl("/SpringUser/Invalidate").permitAll().logoutSuccessHandler(logoutSuccessHandler())
-				.deleteCookies("JSESSIONID", "SESSION").and().sessionManagement()
-				.invalidSessionUrl("/SpringUser/Invalidate").sessionFixation().changeSessionId().maximumSessions(1)
-				.maxSessionsPreventsLogin(false)// false之后登录踢掉之前登录,true则不允许之后登录
+		}).anyRequest().authenticated().and().formLogin().loginPage("/Login").loginProcessingUrl("/Login")
+				.defaultSuccessUrl("/Admin", true).failureUrl("/Login?error").permitAll()
+				.failureHandler(loginFailureHandler()).successHandler(loginSuccessHandler()).and().logout()
+				.logoutUrl("/Logout").logoutSuccessUrl("/Login").permitAll()
+				.logoutSuccessHandler(logoutSuccessHandler()).deleteCookies("JSESSIONID", "SESSION").and()
+				.sessionManagement().invalidSessionUrl("/SpringUser/Invalidate").sessionFixation().changeSessionId()
+				.maximumSessions(1).maxSessionsPreventsLogin(false)// false之后登录踢掉之前登录,true则不允许之后登录
 				.expiredSessionStrategy(sessionInformationExpiredStrategy());// 登录被踢掉时的自定义操作;
 		http.headers().frameOptions().disable();
 		http.csrf().disable().exceptionHandling().accessDeniedHandler(accessDeniedHandler());
@@ -109,7 +109,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			public void onLogoutSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
 					Authentication authentication) throws IOException, ServletException {
 
-				
 				try {
 					MyUserPrincipal userDetails = (MyUserPrincipal) authentication.getPrincipal();
 
@@ -157,8 +156,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 					Authentication authentication) throws IOException, ServletException {
 				MyUserPrincipal userDetails = (MyUserPrincipal) authentication.getPrincipal();
 
-				
-
 				// 记录登录信息
 				SpringLoginLogDTO entity = new SpringLoginLogDTO();
 				entity.setDescription("登录");
@@ -187,7 +184,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 					}
 				}
 
+				// response.sendRedirect("/Admin");
 				super.onAuthenticationSuccess(request, response, authentication);
+
 			}
 		};
 	}
@@ -198,36 +197,60 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			@Override
 			public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 					AuthenticationException exception) throws IOException, ServletException {
-				response.setContentType("application/json;charset=utf-8");
-				PrintWriter out = response.getWriter();
-				
-				ResponseDTO<String> responseDto = null;
-				if (exception instanceof UsernameNotFoundException) {
-					logger.error(exception.getMessage());
-					responseDto = ResponseDTO.successed(null, ResultCode.USER_NOT_FOUND);
-				} else if (exception instanceof BadCredentialsException) {
-					logger.error(exception.getMessage());
-					responseDto = ResponseDTO.successed(null, ResultCode.BAD_CREDENTIALSEXCEPTION);
-				} else if (exception instanceof LockedException) {
-					logger.error(exception.getMessage());
-					responseDto = ResponseDTO.successed(null, ResultCode.LOCKED_EXCEPTION);
-				} else if (exception instanceof AccountExpiredException) {
-					logger.error(exception.getMessage());
-					responseDto = ResponseDTO.successed(null, ResultCode.ACCOUNT_EXPIRE_EXCEPTION);
-				} else if (exception instanceof DisabledException) {
-					logger.error(exception.getMessage());
-					responseDto = ResponseDTO.successed(null, ResultCode.ACCOUNT_DISABLED_EXCEPTION);
-				} else if (exception instanceof CredentialsExpiredException) {
-					logger.error(exception.getMessage());
-					responseDto = ResponseDTO.successed(null, ResultCode.CREDENTIALS_EXCPIRE_EXCEPTION);
-				} else {
-					logger.error(Constant.LOGIN_FAIL);
-					responseDto = ResponseDTO.successed(null, ResultCode.LOGIN_FAIL);
-				}
-				out.write(JSON.toJSONString(responseDto));
-				out.flush();
-				out.close();
+				if (HttpUtils.isAjaxRequest(request)) {
+					response.setContentType("application/json;charset=utf-8");
+					PrintWriter out = response.getWriter();
 
+					ResponseDTO<String> responseDto = null;
+					if (exception instanceof UsernameNotFoundException) {
+						logger.error(exception.getMessage());
+						responseDto = ResponseDTO.successed(null, ResultCode.USER_NOT_FOUND);
+					} else if (exception instanceof BadCredentialsException) {
+						logger.error(exception.getMessage());
+						responseDto = ResponseDTO.successed(null, ResultCode.BAD_CREDENTIALSEXCEPTION);
+					} else if (exception instanceof LockedException) {
+						logger.error(exception.getMessage());
+						responseDto = ResponseDTO.successed(null, ResultCode.LOCKED_EXCEPTION);
+					} else if (exception instanceof AccountExpiredException) {
+						logger.error(exception.getMessage());
+						responseDto = ResponseDTO.successed(null, ResultCode.ACCOUNT_EXPIRE_EXCEPTION);
+					} else if (exception instanceof DisabledException) {
+						logger.error(exception.getMessage());
+						responseDto = ResponseDTO.successed(null, ResultCode.ACCOUNT_DISABLED_EXCEPTION);
+					} else if (exception instanceof CredentialsExpiredException) {
+						logger.error(exception.getMessage());
+						responseDto = ResponseDTO.successed(null, ResultCode.CREDENTIALS_EXCPIRE_EXCEPTION);
+					} else {
+						logger.error(Constant.LOGIN_FAIL);
+						responseDto = ResponseDTO.successed(null, ResultCode.LOGIN_FAIL);
+					}
+					out.write(JSON.toJSONString(responseDto));
+					out.flush();
+					out.close();
+				} else {
+					if (exception instanceof UsernameNotFoundException) {
+						logger.error(exception.getMessage());
+						throw new UsernameNotFoundException(ResultCode.USER_NOT_FOUND.getMessage());
+					} else if (exception instanceof BadCredentialsException) {
+						logger.error(exception.getMessage());
+						throw new UsernameNotFoundException(ResultCode.BAD_CREDENTIALSEXCEPTION.getMessage());
+					} else if (exception instanceof LockedException) {
+						logger.error(exception.getMessage());
+						throw new UsernameNotFoundException(ResultCode.LOCKED_EXCEPTION.getMessage());
+					} else if (exception instanceof AccountExpiredException) {
+						logger.error(exception.getMessage());
+						throw new UsernameNotFoundException(ResultCode.ACCOUNT_EXPIRE_EXCEPTION.getMessage());
+					} else if (exception instanceof DisabledException) {
+						logger.error(exception.getMessage());
+						throw new UsernameNotFoundException(ResultCode.ACCOUNT_DISABLED_EXCEPTION.getMessage());
+					} else if (exception instanceof CredentialsExpiredException) {
+						logger.error(exception.getMessage());
+						throw new UsernameNotFoundException(ResultCode.CREDENTIALS_EXCPIRE_EXCEPTION.getMessage());
+					} else {
+						logger.error(Constant.LOGIN_FAIL);
+						throw new UsernameNotFoundException(ResultCode.LOGIN_FAIL.getMessage());
+					}
+				}
 			}
 		};
 	}
@@ -281,7 +304,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
 		// auth.authenticationProvider(provider);
-		logger.info(passwordEncoder().encode("qweasd"));
+		// logger.info(passwordEncoder().encode("qweasd"));
 		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 	}
 

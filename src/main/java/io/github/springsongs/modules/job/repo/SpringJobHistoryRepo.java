@@ -51,7 +51,7 @@ public interface SpringJobHistoryRepo extends JpaRepository<SpringJobHistory, St
 	 */
 	@Transactional
 	@Modifying
-	@Query(value = "update SpringJobHistory set deletedFlag=1 where id=:id")
+	@Query(value = "update SpringJobHistory set deletedStatus=1 where id=:id")
 	public void setDelete(@Param(value = "id") String id);
 
 	/**
@@ -65,6 +65,6 @@ public interface SpringJobHistoryRepo extends JpaRepository<SpringJobHistory, St
 	 */
 	@Transactional
 	@Modifying
-	@Query(value = "update SpringJobHistory set deletedFlag=1 where id in (:ids)")
+	@Query(value = "update SpringJobHistory set deletedStatus=1 where id in (:ids)")
 	public void setDelete(@Param(value = "ids") List<String> ids);
 }

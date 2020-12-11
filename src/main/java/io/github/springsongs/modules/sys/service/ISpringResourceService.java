@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import io.github.springsongs.modules.sys.domain.SpringResourceRole;
+import io.github.springsongs.modules.sys.dto.EasyUiMenuDTO;
 import io.github.springsongs.modules.sys.dto.ElementUiTreeDTO;
 import io.github.springsongs.modules.sys.dto.MenuDTO;
 import io.github.springsongs.modules.sys.dto.MenuRouterDTO;
@@ -46,6 +47,9 @@ public interface ISpringResourceService {
 	public List<SpringResourceRole>  listModulesByRoleId(String roleId);
 	
 	public List<MenuRouterDTO> listResourceByUserId(String userId);
+	
+	public List<EasyUiMenuDTO> listEasyUiResourceByUserId(String userId);
+	
 	
 	List<SpringResourceDTO> ListAllToTree(String systemCode);
 	

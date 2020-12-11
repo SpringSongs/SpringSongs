@@ -46,7 +46,7 @@ public class BaseController {
 		List<SimpleGrantedAuthority> SimpleGrantedAuthoritys = (List<SimpleGrantedAuthority>) authentication
 				.getAuthorities();
 		for (SimpleGrantedAuthority simple : SimpleGrantedAuthoritys) {
-			auths.add(simple.getAuthority().replace("ROLE_", ""));
+			auths.add(simple.getAuthority());
 		}
 		return auths;
 	}

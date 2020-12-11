@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="common/header :: head"></head>
+	<body>
+		<div id='tb'>
+			<div id='p' class='easyui-panel' title='查询' style='padding: 10px'>
+				<form id='searchForm' method='post'>
+					<div id='toolbar'>
+						<input class='easyui-textbox' name='company' label='公司名称:' style='width: 300px' />
+						<input class='easyui-textbox' name='title' label='职称:' style='width: 300px' />
+						<input class='easyui-textbox' name='username' label='名称:' style='width: 300px' />
+					</div>
+				</form>
+			</div>
+			<table id='grid' title='SpringContact' data-options="iconCls:'icon-add'" style="margin-top: 20px"></table>
+
+			<div id='DivAdd' class='easyui-dialog' style='width: 80%; height: 350px; padding: 10px 20px;' closed='true'
+			 resizable='true' modal='true' data-options="iconCls:'icon-add'">
+				<form id='AddForm' method='post'>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='company' id='company' style='width: 100%' data-options="label:'公司:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='title' id='title' style='width: 100%' data-options="label:'职称:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='username' id='username' style='width: 100%' data-options="label:'名称:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='email' id='email' style='width: 100%' data-options="label:'邮箱:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='web' id='web' style='width: 100%' data-options="label:'网址:',required:false">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='fax' id='fax' style='width: 100%' data-options="label:'传真:',required:false">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='qq' id='qq' style='width: 100%' data-options="label:'QQ:',required:false">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='webchat' id='webchat' style='width: 100%' data-options="label:'微信:',required:false">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='mobile' id='mobile' style='width: 100%' data-options="label:'手机:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='tel' id='tel' style='width: 100%' data-options="label:'电话:',required:false">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-numberspinner' name='sortCode' id='sortCode' style='width: 100%' data-options="label:'排序:',required:false">
+					</div>
+
+				</form>
+				<div style='text-align: center; padding: 5px 0'>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick='SpringContact.Save();' style='width: 80px'>保存</a>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript: $('#AddForm').form('clear');" style='width: 80px'>清除</a>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript:$('#DivAdd').dialog('close');" style='width: 80px'>关闭</a>
+				</div>
+			</div>
+			<div id='DivEdit' class='easyui-dialog' style='width: 80%; height: 350px; padding: 10px 20px;' closed='true'
+			 resizable='true' modal='true' data-options="iconCls:'icon-add'">
+				<form id='EditForm' method='post'>
+
+					<input type="hidden" name='id' id='id1' />
+
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='company' id='company1' style='width: 100%' data-options="label:'公司:',required:false">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='title' id='title1' style='width: 100%' data-options="label:'职称:',required:false">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='username' id='username1' style='width: 100%' data-options="label:'名称:',required:false">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='email' id='email1' style='width: 100%' data-options="label:'邮箱:',required:false">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='web' id='web1' style='width: 100%' data-options="label:'网址:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='fax' id='fax1' style='width: 100%' data-options="label:'传真:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='qq' id='qq1' style='width: 100%' data-options="label:'QQ:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='webchat' id='webchat1' style='width: 100%' data-options="label:'微信:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='mobile' id='mobile1' style='width: 100%' data-options="label:'手机:',required:false">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='tel' id='tel1' style='width: 100%' data-options="label:'电话:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-numberspinner' name='sortCode' id='sortCode1' style='width: 100%' data-options="label:'排序:',required:true">
+					</div>
+					<input type="hidden" name='deletedStatus' id='deletedStatus1'>
+				</form>
+				<div style='text-align: center; padding: 5px 0'>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick='SpringContact.Update();' style='width: 80px'>保存</a>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript: $('#EditForm').form('clear');" style='width: 80px'>清除</a>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript:$('#DivEdit').dialog('close');" style='width: 80px'>关闭</a>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+<script type='text/javascript'>
+	var SpringContact = {
+		//初始化表格
+		InitGrid: function(queryData) {
+			$('#grid').datagrid({
+				data: '',
+				loader: function(param, success, error) {
+					console.log(param);
+					$.ajax({
+						type: "post",
+						url: '/SpringContact/ListByPage?page=' + (param.page - 1) + "&size=" + param.rows,
+						dataType: 'json',
+						async: true,
+						contentType: 'application/json;charset=utf-8', // 设置请求头信息
+						data: JSON.stringify(param),
+						success: function(result) {
+							success(result);
+						}
+					});
+				},
+				title: '名片',
+				iconCls: 'icon-view',
+				height: 500,
+				width: function() {
+					return document.body.clientWidth * 0.9
+				},
+				nowrap: true,
+				autoRowHeight: true,
+				striped: true,
+				fit: false,
+				collapsible: true,
+				pagination: true,
+				pageSize: 50,
+				singleSelect: false,
+				pageList: [50, 100, 200],
+				pageNumber: 1,
+				sortOrder: 'asc',
+				rownumbers: true,
+				remoteSort: false,
+				idField: 'id',
+				queryParams: queryData,
+				columns: [
+					[{
+						field: 'ck',
+						checkbox: true
+					}, {
+						title: '公司',
+						field: 'company',
+						width: 200,
+						sortable: true
+					}, {
+						title: '职称',
+						field: 'title',
+						width: 200,
+						sortable: true
+					}, {
+						title: '名称',
+						field: 'username',
+						width: 200,
+						sortable: true
+					}, {
+						title: '邮箱',
+						field: 'email',
+						width: 200,
+						sortable: true
+					}, {
+						title: '网址',
+						field: 'web',
+						width: 200,
+						sortable: true
+					}, {
+						title: '传真',
+						field: 'fax',
+						width: 200,
+						sortable: true
+					}, {
+						title: 'QQ',
+						field: 'qq',
+						width: 200,
+						sortable: true
+					}, {
+						title: '微信',
+						field: 'webchat',
+						width: 200,
+						sortable: true
+					}, {
+						title: '手机',
+						field: 'mobile',
+						width: 200,
+						sortable: true
+					}, {
+						title: '电话',
+						field: 'tel',
+						width: 200,
+						sortable: true
+					}, {
+						title: '排序',
+						field: 'sortCode',
+						width: 200,
+						sortable: true
+					}, ]
+				],
+				toolbar: [{
+					id: 'btnReload',
+					text: '刷新',
+					iconCls: 'icon-reload',
+					handler: function() {
+						$('#searchForm').form('clear');
+						$('#grid').datagrid('reload', {});
+						$('#grid').datagrid('clearSelections');
+					}
+				}, '-', {
+					id: 'btnSearch',
+					text: '查询',
+					iconCls: 'icon-search',
+					handler: function() {
+						SpringContact.Search();
+					}
+				}, '-', {
+					id: 'btnAdd',
+					text: '添加',
+					iconCls: 'icon-add',
+					handler: function() {
+						SpringContact.ShowAddDialog();
+					}
+				}, '-', {
+					id: 'btnEdit',
+					text: '修改',
+					iconCls: 'icon-edit',
+					handler: function() {
+						SpringContact.ShowEditOrViewDialog();
+					}
+				}, '-', {
+					id: 'btnDelete',
+					text: '删除',
+					iconCls: 'icon-remove',
+					handler: function() {
+						SpringContact.Delete();
+					}
+				}],
+				onDblClickRow: function(rowIndex, rowData) {
+					//$('#grid').datagrid('uncheckAll');
+					$('#grid').datagrid('checkRow', rowIndex);
+					SpringContact.ShowEditOrViewDialog();
+				}
+			});
+			var heightMargin = $('#toolbar').height() + 80;
+			var widthMargin = $(document).width() - $('#tb').width();
+			//$('#grid').resizeDataGrid(heightMargin,widthMargin,0,0);
+			//$(window).resize(function(){$('#grid').resizeDataGrid(heightMargin,widthMargin,0,0)})
+		},
+		//查询
+		Search: function() {
+			//得到用户输入的参数
+			//$('#id').textbox('getValue');
+			//$('#id').combobox('getValue'),
+			//$('#id').datebox('getValue'),
+			//$('#id').val(),
+			//$('#id').combotree('getValue'),
+			//$('#id').numberbox('getValue'),
+			var queryData = $('#searchForm').serializeArray();
+			var obj = {};
+			$.each(queryData, function(i, v) {
+				obj[v.name] = v.value;
+			});
+			$('#grid').datagrid('load', obj);
+			exportCondition = obj;
+			return false;
+		},
+		//实现删除数据的方法
+		Delete: function() {
+			var rows = $('#grid').datagrid('getSelections');
+			if (rows.length >= 1) {
+				var ids = ''; //1,2,3,4,5
+				for (var i = 0; i < rows.length; i++) {
+					ids += rows[i].id + ',';
+				}
+				ids = ids.substring(0, ids.length - 1);
+				var postData = {
+					ids: ids
+				};
+				$.messager.confirm('确认删除', '确认删除', function(action) {
+					if (action) {
+						$.ajax({
+							type: 'POST',
+							url: '/SpringContact/SetDeleted',
+							dataType: 'json',
+							data: postData,
+							success: function(data) {
+								if (data.code == 200) {
+									$.messager.alert('OK', '删除成功！');
+									$('#grid').datagrid('reload');
+									//清除选中信息
+									rows.length = ''; //第一种方法      
+									$('#grid').datagrid('clearSelections'); //第二种方法
+								} else {
+									$.messager.alert('Fail', data.msg);
+								}
+							}
+						});
+					}
+				});
+			} else {
+				$.messager.alert('提示', '请选择数据', 'error');
+			}
+		},
+		//弹出新增窗口
+		ShowAddDialog: function() {
+			$('#AddForm').form('clear');
+			$('#DivAdd').dialog('open').dialog('setTitle', '添加信息');
+		},
+		//弹出修改或者查看窗口
+		ShowEditOrViewDialog: function(view) {
+			var rows = $('#grid').datagrid('getSelections');
+			if (rows.length == 0) {
+				$.messager.alert('提示', '请选择数据', 'error');
+				return;
+			} else if (rows.length > 1) {
+				$.messager.alert('提示', '只能选择一项数据', 'error');
+				return;
+			}
+			id = $('#grid').datagrid('getSelections')[0].id; //获取到了用用户选择的ID
+			if (view == null) {
+				$('#DivEdit').dialog('open').dialog('setTitle', '编辑信息');
+				this.Edit(id);
+			} else {
+				$('#DivView').dialog('open').dialog('setTitle', '查看信息');
+				this.View(id);
+			}
+		},
+		//绑定添加按钮的事件
+		Save: function() {
+			var validate = $('#AddForm').form('validate');
+			if (validate == false) {
+				return false;
+			}
+			var postData = $('#AddForm').serializeArray();
+			var obj = {};
+			$.each(postData, function(i, v) {
+				obj[v.name] = v.value;
+			});
+			$
+				.ajax({
+					type: "post",
+					url: '/SpringContact/Create',
+					dataType: 'json',
+					//async: true,
+					contentType: 'application/json;charset=utf-8', // 设置请求头信息
+					data: JSON.stringify(obj),
+					success: function(result) {
+						if (result.code == 200) {
+							//添加成功  1.关闭弹出层，2.刷新DataGird
+							$.messager.alert('提示', '保存成功');
+							$('#DivAdd').dialog('close');
+							$('#grid').datagrid('reload');
+							$('#AddForm').form('clear');
+						} else {
+							$.messager.alert('提示', result.msg);
+						}
+					}
+				});
+		},
+		//更新方法
+		Update: function() {
+			var validate = $('#EditForm').form('validate');
+			if (validate == false) {
+				return false;
+			}
+			var postData = $('#EditForm').serializeArray();
+			var obj = {};
+			$.each(postData, function(i, v) {
+				obj[v.name] = v.value;
+			});
+			$
+				.ajax({
+					type: "put",
+					url: '/SpringContact/Edit',
+					dataType: 'json',
+					//async: true,
+					contentType: 'application/json;charset=utf-8', // 设置请求头信息
+					data: JSON.stringify(obj),
+					success: function(result) {
+						if (result.code == 200) {
+							//添加成功  1.关闭弹出层，2.刷新DataGird
+							//showTips('保存成功');
+							$.messager.alert('提示', '保存成功');
+							$('#DivEdit').dialog('close');
+							$('#grid').datagrid('reload');
+							$('#EditForm').form('clear');
+						} else {
+							$.messager.alert('提示', result.msg);
+						}
+					}
+				});
+		},
+		//查询数据
+		Edit: function(ID) {
+			//使用同步方式，使得联动的控件正常显示
+			$.ajaxSettings.async = false;
+			$.getJSON('/SpringContact/Detail/?id=' + ID, function(data) {
+				if (data.code == 200) {
+					$('#EditForm').form('clear');
+					$('#id1').val(data.data.id);
+					$('#company1').textbox('setValue', data.data.company);
+					$('#title1').textbox('setValue', data.data.title);
+					$('#username1').textbox('setValue', data.data.username);
+					$('#email1').textbox('setValue', data.data.email);
+					$('#web1').textbox('setValue', data.data.web);
+					$('#fax1').textbox('setValue', data.data.fax);
+					$('#qq1').textbox('setValue', data.data.qq);
+					$('#webchat1').textbox('setValue', data.data.webchat);
+					$('#mobile1').textbox('setValue', data.data.mobile);
+					$('#tel1').textbox('setValue', data.data.tel);
+					$('#sortCode1').numberspinner('setValue', data.data.sortCode);
+					$('#deletedStatus1').val(data.data.deletedStatus);
+				} else {
+					$.messager.alert('提示', data.msg);
+				}
+			});
+		},
+	};
+	var queryData = {}; //可添加一些预设条件
+	SpringContact.InitGrid(queryData); //初始化Datagrid表格数据
+</script>

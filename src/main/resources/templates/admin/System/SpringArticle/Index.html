@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="common/header :: head"></head>
+	<body>
+		<div id='tb'>
+			<div id='p' class='easyui-panel' title='查询' style='padding: 10px'>
+				<form id='serachForm' method='post'>
+					<div id='toolbar'>
+						<input class='easyui-textbox' name='keyWork' label='关键字:' style='width: 300px' /> <input class='easyui-datebox'
+						 name='startDate' label='开始日期:' style='width: 300px' /> <input class='easyui-datebox' name='endDate' label='结束日期:'
+						 style='width: 300px' />
+					</div>
+				</form>
+			</div>
+			<table id='grid' title='SpringAritlce' data-options="iconCls:'icon-add'" style="margin-top: 20px"></table>
+
+			<div id='DivAdd' class='easyui-dialog' style='width: 80%; height: 80%; padding: 10px 20px;' closed='true' resizable='true'
+			 modal='true' data-options="iconCls:'icon-add'">
+				<form id='AddForm' method='post'>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.id' id='id' style='width: 100%' data-options="label:'id:',required:false">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.category_id' id='categoryId' style='width: 100%'
+						 data-options="label:'分类主键:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.category_title' id='categoryTitle' style='width: 100%'
+						 data-options="label:'分类名称:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.color' id='color' style='width: 100%' data-options="label:'颜色:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.tag' id='tag' style='width: 100%' data-options="label:'标签:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.keyword' id='keyword' style='width: 100%' data-options="label:'关键字:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.title' id='title' style='width: 100%' data-options="label:'标题:',required:false">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.summary' id='summary' style='width: 100%' data-options="label:'简要说明:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.contents' id='contents' style='width: 100%' data-options="label:'内容:',required:false">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.author_id' id='authorId' style='width: 100%' data-options="label:'作者主键:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.author' id='author' style='width: 100%' data-options="label:'作者:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.author_url' id='authorUrl' style='width: 100%'
+						 data-options="label:'作者链接:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.status' id='status' style='width: 100%' data-options="label:'审核0未审1已审:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.link' id='link' style='width: 100%' data-options="label:'链接:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.read_count' id='readCount' style='width: 100%'
+						 data-options="label:'阅读次数:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.like_count' id='likeCount' style='width: 100%'
+						 data-options="label:'喜欢次数:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.collect_count' id='collectCount' style='width: 100%'
+						 data-options="label:'收藏次数:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.share_count' id='shareCount' style='width: 100%'
+						 data-options="label:'分享次数:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.top_status' id='topStatus' style='width: 100%'
+						 data-options="label:'是否置顶:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.hot_status' id='hotStatus' style='width: 100%'
+						 data-options="label:'是否热点:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.featured' id='featured' style='width: 100%' data-options="label:'是否精选:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.comment_count' id='commentCount' style='width: 100%'
+						 data-options="label:'评论次数:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.sort_order' id='sortOrder' style='width: 100%'
+						 data-options="label:'排序:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.come_from' id='comeFrom' style='width: 100%' data-options="label:'来源:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.come_from_link' id='comeFromLink' style='width: 100%'
+						 data-options="label:'来源链接:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.deleted_status' id='deletedStatus' style='width: 100%'
+						 data-options="label:'0未删1已删:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.version' id='version' style='width: 100%' data-options="label:'版本号:',required:true">
+					</div>
+				</form>
+				<div style='text-align: center; padding: 5px 0'>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick='SpringArticle.Save();' style='width: 80px'>保存</a>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript: $('#AddForm').form('clear');" style='width: 80px'>清除</a>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript:$('#DivAdd').dialog('close');" style='width: 80px'>关闭</a>
+				</div>
+			</div>
+			<div id='DivEdit' class='easyui-dialog' style='width: 80%; height: 80%; padding: 10px 20px;' closed='true' resizable='true'
+			 modal='true' data-options="iconCls:'icon-add'">
+				<form id='EditForm' method='post'>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.id' id='id1' style='width: 100%' data-options="label:'id:',required:false">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.category_id' id='categoryId1' style='width: 100%'
+						 data-options="label:'分类主键:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.category_title' id='categoryTitle1' style='width: 100%'
+						 data-options="label:'分类名称:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.color' id='color1' style='width: 100%' data-options="label:'颜色:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.tag' id='tag1' style='width: 100%' data-options="label:'标签:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.keyword' id='keyword1' style='width: 100%' data-options="label:'关键字:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.title' id='title1' style='width: 100%' data-options="label:'标题:',required:false">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.summary' id='summary1' style='width: 100%' data-options="label:'简要说明:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.contents' id='contents1' style='width: 100%' data-options="label:'内容:',required:false">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.author_id' id='authorId1' style='width: 100%'
+						 data-options="label:'作者主键:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.author' id='author1' style='width: 100%' data-options="label:'作者:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.author_url' id='authorUrl1' style='width: 100%'
+						 data-options="label:'作者链接:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.status' id='status1' style='width: 100%' data-options="label:'审核0未审1已审:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.link' id='link1' style='width: 100%' data-options="label:'链接:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.read_count' id='readCount1' style='width: 100%'
+						 data-options="label:'阅读次数:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.like_count' id='likeCount1' style='width: 100%'
+						 data-options="label:'喜欢次数:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.collect_count' id='collectCount1' style='width: 100%'
+						 data-options="label:'收藏次数:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.share_count' id='shareCount1' style='width: 100%'
+						 data-options="label:'分享次数:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.top_status' id='topStatus1' style='width: 100%'
+						 data-options="label:'是否置顶:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.hot_status' id='hotStatus1' style='width: 100%'
+						 data-options="label:'是否热点:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.featured' id='featured1' style='width: 100%' data-options="label:'是否精选:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.comment_count' id='commentCount1' style='width: 100%'
+						 data-options="label:'评论次数:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.sort_order' id='sortOrder1' style='width: 100%'
+						 data-options="label:'排序:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.come_from' id='comeFrom1' style='width: 100%'
+						 data-options="label:'来源:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.come_from_link' id='comeFromLink1' style='width: 100%'
+						 data-options="label:'来源链接:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.deleted_status' id='deletedStatus1' style='width: 100%'
+						 data-options="label:'0未删1已删:',required:true">
+					</div>
+					<div style='margin-bottom: 20px'>
+						<input class='easyui-textbox' name='springAritlceEntity.version' id='version1' style='width: 100%' data-options="label:'版本号:',required:true">
+					</div>
+				</form>
+				<div style='text-align: center; padding: 5px 0'>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick='SpringArticle.Update();' style='width: 80px'>保存</a>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript: $('#EditForm').form('clear');" style='width: 80px'>清除</a>
+					<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript:$('#DivEdit').dialog('close');" style='width: 80px'>关闭</a>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+
+<script type='text/javascript'>
+	var SpringArticle = {
+		//初始化表格
+		InitGrid: function(queryData) {
+			$('#grid').datagrid({
+				data: '',
+				loader: function(param, success, error) {
+					console.log(param);
+					$.ajax({
+						type: "post",
+						url: '/SpringArticle/ListByPage?page=' + (param.page - 1) + "&size=" + param.rows,
+						dataType: 'json',
+						async: true,
+						contentType: 'application/json;charset=utf-8', // 设置请求头信息
+						data: JSON.stringify(param),
+						success: function(result) {
+							success(result);
+						}
+					});
+				},
+				title: '资讯',
+				iconCls: 'icon-view',
+				height: 500,
+				width: function() {
+					return document.body.clientWidth * 0.9
+				},
+				nowrap: true,
+				autoRowHeight: true,
+				striped: true,
+				fit: false,
+				collapsible: true,
+				pagination: true,
+				pageSize: 50,
+				singleSelect: false,
+				pageList: [50, 100, 200],
+				pageNumber: 1,
+				sortOrder: 'asc',
+				rownumbers: true,
+				remoteSort: false,
+				idField: 'id',
+				queryParams: queryData,
+				columns: [
+					[{
+						field: 'ck',
+						checkbox: true
+					}, {
+						title: 'id',
+						field: 'id',
+						width: 200,
+						sortable: true
+					}, {
+						title: '分类主键',
+						field: 'categoryId',
+						width: 200,
+						sortable: true
+					}, {
+						title: '分类名称',
+						field: 'categoryTitle',
+						width: 200,
+						sortable: true
+					}, {
+						title: '颜色',
+						field: 'color',
+						width: 200,
+						sortable: true
+					}, {
+						title: '标签',
+						field: 'tag',
+						width: 200,
+						sortable: true
+					}, {
+						title: '关键字',
+						field: 'keyword',
+						width: 200,
+						sortable: true
+					}, {
+						title: '标题',
+						field: 'title',
+						width: 200,
+						sortable: true
+					}, {
+						title: '简要说明',
+						field: 'summary',
+						width: 200,
+						sortable: true
+					}, {
+						title: '内容',
+						field: 'contents',
+						width: 200,
+						sortable: true
+					}, {
+						title: '作者主键',
+						field: 'authorId',
+						width: 200,
+						sortable: true
+					}, {
+						title: '作者',
+						field: 'author',
+						width: 200,
+						sortable: true
+					}, {
+						title: '作者链接',
+						field: 'authorUrl',
+						width: 200,
+						sortable: true
+					}, {
+						title: '审核0未审1已审',
+						field: 'status',
+						width: 200,
+						sortable: true
+					}, {
+						title: '链接',
+						field: 'link',
+						width: 200,
+						sortable: true
+					}, {
+						title: '阅读次数',
+						field: 'readCount',
+						width: 200,
+						sortable: true
+					}, {
+						title: '喜欢次数',
+						field: 'likeCount',
+						width: 200,
+						sortable: true
+					}, {
+						title: '收藏次数',
+						field: 'collectCount',
+						width: 200,
+						sortable: true
+					}, {
+						title: '分享次数',
+						field: 'shareCount',
+						width: 200,
+						sortable: true
+					}, {
+						title: '是否置顶',
+						field: 'topStatus',
+						width: 200,
+						sortable: true
+					}, {
+						title: '是否热点',
+						field: 'hotStatus',
+						width: 200,
+						sortable: true
+					}, {
+						title: '是否精选',
+						field: 'featured',
+						width: 200,
+						sortable: true
+					}, {
+						title: '评论次数',
+						field: 'commentCount',
+						width: 200,
+						sortable: true
+					}, {
+						title: '排序',
+						field: 'sortOrder',
+						width: 200,
+						sortable: true
+					}, {
+						title: '来源',
+						field: 'comeFrom',
+						width: 200,
+						sortable: true
+					}, {
+						title: '来源链接',
+						field: 'comeFromLink',
+						width: 200,
+						sortable: true
+					}, {
+						title: '0未删1已删',
+						field: 'deletedStatus',
+						width: 200,
+						sortable: true
+					}, {
+						title: '版本号',
+						field: 'version',
+						width: 200,
+						sortable: true
+					}, ]
+				],
+				toolbar: [{
+					id: 'btnReload',
+					text: '刷新',
+					iconCls: 'icon-reload',
+					handler: function() {
+						$('#grid').datagrid('reload', {});
+						$('#grid').datagrid('clearSelections');
+					}
+				}, '-', {
+					id: 'btnSearch',
+					text: '查询',
+					iconCls: 'icon-search',
+					handler: function() {
+						SpringArticle.Search();
+					}
+				}, '-', {
+					id: 'btnAdd',
+					text: '添加',
+					iconCls: 'icon-add',
+					handler: function() {
+						SpringArticle.ShowAddDialog();
+					}
+				}, '-', {
+					id: 'btnEdit',
+					text: '修改',
+					iconCls: 'icon-edit',
+					handler: function() {
+						SpringArticle.ShowEditOrViewDialog();
+					}
+				}, '-', {
+					id: 'btnDelete',
+					text: '删除',
+					iconCls: 'icon-remove',
+					handler: function() {
+						SpringArticle.Delete();
+					}
+				}],
+				onDblClickRow: function(rowIndex, rowData) {
+					//$('#grid').datagrid('uncheckAll');
+					$('#grid').datagrid('checkRow', rowIndex);
+					SpringArticle.ShowEditOrViewDialog();
+				}
+			});
+			var heightMargin = $('#toolbar').height() + 80;
+			var widthMargin = $(document).width() - $('#tb').width();
+			//$('#grid').resizeDataGrid(heightMargin,widthMargin,0,0);
+			//$(window).resize(function(){$('#grid').resizeDataGrid(heightMargin,widthMargin,0,0)})
+		},
+		//查询
+		Search: function() {
+			//得到用户输入的参数
+			//$('#id').textbox('getValue');
+			//$('#id').combobox('getValue'),
+			//$('#id').datebox('getValue'),
+			//$('#id').val(),
+			//$('#id').combotree('getValue'),
+			//$('#id').numberbox('getValue'),
+			var queryData = $('#serachForm').serializeArray();
+			var obj = {};
+			$.each(queryData, function(i, v) {
+				obj[v.name] = v.value;
+			});
+			$('#grid').datagrid('load', obj);
+			exportCondition = obj;
+			return false;
+		},
+		//实现删除数据的方法
+		Delete: function() {
+			var rows = $('#grid').datagrid('getSelections');
+			if (rows.length >= 1) {
+				var ids = ''; //1,2,3,4,5
+				for (var i = 0; i < rows.length; i++) {
+					ids += rows[i].id + ',';
+				}
+				ids = ids.substring(0, ids.length - 1);
+				var postData = {
+					ids: ids
+				};
+				$.messager.confirm('确认删除', '确认删除', function(action) {
+					if (action) {
+						$.ajax({
+							type: 'POST',
+							url: '/SpringArticle/setDeleted',
+							dataType: 'json',
+							data: postData,
+							success: function(data) {
+								if (data.state == 'ok') {
+									$.messager.alert('OK', '删除成功！');
+									$('#grid').datagrid('reload');
+									//清除选中信息
+									rows.length = ''; //第一种方法      
+									$('#grid').datagrid('clearSelections'); //第二种方法
+								} else {
+									$.messager.alert('Fail', data.mFailsg);
+								}
+							}
+						});
+					}
+				});
+			} else {
+				$.messager.alert('提示', '请选择数据', 'error');
+			}
+		},
+		//弹出新增窗口
+		ShowAddDialog: function() {
+			$('#AddForm').form('clear');
+			$('#DivAdd').dialog('open').dialog('setTitle', '添加信息');
+		},
+		//弹出修改或者查看窗口
+		ShowEditOrViewDialog: function(view) {
+			var rows = $('#grid').datagrid('getSelections');
+			if (rows.length == 0) {
+				$.messager.alert('提示', '请选择数据', 'error');
+				return;
+			} else if (rows.length > 1) {
+				$.messager.alert('提示', '只能选择一项数据', 'error');
+				return;
+			}
+			id = $('#grid').datagrid('getSelections')[0].id; //获取到了用用户选择的ID
+			if (view == null) {
+				$('#DivEdit').dialog('open').dialog('setTitle', '编辑信息');
+				this.Edit(id);
+			} else {
+				$('#DivView').dialog('open').dialog('setTitle', '查看信息');
+				this.View(id);
+			}
+		},
+		//绑定添加按钮的事件
+		Save: function() {
+			var validate = $('#AddForm').form('validate');
+			if (validate == false) {
+				return false;
+			}
+			var postData = $('#AddForm').serializeArray();
+			var obj = {};
+			$.each(postData, function(i, v) {
+				obj[v.name] = v.value;
+			});
+			$.post('/SpringArticle/save', obj, function(data) {
+				if (data.state == 'ok') {
+					//添加成功  1.关闭弹出层，2.刷新DataGird
+					$.messager.alert('提示', '保存成功');
+					$('#DivAdd').dialog('close');
+					$('#grid').datagrid('reload');
+					$('#AddForm').form('clear');
+				} else {
+					$.messager.alert('提示', data.msg);
+				}
+			}).error(function() {
+				$.messager.alert('提示', '系统错误', 'warning');
+			});
+		},
+		//更新方法
+		Update: function() {
+			var validate = $('#EditForm').form('validate');
+			if (validate == false) {
+				return false;
+			}
+			var postData = $('#EditForm').serializeArray();
+			var obj = {};
+			$.each(postData, function(i, v) {
+				obj[v.name] = v.value;
+			});
+			$.post('/SpringArticle/update', obj, function(data) {
+				if (data.state == 'ok') {
+					//添加成功  1.关闭弹出层，2.刷新DataGird
+					//showTips('保存成功');
+					$.messager.alert('提示', '保存成功');
+					$('#DivAdd').dialog('close');
+					$('#grid').datagrid('reload');
+					$('#EditForm').form('clear');
+				} else {
+					$.messager.alert('提示', data.msg);
+				}
+			}).error(function() {
+				$.messager.alert('提示', '系统错误', 'warning');
+			});
+		},
+		//查询数据
+		Edit: function(ID) {
+			//使用同步方式，使得联动的控件正常显示
+			$.ajaxSettings.async = false;
+			$.getJSON('/SpringArticle/get/?id=' + ID, function(data) {
+				$('#EditForm').form('clear');
+				$('#id1').val(data.id);
+				$('#categoryId1').textbox('setValue', data.categoryId);
+				$('#categoryTitle1').textbox('setValue', data.categoryTitle);
+				$('#color1').textbox('setValue', data.color);
+				$('#tag1').textbox('setValue', data.tag);
+				$('#keyword1').textbox('setValue', data.keyword);
+				$('#title1').textbox('setValue', data.title);
+				$('#summary1').textbox('setValue', data.summary);
+				$('#contents1').textbox('setValue', data.contents);
+				$('#authorId1').textbox('setValue', data.authorId);
+				$('#author1').textbox('setValue', data.author);
+				$('#authorUrl1').textbox('setValue', data.authorUrl);
+				$('#status1').textbox('setValue', data.status);
+				$('#link1').textbox('setValue', data.link);
+				$('#readCount1').textbox('setValue', data.readCount);
+				$('#likeCount1').textbox('setValue', data.likeCount);
+				$('#collectCount1').textbox('setValue', data.collectCount);
+				$('#shareCount1').textbox('setValue', data.shareCount);
+				$('#topStatus1').textbox('setValue', data.topStatus);
+				$('#hotStatus1').textbox('setValue', data.hotStatus);
+				$('#featured1').textbox('setValue', data.featured);
+				$('#commentCount1').textbox('setValue', data.commentCount);
+				$('#sortOrder1').textbox('setValue', data.sortOrder);
+				$('#comeFrom1').textbox('setValue', data.comeFrom);
+				$('#comeFromLink1').textbox('setValue', data.comeFromLink);
+				$('#deletedStatus1').textbox('setValue', data.deletedStatus);
+				$('#version1').textbox('setValue', data.version);
+			});
+		},
+		//查询数据
+		View: function(ID) {
+			$.getJSON('/SpringArticle/get/?id=' + ID, function(data) {
+				$('#id2').val(data.id);
+				$('#categoryId2').textbox('setValue', data.categoryId);
+				$('#categoryTitle2').textbox('setValue', data.categoryTitle);
+				$('#color2').textbox('setValue', data.color);
+				$('#tag2').textbox('setValue', data.tag);
+				$('#keyword2').textbox('setValue', data.keyword);
+				$('#title2').textbox('setValue', data.title);
+				$('#summary2').textbox('setValue', data.summary);
+				$('#contents2').textbox('setValue', data.contents);
+				$('#authorId2').textbox('setValue', data.authorId);
+				$('#author2').textbox('setValue', data.author);
+				$('#authorUrl2').textbox('setValue', data.authorUrl);
+				$('#status2').textbox('setValue', data.status);
+				$('#link2').textbox('setValue', data.link);
+				$('#readCount2').textbox('setValue', data.readCount);
+				$('#likeCount2').textbox('setValue', data.likeCount);
+				$('#collectCount2').textbox('setValue', data.collectCount);
+				$('#shareCount2').textbox('setValue', data.shareCount);
+				$('#topStatus2').textbox('setValue', data.topStatus);
+				$('#hotStatus2').textbox('setValue', data.hotStatus);
+				$('#featured2').textbox('setValue', data.featured);
+				$('#commentCount2').textbox('setValue', data.commentCount);
+				$('#sortOrder2').textbox('setValue', data.sortOrder);
+				$('#comeFrom2').textbox('setValue', data.comeFrom);
+				$('#comeFromLink2').textbox('setValue', data.comeFromLink);
+				$('#deletedStatus2').textbox('setValue', data.deletedStatus);
+				$('#version2').textbox('setValue', data.version);
+			});
+		},
+		Upload: function() {
+			$('#UploadForm').form({
+				success: function(data) {
+					$.messager.alert(data.msg);
+				}
+			});
+		}
+	};
+	var queryData = {}; //可添加一些预设条件
+	SpringArticle.InitGrid(queryData); //初始化Datagrid表格数据
+</script>

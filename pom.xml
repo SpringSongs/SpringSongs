@@ -12,7 +12,7 @@
 	<groupId>io.github</groupId>
 	<artifactId>springsongs</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>springsongs</name>
+	<name>springsongsV1</name>
 	<description>authority project for Spring Boot</description>
 
 	<properties>
@@ -163,6 +163,19 @@
 			<artifactId>swagger-spring-boot-starter</artifactId>
 			<version>1.9.0.RELEASE</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>nekohtml</groupId>
+			<artifactId>nekohtml</artifactId>
+			<version>1.9.6.2</version>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>
