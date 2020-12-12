@@ -150,7 +150,7 @@ public class SpringRoleServiceImpl implements ISpringRoleService {
 	 */
 	@Override
 	public Page<SpringRoleDTO> getAllRecordByPage(SpringRoleQuery springRoleQuery, Pageable pageable) {
-		if (pageable.getPageSize()>Constant.MAX_PAGE_SIZE) {
+		if (pageable.getPageSize() > Constant.MAX_PAGE_SIZE) {
 			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
 		}
 		Specification<SpringRole> specification = new Specification<SpringRole>() {
@@ -224,7 +224,7 @@ public class SpringRoleServiceImpl implements ISpringRoleService {
 	 */
 	@Override
 	public void batchSaveExcel(List<String[]> list) {
-		
+
 	}
 
 	@Override
@@ -261,6 +261,7 @@ public class SpringRoleServiceImpl implements ISpringRoleService {
 		return springRoleDTOs;
 	}
 
+	@Transactional
 	@Override
 	public void delete(Map map) {
 		Iterator<Entry<String, String>> it = map.entrySet().iterator();
@@ -268,7 +269,7 @@ public class SpringRoleServiceImpl implements ISpringRoleService {
 			Entry<String, String> entry = it.next();
 			String userId = entry.getKey();
 			String roleId = entry.getValue();
-			springUserRoleRepo.delete(userId, roleId);
+			springUserRoleRepo.deleteByUserIdAndRoleId(userId, roleId);
 		}
 	}
 
@@ -291,5 +292,13 @@ public class SpringRoleServiceImpl implements ISpringRoleService {
 		});
 		Page<SpringRoleDTO> pages = new PageImpl(springRoleDTOs, pageable, springRoles.getTotalElements());
 		return pages;
+	}
+
+	@Transactional
+	@Override
+	public void deleteUserFromRole(List<String> userIds, String roleId) {
+		for (String userId : userIds) {
+			springUserRoleRepo.deleteByUserIdAndRoleId(userId, roleId);
+		}
 	}
 }

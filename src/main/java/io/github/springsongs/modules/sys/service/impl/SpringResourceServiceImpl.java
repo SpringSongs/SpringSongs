@@ -229,7 +229,7 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 		} else if (ids.size() > 1000) {
 			throw new SpringSongsException(ResultCode.PARAMETER_MORE_1000);
 		}
-		List<SpringResource> springResourceList= springResourceDao.getInParentId(ids);
+		List<SpringResource> springResourceList = springResourceDao.getInParentId(ids);
 		if (!CollectionUtils.isEmpty(springResourceList)) {
 			throw new SpringSongsException(ResultCode.HASED_CHILD_IDS_CANNOT_DELETE);
 		}
@@ -451,9 +451,31 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 			easyUiMenuDTO.setAttributes(attributes);
 			easyUiMenuDTOList.add(easyUiMenuDTO);
 		});
-		EasyUiTreeMenuDTO easyUiTreeMenuDTO=new EasyUiTreeMenuDTO(easyUiMenuDTOList);
+		EasyUiTreeMenuDTO easyUiTreeMenuDTO = new EasyUiTreeMenuDTO(easyUiMenuDTOList);
 		List<EasyUiMenuDTO> easyUiMenuDTOTEMPList = new ArrayList<>();
-		easyUiMenuDTOTEMPList=easyUiTreeMenuDTO.builTree();
+		easyUiMenuDTOTEMPList = easyUiTreeMenuDTO.builTree();
 		return easyUiMenuDTOTEMPList;
+	}
+
+	@Override
+	public void saveModuleToRole(String moduleId, String roleId) {
+		SpringResourceRole springResourceRole = springResourceRoleDao.findByRoleIdAndModuleId(roleId, moduleId);
+		if (null == springResourceRole) {
+			SpringResourceRole springResourceRoleDO = new SpringResourceRole();
+			springResourceRoleDO.setRoleId(roleId);
+			springResourceRoleDO.setModuleId(moduleId);
+			springResourceRoleDO.setCreatedOn(new Date());
+			springResourceRoleDao.save(springResourceRoleDO);
+		}
+	}
+
+	@Override
+	public void deleteByRoleIdAndModuleId(String roleId, String moduleId) {
+		try {
+			springResourceRoleDao.deleteByRoleIdAndModuleId(roleId, moduleId);
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
 	}
 }

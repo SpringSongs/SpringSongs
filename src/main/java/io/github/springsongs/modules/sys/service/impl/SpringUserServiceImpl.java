@@ -365,6 +365,7 @@ public class SpringUserServiceImpl implements ISpringUserService {
 		return pages;
 	}
 
+	@Transactional
 	@Override
 	public void delete(Map map) {
 		Iterator<Entry<String, String>> it = map.entrySet().iterator();
@@ -372,7 +373,7 @@ public class SpringUserServiceImpl implements ISpringUserService {
 			Entry<String, String> entry = it.next();
 			String roleId = entry.getKey();
 			String userId = entry.getValue();
-			springUserRoleRepo.delete(userId, roleId);
+			springUserRoleRepo.deleteByUserIdAndRoleId(userId, roleId);
 		}
 	}
 

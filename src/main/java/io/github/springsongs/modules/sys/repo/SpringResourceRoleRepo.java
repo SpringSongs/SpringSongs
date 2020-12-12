@@ -82,4 +82,23 @@ public interface SpringResourceRoleRepo extends JpaRepository<SpringResourceRole
 	 */
 	@Query(value = "from SpringResourceRole where roleId=:roleId")
 	public List<SpringResourceRole> listModulesByRoleId(@Param(value = "roleId") String roleId);
+	
+	/**
+	 * 根据roleId和moduleId查询
+	 * @param roleId
+	 * @param moduleId
+	 * @return
+	 */
+	public SpringResourceRole findByRoleIdAndModuleId(@Param(value = "roleId") String roleId,@Param(value = "moduleId") String moduleId);
+	
+	/**
+	 * 删除权限
+	 * 
+	 * @param userId
+	 * @param roleId
+	 */
+	@Transactional
+	@Modifying
+	@Query(value = "delete from SpringResourceRole where roleId=:roleId and moduleId=:moduleId")
+	public void deleteByRoleIdAndModuleId(@Param(value = "roleId") String roleId,@Param(value = "moduleId") String moduleId);
 }

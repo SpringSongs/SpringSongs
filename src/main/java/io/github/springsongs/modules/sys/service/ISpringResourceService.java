@@ -31,7 +31,7 @@ public interface ISpringResourceService {
 	void batchSaveExcel(List<String[]> list);
 
 	List<MenuDTO> ListModuleByUserId(String userId);
-	
+
 	public List<ResourceRoleDTO> listAllRoleModules(List<String> roleCode);
 
 	void delete(List<String> ids);
@@ -43,15 +43,17 @@ public interface ISpringResourceService {
 	void delete(Map map);
 
 	void saveModuleToRole(List<SpringResourceRole> baseModuleRoleEntityList, String roleId);
-	
-	public List<SpringResourceRole>  listModulesByRoleId(String roleId);
-	
+
+	void saveModuleToRole(String moduleId, String roleId);
+
+	void deleteByRoleIdAndModuleId(String roleId, String moduleId);
+
+	public List<SpringResourceRole> listModulesByRoleId(String roleId);
+
 	public List<MenuRouterDTO> listResourceByUserId(String userId);
-	
+
 	public List<EasyUiMenuDTO> listEasyUiResourceByUserId(String userId);
-	
-	
+
 	List<SpringResourceDTO> ListAllToTree(String systemCode);
-	
 
 }

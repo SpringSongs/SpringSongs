@@ -6,6 +6,12 @@ import java.util.List;
 import io.github.springsongs.modules.sys.domain.SpringResource;
 
 public class SpringResourceDTO extends SpringResource {
+	
+	private String text;
+	
+	public String getText() {
+		return this.getTitle();
+	}
 
 	private List<SpringResourceDTO> children=new ArrayList<>();
 

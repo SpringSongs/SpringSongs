@@ -32,10 +32,10 @@ public interface SpringUserRoleRepo extends JpaRepository<SpringUserRole, String
 	 * @param userId
 	 * @param roleId
 	 */
-	@Transactional
+	
 	@Modifying
 	@Query(value = "delete from SpringUserRole where userId=:userId and roleId=:roleId")
-	public void delete(@Param(value = "userId") String userId, @Param(value = "roleId") String roleId);
+	public void deleteByUserIdAndRoleId(@Param(value = "userId") String userId, @Param(value = "roleId") String roleId);
 
 	/**
 	 * 删除权限

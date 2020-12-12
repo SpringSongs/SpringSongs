@@ -111,4 +111,5 @@ public interface SpringResourceRepo extends JpaRepository<SpringResource, String
 	
 	@Query(value = "from SpringResource where deletedStatus=0 and systemId=:systemCode")
 	public List<SpringResource> listAllResources(@Param(value = "systemCode")String systemCode);
+	
 }

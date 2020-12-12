@@ -32,6 +32,8 @@ public interface ISpringRoleService {
 	void delete(Map map);
 
 	void saveUserToRole(List<SpringUserRole> baseUserRoleEntityList, String userId);
+	
+	void deleteUserFromRole(List<String> userIds, String roleId);
 
 	Page<SpringRoleDTO> ListRoleByUserId(String userId, Pageable pageable);
 }

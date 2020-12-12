@@ -2,79 +2,105 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<head th:replace="common/header :: head"></head>
 	<body>
-		<div id='tb'>
-			<div id='p' class='easyui-panel' title='查询' style='padding: 10px'>
-				<form id='serachForm' method='post'>
-					<div id='toolbar'>
-						<input class='easyui-textbox' name='title' label='编码:' style='width: 300px' />
-						<input class='easyui-textbox' name='description' label='说明:' style='width: 300px' />
+		<div class="container">
+			<div class="row">
+				<div id='tb'>
+					<div id='p' class='easyui-panel' title='查询' style='padding: 10px'>
+						<form id='searchForm' method='post'>
+							<div id='toolbar'>
+								<input class='easyui-textbox' name='title' label='编码:' style='width: 300px' />
+								<input class='easyui-textbox' name='description' label='说明:' style='width: 300px' />
+							</div>
+						</form>
 					</div>
-				</form>
-			</div>
-			<table id='grid' title='SpringRole' data-options="iconCls:'icon-add'" style="margin-top: 20px"></table>
+					<div style="float: left;width:40%">
+						<table id='grid' title='SpringRole' data-options="iconCls:'icon-add'" style="margin-top: 20px"></table>
 
-			<div id='DivAdd' class='easyui-dialog' style='width: 80%; height: 80%; padding: 10px 20px;' closed='true' resizable='true'
-			 modal='true' data-options="iconCls:'icon-add'">
-				<form id='AddForm' method='post'>
-					<div style='margin-bottom: 20px'>
-						<input class='easyui-textbox' name='springRoleEntity.id' id='id' style='width: 100%' data-options="label:'id:',required:false">
+						<div id='DivAdd' class='easyui-dialog' style='width: 80%; height: 350px; padding: 10px 20px;' closed='true'
+						 resizable='true' modal='true' data-options="iconCls:'icon-add'">
+							<form id='AddForm' method='post'>
+								<div style='margin-bottom: 20px'>
+									<input class='easyui-textbox' name='title' id='title' style='width: 100%' data-options="label:'名称:',required:true">
+								</div>
+								<div style='margin-bottom: 20px'>
+									<input class='easyui-textbox' name='desc' id='desc' style='width: 100%' data-options="label:'说明:',required:true">
+								</div>
+								<div style='margin-bottom: 20px'>
+									<select class="easyui-combobox" name="enableEdit" id='enableEdit' label="允许编辑:" labelPosition="left" style="width:100%;"
+									 data-options="required:true">
+										<option value="true">允许</option>
+										<option value="false">不允许</option>
+									</select>
+								</div>
+								<div style='margin-bottom: 20px'>
+									<select class="easyui-combobox" name="enableDelete" id='enableDelete' label="允许删除:" labelPosition="left" style="width:100%;"
+									 data-options="required:true">
+										<option value="true">允许</option>
+										<option value="false">不允许</option>
+									</select>
+								</div>
+							</form>
+							<div style='text-align: center; padding: 5px 0'>
+								<a href='javascript:void(0)' class='easyui-linkbutton' onclick='SpringRole.Save();' style='width: 80px'>保存</a>
+								<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript: $('#AddForm').form('clear');" style='width: 80px'>清除</a>
+								<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript:$('#DivAdd').dialog('close');" style='width: 80px'>关闭</a>
+							</div>
+						</div>
+						<div id='DivEdit' class='easyui-dialog' style='width: 80%; height: 350px; padding: 10px 20px;' closed='true'
+						 resizable='true' modal='true' data-options="iconCls:'icon-add'">
+							<form id='EditForm' method='post'>
+								<div style='margin-bottom:20px'>
+									<input type="hidden" name='id' id='id1' style='width:100%'>
+								</div>
+								<div style='margin-bottom: 20px'>
+									<input class='easyui-textbox' name='title' id='title1' style='width: 100%' data-options="label:'名称:',required:false">
+								</div>
+								<div style='margin-bottom: 20px'>
+									<input class='easyui-textbox' name='desc' id='desc1' style='width: 100%' data-options="label:'说明:',required:false">
+								</div>
+								<div style='margin-bottom: 20px'>
+									<select class="easyui-combobox" name="enableEdit" id='enableEdit1' label="允许编辑:" labelPosition="left" style="width:100%;"
+									 data-options="required:true">
+										<option value="true">允许</option>
+										<option value="false">不允许</option>
+									</select>
+								</div>
+								<div style='margin-bottom: 20px'>
+									<select class="easyui-combobox" name="enableDelete" id='enableDelete1' label="允许删除:" labelPosition="left"
+									 style="width:100%;" data-options="required:true">
+										<option value="true">允许</option>
+										<option value="false">不允许</option>
+									</select>
+								</div>
+							</form>
+							<div style='text-align: center; padding: 5px 0'>
+								<a href='javascript:void(0)' class='easyui-linkbutton' onclick='SpringRole.Update();' style='width: 80px'>保存</a>
+								<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript: $('#EditForm').form('clear');"
+								 style='width: 80px'>清除</a>
+								<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript:$('#DivEdit').dialog('close');"
+								 style='width: 80px'>关闭</a>
+							</div>
+						</div>
+						<div id='DivAddUser' class='easyui-dialog' style='width: 80%; height: 500px; padding: 10px 20px;' closed='true'
+						 resizable='true' modal='true' data-options="iconCls:'icon-add'">
+							<table id='gridAddUser' title='SpringUser' data-options="iconCls:'icon-add'" style="margin-top: 20px"></table>
+							<div style='text-align: center; padding: 5px 0'>
+								<a href='javascript:void(0)' class='easyui-linkbutton' onclick='SpringUser.AddUserToRole();' style='width: 80px'>保存</a>
+								<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript:$('#DivAddUser').dialog('close');"
+								 style='width: 80px'>关闭</a>
+							</div>
+						</div>
 					</div>
-					<div style='margin-bottom: 20px'>
-						<input class='easyui-textbox' name='springRoleEntity.title' id='title' style='width: 100%' data-options="label:'名称:',required:false">
+					<div style="float: left;width:60%">
+						<div id="tt" class="easyui-tabs" style="width:100%;">
+							<div title="资源" style="padding:5px;display:none;">
+								<table id='gridResource' title='SpringResource' class="easyui-treegrid" data-options="iconCls:'icon-add'" style="margin-top: 20px"></table>
+							</div>
+							<div title="用户" style="overflow:auto;padding:5px;display:none;">
+								<table id='gridUser' title='SpringUser' data-options="iconCls:'icon-add'" style="margin-top: 20px"></table>
+							</div>
+						</div>
 					</div>
-					<div style='margin-bottom: 20px'>
-						<input class='easyui-textbox' name='springRoleEntity.description' id='description' style='width: 100%'
-						 data-options="label:'说明:',required:false">
-					</div>
-					<div style='margin-bottom: 20px'>
-						<input class='easyui-textbox' name='springRoleEntity.enable_edit' id='enableEdit' style='width: 100%'
-						 data-options="label:'允许编辑0不允许1允许:',required:false">
-					</div>
-					<div style='margin-bottom: 20px'>
-						<input class='easyui-textbox' name='springRoleEntity.enable_delete' id='enableDelete' style='width: 100%'
-						 data-options="label:'允许删除0不允许1允许:',required:false">
-					</div>
-					<div style='margin-bottom: 20px'>
-						<input class='easyui-textbox' name='springRoleEntity.deleted_status' id='deletedStatus' style='width: 100%'
-						 data-options="label:'0未删1已删:',required:false">
-					</div>
-				</form>
-				<div style='text-align: center; padding: 5px 0'>
-					<a href='javascript:void(0)' class='easyui-linkbutton' onclick='SpringRole.Save();' style='width: 80px'>保存</a> <a
-					 href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript: $('#AddForm').form('clear');" style='width: 80px'>清除</a>
-					<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript:$('#DivAdd').dialog('close');" style='width: 80px'>关闭</a>
-				</div>
-			</div>
-			<div id='DivEdit' class='easyui-dialog' style='width: 80%; height: 80%; padding: 10px 20px;' closed='true' resizable='true'
-			 modal='true' data-options="iconCls:'icon-add'">
-				<form id='EditForm' method='post'>
-					<div style='margin-bottom: 20px'>
-						<input class='easyui-textbox' name='springRoleEntity.id' id='id1' style='width: 100%' data-options="label:'id:',required:false">
-					</div>
-					<div style='margin-bottom: 20px'>
-						<input class='easyui-textbox' name='springRoleEntity.title' id='title1' style='width: 100%' data-options="label:'名称:',required:false">
-					</div>
-					<div style='margin-bottom: 20px'>
-						<input class='easyui-textbox' name='springRoleEntity.description' id='description1' style='width: 100%'
-						 data-options="label:'说明:',required:false">
-					</div>
-					<div style='margin-bottom: 20px'>
-						<input class='easyui-textbox' name='springRoleEntity.enable_edit' id='enableEdit1' style='width: 100%'
-						 data-options="label:'允许编辑0不允许1允许:',required:false">
-					</div>
-					<div style='margin-bottom: 20px'>
-						<input class='easyui-textbox' name='springRoleEntity.enable_delete' id='enableDelete1' style='width: 100%'
-						 data-options="label:'允许删除0不允许1允许:',required:false">
-					</div>
-					<div style='margin-bottom: 20px'>
-						<input class='easyui-textbox' name='springRoleEntity.deleted_status' id='deletedStatus1' style='width: 100%'
-						 data-options="label:'0未删1已删:',required:false">
-					</div>
-				</form>
-				<div style='text-align: center; padding: 5px 0'>
-					<a href='javascript:void(0)' class='easyui-linkbutton' onclick='SpringRole.Update();' style='width: 80px'>保存</a>
-					<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript: $('#EditForm').form('clear');" style='width: 80px'>清除</a>
-					<a href='javascript:void(0)' class='easyui-linkbutton' onclick="javascript:$('#DivEdit').dialog('close');" style='width: 80px'>关闭</a>
 				</div>
 			</div>
 	</body>
@@ -87,7 +113,6 @@
 			$('#grid').datagrid({
 				data: '',
 				loader: function(param, success, error) {
-					console.log(param);
 					$.ajax({
 						type: "post",
 						url: '/SpringRole/ListByPage?page=' +
@@ -115,7 +140,7 @@
 				collapsible: true,
 				pagination: true,
 				pageSize: 50,
-				singleSelect: false,
+				singleSelect: true,
 				pageList: [50, 100, 200],
 				pageNumber: 1,
 				sortOrder: 'asc',
@@ -137,16 +162,6 @@
 						field: 'desc',
 						width: 200,
 						sortable: true
-					}, {
-						title: '允许编辑',
-						field: 'enableEdit',
-						width: 200,
-						sortable: true
-					}, {
-						title: '允许删除',
-						field: 'enableDelete',
-						width: 200,
-						sortable: true
 					}]
 				],
 				toolbar: [{
@@ -154,6 +169,7 @@
 					text: '刷新',
 					iconCls: 'icon-reload',
 					handler: function() {
+						$('#searchForm').form('clear');
 						$('#grid').datagrid('reload', {});
 						$('#grid').datagrid('clearSelections');
 					}
@@ -186,10 +202,13 @@
 						SpringRole.Delete();
 					}
 				}, ],
-				onDblClickRow: function(rowIndex, rowData) {
+				onClickRow: function(rowIndex, rowData) {
 					//$('#grid').datagrid('uncheckAll');
-					$('#grid').datagrid('checkRow', rowIndex);
-					SpringRole.ShowEditOrViewDialog();
+					$('#gridUser').datagrid('load', {
+						roleId: rowData.id
+					});
+					SpringResource.listAuthority(rowData.id);
+					//SpringRole.ShowEditOrViewDialog();
 				}
 			});
 			var heightMargin = $('#toolbar').height() + 80;
@@ -206,7 +225,7 @@
 			//$('#id').val(),
 			//$('#id').combotree('getValue'),
 			//$('#id').numberbox('getValue'),
-			var queryData = $('#serachForm').serializeArray();
+			var queryData = $('#searchForm').serializeArray();
 			var obj = {};
 			$.each(queryData, function(i, v) {
 				obj[v.name] = v.value;
@@ -231,18 +250,18 @@
 					if (action) {
 						$.ajax({
 							type: 'POST',
-							url: '/SpringRole/setDeleted',
+							url: '/SpringRole/SetDeleted',
 							dataType: 'json',
 							data: postData,
 							success: function(data) {
-								if (data.state == 'ok') {
+								if (data.code == 200) {
 									$.messager.alert('OK', '删除成功！');
 									$('#grid').datagrid('reload');
 									//清除选中信息
 									rows.length = ''; //第一种方法      
 									$('#grid').datagrid('clearSelections'); //第二种方法
 								} else {
-									$.messager.alert('Fail', data.mFailsg);
+									$.messager.alert('Fail', data.msg);
 								}
 							}
 						});
@@ -287,19 +306,26 @@
 			$.each(postData, function(i, v) {
 				obj[v.name] = v.value;
 			});
-			$.post('/SpringRole/save', obj, function(data) {
-				if (data.state == 'ok') {
-					//添加成功  1.关闭弹出层，2.刷新DataGird
-					$.messager.alert('提示', '保存成功');
-					$('#DivAdd').dialog('close');
-					$('#grid').datagrid('reload');
-					$('#AddForm').form('clear');
-				} else {
-					$.messager.alert('提示', data.msg);
-				}
-			}).error(function() {
-				$.messager.alert('提示', '系统错误', 'warning');
-			});
+			$
+				.ajax({
+					type: "post",
+					url: '/SpringRole/Create',
+					dataType: 'json',
+					//async: true,
+					contentType: 'application/json;charset=utf-8', // 设置请求头信息
+					data: JSON.stringify(obj),
+					success: function(result) {
+						if (result.code == 200) {
+							//添加成功  1.关闭弹出层，2.刷新DataGird
+							$.messager.alert('提示', '保存成功');
+							$('#DivAdd').dialog('close');
+							$('#grid').datagrid('reload');
+							$('#AddForm').form('clear');
+						} else {
+							$.messager.alert('提示', result.msg);
+						}
+					}
+				});
 		},
 		//更新方法
 		Update: function() {
@@ -312,54 +338,529 @@
 			$.each(postData, function(i, v) {
 				obj[v.name] = v.value;
 			});
-			$.post('/SpringRole/update', obj, function(data) {
-				if (data.state == 'ok') {
-					//添加成功  1.关闭弹出层，2.刷新DataGird
-					//showTips('保存成功');
-					$.messager.alert('提示', '保存成功');
-					$('#DivAdd').dialog('close');
-					$('#grid').datagrid('reload');
-					$('#EditForm').form('clear');
-				} else {
-					$.messager.alert('提示', data.msg);
-				}
-			}).error(function() {
-				$.messager.alert('提示', '系统错误', 'warning');
-			});
+			$
+				.ajax({
+					type: "put",
+					url: '/SpringRole/Edit',
+					dataType: 'json',
+					//async: true,
+					contentType: 'application/json;charset=utf-8', // 设置请求头信息
+					data: JSON.stringify(obj),
+					success: function(result) {
+						if (result.code == 200) {
+							//添加成功  1.关闭弹出层，2.刷新DataGird
+							//showTips('保存成功');
+							$.messager.alert('提示', '保存成功');
+							$('#DivEdit').dialog('close');
+							$('#grid').datagrid('reload');
+							$('#EditForm').form('clear');
+						} else {
+							$.messager.alert('提示', result.msg);
+						}
+					}
+				});
 		},
 		//查询数据
 		Edit: function(ID) {
 			//使用同步方式，使得联动的控件正常显示
 			$.ajaxSettings.async = false;
-			$.getJSON('/SpringRole/get/?id=' + ID, function(data) {
+			$.getJSON('/SpringRole/Detail/?id=' + ID, function(data) {
 				$('#EditForm').form('clear');
-				$('#id1').val(data.id);
-				$('#title1').textbox('setValue', data.title);
-				$('#description1').textbox('setValue', data.description);
-				$('#enableEdit1').textbox('setValue', data.enableEdit);
-				$('#enableDelete1').textbox('setValue', data.enableDelete);
-				$('#deletedStatus1').textbox('setValue', data.deletedStatus);
+				$('#id1').val(data.data.id);
+				$('#title1').textbox('setValue', data.data.title);
+				$('#desc1').textbox('setValue', data.data.desc);
+				$('#enableEdit1').combobox('setValue', data.data.enableEdit);
+				$('#enableDelete1').combobox('setValue', data.data.enableDelete);
+				$('#deletedStatus1').val(data.deletedStatus);
 			});
 		},
-		//查询数据
-		View: function(ID) {
-			$.getJSON('/SpringRole/get/?id=' + ID, function(data) {
-				$('#id2').val(data.id);
-				$('#title2').textbox('setValue', data.title);
-				$('#description2').textbox('setValue', data.description);
-				$('#enableEdit2').textbox('setValue', data.enableEdit);
-				$('#enableDelete2').textbox('setValue', data.enableDelete);
-				$('#deletedStatus2').textbox('setValue', data.deletedStatus);
-			});
-		},
-		Upload: function() {
-			$('#UploadForm').form({
-				success: function(data) {
-					$.messager.alert(data.msg);
-				}
-			});
-		}
 	};
 	var queryData = {}; //可添加一些预设条件
 	SpringRole.InitGrid(queryData); //初始化Datagrid表格数据
+
+	var SpringUser = {
+		//初始化表格
+		InitGrid: function(queryData) {
+			$('#gridUser')
+				.datagrid({
+					data: '',
+					loader: function(param, success, error) {
+						console.log(param);
+						$.ajax({
+							type: "post",
+							url: '/SpringUser/ListByRoleId/' + param.roleId + '?page=' + (param.page - 1) + "&size=" + param.rows,
+							dataType: 'json',
+							async: true,
+							contentType: 'application/json;charset=utf-8', // 设置请求头信息
+							data: JSON.stringify(param),
+							success: function(result) {
+								success(result);
+							}
+						});
+					},
+					title: '用户',
+					iconCls: 'icon-view',
+					height: 500,
+					width: function() {
+						return document.body.clientWidth * 0.9
+					},
+					nowrap: true,
+					autoRowHeight: true,
+					striped: true,
+					fit: false,
+					collapsible: true,
+					pagination: true,
+					pageSize: 50,
+					singleSelect: false,
+					pageList: [50, 100, 200],
+					pageNumber: 1,
+					sortOrder: 'asc',
+					rownumbers: true,
+					remoteSort: false,
+					idField: 'id',
+					queryParams: queryData,
+					columns: [
+						[{
+							field: 'ck',
+							checkbox: true
+						}, {
+							title: '邮箱',
+							field: 'email',
+							width: 200,
+							sortable: true
+						}, {
+							title: '手机',
+							field: 'mobile',
+							width: 200,
+							sortable: true
+						}, {
+							title: '头像',
+							field: 'portrait',
+							width: 200,
+							sortable: true
+						}, {
+							title: '用户名',
+							field: 'userName',
+							width: 200,
+							sortable: true
+						}, {
+							title: '真实姓名',
+							field: 'trueName',
+							width: 200,
+							sortable: true
+						}, {
+							title: '组织机构名称',
+							field: 'organizationName',
+							width: 200,
+							sortable: true
+						}, {
+							title: '职称名称',
+							field: 'titleName',
+							width: 200,
+							sortable: true
+						}, {
+							title: '注册时间',
+							field: 'registerTime',
+							width: 200,
+							sortable: true
+						}, {
+							title: '注册IP',
+							field: 'regsiterIp',
+							width: 200,
+							sortable: true
+						}, {
+							title: '最后一次登录时间',
+							field: 'lastLoginTime',
+							width: 200,
+							sortable: true
+						}]
+					],
+					toolbar: [
+						'-',
+						{
+							id: 'btnSearch',
+							text: '查询',
+							iconCls: 'icon-search',
+							handler: function() {
+								SpringUser.Search();
+							}
+						},
+						'-',
+						{
+							id: 'btnAdd',
+							text: '添加',
+							iconCls: 'icon-add',
+							handler: function() {
+								SpringUser.ShowAddDialog();
+							}
+						},
+						{
+							id: 'btnDelete',
+							text: '删除',
+							iconCls: 'icon-remove',
+							handler: function() {
+								SpringUser.DeleteUserFromRole();
+							}
+						},
+					],
+					onDblClickRow: function(rowIndex, rowData) {
+						//$('#grid').datagrid('uncheckAll');
+						$('#gridUser').datagrid('checkRow', rowIndex);
+						SpringUser.ShowEditOrViewDialog();
+					}
+				});
+			var heightMargin = $('#toolbar').height() + 80;
+			var widthMargin = $(document).width() - $('#tb').width();
+			//$('#grid').resizeDataGrid(heightMargin,widthMargin,0,0);
+			//$(window).resize(function(){$('#grid').resizeDataGrid(heightMargin,widthMargin,0,0)})
+		},
+		ShowAddDialog: function() {
+			var rows = $('#grid').datagrid("getSelected");
+			if (rows == null) {
+				$.messager.alert('提示', '请选择右边所属角色！');
+				return;
+			} else {
+				$('#DivAddUser').dialog('open').dialog('setTitle', '添加人员');
+				SpringUser.InitAddUserGrid({});
+			}
+		},
+		DeleteUserFromRole(){
+			var rows = $('#gridUser').datagrid('getSelections');
+			var userRow = $('#grid').datagrid("getSelected");
+			if (rows.length == 0) {
+				$.messager.alert('提示', '请选择人员', 'error');
+				return;
+			}else if (userRow==null){
+				$.messager.alert('提示', '请选择角色', 'error');
+				return;
+			}else{
+				var ids = ''; //1,2,3,4,5
+				for (var i = 0; i < rows.length; i++) {
+					ids += rows[i].id + ',';
+				}
+				ids = ids.substring(0, ids.length - 1);
+				var postData = {
+					ids: ids
+				};
+				$
+					.ajax({
+						type: "post",
+						url: '/SpringRole/DeleteUsers/'+userRow.id,
+						dataType: 'json',
+						//async: true,
+						//contentType: 'application/json;charset=utf-8', // 设置请求头信息
+						data:postData,
+						success: function(result) {
+							if (result.code == 200) {
+								//添加成功  1.关闭弹出层，2.刷新DataGird
+								$.messager.alert('提示', '保存成功');
+								$('#DivAddUser').dialog('close');
+								$('#gridUser').datagrid('reload');
+							} else {
+								$.messager.alert('提示', result.msg);
+							}
+						}
+					});
+			}
+		},
+		AddUserToRole:function(){
+			var rows = $('#gridAddUser').datagrid('getSelections');
+			var userRow = $('#grid').datagrid("getSelected");
+			if (rows.length == 0) {
+				$.messager.alert('提示', '请选择人员', 'error');
+				return;
+			}else{
+				var ids = ''; //1,2,3,4,5
+				for (var i = 0; i < rows.length; i++) {
+					ids += rows[i].id + ',';
+				}
+				ids = ids.substring(0, ids.length - 1);
+				var postData = {
+					ids: ids
+				};
+				$
+					.ajax({
+						type: "post",
+						url: '/SpringRole/SetUsers/'+userRow.id,
+						dataType: 'json',
+						//async: true,
+						//contentType: 'application/json;charset=utf-8', // 设置请求头信息
+						data:postData,
+						success: function(result) {
+							if (result.code == 200) {
+								//添加成功  1.关闭弹出层，2.刷新DataGird
+								$.messager.alert('提示', '保存成功');
+								$('#DivAddUser').dialog('close');
+								$('#gridUser').datagrid('reload');
+							} else {
+								$.messager.alert('提示', result.msg);
+							}
+						}
+					});
+			}
+		},
+		InitAddUserGrid: function(queryData) {
+			$('#gridAddUser')
+				.datagrid({
+					data: '',
+					loader: function(param, success, error) {
+						console.log(param);
+						$.ajax({
+							type: "post",
+							url: '/SpringUser/ListByPage?page=' + (param.page - 1) + "&size=" + param.rows,
+							dataType: 'json',
+							async: true,
+							contentType: 'application/json;charset=utf-8', // 设置请求头信息
+							data: JSON.stringify(param),
+							success: function(result) {
+								success(result);
+							}
+						});
+					},
+					title: '用户',
+					iconCls: 'icon-view',
+					height: 500,
+					width: function() {
+						return document.body.clientWidth * 0.9
+					},
+					nowrap: true,
+					autoRowHeight: true,
+					striped: true,
+					fit: false,
+					collapsible: true,
+					pagination: true,
+					pageSize: 50,
+					singleSelect: false,
+					pageList: [50, 100, 200],
+					pageNumber: 1,
+					sortOrder: 'asc',
+					rownumbers: true,
+					remoteSort: false,
+					idField: 'id',
+					queryParams: queryData,
+					columns: [
+						[{
+							field: 'ck',
+							checkbox: true
+						}, {
+							title: '邮箱',
+							field: 'email',
+							width: 200,
+							sortable: true
+						}, {
+							title: '手机',
+							field: 'mobile',
+							width: 200,
+							sortable: true
+						}, {
+							title: '头像',
+							field: 'portrait',
+							width: 200,
+							sortable: true
+						}, {
+							title: '用户名',
+							field: 'userName',
+							width: 200,
+							sortable: true
+						}, {
+							title: '真实姓名',
+							field: 'trueName',
+							width: 200,
+							sortable: true
+						}, {
+							title: '组织机构名称',
+							field: 'organizationName',
+							width: 200,
+							sortable: true
+						}, {
+							title: '职称名称',
+							field: 'titleName',
+							width: 200,
+							sortable: true
+						}, {
+							title: '注册时间',
+							field: 'registerTime',
+							width: 200,
+							sortable: true
+						}, {
+							title: '注册IP',
+							field: 'regsiterIp',
+							width: 200,
+							sortable: true
+						}, {
+							title: '最后一次登录时间',
+							field: 'lastLoginTime',
+							width: 200,
+							sortable: true
+						}]
+					],
+					toolbar: [
+						'-',
+						{
+							id: 'btnSearch',
+							text: '查询',
+							iconCls: 'icon-search',
+							handler: function() {
+								SpringUser.Search();
+							}
+						},
+						'-',
+						{
+							id: 'btnAdd',
+							text: '添加',
+							iconCls: 'icon-add',
+							handler: function() {
+								SpringUser.ShowAddDialog();
+							}
+						},
+						{
+							id: 'btnDelete',
+							text: '删除',
+							iconCls: 'icon-remove',
+							handler: function() {
+								SpringUser.Delete();
+							}
+						},
+					],
+					onDblClickRow: function(rowIndex, rowData) {
+						//$('#grid').datagrid('uncheckAll');
+						$('#gridUser').datagrid('checkRow', rowIndex);
+						SpringUser.ShowEditOrViewDialog();
+					}
+				});
+			var heightMargin = $('#toolbar').height() + 80;
+			var widthMargin = $(document).width() - $('#tb').width();
+			//$('#grid').resizeDataGrid(heightMargin,widthMargin,0,0);
+			//$(window).resize(function(){$('#grid').resizeDataGrid(heightMargin,widthMargin,0,0)})
+		}
+	}
+	SpringUser.InitGrid({
+		roleId: "ff8080816e31286e016e31287ae90000"
+	});
+
+	var SpringResource = {
+		//初始化表格
+		InitGrid: function(queryData) {
+			$('#gridResource').treegrid({
+				data: '',
+				loader: function(param, success, error) {
+					$.ajax({
+						type: "get",
+						url: '/SpringResource/ListAllToTree',
+						dataType: 'json',
+						async: true,
+						//contentType: 'application/json;charset=utf-8', // 设置请求头信息
+						data: param,
+						success: function(result) {
+							success(result.data);
+						}
+					});
+				},
+				onUnselect: function(row) {
+					var rows = $('#grid').datagrid("getSelected");
+					if (rows == null) {
+						$.messager.alert('提示', '请选择右边所属角色！');
+						return;
+					} else {
+						$.ajax({
+							type: "post",
+							url: '/SpringRole/DeleteByRoleIdAndModuleId',
+							dataType: 'json',
+							data: {
+								roleId: rows.id,
+								moduleId: row.id
+							},
+							success: function(result) {
+								$.messager.alert('提示', result.msg);
+							}
+						});
+					}
+				},
+				title: '资源菜单',
+				iconCls: 'icon-view',
+				width: function() {
+					return document.body.clientWidth * 0.9
+				},
+				idField: 'id',
+				treeField: 'title',
+				singleSelect: false,
+				queryParams: queryData,
+				columns: [
+					[{
+						field: 'ck',
+						checkbox: true
+					}, {
+						title: '名称',
+						field: 'title',
+						width: 200,
+						sortable: true
+					}, {
+						field: 'id',
+						title: '授权',
+						width: 80,
+						formatter: function(value, row, index) {
+							return "<button onclick='SpringResource.SetAuthority(\"" + value + "\")'>授权</button>";
+						}
+					}]
+				],
+				toolbar: [{
+					id: 'btnSearch',
+					text: '查询',
+					iconCls: 'icon-search',
+					handler: function() {
+						SpringResource.Search();
+					}
+				}]
+			});
+			var heightMargin = $('#toolbar').height() + 80;
+			var widthMargin = $(document).width() - $('#tb').width();
+			//$('#grid').resizeDataGrid(heightMargin,widthMargin,0,0);
+			//$(window).resize(function(){$('#grid').resizeDataGrid(heightMargin,widthMargin,0,0)})
+		},
+		SetAuthority: function(moduleId) {
+			var rows = $('#grid').datagrid("getSelected");
+			if (rows == null) {
+				$.messager.alert('提示', '请选择右边所属角色！');
+				return;
+			} else {
+				$.ajax({
+					type: "post",
+					url: '/SpringRole/SetAuthority',
+					dataType: 'json',
+					async: true,
+					data: {
+						roleId: rows.id,
+						moduleId: moduleId
+					},
+					success: function(result) {
+						if (result.code == 200) {
+							$('#gridResource').treegrid("selectRecord", moduleId);
+						}
+						$.messager.alert('提示', result.msg);
+					}
+				});
+			}
+		},
+		listAuthority: function(roleId) {
+			$.ajax({
+				type: "post",
+				url: '/SpringRole/ListAuthority/' + roleId,
+				dataType: 'json',
+				//async: true,
+				//contentType: 'application/json;charset=utf-8', // 设置请求头信息
+				data: {},
+				success: function(result) {
+					$('#gridResource').treegrid("unselectAll");
+					$.each(result.data, function(index, value) {
+						//console.log(value);
+						$('#gridResource').treegrid("select", value);
+					})
+				}
+			});
+		}
+	}
+	queryData = {
+		systemId: "Base"
+	};
+	SpringResource.InitGrid(queryData);
 </script>

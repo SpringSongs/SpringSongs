@@ -147,7 +147,18 @@ public class SpringRoleController extends BaseController {
 		return ResponseDTO.successed(null, ResultCode.SAVE_SUCCESSED);
 	}
 
-	@ApiOperation(value = "分配资源角色", notes = "分配资源角色", response = ResponseDTO.class)
+	@ApiOperation(value = "删除角色用户", notes = "删除用户角色", response = ResponseDTO.class)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "roleId", dataType = "String"),
+			@ApiImplicitParam(name = "userIds", dataType = "List<String>"),
+			@ApiImplicitParam(name = "request", dataType = "HttpServletRequest") })
+	@PostMapping(value = "/DeleteUsers/{roleId}")
+	public ResponseDTO<String> deleteUsers(@PathVariable(value = "roleId", required = true) String roleId,
+			@RequestParam(value = "ids", required = true) List<String> userIds, HttpServletRequest request) {
+		springRoleService.deleteUserFromRole(userIds, roleId);
+		return ResponseDTO.successed(null, ResultCode.SAVE_SUCCESSED);
+	}
+
+	@ApiOperation(value = "分配资源角色权限", notes = "分配资源角色权限", response = ResponseDTO.class)
 	@ApiImplicitParams({ @ApiImplicitParam(name = "roleId", dataType = "String"),
 			@ApiImplicitParam(name = "moduleIds", dataType = "List<String>"),
 			@ApiImplicitParam(name = "request", dataType = "HttpServletRequest") })
@@ -167,6 +178,29 @@ public class SpringRoleController extends BaseController {
 		}
 		springResourceService.saveModuleToRole(baseModuleRoleEntityList, roleId);
 		return ResponseDTO.successed(null, ResultCode.SAVE_SUCCESSED);
+	}
+
+	@ApiOperation(value = "分配资源角色权限", notes = "分配资源角色权限", response = ResponseDTO.class)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "roleId", dataType = "String"),
+			@ApiImplicitParam(name = "moduleId", dataType = "String"),
+			@ApiImplicitParam(name = "request", dataType = "HttpServletRequest") })
+	@PostMapping(value = "/SetAuthority")
+	public ResponseDTO<String> setAuthorityRoleIdAndModuleId(
+			@RequestParam(value = "roleId", required = true) String roleId,
+			@RequestParam(value = "moduleId", required = true) String moduleId, HttpServletRequest request) {
+		springResourceService.saveModuleToRole(moduleId, roleId);
+		return ResponseDTO.successed(null, ResultCode.SAVE_SUCCESSED);
+	}
+
+	@ApiOperation(value = "删除资源角色权限", notes = "分配资源角色", response = ResponseDTO.class)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "roleId", dataType = "String"),
+			@ApiImplicitParam(name = "moduleId", dataType = "String"),
+			@ApiImplicitParam(name = "request", dataType = "HttpServletRequest") })
+	@PostMapping(value = "/DeleteByRoleIdAndModuleId")
+	public ResponseDTO<String> deleteByRoleIdAndModuleId(@RequestParam(value = "roleId", required = true) String roleId,
+			@RequestParam(value = "moduleId", required = true) String moduleId, HttpServletRequest request) {
+		springResourceService.deleteByRoleIdAndModuleId(moduleId, roleId);
+		return ResponseDTO.successed(null, ResultCode.DELETE_SUCCESSED);
 	}
 
 	@ApiOperation(value = "根据角色查资源", notes = "根据roleId对象查资源", response = ResponseDTO.class)
