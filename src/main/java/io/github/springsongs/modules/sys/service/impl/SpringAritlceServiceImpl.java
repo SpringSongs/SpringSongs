@@ -163,7 +163,7 @@ public class SpringAritlceServiceImpl implements ISpringAritlceService {
 	 */
 	@Override
 	public Page<SpringAritlceDTO> getAllRecordByPage(SpringAritlceQuery springAritlceQuery, Pageable pageable) {
-		if (pageable.getPageSize()>Constant.MAX_PAGE_SIZE) {
+		if (pageable.getPageSize() > Constant.MAX_PAGE_SIZE) {
 			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
 		}
 		Specification<SpringAritlce> specification = new Specification<SpringAritlce>() {
@@ -182,17 +182,19 @@ public class SpringAritlceServiceImpl implements ISpringAritlceService {
 					predicates.add(categoryId);
 				}
 
-				if (!StringUtils.isEmpty(springAritlceQuery.getSearchDate().getCreateTimeStart())
-						&& !StringUtils.isEmpty(springAritlceQuery.getSearchDate().getCreateTimeEnd())) {
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-					try {
-						Predicate createdOn;
-						createdOn = cb.between(root.get("createdOn"),
-								sdf.parse(springAritlceQuery.getSearchDate().getCreateTimeStart()),
-								sdf.parse(springAritlceQuery.getSearchDate().getCreateTimeEnd()));
-						predicates.add(createdOn);
-					} catch (ParseException e) {
-						e.printStackTrace();
+				if (null != springAritlceQuery.getSearchDate()) {
+					if (!StringUtils.isEmpty(springAritlceQuery.getSearchDate().getCreateTimeStart())
+							&& !StringUtils.isEmpty(springAritlceQuery.getSearchDate().getCreateTimeEnd())) {
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+						try {
+							Predicate createdOn;
+							createdOn = cb.between(root.get("createdOn"),
+									sdf.parse(springAritlceQuery.getSearchDate().getCreateTimeStart()),
+									sdf.parse(springAritlceQuery.getSearchDate().getCreateTimeEnd()));
+							predicates.add(createdOn);
+						} catch (ParseException e) {
+							e.printStackTrace();
+						}
 					}
 				}
 
@@ -223,7 +225,8 @@ public class SpringAritlceServiceImpl implements ISpringAritlceService {
 				predicates.add(deletionStateCode);
 				Predicate[] pre = new Predicate[predicates.size()];
 				query.where(predicates.toArray(pre));
-				query.orderBy(cb.asc(root.get("sortOrder").as(Integer.class)),cb.desc(root.get("createdOn").as(Date.class)));
+				query.orderBy(cb.asc(root.get("sortOrder").as(Integer.class)),
+						cb.desc(root.get("createdOn").as(Date.class)));
 				return query.getRestriction();
 			}
 		};
@@ -275,7 +278,7 @@ public class SpringAritlceServiceImpl implements ISpringAritlceService {
 	 */
 	@Override
 	public void batchSaveExcel(List<String[]> list) {
-		
+
 	}
 
 	@Override

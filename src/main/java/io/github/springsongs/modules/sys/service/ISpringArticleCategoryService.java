@@ -29,4 +29,6 @@ public interface ISpringArticleCategoryService {
 	List<SpringArticleCategoryDTO> getByParentId(String parentId);
 	
 	List<SpringArticleCategoryDTO> listAll();
+	
+	List<SpringArticleCategoryDTO> ListAllToTree();
 }

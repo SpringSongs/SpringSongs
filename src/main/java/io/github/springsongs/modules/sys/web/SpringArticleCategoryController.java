@@ -25,6 +25,7 @@ import io.github.springsongs.common.web.BaseController;
 import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.modules.sys.dto.ElementUiTreeDTO;
 import io.github.springsongs.modules.sys.dto.SpringArticleCategoryDTO;
+import io.github.springsongs.modules.sys.dto.SpringOrganizationDTO;
 import io.github.springsongs.modules.sys.dto.query.SpringArticleCategoryQuery;
 import io.github.springsongs.modules.sys.service.ISpringArticleCategoryService;
 import io.github.springsongs.util.IpKit;
@@ -112,6 +113,13 @@ public class SpringArticleCategoryController extends BaseController {
 	@GetMapping(value = "/listAllRecord")
 	public ResponseDTO<SpringArticleCategoryDTO> listAllRecord() {
 		List<SpringArticleCategoryDTO> entitys = springArticleCategoryService.listAll();
+		return ResponseDTO.successed(entitys, ResultCode.SELECT_SUCCESSED);
+	}
+
+	@ApiOperation(value = "查询全部组织机构树", notes = "查询全部组织机构树", response = ResponseDTO.class)
+	@GetMapping(value = "/ListAllToTree")
+	public ResponseDTO<SpringArticleCategoryDTO> ListAllToTree() {
+		List<SpringArticleCategoryDTO> entitys = springArticleCategoryService.ListAllToTree();
 		return ResponseDTO.successed(entitys, ResultCode.SELECT_SUCCESSED);
 	}
 }

@@ -8,7 +8,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +26,8 @@ import io.github.springsongs.exception.SpringSongsException;
 import io.github.springsongs.modules.sys.domain.SpringArticleCategory;
 import io.github.springsongs.modules.sys.dto.ElementUiTreeDTO;
 import io.github.springsongs.modules.sys.dto.SpringArticleCategoryDTO;
+import io.github.springsongs.modules.sys.dto.SpringArticleCategoryTreeDTO;
+import io.github.springsongs.modules.sys.dto.SpringResourceDTO;
 import io.github.springsongs.modules.sys.dto.query.SpringArticleCategoryQuery;
 import io.github.springsongs.modules.sys.repo.SpringArticleCategoryRepo;
 import io.github.springsongs.modules.sys.service.ISpringArticleCategoryService;
@@ -71,6 +72,9 @@ public class SpringArticleCategoryServiceImpl implements ISpringArticleCategoryS
 	@Override
 	public void insert(SpringArticleCategoryDTO record) {
 		SpringArticleCategory springArticleCategory = new SpringArticleCategory();
+		if (StringUtils.isEmpty(record.getParentId())) {
+			record.setParentId("0");
+		}
 		BeanUtils.copyProperties(record, springArticleCategory);
 		try {
 			springArticleCategoryDao.save(springArticleCategory);
@@ -145,7 +149,7 @@ public class SpringArticleCategoryServiceImpl implements ISpringArticleCategoryS
 	 */
 	@Override
 	public Page<SpringArticleCategoryDTO> getAllRecordByPage(SpringArticleCategoryQuery record, Pageable pageable) {
-		if (pageable.getPageSize()>Constant.MAX_PAGE_SIZE) {
+		if (pageable.getPageSize() > Constant.MAX_PAGE_SIZE) {
 			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
 		}
 		Specification<SpringArticleCategory> specification = new Specification<SpringArticleCategory>() {
@@ -166,7 +170,8 @@ public class SpringArticleCategoryServiceImpl implements ISpringArticleCategoryS
 				predicates.add(deletedStatus);
 				Predicate[] pre = new Predicate[predicates.size()];
 				query.where(predicates.toArray(pre));
-				query.orderBy(cb.asc(root.get("sortOrder").as(Integer.class)),cb.desc(root.get("createdOn").as(Date.class)));
+				query.orderBy(cb.asc(root.get("sortOrder").as(Integer.class)),
+						cb.desc(root.get("createdOn").as(Date.class)));
 				return query.getRestriction();
 			}
 		};
@@ -224,7 +229,7 @@ public class SpringArticleCategoryServiceImpl implements ISpringArticleCategoryS
 	 */
 	@Override
 	public void batchSaveExcel(List<String[]> list) {
-		
+
 	}
 
 	@Override
@@ -285,6 +290,15 @@ public class SpringArticleCategoryServiceImpl implements ISpringArticleCategoryS
 			springArticleCategoryDTOs.add(springArticleCategoryDTO);
 		});
 		return springArticleCategoryDTOs;
+	}
+
+	@Override
+	public List<SpringArticleCategoryDTO> ListAllToTree() {
+		List<SpringArticleCategoryDTO> springArticleCategoryDTOList = this.listAll();
+		SpringArticleCategoryTreeDTO springArticleCategoryTreeDTO = new SpringArticleCategoryTreeDTO(
+				springArticleCategoryDTOList);
+		springArticleCategoryDTOList = springArticleCategoryTreeDTO.builTree();
+		return springArticleCategoryDTOList;
 	}
 
 }

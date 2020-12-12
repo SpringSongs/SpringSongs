@@ -703,24 +703,7 @@
 							handler: function() {
 								SpringUser.Search();
 							}
-						},
-						'-',
-						{
-							id: 'btnAdd',
-							text: '添加',
-							iconCls: 'icon-add',
-							handler: function() {
-								SpringUser.ShowAddDialog();
-							}
-						},
-						{
-							id: 'btnDelete',
-							text: '删除',
-							iconCls: 'icon-remove',
-							handler: function() {
-								SpringUser.Delete();
-							}
-						},
+						}
 					],
 					onDblClickRow: function(rowIndex, rowData) {
 						//$('#grid').datagrid('uncheckAll');
