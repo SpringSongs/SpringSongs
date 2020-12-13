@@ -7,6 +7,7 @@
 				<form id='searchForm' method='post'>
 					<div id='toolbar'>
 						<input class='easyui-textbox' name='category' label='任务分类:' style='width: 300px' />
+						<input class='easyui-textbox' name='title' label='任务名称' style='width: 300px' />
 					</div>
 				</form>
 			</div>
@@ -24,7 +25,7 @@
 					console.log(param);
 					$.ajax({
 						type: "get",
-						url: '/SpringProcess/ListByPage?page=' + (param.page - 1) + "&size=" + param.rows,
+						url: '/SpringTask/GetTasksByStarter?page=' + (param.page - 1) + "&size=" + param.rows,
 						dataType: 'json',
 						async: true,
 						contentType: 'application/json;charset=utf-8', // 设置请求头信息
@@ -34,7 +35,7 @@
 						}
 					});
 				},
-				title: '流程管理',
+				title: '我的申请',
 				iconCls: 'icon-view',
 				height: 500,
 				width: function() {
@@ -60,43 +61,33 @@
 						field: 'ck',
 						checkbox: true
 					}, {
-						title: '名称',
-						field: 'name',
+						title: '任务名称',
+						field: 'startTitle',
 						width: 200,
 						sortable: true
 					}, {
-						title: '分类名称',
-						field: 'category',
+						title: '所属流程',
+						field: 'pdName',
 						width: 200,
 						sortable: true
 					}, {
-						title: '标识key',
-						field: 'key',
+						title: '流程发起人',
+						field: 'startUserName',
 						width: 200,
 						sortable: true
 					}, {
-						title: '版本',
-						field: 'revision',
+						title: '发起时间',
+						field: 'submitTime',
 						width: 200,
 						sortable: true
 					}, {
-						title: '状态',
-						field: 'suspendStr',
+						title: '审核结果',
+						field: 'auditStr',
 						width: 200,
 						sortable: true
 					}, {
-						title: '流程XML',
-						field: 'xmlName',
-						width: 200,
-						sortable: true
-					}, {
-						title: '流程图片',
-						field: 'picName',
-						width: 200,
-						sortable: true
-					} , {
-						title: '发布时间',
-						field: 'deploymentTime',
+						title: '流程状态',
+						field: 'status',
 						width: 200,
 						sortable: true
 					} ]

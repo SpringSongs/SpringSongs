@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="common/header :: head"></head>
+	<body>
+		<div id='tb'>
+			<div id='p' class='easyui-panel' title='查询' style='padding: 10px'>
+				<form id='searchForm' method='post'>
+					<div id='toolbar'>
+						<input class='easyui-textbox' name='category' label='任务分类:' style='width: 300px' />
+						<input class='easyui-textbox' name='title' label='任务名称' style='width: 300px' />
+					</div>
+				</form>
+			</div>
+			<table id='grid' title='SpringToDoProcess' data-options="iconCls:'icon-add'" style="margin-top: 20px"></table>
+		</div>
+	</body>
+</html>
+<script type='text/javascript'>
+	var SpringToDoProcess = {
+		//初始化表格
+		InitGrid: function(queryData) {
+			$('#grid').datagrid({
+				data: '',
+				loader: function(param, success, error) {
+					console.log(param);
+					$.ajax({
+						type: "get",
+						url: '/SpringTask/GetTodoTasks?page=' + (param.page - 1) + "&size=" + param.rows,
+						dataType: 'json',
+						async: true,
+						contentType: 'application/json;charset=utf-8', // 设置请求头信息
+						data:param,
+						success: function(result) {
+							success(result);
+						}
+					});
+				},
+				title: '我的待办',
+				iconCls: 'icon-view',
+				height: 500,
+				width: function() {
+					return document.body.clientWidth * 0.9
+				},
+				nowrap: true,
+				autoRowHeight: true,
+				striped: true,
+				fit: false,
+				collapsible: true,
+				pagination: true,
+				pageSize: 50,
+				singleSelect: false,
+				pageList: [50, 100, 200],
+				pageNumber: 1,
+				sortOrder: 'asc',
+				rownumbers: true,
+				remoteSort: false,
+				idField: 'id',
+				queryParams: queryData,
+				columns: [
+					[{
+						field: 'ck',
+						checkbox: true
+					}, {
+						title: '任务名称',
+						field: 'startTitle',
+						width: 200,
+						sortable: true
+					}, {
+						title: '所属流程',
+						field: 'pdName',
+						width: 200,
+						sortable: true
+					}, {
+						title: '流程发起人',
+						field: 'startUserName',
+						width: 200,
+						sortable: true
+					}, {
+						title: '发起时间',
+						field: 'submitTime',
+						width: 200,
+						sortable: true
+					}, {
+						title: '审核结果',
+						field: 'auditStr',
+						width: 200,
+						sortable: true
+					}, {
+						title: '流程状态',
+						field: 'status',
+						width: 200,
+						sortable: true
+					} ]
+				],
+				toolbar: [{
+					id: 'btnReload',
+					text: '刷新',
+					iconCls: 'icon-reload',
+					handler: function() {
+						$('#searchForm').form('clear');
+						$('#grid').datagrid('reload', {});
+						$('#grid').datagrid('clearSelections');
+					}
+				}, '-', {
+					id: 'btnSearch',
+					text: '查询',
+					iconCls: 'icon-search',
+					handler: function() {
+						SpringToDoProcess.Search();
+					}
+				}],
+				onDblClickRow: function(rowIndex, rowData) {
+					//$('#grid').datagrid('uncheckAll');
+					//$('#grid').datagrid('checkRow', rowIndex);
+					//SpringToDoProcess.ShowEditOrViewDialog();
+				}
+			});
+			var heightMargin = $('#toolbar').height() + 80;
+			var widthMargin = $(document).width() - $('#tb').width();
+			//$('#grid').resizeDataGrid(heightMargin,widthMargin,0,0);
+			//$(window).resize(function(){$('#grid').resizeDataGrid(heightMargin,widthMargin,0,0)})
+		},
+		//查询
+		Search: function() {
+			//得到用户输入的参数
+			//$('#id').textbox('getValue');
+			//$('#id').combobox('getValue'),
+			//$('#id').datebox('getValue'),
+			//$('#id').val(),
+			//$('#id').combotree('getValue'),
+			//$('#id').numberbox('getValue'),
+			var queryData = $('#searchForm').serializeArray();
+			var obj = {};
+			$.each(queryData, function(i, v) {
+				obj[v.name] = v.value;
+			});
+			$('#grid').datagrid('load', obj);
+			exportCondition = obj;
+			return false;
+		},
+	};
+	var queryData = {}; //可添加一些预设条件
+	SpringToDoProcess.InitGrid(queryData); //初始化Datagrid表格数据
+</script>
