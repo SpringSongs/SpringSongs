@@ -16,6 +16,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.exception.SpringSongsException;
 import io.github.springsongs.modules.sys.domain.SpringSystem;
 import io.github.springsongs.modules.sys.dto.SpringSystemDTO;
-import io.github.springsongs.modules.sys.dto.query.SpringSystemQuery;
+import io.github.springsongs.modules.sys.query.SpringSystemQuery;
 import io.github.springsongs.modules.sys.repo.SpringSystemRepo;
 import io.github.springsongs.modules.sys.service.ISpringSystemService;
 import io.github.springsongs.util.Constant;
@@ -144,9 +145,12 @@ public class SpringSystemServiceImpl implements ISpringSystemService {
 	 */
 	@Override
 	public Page<SpringSystemDTO> getAllRecordByPage(SpringSystemQuery springSystemQuery, Pageable pageable) {
-		if (pageable.getPageSize()>Constant.MAX_PAGE_SIZE) {
-			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
+		if (pageable.getPageSize()<=0||pageable.getPageSize() > Constant.MAX_PAGE_SIZE) {
+			throw new SpringSongsException(ResultCode.PARAMETER_MORE_1000);
 		}
+		int page=pageable.getPageNumber()<=0?0:pageable.getPageNumber()-1;
+		pageable = PageRequest.of(page, pageable.getPageSize());
+
 		Specification<SpringSystem> specification = new Specification<SpringSystem>() {
 
 			@Override

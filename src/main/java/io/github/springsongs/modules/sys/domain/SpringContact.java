@@ -211,7 +211,7 @@ public class SpringContact extends SpringBase implements Serializable {
 	}
 
 	@Description(title = "0未删1已删")
-	@Column(name = "deleted_status")
+	@Column(name = "deleted_status", columnDefinition = "TINYINT(1)")
 	@ApiModelProperty("0未删1已删")
 	private boolean deletedStatus;
 

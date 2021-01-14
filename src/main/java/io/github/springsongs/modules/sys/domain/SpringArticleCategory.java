@@ -122,7 +122,7 @@ public class SpringArticleCategory extends SpringBase {
 	}
 
 	@Description(title = "逻辑删除")
-	@Column(name = "deleted_status")
+	@Column(name = "deleted_status", columnDefinition = "TINYINT(1)")
 	@ApiModelProperty("逻辑删除")
 	private boolean deletedStatus;
 

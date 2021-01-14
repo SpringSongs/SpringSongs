@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import io.github.springsongs.modules.sys.dto.SpringParameterDTO;
-import io.github.springsongs.modules.sys.dto.query.SpringParameterQuery;
+import io.github.springsongs.modules.sys.query.SpringParameterQuery;
 
 public interface ISpringParameterService {
 	void deleteByPrimaryKey(String id);

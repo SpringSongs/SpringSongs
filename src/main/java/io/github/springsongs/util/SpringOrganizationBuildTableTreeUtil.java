@@ -1,12 +1,14 @@
-package io.github.springsongs.modules.sys.dto;
+package io.github.springsongs.util;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpringOrganizationTreeDTO {
+import io.github.springsongs.modules.sys.dto.SpringOrganizationDTO;
+
+public class SpringOrganizationBuildTableTreeUtil {
 	private List<SpringOrganizationDTO> springOrganizationDTOList = new ArrayList<>();
 
-	public SpringOrganizationTreeDTO(List<SpringOrganizationDTO> springOrganizationDTOList) {
+	public SpringOrganizationBuildTableTreeUtil(List<SpringOrganizationDTO> springOrganizationDTOList) {
 		super();
 		this.springOrganizationDTOList = springOrganizationDTOList;
 	}

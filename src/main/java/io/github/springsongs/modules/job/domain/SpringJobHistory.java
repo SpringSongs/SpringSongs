@@ -70,7 +70,7 @@ public class SpringJobHistory extends SpringBase {
 	}
 	
 	@Description(title ="删除0不删除1删除")
-    @Column(name="deleted_status")
+    @Column(name="deleted_status", columnDefinition = "TINYINT(1)")
 	@ApiModelProperty("删除0不删除1删除")
     private boolean deletedStatus;
     public boolean getDeletedStatus(){

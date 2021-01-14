@@ -25,6 +25,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,7 @@ import io.github.springsongs.modules.job.dto.SpringJobDTO;
 import io.github.springsongs.modules.job.query.SpringJobQuery;
 import io.github.springsongs.modules.job.repo.SpringJobRepo;
 import io.github.springsongs.modules.job.service.ISpringJobService;
+import io.github.springsongs.util.Constant;
 
 @Service
 public class SpringJobServiceImpl implements ISpringJobService {
@@ -151,6 +153,12 @@ public class SpringJobServiceImpl implements ISpringJobService {
 	 */
 	@Override
 	public Page<SpringJobDTO> getAllRecordByPage(SpringJobQuery record, Pageable pageable) {
+		if (pageable.getPageSize()<=0||pageable.getPageSize() > Constant.MAX_PAGE_SIZE) {
+			throw new SpringSongsException(ResultCode.PARAMETER_MORE_1000);
+		}
+		int page=pageable.getPageNumber()<=0?0:pageable.getPageNumber()-1;
+		pageable = PageRequest.of(page, pageable.getPageSize());
+		
 		Specification<SpringJob> specification = new Specification<SpringJob>() {
 
 			@Override

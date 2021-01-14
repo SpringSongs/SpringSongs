@@ -19,6 +19,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ import io.github.springsongs.exception.SpringSongsException;
 import io.github.springsongs.modules.sys.domain.SpringRole;
 import io.github.springsongs.modules.sys.domain.SpringUserRole;
 import io.github.springsongs.modules.sys.dto.SpringRoleDTO;
-import io.github.springsongs.modules.sys.dto.query.SpringRoleQuery;
+import io.github.springsongs.modules.sys.query.SpringRoleQuery;
 import io.github.springsongs.modules.sys.repo.SpringRoleRepo;
 import io.github.springsongs.modules.sys.repo.SpringUserRoleRepo;
 import io.github.springsongs.modules.sys.service.ISpringRoleService;
@@ -127,7 +128,7 @@ public class SpringRoleServiceImpl implements ISpringRoleService {
 			throw new SpringSongsException(ResultCode.INFO_CAN_NOT_EDIT);
 		} else {
 			entity.setTitle(springRoleDTO.getTitle());
-			entity.setDesc(springRoleDTO.getDesc());
+			entity.setDescription(springRoleDTO.getDescription());
 			entity.setEnableEdit(springRoleDTO.getEnableEdit());
 			entity.setEnableDelete(springRoleDTO.getEnableDelete());
 			try {
@@ -150,9 +151,12 @@ public class SpringRoleServiceImpl implements ISpringRoleService {
 	 */
 	@Override
 	public Page<SpringRoleDTO> getAllRecordByPage(SpringRoleQuery springRoleQuery, Pageable pageable) {
-		if (pageable.getPageSize() > Constant.MAX_PAGE_SIZE) {
-			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
+		if (pageable.getPageSize()<=0||pageable.getPageSize() > Constant.MAX_PAGE_SIZE) {
+			throw new SpringSongsException(ResultCode.PARAMETER_MORE_1000);
 		}
+		int page=pageable.getPageNumber()<=0?0:pageable.getPageNumber()-1;
+		pageable = PageRequest.of(page, pageable.getPageSize());
+
 		Specification<SpringRole> specification = new Specification<SpringRole>() {
 			@Override
 			public Predicate toPredicate(Root<SpringRole> root, CriteriaQuery<?> query, CriteriaBuilder cb) {

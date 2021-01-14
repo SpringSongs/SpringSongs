@@ -22,7 +22,7 @@ import io.swagger.annotations.ApiModelProperty;
 @Entity
 @DynamicInsert(true)
 @DynamicUpdate(true)
-@Table(name = "spring_act_category", schema = "base_system")
+@Table(name = "spring_act_category", schema = "springsongs")
 public class SpringActCategory extends SpringBase {
 	@Id
 	@GeneratedValue(generator = "paymentableGenerator")
@@ -72,7 +72,7 @@ public class SpringActCategory extends SpringBase {
 	}
 
 	@Description(title = "删除0不允许1允许")
-	@Column(name = "deleted_status")
+	@Column(name = "deleted_status", columnDefinition = "TINYINT(1)")
 	@ApiModelProperty("删除0不允许1允许")
 	private boolean deletedStatus;
 

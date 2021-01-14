@@ -27,6 +27,7 @@ import io.github.springsongs.common.web.BaseController;
 import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.modules.sys.domain.SpringAttachmentCategory;
 import io.github.springsongs.modules.sys.dto.SpringAttachmentCategoryDTO;
+import io.github.springsongs.modules.sys.dto.SpringAttachmentCategoryUiTreeDTO;
 import io.github.springsongs.modules.sys.service.ISpringAttachmentCategoryService;
 import io.github.springsongs.util.IpKit;
 import io.swagger.annotations.Api;
@@ -105,5 +106,13 @@ public class SpringAttachmentCategoryController extends BaseController {
 	@PostMapping(value = "/Deleted")
 	public ResponseDTO<String> deleted(@RequestParam(value = "ids", required = true) List<String> ids) {
 		return ResponseDTO.successed(null, ResultCode.DELETE_SUCCESSED);
+	}
+
+	@ApiOperation(value = "获取树", notes = "获取树", response = ResponseDTO.class)
+	@GetMapping(value = "ListToUiTree")
+	public ResponseDTO<List<SpringAttachmentCategoryUiTreeDTO>> listToUiTree() {
+		List<SpringAttachmentCategoryUiTreeDTO> springAttachmentCategoryUiTreeDTOList = springAttachmentCategoryService
+				.listAllToUiTree(this.getUser().getId());
+		return ResponseDTO.successed(springAttachmentCategoryUiTreeDTOList, ResultCode.DELETE_SUCCESSED);
 	}
 }

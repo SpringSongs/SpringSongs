@@ -47,6 +47,20 @@ public class SpringAttachmentCategory  extends SpringBase   implements Serializa
 	public void setId(String id) {
 		this.id = id;
 	}
+	
+	@Size(max = 36, min = 0)
+	@Description(title = "上级主键")
+	@Column(name = "parent_id")
+	@ApiModelProperty("上级主键")
+	private String parentId;
+
+	public String getParentId() {
+		return this.parentId;
+	}
+
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
+	}
 
 	@NotBlank(message = "请填写文件夾名称")
 	@Size(max = 45, min = 1)
@@ -107,7 +121,7 @@ public class SpringAttachmentCategory  extends SpringBase   implements Serializa
 	}
 
 	@Description(title ="0未删1已删")
-    @Column(name="deleted_status")
+    @Column(name="deleted_status", columnDefinition = "TINYINT(1)")
 	@ApiModelProperty("0未删1已删")
     private boolean deletedStatus;
     public boolean getDeletedStatus(){

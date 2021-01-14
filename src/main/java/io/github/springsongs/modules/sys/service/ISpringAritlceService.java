@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import io.github.springsongs.modules.sys.dto.SpringAritlceDTO;
-import io.github.springsongs.modules.sys.dto.query.SpringAritlceQuery;
+import io.github.springsongs.modules.sys.query.SpringAritlceQuery;
 
 public interface ISpringAritlceService {
 

@@ -8,7 +8,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +15,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -67,15 +67,16 @@ public class SpringAttachmentServiceImpl implements ISpringAttachmentService {
 	 * @since [产品/模块版本] （可选）
 	 */
 	@Override
-	public void insert(SpringAttachmentDTO record) {
+	public SpringAttachment insert(SpringAttachmentDTO record) {
 		SpringAttachment springAttachment = new SpringAttachment();
 		BeanUtils.copyProperties(record, springAttachment);
 		try {
-			springAttachmentDao.save(record);
+			springAttachmentDao.save(springAttachment);
 		} catch (Exception ex) {
 			logger.error(ex.getMessage());
 			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
 		}
+		return springAttachment;
 	}
 
 	/**
@@ -137,10 +138,11 @@ public class SpringAttachmentServiceImpl implements ISpringAttachmentService {
 	@Override
 	public Page<SpringAttachmentDTO> getAllRecordByPage(SpringAttachment record, Pageable pageable) {
 		
-		if (pageable.getPageSize()>Constant.MAX_PAGE_SIZE) {
-			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
+		if (pageable.getPageSize()<=0||pageable.getPageSize() > Constant.MAX_PAGE_SIZE) {
+			throw new SpringSongsException(ResultCode.PARAMETER_MORE_1000);
 		}
-		
+		int page=pageable.getPageNumber()<=0?0:pageable.getPageNumber()-1;
+		pageable = PageRequest.of(page, pageable.getPageSize());
 		Specification<SpringAttachment> specification = new Specification<SpringAttachment>() {
 
 			@Override

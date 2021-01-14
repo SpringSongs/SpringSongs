@@ -21,6 +21,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -41,12 +42,15 @@ import io.github.springsongs.modules.sys.dto.MenuRouterDTO.Meta;
 import io.github.springsongs.modules.sys.dto.MenuRouterTreeDTO;
 import io.github.springsongs.modules.sys.dto.ResourceRoleDTO;
 import io.github.springsongs.modules.sys.dto.SpringResourceDTO;
-import io.github.springsongs.modules.sys.dto.SpringResourceTreeDTO;
-import io.github.springsongs.modules.sys.dto.query.SpringResourceQuery;
+import io.github.springsongs.modules.sys.dto.SpringResourceTableTreeDTO;
+import io.github.springsongs.modules.sys.dto.SpringResourceUiTreeDTO;
+import io.github.springsongs.modules.sys.query.SpringResourceQuery;
 import io.github.springsongs.modules.sys.repo.SpringResourceRepo;
 import io.github.springsongs.modules.sys.repo.SpringResourceRoleRepo;
 import io.github.springsongs.modules.sys.service.ISpringResourceService;
 import io.github.springsongs.util.Constant;
+import io.github.springsongs.util.SpringResourceBuildTableTreeUtil;
+import io.github.springsongs.util.SpringResourceBuildUiTreeUtil;
 
 @Service
 public class SpringResourceServiceImpl implements ISpringResourceService {
@@ -173,9 +177,11 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 	@Override
 	public Page<SpringResourceDTO> getAllRecordByPage(SpringResourceQuery springResourceQuery, Pageable pageable) {
 
-		if (pageable.getPageSize() > Constant.MAX_PAGE_SIZE) {
-			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
+		if (pageable.getPageSize()<=0||pageable.getPageSize() > Constant.MAX_PAGE_SIZE) {
+			throw new SpringSongsException(ResultCode.PARAMETER_MORE_1000);
 		}
+		int page=pageable.getPageNumber()<=0?0:pageable.getPageNumber()-1;
+		pageable = PageRequest.of(page, pageable.getPageSize());
 
 		Specification<SpringResource> specification = new Specification<SpringResource>() {
 			@Override
@@ -421,16 +427,18 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 	}
 
 	@Override
-	public List<SpringResourceDTO> ListAllToTree(String systemCode) {
+	public List<SpringResourceUiTreeDTO> listAllToUITree(String systemCode) {
 		List<SpringResource> springResourceList = springResourceDao.listAllResources(systemCode);
-		final List<SpringResourceDTO> springResourceDTOList = new ArrayList<>();
+		final List<SpringResourceUiTreeDTO> springResourceTreeDTOList = new ArrayList<>();
 		springResourceList.stream().forEach(springResource -> {
-			SpringResourceDTO springResourceDTO = new SpringResourceDTO();
-			BeanUtils.copyProperties(springResource, springResourceDTO);
-			springResourceDTOList.add(springResourceDTO);
+			SpringResourceUiTreeDTO springResourceTreeDTO = new SpringResourceUiTreeDTO();
+			springResourceTreeDTO.setId(springResource.getId());
+			springResourceTreeDTO.setParentId(springResource.getParentId());
+			springResourceTreeDTO.setText(springResource.getTitle());
+			springResourceTreeDTOList.add(springResourceTreeDTO);
 		});
-		SpringResourceTreeDTO springResourceTreeDTO = new SpringResourceTreeDTO(springResourceDTOList);
-		List<SpringResourceDTO> springResourceDTOTreeList = new ArrayList<>();
+		SpringResourceBuildUiTreeUtil springResourceTreeDTO = new SpringResourceBuildUiTreeUtil(springResourceTreeDTOList);
+		List<SpringResourceUiTreeDTO> springResourceDTOTreeList = new ArrayList<>();
 		springResourceDTOTreeList = springResourceTreeDTO.builTree();
 		return springResourceDTOTreeList;
 	}
@@ -477,5 +485,20 @@ public class SpringResourceServiceImpl implements ISpringResourceService {
 			logger.error(ex.getMessage());
 			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
 		}
+	}
+
+	@Override
+	public List<SpringResourceTableTreeDTO> listAllToTableTree(String systemCode) {
+		List<SpringResource> springResourceList = springResourceDao.listAllResources(systemCode);
+		final List<SpringResourceTableTreeDTO> springResourceTreeDTOList = new ArrayList<>();
+		springResourceList.stream().forEach(springResource -> {
+			SpringResourceTableTreeDTO springResourceTreeDTO = new SpringResourceTableTreeDTO();
+			BeanUtils.copyProperties(springResource, springResourceTreeDTO);
+			springResourceTreeDTOList.add(springResourceTreeDTO);
+		});
+		SpringResourceBuildTableTreeUtil springResourceTreeDTO = new SpringResourceBuildTableTreeUtil(springResourceTreeDTOList);
+		List<SpringResourceTableTreeDTO> springResourceDTOTreeList = new ArrayList<>();
+		springResourceDTOTreeList = springResourceTreeDTO.builTree();
+		return springResourceDTOTreeList;
 	}
 }

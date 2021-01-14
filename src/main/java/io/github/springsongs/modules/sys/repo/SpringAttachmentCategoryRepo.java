@@ -80,4 +80,7 @@ public interface SpringAttachmentCategoryRepo extends JpaRepository<SpringAttach
 	@Query(value = "from SpringAttachmentCategory where id=:parentId and deletedStatus=0")
 	public List<SpringAttachmentCategory> listSpringAttachmentCategoryByParentId(
 			@Param(value = "parentId") String parentId);
+	
+	@Query(value = "from SpringAttachmentCategory where createdUserId=:userId and deletedStatus=0")
+	public List<SpringAttachmentCategory> listSpringAttachmentCagegoryByUserId(@Param(value="userId")String userId);
 }

@@ -37,11 +37,13 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.session.SessionInformationExpiredEvent;
 import org.springframework.security.web.session.SessionInformationExpiredStrategy;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 
 import com.alibaba.fastjson.JSON;
 
 import io.github.springsongs.common.dto.ResponseDTO;
 import io.github.springsongs.enumeration.ResultCode;
+import io.github.springsongs.interceptor.FileHeaderCheckInterceptor;
 import io.github.springsongs.modules.sys.dto.SpringLoginLogDTO;
 import io.github.springsongs.modules.sys.dto.UserLogonDTO;
 import io.github.springsongs.modules.sys.service.ISpringLoginLogService;
@@ -70,13 +72,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UrlFilterInvocationSecurityMetadaSource urlFilterInvocationSecurityMetadaSource;
 
+	public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new FileHeaderCheckInterceptor()) 
+                .addPathPatterns("/**"); 
+    }
 	/**
 	 * 忽略静态文件
 	 */
 	@Override
 	public void configure(WebSecurity web) {
 		web.ignoring().antMatchers("/SpringUser/Invalidate", "/v2/api-docs", "/swagger-resources/**", "/css/**",
-				"/img/**", "/js/**", "/**.ico", "/webjars/**", "/", "/jquery-easyui/**", "/error", "/bootstrap/**");
+				"/img/**", "/js/**", "/**.ico","/**.jpeg","/**.jpg","/**.png","/**.gif","/webjars/**", "/", "/jquery-easyui/**", "/error", "/bootstrap/**");
 	}
 
 	@Override

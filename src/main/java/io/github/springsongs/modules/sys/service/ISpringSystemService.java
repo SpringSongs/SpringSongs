@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 import io.github.springsongs.modules.sys.domain.SpringSystem;
 import io.github.springsongs.modules.sys.dto.SpringSystemDTO;
-import io.github.springsongs.modules.sys.dto.query.SpringSystemQuery;
+import io.github.springsongs.modules.sys.query.SpringSystemQuery;
 
 public interface ISpringSystemService {
 	void deleteByPrimaryKey(String id);

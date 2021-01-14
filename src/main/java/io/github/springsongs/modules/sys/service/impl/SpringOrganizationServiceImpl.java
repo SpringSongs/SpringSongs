@@ -15,6 +15,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -25,10 +26,10 @@ import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.exception.SpringSongsException;
 import io.github.springsongs.modules.sys.domain.SpringOrganization;
 import io.github.springsongs.modules.sys.dto.SpringOrganizationDTO;
-import io.github.springsongs.modules.sys.dto.SpringOrganizationTreeDTO;
 import io.github.springsongs.modules.sys.repo.SpringOrganizationRepo;
 import io.github.springsongs.modules.sys.service.ISpringOrganizationService;
 import io.github.springsongs.util.Constant;
+import io.github.springsongs.util.SpringOrganizationBuildTableTreeUtil;
 
 @Service
 public class SpringOrganizationServiceImpl implements ISpringOrganizationService {
@@ -141,9 +142,11 @@ public class SpringOrganizationServiceImpl implements ISpringOrganizationService
 	 */
 	@Override
 	public Page<SpringOrganizationDTO> getAllRecordByPage(SpringOrganization record, Pageable pageable) {
-		if (pageable.getPageSize() > Constant.MAX_PAGE_SIZE) {
-			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
+		if (pageable.getPageSize()<=0||pageable.getPageSize() > Constant.MAX_PAGE_SIZE) {
+			throw new SpringSongsException(ResultCode.PARAMETER_MORE_1000);
 		}
+		int page=pageable.getPageNumber()<=0?0:pageable.getPageNumber()-1;
+		pageable = PageRequest.of(page, pageable.getPageSize());
 
 		Specification<SpringOrganization> specification = new Specification<SpringOrganization>() {
 
@@ -265,7 +268,7 @@ public class SpringOrganizationServiceImpl implements ISpringOrganizationService
 			BeanUtils.copyProperties(springOrganization, springOrganizationDTO);
 			springOrganizationDTOs.add(springOrganizationDTO);
 		});
-		SpringOrganizationTreeDTO springOrganizationTreeDTO = new SpringOrganizationTreeDTO(springOrganizationDTOs);
+		SpringOrganizationBuildTableTreeUtil springOrganizationTreeDTO = new SpringOrganizationBuildTableTreeUtil(springOrganizationDTOs);
 		List<SpringOrganizationDTO> springOrganizationTreeDTOs = springOrganizationTreeDTO.builTree();
 		return springOrganizationTreeDTOs;
 	}

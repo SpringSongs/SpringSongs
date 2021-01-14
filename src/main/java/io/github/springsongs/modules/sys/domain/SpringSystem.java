@@ -98,7 +98,7 @@ public class SpringSystem extends SpringBase  implements Serializable {
     }
 
     @Description(title ="允许删除0不允许1允许")
-    @Column(name="enable_delete")
+    @Column(name="enable_delete", columnDefinition = "TINYINT(1)")
     @ApiModelProperty("允许删除0不允许1允许")
     private boolean enableDelete;
     public boolean getEnableDelete(){
@@ -109,7 +109,7 @@ public class SpringSystem extends SpringBase  implements Serializable {
     }
 
     @Description(title ="允许编辑0不允许1允许")
-    @Column(name="enable_edit")
+    @Column(name="enable_edit", columnDefinition = "TINYINT(1)")
     @ApiModelProperty("允许编辑0不允许1允许")
     private boolean enableEdit;
     public boolean getEnableEdit(){
@@ -120,7 +120,7 @@ public class SpringSystem extends SpringBase  implements Serializable {
     }
 
     @Description(title ="0未删1已删")
-    @Column(name="deleted_status")
+    @Column(name="deleted_status", columnDefinition = "TINYINT(1)")
     @ApiModelProperty("0未删1已删")
     private boolean deletedStatus;
     public boolean getDeletedStatus(){

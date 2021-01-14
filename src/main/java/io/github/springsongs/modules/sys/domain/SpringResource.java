@@ -80,7 +80,7 @@ public class SpringResource extends SpringBase implements Serializable {
 	}
 
 	@Description(title = "是否菜单0不是1是")
-	@Column(name = "menu_flag")
+	@Column(name = "menu_flag", columnDefinition = "TINYINT(1)")
 	@ApiModelProperty("是否菜单0不是1是")
 	private boolean menuFlag;
 
@@ -147,7 +147,7 @@ public class SpringResource extends SpringBase implements Serializable {
     }
     
 	@Description(title = "是否显示0不显示，1显示")
-	@Column(name = "show_status")
+	@Column(name = "show_status", columnDefinition = "TINYINT(1)")
 	@ApiModelProperty("是否显示0不显示，1显示")
 	private boolean showStatus;
 
@@ -200,7 +200,7 @@ public class SpringResource extends SpringBase implements Serializable {
 	}
 
 	@Description(title = "允许编辑0不允许1允许")
-	@Column(name = "enable_edit")
+	@Column(name = "enable_edit", columnDefinition = "TINYINT(1)")
 	@ApiModelProperty("允许编辑0不允许1允许")
 	private boolean enableEdit;
 
@@ -213,7 +213,7 @@ public class SpringResource extends SpringBase implements Serializable {
 	}
 
 	@Description(title = "允许删除0不允许1允许")
-	@Column(name = "enable_delete")
+	@Column(name = "enable_delete", columnDefinition = "TINYINT(1)")
 	@ApiModelProperty("允许删除0不允许1允许")
 	private boolean enableDelete;
 
@@ -226,7 +226,7 @@ public class SpringResource extends SpringBase implements Serializable {
 	}
 
 	@Description(title = "0未删1已删")
-	@Column(name = "deleted_status")
+	@Column(name = "deleted_status", columnDefinition = "TINYINT(1)")
 	@ApiModelProperty("0未删1已删")
 	private boolean deletedStatus;
 

@@ -17,8 +17,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,11 +30,13 @@ import org.springframework.util.StringUtils;
 
 import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.exception.SpringSongsException;
+import io.github.springsongs.modules.sys.domain.SpringAttachment;
 import io.github.springsongs.modules.sys.domain.SpringUser;
 import io.github.springsongs.modules.sys.domain.SpringUserRole;
 import io.github.springsongs.modules.sys.domain.SpringUserSecurity;
 import io.github.springsongs.modules.sys.dto.SpringUserDTO;
-import io.github.springsongs.modules.sys.dto.query.SpringUserQuery;
+import io.github.springsongs.modules.sys.query.SpringUserQuery;
+import io.github.springsongs.modules.sys.repo.SpringAttachmentRepo;
 import io.github.springsongs.modules.sys.repo.SpringLogOnRepo;
 import io.github.springsongs.modules.sys.repo.SpringUserRepo;
 import io.github.springsongs.modules.sys.repo.SpringUserRoleRepo;
@@ -55,6 +59,12 @@ public class SpringUserServiceImpl implements ISpringUserService {
 
 	@Autowired
 	private ISpringUserService springUserService;
+
+	@Autowired
+	private SpringAttachmentRepo springAttachmentDao;
+
+	@Value("${server.domain}")
+	private String domain;
 
 	/**
 	 *
@@ -121,14 +131,18 @@ public class SpringUserServiceImpl implements ISpringUserService {
 	@Override
 	public SpringUserDTO selectByPrimaryKey(String id) {
 		SpringUser springUser = null;
+		SpringUserDTO springUserDTO = new SpringUserDTO();
 		try {
 			springUser = springUserRepo.getOne(id);
+			BeanUtils.copyProperties(springUser, springUserDTO);
+			if (!StringUtils.isEmpty(springUser.getPortrait())) {
+				SpringAttachment springAttachment = springAttachmentDao.getOne(springUser.getPortrait());
+				springUserDTO.setAvatar(domain+springAttachment.getPath());
+			}
 		} catch (Exception ex) {
 			logger.error(ex.getMessage());
 			throw new SpringSongsException(ResultCode.INFO_NOT_FOUND);
 		}
-		SpringUserDTO springUserDTO = new SpringUserDTO();
-		BeanUtils.copyProperties(springUser, springUserDTO);
 		return springUserDTO;
 	}
 
@@ -149,6 +163,7 @@ public class SpringUserServiceImpl implements ISpringUserService {
 		} else if (!entity.getEnableEdit()) {
 			throw new SpringSongsException(ResultCode.INFO_CAN_NOT_EDIT);
 		} else {
+			entity.setPortrait(springUserDTO.getPortrait());
 			entity.setTrueName(springUserDTO.getTrueName());
 			entity.setEmail(springUserDTO.getEmail());
 			entity.setMobile(springUserDTO.getMobile());
@@ -176,9 +191,12 @@ public class SpringUserServiceImpl implements ISpringUserService {
 	 */
 	@Override
 	public Page<SpringUserDTO> getAllRecordByPage(SpringUserQuery springUserQuery, Pageable pageable) {
-		if (pageable.getPageSize() > Constant.MAX_PAGE_SIZE) {
-			throw new SpringSongsException(ResultCode.PARAMETER_NOT_NULL_ERROR);
+		if (pageable.getPageSize() <= 0 || pageable.getPageSize() > Constant.MAX_PAGE_SIZE) {
+			throw new SpringSongsException(ResultCode.PARAMETER_MORE_1000);
 		}
+		int page = pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1;
+		pageable = PageRequest.of(page, pageable.getPageSize());
+
 		Specification<SpringUser> specification = new Specification<SpringUser>() {
 
 			@Override

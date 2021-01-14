@@ -15,7 +15,7 @@ import io.github.springsongs.common.dto.ReponseResultPageDTO;
 import io.github.springsongs.common.web.BaseController;
 import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.modules.sys.dto.SpringLoginLogDTO;
-import io.github.springsongs.modules.sys.dto.query.SpringLoginLogQuery;
+import io.github.springsongs.modules.sys.query.SpringLoginLogQuery;
 import io.github.springsongs.modules.sys.service.ISpringLoginLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;

@@ -285,7 +285,7 @@ public class SpringAritlce extends SpringBase implements Serializable {
 	}
 
 	@Description(title = "是否置顶")
-	@Column(name = "top_status")
+	@Column(name = "top_status", columnDefinition = "TINYINT(1)")
 	@ApiModelProperty("是否置顶")
 	private boolean topStatus;
 
@@ -298,7 +298,7 @@ public class SpringAritlce extends SpringBase implements Serializable {
 	}
 
 	@Description(title = "是否热点")
-	@Column(name = "hot_status")
+	@Column(name = "hot_status", columnDefinition = "TINYINT(1)")
 	@ApiModelProperty("是否热点")
 	private boolean hotStatus;
 
@@ -311,7 +311,7 @@ public class SpringAritlce extends SpringBase implements Serializable {
 	}
 
 	@Description(title = "是否精选")
-	@Column(name = "featured")
+	@Column(name = "featured", columnDefinition = "TINYINT(1)")
 	@ApiModelProperty("是否精选")
 	private boolean featured;
 
@@ -378,7 +378,7 @@ public class SpringAritlce extends SpringBase implements Serializable {
 	}
 
 	@Description(title = "0未删1已删")
-	@Column(name = "deleted_status")
+	@Column(name = "deleted_status", columnDefinition = "TINYINT(1)")
 	@ApiModelProperty("0未删1已删")
 	private boolean deletedStatus;
 

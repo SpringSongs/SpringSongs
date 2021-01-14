@@ -27,7 +27,7 @@ import io.github.springsongs.common.dto.ResponseDTO;
 import io.github.springsongs.common.web.BaseController;
 import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.modules.sys.dto.SpringParameterDTO;
-import io.github.springsongs.modules.sys.dto.query.SpringParameterQuery;
+import io.github.springsongs.modules.sys.query.SpringParameterQuery;
 import io.github.springsongs.modules.sys.service.ISpringParameterService;
 import io.github.springsongs.util.IpKit;
 import io.swagger.annotations.Api;

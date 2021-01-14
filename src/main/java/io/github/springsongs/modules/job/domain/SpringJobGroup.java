@@ -71,7 +71,7 @@ public class SpringJobGroup extends SpringBase implements Serializable {
     }
 
     @Description(title ="删除0不允许1允许")
-    @Column(name="deleted_status")
+    @Column(name="deleted_status", columnDefinition = "TINYINT(1)")
     @ApiModelProperty("删除0不允许1允许")
     private boolean deletedStatus;
     public boolean getDeletedStatus(){

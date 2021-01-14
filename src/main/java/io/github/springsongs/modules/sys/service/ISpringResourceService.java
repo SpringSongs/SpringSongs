@@ -13,7 +13,9 @@ import io.github.springsongs.modules.sys.dto.MenuDTO;
 import io.github.springsongs.modules.sys.dto.MenuRouterDTO;
 import io.github.springsongs.modules.sys.dto.ResourceRoleDTO;
 import io.github.springsongs.modules.sys.dto.SpringResourceDTO;
-import io.github.springsongs.modules.sys.dto.query.SpringResourceQuery;
+import io.github.springsongs.modules.sys.dto.SpringResourceTableTreeDTO;
+import io.github.springsongs.modules.sys.dto.SpringResourceUiTreeDTO;
+import io.github.springsongs.modules.sys.query.SpringResourceQuery;
 
 public interface ISpringResourceService {
 	void deleteByPrimaryKey(String id);
@@ -54,6 +56,7 @@ public interface ISpringResourceService {
 
 	public List<EasyUiMenuDTO> listEasyUiResourceByUserId(String userId);
 
-	List<SpringResourceDTO> ListAllToTree(String systemCode);
+	List<SpringResourceTableTreeDTO> listAllToTableTree(String systemCode);
+	List<SpringResourceUiTreeDTO> listAllToUITree(String systemCode);
 
 }

@@ -10,7 +10,7 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>io.github</groupId>
-	<artifactId>springsongs</artifactId>
+	<artifactId>springsongs-easyui</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>springsongsV1</name>
 	<description>authority project for Spring Boot</description>

@@ -26,7 +26,7 @@ import io.github.springsongs.common.dto.ResponseDTO;
 import io.github.springsongs.common.web.BaseController;
 import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.modules.sys.dto.SpringContactDTO;
-import io.github.springsongs.modules.sys.dto.query.SpringContactQuery;
+import io.github.springsongs.modules.sys.query.SpringContactQuery;
 import io.github.springsongs.modules.sys.service.ISpringContactService;
 import io.github.springsongs.util.IpKit;
 import io.swagger.annotations.Api;

@@ -32,7 +32,9 @@ import io.github.springsongs.modules.sys.dto.MenuDTO;
 import io.github.springsongs.modules.sys.dto.MenuRouterDTO;
 import io.github.springsongs.modules.sys.dto.SpringParameterDTO;
 import io.github.springsongs.modules.sys.dto.SpringResourceDTO;
-import io.github.springsongs.modules.sys.dto.query.SpringResourceQuery;
+import io.github.springsongs.modules.sys.dto.SpringResourceTableTreeDTO;
+import io.github.springsongs.modules.sys.dto.SpringResourceUiTreeDTO;
+import io.github.springsongs.modules.sys.query.SpringResourceQuery;
 import io.github.springsongs.modules.sys.service.ISpringResourceService;
 import io.github.springsongs.util.IpKit;
 import io.swagger.annotations.Api;
@@ -137,10 +139,18 @@ public class SpringResourceController extends BaseController {
 	}
 
 	@ApiOperation(value = "查询资源树", notes = "查询资源树", response = ResponseDTO.class)
+	@GetMapping(value = "/ListAllToTableTree")
+	public ResponseDTO<SpringResourceTableTreeDTO> ListAllToTableTree(
+			@RequestParam(value = "systemCode", required = true) String systemCode) {
+		List<SpringResourceTableTreeDTO> entitys = springResourceService.listAllToTableTree(systemCode);
+		return ResponseDTO.successed(entitys, ResultCode.SELECT_SUCCESSED);
+	}
+	
+	@ApiOperation(value = "查询资源树", notes = "查询资源树", response = ResponseDTO.class)
 	@GetMapping(value = "/ListAllToTree")
-	public ResponseDTO<SpringResourceDTO> ListAllToTree(
-			@RequestParam(value = "systemId", required = true) String systemId) {
-		List<SpringResourceDTO> entitys = springResourceService.ListAllToTree(systemId);
+	public ResponseDTO<SpringResourceUiTreeDTO> ListAllToTree(
+			@RequestParam(value = "systemCode", required = true) String systemCode) {
+		List<SpringResourceUiTreeDTO> entitys = springResourceService.listAllToUITree(systemCode);
 		return ResponseDTO.successed(entitys, ResultCode.SELECT_SUCCESSED);
 	}
 

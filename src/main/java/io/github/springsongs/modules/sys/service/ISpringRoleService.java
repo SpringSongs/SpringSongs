@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 import io.github.springsongs.modules.sys.domain.SpringUserRole;
 import io.github.springsongs.modules.sys.dto.SpringRoleDTO;
-import io.github.springsongs.modules.sys.dto.query.SpringRoleQuery;
+import io.github.springsongs.modules.sys.query.SpringRoleQuery;
 
 public interface ISpringRoleService {
 	void deleteByPrimaryKey(String id);

@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import io.github.springsongs.modules.sys.dto.SpringLoginLogDTO;
-import io.github.springsongs.modules.sys.dto.query.SpringLoginLogQuery;
+import io.github.springsongs.modules.sys.query.SpringLoginLogQuery;
 
 public interface ISpringLoginLogService {
 

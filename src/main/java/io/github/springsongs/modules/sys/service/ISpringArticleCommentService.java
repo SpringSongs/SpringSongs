@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import io.github.springsongs.modules.sys.dto.SpringArticleCommentDTO;
-import io.github.springsongs.modules.sys.dto.query.SpringArticleCommentQuery;
+import io.github.springsongs.modules.sys.query.SpringArticleCommentQuery;
 
 public interface ISpringArticleCommentService {
 

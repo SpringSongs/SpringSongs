@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 import io.github.springsongs.modules.sys.domain.SpringAttachmentCategory;
 import io.github.springsongs.modules.sys.dto.SpringAttachmentCategoryDTO;
+import io.github.springsongs.modules.sys.dto.SpringAttachmentCategoryUiTreeDTO;
 
 public interface ISpringAttachmentCategoryService {
 	void deleteByPrimaryKey(String id);
@@ -26,4 +27,6 @@ public interface ISpringAttachmentCategoryService {
 	void delete(List<String> ids);
 	
 	List<SpringAttachmentCategoryDTO> listSpringAttachmentCategoryByParentId(String parentId);
+	
+	List<SpringAttachmentCategoryUiTreeDTO> listAllToUiTree(String userId);
 }

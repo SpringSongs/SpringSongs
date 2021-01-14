@@ -64,5 +64,7 @@ public class Constant {
 	public static final String EXPORT_SUCCESSED = "导出成功";
 	public static final String TASK_HADED_SUBMIT = "任务已经提交了";
 	public static final String TASK_HADED_CONFIG = "任务已经处理";
+	public static final String UPLOADED_SUCCESSED = "上传成功";
+	public static final String FILE_CANT_UPLOAD = "文件类型不允许上传";
 
 }

@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 import io.github.springsongs.modules.sys.domain.SpringUserRole;
 import io.github.springsongs.modules.sys.domain.SpringUserSecurity;
 import io.github.springsongs.modules.sys.dto.SpringUserDTO;
-import io.github.springsongs.modules.sys.dto.query.SpringUserQuery;
+import io.github.springsongs.modules.sys.query.SpringUserQuery;
 
 public interface ISpringUserService {
 

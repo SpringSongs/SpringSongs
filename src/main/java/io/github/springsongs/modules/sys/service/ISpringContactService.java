@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import io.github.springsongs.modules.sys.dto.SpringContactDTO;
-import io.github.springsongs.modules.sys.dto.query.SpringContactQuery;
+import io.github.springsongs.modules.sys.query.SpringContactQuery;
 
 public interface ISpringContactService {
 

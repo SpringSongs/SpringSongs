@@ -4,16 +4,16 @@ import io.github.springsongs.enumeration.ResultCode;
 
 public class ReponseResultPageDTO<T> {
 	private int code;
-	private T rows;
-	private long total;
+	private T data;
+	private long count;
 	private String message;
 
 	public static ReponseResultPageDTO successed(Object data, long l, ResultCode resultCode) {
 		ReponseResultPageDTO reponseResultPageDTO = new ReponseResultPageDTO();
-		reponseResultPageDTO.setRows(data);
+		reponseResultPageDTO.setData(data);
 		reponseResultPageDTO.setCode(resultCode.getCode());
 		reponseResultPageDTO.setMessage(resultCode.getMessage());
-		reponseResultPageDTO.setTotal(l);
+		reponseResultPageDTO.setCount(l);
 		return reponseResultPageDTO;
 	}
 
@@ -35,20 +35,22 @@ public class ReponseResultPageDTO<T> {
 		this.message = message;
 	}
 
-	public T getRows() {
-		return rows;
+	public T getData() {
+		return data;
 	}
 
-	public void setRows(T rows) {
-		this.rows = rows;
+	public void setData(T data) {
+		this.data = data;
 	}
 
-	public long getTotal() {
-		return total;
+	public long getCount() {
+		return count;
 	}
 
-	public void setTotal(long total) {
-		this.total = total;
+	public void setCount(long count) {
+		this.count = count;
 	}
+
+	
 
 }

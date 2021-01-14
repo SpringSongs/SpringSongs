@@ -44,7 +44,7 @@ public class SpringResourceRole extends SpringBase  implements Serializable {
 		this.id = id;
 	}
 
-	@Size(max = 36, min = 0)
+	@Size(max = 500, min = 0)
 	@Description(title = "资源主键")
 	@Column(name = "module_id")
 	@ApiModelProperty("资源主键")

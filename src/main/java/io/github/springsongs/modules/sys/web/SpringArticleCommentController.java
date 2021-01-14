@@ -28,7 +28,7 @@ import io.github.springsongs.common.dto.ResponseDTO;
 import io.github.springsongs.common.web.BaseController;
 import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.modules.sys.dto.SpringArticleCommentDTO;
-import io.github.springsongs.modules.sys.dto.query.SpringArticleCommentQuery;
+import io.github.springsongs.modules.sys.query.SpringArticleCommentQuery;
 import io.github.springsongs.modules.sys.service.ISpringArticleCommentService;
 import io.github.springsongs.util.IpKit;
 import io.swagger.annotations.Api;

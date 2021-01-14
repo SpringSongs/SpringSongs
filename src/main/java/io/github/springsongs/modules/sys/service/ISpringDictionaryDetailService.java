@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import io.github.springsongs.modules.sys.dto.SpringDictionaryDetailDTO;
-import io.github.springsongs.modules.sys.dto.query.SpringDictionaryDetailQuery;
+import io.github.springsongs.modules.sys.query.SpringDictionaryDetailQuery;
 
 public interface ISpringDictionaryDetailService {
 

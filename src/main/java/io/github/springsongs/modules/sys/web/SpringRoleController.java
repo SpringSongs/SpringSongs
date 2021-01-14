@@ -30,7 +30,7 @@ import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.modules.sys.domain.SpringResourceRole;
 import io.github.springsongs.modules.sys.domain.SpringUserRole;
 import io.github.springsongs.modules.sys.dto.SpringRoleDTO;
-import io.github.springsongs.modules.sys.dto.query.SpringRoleQuery;
+import io.github.springsongs.modules.sys.query.SpringRoleQuery;
 import io.github.springsongs.modules.sys.service.ISpringResourceService;
 import io.github.springsongs.modules.sys.service.ISpringRoleService;
 import io.github.springsongs.util.IpKit;

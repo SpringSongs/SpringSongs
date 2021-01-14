@@ -27,7 +27,7 @@ import io.github.springsongs.common.web.BaseController;
 import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.modules.sys.dto.SpringContactDTO;
 import io.github.springsongs.modules.sys.dto.SpringDictionaryDTO;
-import io.github.springsongs.modules.sys.dto.query.SpringDictionaryQuery;
+import io.github.springsongs.modules.sys.query.SpringDictionaryQuery;
 import io.github.springsongs.modules.sys.service.ISpringDictionaryService;
 import io.github.springsongs.util.IpKit;
 import io.swagger.annotations.Api;

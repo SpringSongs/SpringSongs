@@ -1,4 +1,4 @@
-package io.github.springsongs.modules.sys.dto.query;
+package io.github.springsongs.modules.sys.query;
 
 public class SpringUserQuery {
 	private String userName;

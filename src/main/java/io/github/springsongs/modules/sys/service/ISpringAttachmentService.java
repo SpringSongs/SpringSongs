@@ -12,7 +12,7 @@ public interface ISpringAttachmentService {
 
 	void deleteByPrimaryKey(String id);
 
-	void insert(SpringAttachmentDTO record);
+	SpringAttachment insert(SpringAttachmentDTO record);
 
 	SpringAttachmentDTO selectByPrimaryKey(String id);
 

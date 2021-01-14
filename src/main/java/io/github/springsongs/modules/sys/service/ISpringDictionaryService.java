@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import io.github.springsongs.modules.sys.dto.SpringDictionaryDTO;
-import io.github.springsongs.modules.sys.dto.query.SpringDictionaryQuery;
+import io.github.springsongs.modules.sys.query.SpringDictionaryQuery;
 
 public interface ISpringDictionaryService {
 	void deleteByPrimaryKey(String id);

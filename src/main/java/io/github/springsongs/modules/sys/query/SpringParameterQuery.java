@@ -1,4 +1,4 @@
-package io.github.springsongs.modules.sys.dto.query;
+package io.github.springsongs.modules.sys.query;
 
 public class SpringParameterQuery {
 	private String code;

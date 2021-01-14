@@ -27,7 +27,7 @@ import io.github.springsongs.common.dto.ResponseDTO;
 import io.github.springsongs.common.web.BaseController;
 import io.github.springsongs.enumeration.ResultCode;
 import io.github.springsongs.modules.sys.dto.SpringAritlceDTO;
-import io.github.springsongs.modules.sys.dto.query.SpringAritlceQuery;
+import io.github.springsongs.modules.sys.query.SpringAritlceQuery;
 import io.github.springsongs.modules.sys.service.ISpringAritlceService;
 import io.github.springsongs.util.Constant;
 import io.github.springsongs.util.IpKit;

@@ -128,7 +128,35 @@ public class SpringAttachmentController extends BaseController {
 		File f = new File(uploadPath + fileName);
 		try {
 			file.transferTo(f);
-			return ResponseDTO.successed(fileName, ResultCode.DELETE_SUCCESSED);
+			return ResponseDTO.successed(fileName, ResultCode.UPLOADED_SUCCESSED);
+		} catch (IllegalStateException e) {
+			logger.error(e.getMessage());
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		} catch (IOException e) {
+			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
+		}
+	}
+	
+	@ApiOperation(value = "上传附件", notes = "根据MultipartFile上传附件", response = ResponseDTO.class)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "file", dataType = "MultipartFile"),
+			@ApiImplicitParam(name = "request", dataType = "HttpServletRequest"), })
+	@PostMapping(value = "/UploadAndReturnId")
+	public ResponseDTO<String> uploadAndReturnId(MultipartFile file, HttpServletRequest request) {
+		String originalFileName = file.getOriginalFilename();
+		String fileName = UUID.randomUUID().toString()
+				+ originalFileName.substring(originalFileName.lastIndexOf("."), originalFileName.length());
+		File f = new File(uploadPath + fileName);
+		try {
+			file.transferTo(f);
+			SpringAttachmentDTO springAttachmentDTO=new SpringAttachmentDTO();
+			springAttachmentDTO.setPath(fileName);
+			springAttachmentDTO.setDescription(fileName);
+			springAttachmentDTO.setCreatedBy(this.getUser().getUserName());
+			springAttachmentDTO.setCreatedUserId(this.getUser().getId());
+			springAttachmentDTO.setCreatedIp(IpKit.getRealIp(request));
+			springAttachmentDTO.setCreatedOn(new Date());
+			SpringAttachment springAttachment=springAttachmentService.insert(springAttachmentDTO);
+			return ResponseDTO.successed(springAttachment.getId(), ResultCode.UPLOADED_SUCCESSED);
 		} catch (IllegalStateException e) {
 			logger.error(e.getMessage());
 			throw new SpringSongsException(ResultCode.SYSTEM_ERROR);
