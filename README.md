@@ -2,7 +2,7 @@
 * 前端EasyUI
 * 采用Spring Boot、Spring Data JPA、Spring Security、Thymeleaf。
 * 支持加载动态权限菜单，多方式轻松权限控制。
-
+* 建议使用JDK8
 ## 内置功能
 
 1.  用户管理：用户是系统操作者，该功能主要完成系统用户配置。
